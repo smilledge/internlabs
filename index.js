@@ -2,6 +2,8 @@
 
 
 var kraken = require('kraken-js'),
+    settings = require('./config/app'),
+    mongoose = require('mongoose'),
     app = {};
 
 
@@ -13,6 +15,17 @@ app.configure = function configure(nconf, next) {
 
 app.requestStart = function requestStart(server) {
     // Run before most express middleware has been registered.
+
+    // Connecto to MongoDB
+    mongoose.connect(
+        settings.mongodb.host,
+        settings.mongodb.name,
+        settings.mongodb.port,
+        {
+            user: settings.mongodb.user,
+            pass: settings.mongodb.pass
+        }
+    );
 };
 
 
