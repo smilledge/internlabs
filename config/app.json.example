@@ -3,11 +3,6 @@
 
   "port": 8000,
 
-  "i18n": {
-      "fallback": "en-US",
-      "contentPath": "path:./locales"
-  },
-
   "routes": {
       "routePath": "path:./controllers"
   },
@@ -23,5 +18,14 @@
       "view cache": true,
       "view engine": "ejs",
       "views": "path:./views"
+  },
+
+  "mongodb": {
+      "host": "127.0.0.1",
+      "name": "internlabs",
+      "pass": "",
+      "port": 27017,
+      "user": "root"
   }
+  
 }
