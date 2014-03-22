@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="InternLabs" ng-controller="AppCtrl">
+<head>
+    <meta charset="utf-8">
+    <title ng-bind="pageTitle || 'InternLabs'"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700,600' rel='stylesheet' type='text/css'>
+
+    <% if(process.env.NODE_ENV == 'production') { %>
+        <link href="/dist/app.min.css" rel="stylesheet">
+    <% } else { %>
+        <link href="/dist/app.css" rel="stylesheet">
+    <% } %>
+
+</head>
+<body>
+
+    <!-- Loading Bar -->
+    <div class="loading-bar" ng-class="{active: isLoading()}"></div>
+
+
+    <!-- Primary navigation -->
+    <nav id="primary-nav" class="navbar navbar-default" role="navigation">
+      <div class="container">
+
+            <div class="navbar-header">
+                <a class="navbar-logo" href="/"><img src="/images/logo.svg" alt="InternLabs"></a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="navbar-label text-muted">Already a member?</li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+
+        </div>
+    </nav>
+
+
+    <!-- App Body -->
+    <div id="main" ng-view>
+        
+    </div>
+
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <img src="/images/logo-steam-roller-footer.svg" alt="Steam Roller">
+            <a href="/" class="pull-right">Home</a>
+        </div>
+    </footer>
+
+
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+
+    <% if(process.env.NODE_ENV == 'production') { %>
+        <script src="/dist/app.min.js"></script>
+    <% } else { %>
+        <script src="/dist/app.js"></script>
+    <% } %>
+
+</body>
+</html>
