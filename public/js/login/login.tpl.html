@@ -1,0 +1,41 @@
+<section class="section-green section-login" fill-screen>
+  
+  <div class="container">
+    <div class="row">
+
+      <form ng-submit="submit()" role="form" class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels" login-form animated-form>
+
+        <h1 class="text-center animation-group">Login</h1>
+
+        <div class="form-group animation-group">
+          <label for="">Email</label>
+          <input type="email" name="email" ng-model="credentials.email" class="form-control" placeholder="Email" float-label>
+        </div>
+
+        <div class="form-group animation-group">
+          <label for="">Password</label>
+          <input type="password" name="password" ng-model="credentials.password" class="form-control" placeholder="Password" float-label>
+        </div>
+
+
+        <div class="form-group animation-group">
+          <div class="row">
+            <div class="col-xs-6">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" ng-model="credentials.remember" ng-true-value="true" fs-picker> Remember Me
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <button type="submit" class="btn btn-default pull-right">Login</button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+</section>

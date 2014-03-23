@@ -2299,9 +2299,7 @@ select[size] {
 input[type="file"]:focus,
 input[type="radio"]:focus,
 input[type="checkbox"]:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
+  outline: none;
 }
 output {
   display: block;
@@ -2313,26 +2311,18 @@ output {
 .form-control {
   display: block;
   width: 100%;
-  height: 34px;
-  padding: 6px 12px;
+  padding: 12px 12px;
   font-size: 14px;
   line-height: 1.42857143;
   color: #555555;
   background-color: #ffffff;
   background-image: none;
-  border: 1px solid #cccccc;
+  border: none;
+  border-bottom: 4px solid #ddd;
   border-radius: 3px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-}
-.form-control:focus {
-  border-color: #66afe9;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 .form-control::-moz-placeholder {
   color: #999999;
@@ -2353,6 +2343,9 @@ fieldset[disabled] .form-control {
 }
 textarea.form-control {
   height: auto;
+}
+.form-control:focus {
+  outline: none;
 }
 input[type="search"] {
   -webkit-appearance: none;
@@ -2377,13 +2370,14 @@ input[type="month"].input-lg {
   line-height: 46px;
 }
 .form-group {
+  position: relative;
   margin-bottom: 15px;
 }
 .radio,
 .checkbox {
   display: block;
   min-height: 20px;
-  margin-top: 10px;
+  margin-top: 8px;
   margin-bottom: 10px;
 }
 .radio label,
@@ -2661,7 +2655,7 @@ select[multiple].input-lg {
   border: none;
   border-bottom: 4px solid transparent;
   white-space: nowrap;
-  padding: 6px 12px;
+  padding: 12px 22px;
   font-size: 14px;
   line-height: 1.42857143;
   border-radius: 3px;
@@ -2673,9 +2667,7 @@ select[multiple].input-lg {
 .btn:focus,
 .btn:active:focus,
 .btn.active:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
+  outline: none;
 }
 .btn:hover,
 .btn:focus {
@@ -2686,8 +2678,6 @@ select[multiple].input-lg {
 .btn.active {
   outline: 0;
   background-image: none;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 .btn.disabled,
 .btn[disabled],
@@ -2702,7 +2692,7 @@ fieldset[disabled] .btn {
 .btn-default {
   color: #333333;
   background-color: #ffffff;
-  border-color: #cccccc;
+  border-color: #dddddd;
 }
 .btn-default:hover,
 .btn-default:focus,
@@ -2710,8 +2700,8 @@ fieldset[disabled] .btn {
 .btn-default.active,
 .open .dropdown-toggle.btn-default {
   color: #333333;
-  background-color: #e6e6e6;
-  border-color: #adadad;
+  background-color: #f2f2f2;
+  border-color: #cecece;
 }
 .btn-default:active,
 .btn-default.active,
@@ -2734,7 +2724,7 @@ fieldset[disabled] .btn-default:active,
 .btn-default[disabled].active,
 fieldset[disabled] .btn-default.active {
   background-color: #ffffff;
-  border-color: #cccccc;
+  border-color: #dddddd;
 }
 .btn-default .badge {
   color: #ffffff;
@@ -2751,8 +2741,8 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
   color: #ffffff;
-  background-color: #2d8e3a;
-  border-color: #24732f;
+  background-color: #33a242;
+  border-color: #2c8a39;
 }
 .btn-primary:active,
 .btn-primary.active,
@@ -2792,8 +2782,8 @@ fieldset[disabled] .btn-primary.active {
 .btn-success.active,
 .open .dropdown-toggle.btn-success {
   color: #ffffff;
-  background-color: #449d44;
-  border-color: #398439;
+  background-color: #4cae4c;
+  border-color: #439943;
 }
 .btn-success:active,
 .btn-success.active,
@@ -2833,8 +2823,8 @@ fieldset[disabled] .btn-success.active {
 .btn-info.active,
 .open .dropdown-toggle.btn-info {
   color: #ffffff;
-  background-color: #31b0d5;
-  border-color: #269abc;
+  background-color: #46b8da;
+  border-color: #2caed5;
 }
 .btn-info:active,
 .btn-info.active,
@@ -2874,8 +2864,8 @@ fieldset[disabled] .btn-info.active {
 .btn-warning.active,
 .open .dropdown-toggle.btn-warning {
   color: #ffffff;
-  background-color: #ec971f;
-  border-color: #d58512;
+  background-color: #eea236;
+  border-color: #ec951a;
 }
 .btn-warning:active,
 .btn-warning.active,
@@ -2915,8 +2905,8 @@ fieldset[disabled] .btn-warning.active {
 .btn-danger.active,
 .open .dropdown-toggle.btn-danger {
   color: #ffffff;
-  background-color: #c9302c;
-  border-color: #ac2925;
+  background-color: #d43f3a;
+  border-color: #c52f2b;
 }
 .btn-danger:active,
 .btn-danger.active,
@@ -6061,6 +6051,100 @@ button.close {
     display: none !important;
   }
 }
+/* 
+ * Picker v3.0.11 - 2014-02-26 
+ * A jQuery plugin for replacing default checkboxes and radios. Part of the formstone library. 
+ * http://formstone.it/picker/ 
+ * 
+ * Copyright 2014 Ben Plum;
+MIT Licensed 
+ */
+.picker-element {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+  -webkit-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+.picker {
+  cursor: pointer;
+  overflow: hidden;
+  /* Focus */
+  /* Radio Input */
+  /* Checkbox Input */
+  /* 'Checked' */
+  /* 'Disabled' State */
+}
+.picker .picker-label {
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  float: left;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 22px;
+  margin-left: 5px;
+}
+.picker .picker-handle {
+  border: 1px solid #ccc;
+  display: block;
+  float: left;
+  width: 22px;
+  height: 22px;
+  margin: 0 5px 0 0;
+  background-color: #ffffff;
+  background-image: none;
+  border: none;
+  border-bottom: 4px solid #ddd;
+  border-radius: 3px;
+}
+.picker.focus .picker-handle {
+  border-color: #aaa;
+}
+.picker.picker-radio .picker-handle {
+  border-radius: 8px;
+}
+.picker.picker-radio .picker-flag {
+  background: #fff;
+  display: block;
+  border-radius: 4px;
+  height: 8px;
+  margin: 3px;
+  width: 8px;
+}
+.picker.picker-radio.focus .picker-flag {
+  background: #ddd;
+}
+.picker.picker-radio.checked .picker-flag {
+  background: #999;
+}
+.picker.picker-checkbox .picker-handle {
+  border-radius: 3px;
+}
+.picker.picker-checkbox .picker-flag {
+  background: #fff;
+  border-radius: 2px;
+  display: block;
+  height: 100%;
+  margin: 0;
+  width: 100%;
+}
+.picker.picker-checkbox.checked .picker-flag {
+  background: #ffffff url('../images/checked.svg') no-repeat center;
+}
+.picker.disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.picker.disabled .picker-label {
+  cursor: default;
+}
+.picker.disabled .picker-handle {
+  cursor: default;
+}
 html {
   height: 100%;
 }
@@ -6102,6 +6186,43 @@ html {
 }
 /*
 
+  Section styles
+
+ */
+.section-green {
+  padding: 100px 0;
+  background: #39b54a url('../images/mark.svg') no-repeat center;
+  -webkit-background-size: cover;
+  background-size: cover;
+  color: #fff;
+}
+/*
+
+  Floating labels
+
+ */
+form.floating-labels .form-group {
+  margin-top: 10px;
+}
+label.floating-label {
+  position: absolute;
+  width: 120px;
+  top: 0;
+  left: -120px;
+  padding: 12px;
+  text-align: right;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+label.floating-label.open {
+  opacity: 1;
+  visibility: visible;
+}
+/*
+
   Footer
 
  */
@@ -6118,13 +6239,17 @@ html {
   Include all module less files here
 
  */
-.container-home {
+.section-home {
   padding: 150px 0;
-  background: #39b54a;
-  color: #fff;
 }
-.container-home h2 {
+.section-home .hero-title {
   margin-bottom: 100px;
   -webkit-font-smoothing: antialiased;
   font-size: 48px;
+}
+.section-login h1 {
+  margin-bottom: 30px;
+}
+.section-register h1 {
+  margin-bottom: 30px;
 }

@@ -26,6 +26,10 @@
       "pass": "",
       "port": 27017,
       "user": "root"
+  },
+
+  "bcrypt": {
+      "difficulty": 8
   }
   
 }

@@ -1,0 +1,98 @@
+/* 
+ * Picker v3.0.11 - 2014-02-26 
+ * A jQuery plugin for replacing default checkboxes and radios. Part of the formstone library. 
+ * http://formstone.it/picker/ 
+ * 
+ * Copyright 2014 Ben Plum;
+MIT Licensed 
+ */ 
+
+.picker-element { 
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+  .transition(none);
+}
+
+.picker { 
+  cursor: pointer;
+  overflow: hidden;
+
+  .picker-label {
+    padding: 0;
+    cursor: pointer;
+    display: block;
+    float: left;
+    .user-select(none);
+    line-height: 22px;
+    margin-left: 5px;
+  }
+
+  .picker-handle { 
+    border: 1px solid #ccc;
+    display: block;
+    float: left;
+    width: 22px;
+    height: 22px;
+    margin: 0 5px 0 0;
+    
+    background-color: @input-bg;
+    background-image: none;
+    border: none;
+    border-bottom: 4px solid #ddd;
+    border-radius: @input-border-radius;
+  }
+
+  /* Focus */
+  &.focus .picker-handle {
+    border-color: #aaa;
+  }
+
+  /* Radio Input */
+  &.picker-radio .picker-handle { border-radius: 8px;}
+
+  &.picker-radio .picker-flag { background: #fff;
+    display: block;
+    border-radius: 4px;
+    height: 8px;
+    margin: 3px;
+    width: 8px;
+  }
+
+  &.picker-radio.focus .picker-flag {
+    background: #ddd;
+  }
+  &.picker-radio.checked .picker-flag {
+    background: #999;
+  }
+
+  /* Checkbox Input */
+  &.picker-checkbox .picker-handle {
+    border-radius: @border-radius-base;
+  }
+
+  &.picker-checkbox .picker-flag {
+    background: #fff;
+    border-radius: 2px;
+    display: block;
+    height: 100%;
+    margin: 0;
+    width: 100%;
+  }
+
+  /* 'Checked' */
+  &.picker-checkbox.checked .picker-flag {
+    background: #fff url('../images/checked.svg') no-repeat center;
+  }
+
+  /* 'Disabled' State */
+  &.disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+  &.disabled .picker-label { cursor: default;
+  }
+  &.disabled .picker-handle { cursor: default;
+  }
+
+}

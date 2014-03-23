@@ -2,35 +2,49 @@
 
 
 var kraken = require('kraken-js'),
-    settings = require('./config/app'),
-    mongoose = require('mongoose'),
+    db = require('./lib/database'),
+    auth = require('./lib/auth'),
+    User = require('./models/user'),
+    passport = require('passport'),
+    apiResponse = require('./lib/apiResponse'),
     app = {};
 
 
 app.configure = function configure(nconf, next) {
-    // Async method run on startup.
+
+    // Init database connection 
+    // Takes config from config/app.json
+    db.config(nconf.get("mongodb"));
+
+    passport.use(auth.localStrategy());
+
+    //Give passport a way to serialize and deserialize a user. In this case, by the user's id.
+    passport.serializeUser(function (user, done) {
+        done(null, user.id);
+    });
+
+    passport.deserializeUser(function (id, done) {
+        User.findOne({_id: id}, function (err, user) {
+            done(null, user);
+        });
+    });
+
     next(null);
 };
 
 
 app.requestStart = function requestStart(server) {
     // Run before most express middleware has been registered.
-
-    // Connecto to MongoDB
-    mongoose.connect(
-        settings.mongodb.host,
-        settings.mongodb.name,
-        settings.mongodb.port,
-        {
-            user: settings.mongodb.user,
-            pass: settings.mongodb.pass
-        }
-    );
 };
 
 
 app.requestBeforeRoute = function requestBeforeRoute(server) {
     // Run before any routes have been added.
+    
+    server.use(apiResponse());
+
+    server.use(passport.initialize());
+    server.use(passport.session());
 };
 
 

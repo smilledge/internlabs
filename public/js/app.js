@@ -1,14 +1,28 @@
 angular.module('InternLabs', [
   'ngRoute',
   'templates-app',
-  'InternLabs.home'
+  'InternLabs.services',
+  'InternLabs.common',
+  'InternLabs.home',
+  'InternLabs.login',
+  'InternLabs.register',
+  'InternLabs.dashboard'
 ])
 
   .config(function($locationProvider) {
     $locationProvider.html5Mode(true);
   })
 
-  .run(function() {})
+  .run(function() {
+
+    // Underscore mixins
+    _.mixin({
+      capitalize: function(string) {
+        return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase();
+      }
+    });
+
+  })
 
   .controller('AppCtrl', function($rootScope, $scope) {
 

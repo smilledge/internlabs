@@ -28,8 +28,10 @@
             </div>
 
             <ul class="nav navbar-nav navbar-right">
-                <li class="navbar-label text-muted">Already a member?</li>
-                <li><a href="/login">Login</a></li>
+
+                <li auth logged="false" class="navbar-label text-muted">Already a member?</li>
+                <li auth logged="false"><a href="/login">Login</a></li>
+                <li auth logged="true"><a href="/logout">Logout</a></li>
             </ul>
 
         </div>
@@ -51,8 +53,12 @@
     </footer>
 
 
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TimelineLite.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
 
     <% if(process.env.NODE_ENV == 'production') { %>
         <script src="/dist/app.min.js"></script>

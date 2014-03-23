@@ -51,7 +51,12 @@ module.exports = {
   vendor_files: {
     js: [
       'public/vendor/angular.js',
-      'public/vendor/angular-route.js'
+      'public/vendor/angular-route.js',
+      'public/vendor/picker.js',
+      'public/vendor/underscore.js'
+      // 'public/vendor/TweenLite.js',
+      // 'public/vendor/TimelineLite.js',
+      // 'public/vendor/EasePack.js'
     ]
   },
 };

@@ -5,12 +5,12 @@
 //          "500": "errors/500",
 //          "503": "errors/503"
 //      }
-//      "appsec": {
-//        "csrf": true,
-//        "csp": false,
-//        "p3p": false,
-//        "xframe": "SAMEORIGIN"
-//      },
+     "appsec": {
+       "csrf": false,
+       "csp": false,
+       "p3p": false,
+       "xframe": false
+     }
 //
 //      "compiler": {
 //          "dust": "templates",

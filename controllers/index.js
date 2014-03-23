@@ -1,18 +1,10 @@
 'use strict';
 
 
-var IndexModel = require('../models/index');
-
-
-module.exports = function (app) {
-
-    var model = new IndexModel();
-
+module.exports = function(app) {
 
     app.get('*', function (req, res) {
-        
-        res.render('index', model);
-        
+        res.render('index');
     });
-
+    
 };

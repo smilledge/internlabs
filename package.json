@@ -6,7 +6,7 @@
     "main": "index.js",
     "scripts": {
         "test": "grunt test",
-        "start": "node index.js"
+        "start": "nodemon index.js localhost 8000"
     },
     "engines": {
         "node": ">=0.10.0"
@@ -21,7 +21,10 @@
         "async": "*",
         "ejs": "*",
         "moment": "*",
-        "mongoose": "3.8.x"
+        "mongoose": "3.8.x",
+        "passport": "*",
+        "passport-local": "*",
+        "bcrypt": "*"
     },
     "devDependencies": {
         "mocha": "~1.17.0",
