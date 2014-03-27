@@ -1,5 +1,5 @@
 /**
- * internlabs - v0.1.0 - 2014-03-23
+ * internlabs - v0.1.0 - 2014-03-27
  * 
  */
 /**
@@ -23844,18 +23844,36 @@ angular.module("register/register-form.tpl.html", []).run(["$templateCache", fun
     "    <h1 class=\"text-center\">{{ type() }} Signup</h1>\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"form-group animation-group\">\n" +
-    "    <label for=\"\">Email</label>\n" +
-    "    <input type=\"email\" name=\"email\" ng-model=\"user.email\" class=\"form-control\" placeholder=\"Email\" float-label>\n" +
-    "  </div>\n" +
+    "  <div stepped-form>\n" +
     "\n" +
-    "  <div class=\"form-group animation-group\">\n" +
-    "    <label for=\"\">Password</label>\n" +
-    "    <input type=\"password\" name=\"password\" ng-model=\"user.password\" class=\"form-control\" placeholder=\"Password\" float-label>\n" +
-    "  </div>\n" +
+    "    <fieldset class=\"form-step\">\n" +
+    "      <div class=\"form-group animation-group\">\n" +
+    "        <label for=\"\">Email</label>\n" +
+    "        <input type=\"email\" name=\"email\" ng-model=\"user.email\" class=\"form-control\" placeholder=\"Email\" float-label>\n" +
+    "      </div>\n" +
     "\n" +
-    "  <div class=\"form-group animation-group\">\n" +
-    "      <button type=\"submit\" class=\"btn btn-default pull-right\">Signup</button>\n" +
+    "      <div class=\"form-group animation-group\">\n" +
+    "        <label for=\"\">Password</label>\n" +
+    "        <input type=\"password\" name=\"password\" ng-model=\"user.password\" class=\"form-control\" placeholder=\"Password\" float-label>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group animation-group\">\n" +
+    "        <a href=\"#\" class=\"next btn btn-warning pull-right\">Next</a>\n" +
+    "      </div>\n" +
+    "    </fieldset>\n" +
+    "\n" +
+    "    <fieldset class=\"form-step\">\n" +
+    "      <div class=\"form-group animation-group\">\n" +
+    "        <label for=\"\">Company Name</label>\n" +
+    "        <input type=\"text\" name=\"company_name\" ng-model=\"user.company_name\" class=\"form-control\" placeholder=\"company_name\" float-label>\n" +
+    "      </div>\n" +
+    "      \n" +
+    "      <div class=\"form-group animation-group\">\n" +
+    "        <a href=\"#\" class=\"previous btn btn-warning\">Previous</a>\n" +
+    "        <button type=\"submit\" class=\"btn btn-default pull-right\">Signup</button>\n" +
+    "      </div>\n" +
+    "    </fieldset>\n" +
+    "\n" +
     "  </div>\n" +
     "\n" +
     "</form>");
@@ -24012,6 +24030,125 @@ angular.module('InternLabs.common', [])
             ease: Quad.easeOut
           }, 0.15, '+0.1')
           .resume();
+      }
+    };
+  })
+
+
+  /**
+   * Stepped form
+   *  - Step through a seriese of fieldsets
+   *  - Give each a class of .form-step
+   */
+  .directive('steppedForm', function ($q) {
+    return {
+      restrict: 'A',
+      link: function(scope, elem, attrs) {
+
+        var $fieldsets = elem.find('.form-step').css({
+          position: 'absolute',
+          width: '100%',
+          top: 0
+        });
+
+        elem.css({
+          position: 'relative'
+        });
+
+
+        // Set first fieldset as active and hide others
+        $fieldsets.first().addClass('active');
+        TweenLite.set($fieldsets.not(':first'), {
+          autoAlpha: 0
+        });
+
+
+        /**
+         * Transition out a slide and transiton in next slide
+         * 
+         * @param  {object} currentElem   The active form step
+         * @param  {object} nextElem      The from step to transion in
+         * @param  {bool}   reverse       Is the animation playing in reverse
+         * @return {promise}
+         */
+        var transitionSteps = function(currentElem, nextElem, reverse) {
+          var deferred = $q.defer();
+
+
+
+          var timeline = new TimelineLite({ onComplete: function() {
+            deferred.resolve();
+          }}).pause()
+
+            // Animation initial state for elems
+            .set(currentElem, {
+              left: 0
+            })
+            .set(nextElem, {
+              left: (reverse) ? '-110%' : '110%'
+            })
+
+            // Fade in next
+            // .to(nextElem, 0.15, {
+            //   autoAlpha: 1
+            // })
+
+            // Slide both
+            .to(currentElem, 0.35, {
+              autoAlpha: 0,
+              left: (reverse) ? '110%' : '-110%'
+            })
+            .to(nextElem, 0.35, {
+              autoAlpha: 1,
+              left: 0
+            }, '-=0.35')
+
+            // Fade out previous
+            // .to(currentElem, 0.15, {
+            //   autoAlpha: 0
+            // })
+            
+
+            // Play!
+            .resume();
+
+          return deferred.promise;
+        }
+
+
+        /**
+         * Next form step
+         */
+        var next = function() {
+
+          var $current = elem.find('.form-step.active'),
+              $next = $current.next('.form-step');
+
+          transitionSteps($current, $next, false).then(function() {
+            // Animtion done
+            $current.removeClass('active');
+            $next.addClass('active');
+  
+          });
+        }
+
+        /**
+         * Previous form step
+         */
+        var previous = function() {
+          var $current = elem.find('.form-step.active'),
+              $prev = $current.prev('.form-step');
+
+          transitionSteps($current, $prev, true).then(function() {
+            // Animtion done
+            $current.removeClass('active');
+            $prev.addClass('active');
+          });
+        }
+
+
+        elem.find('a.next').on('click', next);
+        elem.find('a.previous').on('click', previous);
       }
     };
   })
@@ -24260,7 +24397,7 @@ angular.module('InternLabs.register', [])
       .when('/signup/:type', {
         templateUrl: 'register/register.tpl.html',
         controller: 'RegisterCtrl',
-        pageTitle: 'Student Signup'
+        pageTitle: 'Signup'
       })
 
       ;

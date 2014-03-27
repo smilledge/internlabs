@@ -4,18 +4,36 @@
     <h1 class="text-center">{{ type() }} Signup</h1>
   </div>
 
-  <div class="form-group animation-group">
-    <label for="">Email</label>
-    <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email" float-label>
-  </div>
+  <div stepped-form>
 
-  <div class="form-group animation-group">
-    <label for="">Password</label>
-    <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" float-label>
-  </div>
+    <fieldset class="form-step">
+      <div class="form-group animation-group">
+        <label for="">Email</label>
+        <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email" float-label>
+      </div>
 
-  <div class="form-group animation-group">
-      <button type="submit" class="btn btn-default pull-right">Signup</button>
+      <div class="form-group animation-group">
+        <label for="">Password</label>
+        <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" float-label>
+      </div>
+
+      <div class="form-group animation-group">
+        <a href="#" class="next btn btn-warning pull-right">Next</a>
+      </div>
+    </fieldset>
+
+    <fieldset class="form-step">
+      <div class="form-group animation-group">
+        <label for="">Company Name</label>
+        <input type="text" name="company_name" ng-model="user.company_name" class="form-control" placeholder="company_name" float-label>
+      </div>
+      
+      <div class="form-group animation-group">
+        <a href="#" class="previous btn btn-warning">Previous</a>
+        <button type="submit" class="btn btn-default pull-right">Signup</button>
+      </div>
+    </fieldset>
+
   </div>
 
 </form>

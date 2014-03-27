@@ -8,7 +8,7 @@ angular.module('InternLabs.register', [])
       .when('/signup/:type', {
         templateUrl: 'register/register.tpl.html',
         controller: 'RegisterCtrl',
-        pageTitle: 'Student Signup'
+        pageTitle: 'Signup'
       })
 
       ;
