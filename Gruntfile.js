@@ -181,6 +181,20 @@ module.exports = function ( grunt ) {
     },
 
 
+    copy: {
+      fonts: {
+        files: [
+          {
+            expand: true,
+            cwd: 'public/fonts',
+            src: ['**'],
+            dest: '<%= compile_dir %>/fonts/'
+          }
+        ]
+      }
+    },
+
+
     /**
      * And for rapid development, we have a watch set up that checks to see if
      * any of the files listed below change, and then to execute the listed 
@@ -244,6 +258,7 @@ module.exports = function ( grunt ) {
     'html2js', 'jshint', 'less',
     'concat:compile_css', 'ngmin', 'concat:compile_js', 
     'uglify',
+    'copy:fonts',
     'clean:clear'
   ]);
 

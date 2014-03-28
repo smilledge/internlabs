@@ -52,6 +52,41 @@
 }
 
 
+// Buttons with a link - only works for regular size
+// --------------------------------------------------
+@button-height: (@padding-base-horizontal * 2) + (@font-size-base * @line-height-base) + 4;
+.btn-icon-left, .btn-icon-right {
+  position: relative;
+  i {
+    font-size: 125%;
+    opacity: 0.4;
+    position: absolute;
+    top: 0;
+    height: @button-height;
+    width: @button-height;
+    line-height: @button-height - 4;
+    display: block;
+  }
+}
+
+.btn-icon-left {
+  padding-left: @button-height + @padding-base-horizontal + 10px;
+  i {
+    left: 0;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+  }
+}
+
+.btn-icon-right {
+  padding-right: @button-height + @padding-base-horizontal + 10px;
+  i {
+    right: 0;
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+  }
+}
+
+
+
 // Alternate buttons
 // --------------------------------------------------
 
@@ -87,7 +122,7 @@
   color: @link-color;
   font-weight: normal;
   cursor: pointer;
-  border-radius: 0;
+  border-radius: @border-radius-base;
 
   &,
   &:active,

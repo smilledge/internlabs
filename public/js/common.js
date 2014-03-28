@@ -121,8 +121,6 @@ angular.module('InternLabs.common', [])
         var transitionSteps = function(currentElem, nextElem, reverse) {
           var deferred = $q.defer();
 
-
-
           var timeline = new TimelineLite({ onComplete: function() {
             deferred.resolve();
           }}).pause()
@@ -155,12 +153,11 @@ angular.module('InternLabs.common', [])
             //   autoAlpha: 0
             // })
             
-
             // Play!
             .resume();
 
           return deferred.promise;
-        }
+        };
 
 
         /**
@@ -177,7 +174,7 @@ angular.module('InternLabs.common', [])
             $next.addClass('active');
   
           });
-        }
+        };
 
         /**
          * Previous form step
@@ -191,7 +188,7 @@ angular.module('InternLabs.common', [])
             $current.removeClass('active');
             $prev.addClass('active');
           });
-        }
+        };
 
 
         elem.find('a.next').on('click', next);

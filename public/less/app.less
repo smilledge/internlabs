@@ -1,8 +1,14 @@
 @import "bootstrap/bootstrap.less";
+@import "font-awesome/font-awesome.less";
 @import "vendor/picker.less";
 
 html {
   height: 100%;
+}
+
+
+body {
+  overflow-x: hidden;
 }
 
 
@@ -48,6 +54,18 @@ html {
   -webkit-background-size: cover;
   background-size: cover;
   color: #fff;
+
+  a.btn-link {
+    background: rgba(0, 0, 0, 0.07);
+    color: #fff;
+    border-bottom: 4px solid rgba(0, 0, 0, 0.09);
+    &:hover {
+      color: #fff;
+      text-decoration: none;
+      background: rgba(0, 0, 0, 0.09);
+      border-bottom: 4px solid rgba(0, 0, 0, 0.11);
+    }
+  }
 }
 
 
@@ -79,6 +97,48 @@ label.floating-label {
   &.open {
     opacity: 1;
     visibility: visible;
+  }
+}
+
+
+/*
+
+  Form step title
+
+ */
+
+.form-step-title {
+  position: relative;
+  background: rgba(0,0,0,0.1);
+  border-radius: @border-radius-base;
+  padding: 20px 20px 20px 65px;
+  margin-bottom: 15px;
+
+  .number {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    width: 30px;
+    height: 30px;
+    line-height: 26px;
+    border-radius: 50%;
+    text-align: center;
+    color: #FFF;
+    background: none;
+    border: 2px solid #fff;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 14px;
+  }
+
+  .title {
+    font-size: 22px;
+    margin: 0 0 10px;
+  }
+
+  .message {
+    margin: 0;
+    font-size: @font-size-small;
   }
 }
 

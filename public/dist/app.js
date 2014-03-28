@@ -1,5 +1,5 @@
 /**
- * internlabs - v0.1.0 - 2014-03-27
+ * internlabs - v0.1.0 - 2014-03-28
  * 
  */
 /**
@@ -23823,7 +23823,7 @@ angular.module("login/login.tpl.html", []).run(["$templateCache", function($temp
     "              </div>\n" +
     "            </div>\n" +
     "            <div class=\"col-xs-6\">\n" +
-    "              <button type=\"submit\" class=\"btn btn-default pull-right\">Login</button>\n" +
+    "              <button type=\"submit\" class=\"btn btn-default pull-right btn-icon-right\">Login <i class=\"fa fa-arrow-right\"></i></button>\n" +
     "            </div>\n" +
     "          </div>\n" +
     "        </div>\n" +
@@ -23838,7 +23838,7 @@ angular.module("login/login.tpl.html", []).run(["$templateCache", function($temp
 
 angular.module("register/register-form.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("register/register-form.tpl.html",
-    "<form ng-submit=\"submit()\" role=\"form\" class=\"col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels\" animated-form>\n" +
+    "<form ng-submit=\"submit()\" role=\"form\" class=\"col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 floating-labels\" animated-form>\n" +
     "\n" +
     "  <div class=\"form-group animation-group\">\n" +
     "    <h1 class=\"text-center\">{{ type() }} Signup</h1>\n" +
@@ -23846,7 +23846,28 @@ angular.module("register/register-form.tpl.html", []).run(["$templateCache", fun
     "\n" +
     "  <div stepped-form>\n" +
     "\n" +
+    "\n" +
+    "    <!-- Account Details -->\n" +
     "    <fieldset class=\"form-step\">\n" +
+    "\n" +
+    "      <div class=\"animation-group form-step-title\">\n" +
+    "        <i class=\"number\">1</i>\n" +
+    "        <h3 class=\"title\">My Account</h3>\n" +
+    "        <p class=\"message\">Your account details will be used to login. Your name will also be displayed to employers.</p>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group animation-group\">\n" +
+    "        <div class=\"row-sm\">\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label>Your Name</label>\n" +
+    "            <input type=\"text\" name=\"profile.firstName\" ng-model=\"user.profile.firstName\" class=\"form-control\" placeholder=\"First Name\" float-label>\n" +
+    "          </div>\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <input type=\"text\" name=\"profile.lashName\" ng-model=\"user.profile.lashName\" class=\"form-control\" placeholder=\"Last Name\" float-label>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
     "      <div class=\"form-group animation-group\">\n" +
     "        <label for=\"\">Email</label>\n" +
     "        <input type=\"email\" name=\"email\" ng-model=\"user.email\" class=\"form-control\" placeholder=\"Email\" float-label>\n" +
@@ -23858,21 +23879,38 @@ angular.module("register/register-form.tpl.html", []).run(["$templateCache", fun
     "      </div>\n" +
     "\n" +
     "      <div class=\"form-group animation-group\">\n" +
-    "        <a href=\"#\" class=\"next btn btn-warning pull-right\">Next</a>\n" +
+    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
     "      </div>\n" +
     "    </fieldset>\n" +
     "\n" +
+    "\n" +
+    "    \n" +
+    "    <!-- My Profile -->\n" +
     "    <fieldset class=\"form-step\">\n" +
-    "      <div class=\"form-group animation-group\">\n" +
-    "        <label for=\"\">Company Name</label>\n" +
-    "        <input type=\"text\" name=\"company_name\" ng-model=\"user.company_name\" class=\"form-control\" placeholder=\"company_name\" float-label>\n" +
+    "\n" +
+    "      <div class=\"form-step-title\">\n" +
+    "        <i class=\"number\">2</i>\n" +
+    "        <h3 class=\"title\">My Profile</h3>\n" +
+    "        <p class=\"message\">Your profile will help us match interships relative to your skills and interests. It will also be made available to emloyers.</p>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group \">\n" +
+    "        <label>Introduction</label>\n" +
+    "        <textarea name=\"user.profile.introduction\" ng-model=\"user.profile.introduction\" class=\"form-control\" placeholder=\"Introduction\" float-label></textarea>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group \">\n" +
+    "        <label>Website</label>\n" +
+    "        <input type=\"test\" name=\"user.profile.introduction\" ng-model=\"user.profile.introduction\" class=\"form-control\" placeholder=\"Website URL\" float-label>\n" +
     "      </div>\n" +
     "      \n" +
-    "      <div class=\"form-group animation-group\">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-warning\">Previous</a>\n" +
-    "        <button type=\"submit\" class=\"btn btn-default pull-right\">Signup</button>\n" +
+    "      <div class=\"form-group \">\n" +
+    "        <a href=\"#\" class=\"previous btn btn-link btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
+    "        <button type=\"submit\" class=\"btn btn-default pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
     "      </div>\n" +
     "    </fieldset>\n" +
+    "\n" +
+    "\n" +
     "\n" +
     "  </div>\n" +
     "\n" +
@@ -24074,8 +24112,6 @@ angular.module('InternLabs.common', [])
         var transitionSteps = function(currentElem, nextElem, reverse) {
           var deferred = $q.defer();
 
-
-
           var timeline = new TimelineLite({ onComplete: function() {
             deferred.resolve();
           }}).pause()
@@ -24108,12 +24144,11 @@ angular.module('InternLabs.common', [])
             //   autoAlpha: 0
             // })
             
-
             // Play!
             .resume();
 
           return deferred.promise;
-        }
+        };
 
 
         /**
@@ -24130,7 +24165,7 @@ angular.module('InternLabs.common', [])
             $next.addClass('active');
   
           });
-        }
+        };
 
         /**
          * Previous form step
@@ -24144,7 +24179,7 @@ angular.module('InternLabs.common', [])
             $current.removeClass('active');
             $prev.addClass('active');
           });
-        }
+        };
 
 
         elem.find('a.next').on('click', next);
