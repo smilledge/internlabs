@@ -7,6 +7,7 @@ var kraken = require('kraken-js'),
     User = require('./models/user'),
     passport = require('passport'),
     apiResponse = require('./lib/apiResponse'),
+    mailer = require('./lib/mailer'),
     app = {};
 
 
@@ -28,6 +29,9 @@ app.configure = function configure(nconf, next) {
             done(null, user);
         });
     });
+
+    // Config mail helper
+    mailer.config(nconf.get("mail"));
 
     next(null);
 };

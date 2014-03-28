@@ -28,6 +28,16 @@
       "user": "root"
   },
 
+  "mail": {
+      "noReplyAddress": "InternLabs <no-reply@internlabs.com.au>",
+      "templatesDir": "views/emails",
+      "host": "smtp.sendgrid.net",
+      "port": 25,
+      "username": "",
+      "password": "",
+      "secureConnection": false
+  },
+
   "bcrypt": {
       "difficulty": 8
   }

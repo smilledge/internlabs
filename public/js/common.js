@@ -111,6 +111,19 @@ angular.module('InternLabs.common', [])
 
 
         /**
+         * Set the height for the form based on the height of active from step
+         * 
+         * @return {void}
+         */
+        var setHeight = function() {
+          var height = elem.find('.form-step.active').height();
+          elem.css({
+            'min-height': height 
+          });
+        };
+
+
+        /**
          * Transition out a slide and transiton in next slide
          * 
          * @param  {object} currentElem   The active form step
@@ -172,7 +185,7 @@ angular.module('InternLabs.common', [])
             // Animtion done
             $current.removeClass('active');
             $next.addClass('active');
-  
+            setHeight();
           });
         };
 
@@ -187,12 +200,15 @@ angular.module('InternLabs.common', [])
             // Animtion done
             $current.removeClass('active');
             $prev.addClass('active');
+            setHeight();
           });
         };
 
 
         elem.find('a.next').on('click', next);
         elem.find('a.previous').on('click', previous);
+
+        setHeight();
       }
     };
   })
