@@ -23863,7 +23863,7 @@ angular.module("register/register-form.tpl.html", []).run(["$templateCache", fun
     "            <input type=\"text\" name=\"profile.firstName\" ng-model=\"user.profile.firstName\" class=\"form-control\" placeholder=\"First Name\" float-label>\n" +
     "          </div>\n" +
     "          <div class=\"col-sm-6\">\n" +
-    "            <input type=\"text\" name=\"profile.lashName\" ng-model=\"user.profile.lashName\" class=\"form-control\" placeholder=\"Last Name\" float-label>\n" +
+    "            <input type=\"text\" name=\"profile.lastName\" ng-model=\"user.profile.lastName\" class=\"form-control\" placeholder=\"Last Name\" float-label>\n" +
     "          </div>\n" +
     "        </div>\n" +
     "      </div>\n" +
