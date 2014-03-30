@@ -4,3 +4,4 @@
 node_modules/
 *.iml
 config/app.json
+npm-debug.log
