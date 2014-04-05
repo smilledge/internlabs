@@ -1,4 +1,52 @@
-angular.module('InternLabs.common', [])
+angular.module('InternLabs.common.directives', [])
+
+  
+  /**
+   * Google map
+   *  - Uses gmaps.js
+   */
+   .directive('googleMap', function () {
+    return {
+      restrict: 'A',
+      link: function(scope, elem, attrs) {
+        var mapId = _.uniqueId('map_'),
+            gmap = null;
+
+        elem.attr('id', mapId);
+
+        var renderMap = function() {
+          var lat = scope.$eval(elem.attr('lat')),
+              lng = scope.$eval(elem.attr('lng'));
+          
+          elem.height(attrs.height || 350);
+
+          gmap = new GMaps({
+            div: mapId,
+            lat: lat,
+            lng: lng,
+            zoom: 16,
+            zoomControl: false,
+            panControl: false,
+            streetViewControl: false,
+            mapTypeControl: false,
+            overviewMapControl: false
+          });
+
+          gmap.addMarker({
+            lat: lat,
+            lng: lng
+          });
+        }
+
+        _.defer(renderMap);
+
+        $(window).on('resize', _.debounce(function() {
+          renderMap();
+        }, 100));
+
+      }
+    };
+  })
 
 
   /**

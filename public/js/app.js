@@ -1,12 +1,14 @@
 angular.module('InternLabs', [
   'ngRoute',
+  'angularFileUpload',
   'templates-app',
   'InternLabs.services',
-  'InternLabs.common',
+  'InternLabs.common.directives',
   'InternLabs.home',
   'InternLabs.login',
   'InternLabs.register',
-  'InternLabs.dashboard'
+  'InternLabs.dashboard',
+  'InternLabs.company'
 ])
 
   .config(function($locationProvider) {

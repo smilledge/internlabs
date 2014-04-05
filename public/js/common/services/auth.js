@@ -1,19 +1,4 @@
-angular.module('InternLabs.services', [])
-
-
-  .service('Options', function() {
-
-    var apiBase = '/api/';
-
-    /**
-     * Generate a api resource url
-     */
-    this.apiUrl = function(resource) {
-      return apiBase + resource.replace(/^\/|\/$/g, '');
-    };
-
-  })
-
+angular.module('InternLabs.services')
 
   .service('Auth', function($rootScope, $http, $q, Options) {
 
@@ -69,7 +54,7 @@ angular.module('InternLabs.services', [])
         var httpPromise = $http.post(Options.apiUrl('register'), user);
         
         httpPromise.success(function(data, status) {
-          deferred.resolve();
+          deferred.resolve(data.data.user);
         });
 
         return deferred.promise;

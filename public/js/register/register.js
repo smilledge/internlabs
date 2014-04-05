@@ -16,7 +16,7 @@ angular.module('InternLabs.register', [])
   })
 
 
-  .controller('RegisterCtrl', function($scope, $routeParams, $location, Auth) {
+  .controller('RegisterCtrl', function($scope, $routeParams, $location, $fileUploader, Auth, Options) {
 
     if ( _.indexOf(['employer', 'student', 'supervisor'], $routeParams.type) === -1 ) {
       $location.path('/signup/student');
@@ -26,11 +26,25 @@ angular.module('InternLabs.register', [])
       type: $routeParams.type
     };
 
+    var uploader = $scope.uploader = $fileUploader.create({
+      scope: $scope
+    });
+
     $scope.submit = function() {
-      Auth.register($scope.user).then(function(data) {
+      Auth.register($scope.user).then(function(user) {
+
+        // Upload the logo
+        var logoEndpoint = Options.apiUrl('companies/'+user.company._id+'/logo');
+
+        _.each(uploader.queue, function(file) {
+          file.url = logoEndpoint;
+        });
+
+        uploader.uploadAll();
+
         $location.url('/login');
+
       }, function(error) {
-        console.log(error);
         $scope.errors = error;
       });
     };

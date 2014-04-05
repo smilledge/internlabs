@@ -1,0 +1,60 @@
+<article class="company-details">
+  
+  <header>
+    <div class="container clearfix">
+      <h1 class="page-title pull-left">{{ company.name }}</h1>
+
+      <div class="actions pull-right">
+        <a href="#" class="btn btn-primary btn-icon-right">Apply for Internship <i class="fa fa-envelope"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 profile-sidebar">
+        <div class="profile-logo">
+          <img src="/uploads/{{ company.logo }}" alt="">
+        </div>
+
+        <ul class="profile-meta">
+          <li class="icon-left"><i class="fa fa-map-marker"></i> {{ company.address.city + ', ' +  company.address.country }}</li>
+          <li class="icon-left"><i class="fa fa-globe"></i> <a href="{{ company.website }}">{{ company.website }}</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-8 profile-body">
+        <section>
+          <h2>Company profile</h2>
+          {{ company.introduction }}
+        </section>
+
+        <section>
+          <h4>{{ company.name }} is looking for interns with the following skills</h4>
+          <ul class="skills">
+            <li ng-repeat="skill in company.skills">{{ skill }}</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>Available Internships</h2>
+          <p>{{ company.name }} has not created any internships yet.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <section class="map map-fullwidth">
+    <div class="map-overlay">
+      <div class="container">
+        <div class="map-info">
+          <h2>{{ company.name }}</h2>
+          <p ng-bind-html="company.displayAddress"></p>
+          <a href="{{ company.getGoogleMapsLink() }}" class="btn btn-primary btn-icon-right" target="_blank">Get Directions <i class="fa fa-map-marker"></i></a>
+        </div>
+      </div>
+    </div>
+    <div google-map lng="company.address.lng" lat="company.address.lat" height="500"></div>
+  </section>
+
+</article>

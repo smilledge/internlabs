@@ -177,11 +177,34 @@
     </fieldset>
 
 
-    <!-- Company Profile -->
+
+    <!-- Company Logo -->
     <fieldset class="form-step" ng-if="user.type == 'employer'">
 
       <div class="form-step-title">
         <i class="number">3</i>
+        <h3 class="title">Company Logo</h3>
+        <p class="message">Upload your company's logo to be displayed in you profile.</p>
+      </div>
+
+      <div class="form-group">
+        <label>Company Logo</label>
+        <input type="file" name="logo" ng-file-select class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <a href="#" class="previous btn btn-link btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
+        <a href="#" class="next btn btn-default pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
+      </div>
+    </fieldset>
+
+
+
+    <!-- Company Address -->
+    <fieldset class="form-step" ng-if="user.type == 'employer'">
+
+      <div class="form-step-title">
+        <i class="number">4</i>
         <h3 class="title">Company Address</h3>
         <p class="message">Please provide your company's address to help your interns locate you.</p>
       </div>

@@ -27,7 +27,8 @@
     "bcrypt": "*",
     "dustjs-helpers": "*",
     "nodemailer": "0.6.x",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "node-geocoder": "~2.1.0"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

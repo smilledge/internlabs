@@ -1083,6 +1083,9 @@ h6,
 .h6 {
   font-size: 12px;
 }
+h1.page-title {
+  font-size: 45px;
+}
 p {
   margin: 0 0 10px;
 }
@@ -8035,6 +8038,109 @@ label.floating-label.open {
 }
 /*
 
+  Profile Styles
+
+ */
+.profile-body section {
+  margin-bottom: 30px;
+}
+.profile-logo img {
+  display: block;
+  max-width: 85%;
+  margin: 30px auto 50px;
+}
+.skills {
+  list-style: none;
+  padding: 0;
+}
+.skills:before,
+.skills:after {
+  content: " ";
+  display: table;
+}
+.skills:after {
+  clear: both;
+}
+.skills:before,
+.skills:after {
+  content: " ";
+  display: table;
+}
+.skills:after {
+  clear: both;
+}
+.skills li {
+  padding: 4px 10px;
+  margin: 5px 5px 5px 0;
+  float: left;
+  background: #39b54a;
+  color: #fff;
+  border-radius: 5px;
+}
+.profile-meta {
+  list-style: none;
+  padding: 0;
+  margin: 1px 0;
+}
+.profile-meta a {
+  color: #333333;
+}
+.profile-meta li {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 16px;
+  margin-bottom: 1px;
+  background: #eeeeee;
+  white-space: nowrap;
+}
+.profile-meta li.icon-left {
+  position: relative;
+  padding-left: 52px;
+}
+.profile-meta li > i {
+  position: absolute;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  display: block;
+  font-size: 18px;
+  border-right: 1px solid #fff;
+}
+/*
+
+  Map styles
+
+ */
+.map {
+  position: relative;
+}
+.map .map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+.map .map-info {
+  max-width: 300px;
+  margin: 50px 0 0;
+  padding: 40px 30px;
+  background: #fff;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+.map .map-info h2 {
+  margin: 0 0 15px;
+}
+.map .map-info .btn {
+  margin-top: 40px;
+}
+/*
+
   Footer
 
  */
@@ -8079,4 +8185,15 @@ label.floating-label.open {
 }
 .section-register h1 {
   margin-bottom: 40px;
+}
+.company-details > header {
+  padding: 40px 0;
+  margin: 0 0 50px 0;
+  background: #eeeeee;
+}
+.company-details > header h1 {
+  margin: 0;
+}
+.company-details > .map {
+  margin-top: 80px;
 }
