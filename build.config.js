@@ -53,7 +53,10 @@ module.exports = {
       'public/vendor/angular.js',
       'public/vendor/angular-route.js',
       'public/vendor/picker.js',
-      'public/vendor/underscore.js'
+      'public/vendor/selecter.js',
+      'public/vendor/underscore.js',
+      'public/vendor/tooltip.js',
+      'public/vendor/popover.js'
       // 'public/vendor/TweenLite.js',
       // 'public/vendor/TimelineLite.js',
       // 'public/vendor/EasePack.js'

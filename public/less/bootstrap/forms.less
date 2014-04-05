@@ -202,6 +202,22 @@ input[type="month"] {
   margin-bottom: 15px;
 }
 
+.form-group.vertical-input-stack {
+  .form-control {
+    border-radius: 0;
+    border-bottom: 1px solid #ddd;
+
+    &:nth-of-type(1) {
+      border-radius: @input-border-radius @input-border-radius 0 0;
+    }
+
+    &:last-child {
+      border-radius: 0 0 @input-border-radius @input-border-radius;
+      border-bottom: 4px solid #ddd;
+    }
+  }
+}
+
 
 // Checkboxes and radios
 //

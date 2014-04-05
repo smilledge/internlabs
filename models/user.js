@@ -3,22 +3,26 @@
 
 var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
-    nconf = require('nconf');
+    ObjectId = mongoose.Schema.ObjectId;
 
 
-var userModel = function () {
+var UserModel = function () {
 
-    var userSchema = mongoose.Schema({
+    var UserSchema = mongoose.Schema({
         email: { type: String, unique: true, required: true },
         password: { type: String, required: true },
         type: { type: String, unique: false, default: "student" }, // student, employer, supervisor
-        profile: { type: mongoose.Schema.ObjectId }
+        profile: { type: ObjectId, ref: 'Profile', index: true },
+        company: { type: ObjectId, ref: 'Company', index: true },
+        activationToken: { type: String },
+        resetToken: { type: String },
+        activated: { type: Boolean, default: false }
     });
 
     /**
      * Helper function that hooks into the 'save' method, and replaces plaintext passwords with a hashed version.
      */
-    userSchema.pre('save', function (next) {
+    UserSchema.pre('save', function (next) {
         var user = this;
 
         if ( ! user.isModified('password') ) {
@@ -36,18 +40,44 @@ var userModel = function () {
         next();
     });
 
+
+    /**
+     * When the user signs up create a new activation token
+     */
+    UserSchema.pre('save', function (next) {
+        var user = this;
+
+        // Only create for new users
+        if ( ! user.isNew ) {
+            next();
+            return;
+        }
+
+        user.activationToken = bcrypt.hashSync(new Date().getTime() + user.email, 10);
+        user.activated = false;
+
+        next();
+    });
+
     /**
      * Helper function that takes a plaintext password and compares it against the user's hashed password.
      * @param plainText
      * @returns true/false
      */
-    userSchema.methods.passwordMatches = function(plainText) {
+    UserSchema.methods.passwordMatches = function(plainText) {
         var user = this;
         return bcrypt.compareSync(plainText, user.password);
     };
 
+    /**
+     * Get a reset token
+     */
+    UserSchema.methods.getResetToken = function(plainText) {
+        return bcrypt.hashSync(new Date().getTime() + this.email, 10);
+    };
 
-    return mongoose.model('User', userSchema);
+
+    return mongoose.model('User', UserSchema);
 };
 
-module.exports = new userModel();
+module.exports = new UserModel();

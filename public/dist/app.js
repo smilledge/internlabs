@@ -1,5 +1,5 @@
 /**
- * internlabs - v0.1.0 - 2014-03-28
+ * internlabs - v0.1.0 - 2014-04-05
  * 
  */
 /**
@@ -22415,6 +22415,737 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 	};
 })(jQuery);
 
+/* 
+ * Selecter v3.0.9 - 2014-02-10 
+ * A jQuery plugin for replacing default select elements. Part of the Formstone Library. 
+ * http://formstone.it/selecter/ 
+ * 
+ * Copyright 2014 Ben Plum; MIT Licensed 
+ */ 
+
+;(function ($, window) {
+	"use strict";
+
+	var guid = 0,
+		isFirefox = window.navigator.userAgent.toLowerCase().indexOf('firefox') > -1,
+		isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test( (window.navigator.userAgent||window.navigator.vendor||window.opera) ),
+		$body = null;
+
+	/**
+	 * @options
+	 * @param callback [function] <$.noop> "Select item callback"
+	 * @param cover [boolean] <false> "Cover handle with option set"
+	 * @param customClass [string] <''> "Class applied to instance"
+	 * @param label [string] <''> "Label displayed before selection"
+	 * @param external [boolean] <false> "Open options as links in new window"
+	 * @param links [boolean] <false> "Open options as links in same window"
+	 * @param trim [int] <0> "Trim options to specified length; 0 to disable”
+	 */
+	var options = {
+		callback: $.noop,
+		cover: false,
+		customClass: "",
+		label: "",
+		external: false,
+		links: false,
+		trim: 0
+	};
+
+	var pub = {
+
+		/**
+		 * @method
+		 * @name defaults
+		 * @description Sets default plugin options
+		 * @param opts [object] <{}> "Options object"
+		 * @example $.selecter("defaults", opts);
+		 */
+		defaults: function(opts) {
+			options = $.extend(options, opts || {});
+			return $(this);
+		},
+
+		/**
+		 * @method
+		 * @name disable
+		 * @description Disables target instance or option
+		 * @param option [string] <null> "Target option value"
+		 * @example $(".target").selecter("disable", "1");
+		 */
+		disable: function(option) {
+			return $(this).each(function(i, input) {
+				var data = $(input).next(".selecter").data("selecter");
+
+				if (data) {
+					if (typeof option !== "undefined") {
+						var index = data.$items.index( data.$items.filter("[data-value=" + option + "]") );
+
+						data.$items.eq(index).addClass("disabled");
+						data.$options.eq(index).prop("disabled", true);
+					} else {
+						if (data.$selecter.hasClass("open")) {
+							data.$selecter.find(".selecter-selected").trigger("click.selecter");
+						}
+
+						data.$selecter.addClass("disabled");
+						data.$select.prop("disabled", true);
+					}
+				}
+			});
+		},
+
+		/**
+		 * @method
+		 * @name enable
+		 * @description Enables target instance or option
+		 * @param option [string] <null> "Target option value"
+		 * @example $(".target").selecter("enable", "1");
+		 */
+		enable: function(option) {
+			return $(this).each(function(i, input) {
+				var data = $(input).next(".selecter").data("selecter");
+
+				if (data) {
+					if (typeof option !== "undefined") {
+						var index = data.$items.index( data.$items.filter("[data-value=" + option + "]") );
+						data.$items.eq(index).removeClass("disabled");
+						data.$options.eq(index).prop("disabled", false);
+					} else {
+						data.$selecter.removeClass("disabled");
+						data.$select.prop("disabled", false);
+					}
+				}
+			});
+		},
+
+		/**
+		 * @method
+		 * @name destroy
+		 * @description Removes instance of plugin
+		 * @example $(".target").selecter("destroy");
+		 */
+		destroy: function() {
+			return $(this).each(function(i, input) {
+				var data = $(input).next(".selecter").data("selecter");
+
+				if (data) {
+					if (data.$selecter.hasClass("open")) {
+						data.$selecter.find(".selecter-selected").trigger("click.selecter");
+					}
+
+					// Scroller support
+					if ($.fn.scroller !== undefined) {
+						data.$selecter.find(".selecter-options").scroller("destroy");
+					}
+
+					data.$select[0].tabIndex = data.tabIndex;
+
+					data.$select.off(".selecter")
+								.removeClass("selecter-element")
+								.show();
+
+					data.$selecter.off(".selecter")
+								  .remove();
+				}
+			});
+		},
+
+		/**
+		* @method
+		* @name refresh
+		* @description Updates instance base on target options
+		* @example $(".target").selecter("refresh");
+		*/
+		refresh: function() {
+			return $(this).each(function(i, input) {
+				var data = $(input).next(".selecter").data("selecter");
+
+				if (data) {
+					var index = data.index;
+
+					data.$allOptions = data.$select.find("option, optgroup");
+					data.$options = data.$allOptions.filter("option");
+					data.index = -1;
+
+					index = data.$options.index(data.$options.filter(":selected"));
+
+					_buildOptions(data);
+					_update(index, data);
+				}
+			});
+		}
+	};
+
+	/**
+	 * @method private
+	 * @name _init
+	 * @description Initializes plugin
+	 * @param opts [object] "Initialization options"
+	 */
+	function _init(opts) {
+		// Local options
+		opts = $.extend({}, options, opts || {});
+
+		// Check for Body
+		if ($body === null) {
+			$body = $("body");
+		}
+
+		// Apply to each element
+		var $items = $(this);
+		for (var i = 0, count = $items.length; i < count; i++) {
+			_build($items.eq(i), opts);
+		}
+		return $items;
+	}
+
+	/**
+	 * @method private
+	 * @name _build
+	 * @description Builds each instance
+	 * @param $select [jQuery object] "Target jQuery object"
+	 * @param opts [object] <{}> "Options object"
+	 */
+	function _build($select, opts) {
+		if (!$select.hasClass("selecter-element")) {
+			// EXTEND OPTIONS
+			opts = $.extend({}, opts, $select.data("selecter-options"));
+
+			if (opts.external) {
+				opts.links = true;
+			}
+
+			// Build options array
+			var $allOptions = $select.find("option, optgroup"),
+				$options = $allOptions.filter("option"),
+				$originalOption = $options.filter(":selected"),
+				originalIndex = (opts.label !== "") ? -1 : $options.index($originalOption),
+				wrapperTag = (opts.links) ? "nav" : "div";
+
+			// Swap tab index, no more interacting with the actual select!
+			opts.tabIndex = $select[0].tabIndex;
+			$select[0].tabIndex = -1;
+
+			opts.multiple = $select.prop("multiple");
+			opts.disabled = $select.is(":disabled");
+
+			// Build HTML
+			var html = '<' + wrapperTag + ' class="selecter ' + opts.customClass;
+			// Special case classes
+			if (isMobile) {
+				html += ' mobile';
+			} else if (opts.cover) {
+				html += ' cover';
+			}
+			if (opts.multiple) {
+				html += ' multiple';
+			} else {
+				html += ' closed';
+			}
+			if (opts.disabled) {
+				html += ' disabled';
+			}
+			html += '" tabindex="' + opts.tabIndex + '">';
+			if (!opts.multiple) {
+				html += '<span class="selecter-selected' + ((opts.label !== "") ? ' placeholder' : '') + '">';
+				html += $('<span></span').text( _trim(((opts.label !== "") ? opts.label : $originalOption.text()), opts.trim) ).html();
+				html += '</span>';
+			}
+			html += '<div class="selecter-options">';
+			html += '</div>';
+			html += '</' + wrapperTag + '>';
+
+			// Modify DOM
+			$select.addClass("selecter-element")
+				   .after(html);
+
+			// Store plugin data
+			var $selecter = $select.next(".selecter"),
+				data = $.extend({
+					$select: $select,
+					$allOptions: $allOptions,
+					$options: $options,
+					$selecter: $selecter,
+					$selected: $selecter.find(".selecter-selected"),
+					$itemsWrapper: $selecter.find(".selecter-options"),
+					index: -1,
+					guid: guid++
+				}, opts);
+
+			_buildOptions(data);
+			_update(originalIndex, data);
+
+			// Scroller support
+			if ($.fn.scroller !== undefined) {
+				data.$itemsWrapper.scroller();
+			}
+
+			// Bind click events
+			data.$selecter.on("touchstart.selecter click.selecter", ".selecter-selected", data, _onClick)
+						  .on("click.selecter", ".selecter-item", data, _onSelect)
+						  .on("close.selecter", data, _onClose)
+						  .data("selecter", data);
+
+			// Bind Blur/focus events
+			//if ((!data.links && !isMobile) || isMobile) {
+				data.$select.on("change.selecter", data, _onChange);
+
+				if (!isMobile) {
+					data.$selecter.on("focus.selecter", data, _onFocus)
+								  .on("blur.selecter", data, _onBlur);
+
+					// handle clicks to associated labels - not on mobile
+					data.$select.on("focus.selecter", data, function(e) {
+						e.data.$selecter.trigger("focus");
+					});
+				}
+
+			//} else {
+				// Disable browser focus/blur for jump links
+				//data.$select.hide();
+			//}
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _buildOptions
+	 * @description Builds instance's option set
+	 * @param data [object] "Instance data"
+	 */
+	function _buildOptions(data) {
+		var html = '',
+			itemTag = (data.links) ? "a" : "span",
+			j = 0;
+
+		for (var i = 0, count = data.$allOptions.length; i < count; i++) {
+			var $op = data.$allOptions.eq(i);
+
+			// Option group
+			if ($op[0].tagName === "OPTGROUP") {
+				html += '<span class="selecter-group';
+				// Disabled groups
+				if ($op.is(":disabled")) {
+					html += ' disabled';
+				}
+				html += '">' + $op.attr("label") + '</span>';
+			} else {
+				var opVal = $op.val();
+
+				if (!$op.attr("value")) {
+					$op.attr("value", opVal);
+				}
+
+				html += '<' + itemTag + ' class="selecter-item';
+				// Default selected value - now handles multi's thanks to @kuilkoff
+				if ($op.is(':selected') && data.label === "") {
+					html += ' selected';
+				}
+				// Disabled options
+				if ($op.is(":disabled")) {
+					html += ' disabled';
+				}
+				html += '" ';
+				if (data.links) {
+					html += 'href="' + opVal + '"';
+				} else {
+					html += 'data-value="' + opVal + '"';
+				}
+				html += '>' + $("<span></span>").text( _trim($op.text(), data.trim) ).html() + '</' + itemTag + '>';
+				j++;
+			}
+		}
+
+		data.$itemsWrapper.html(html);
+		data.$items = data.$selecter.find(".selecter-item");
+	}
+
+	/**
+	 * @method private
+	 * @name _onClick
+	 * @description Handles click to selected item
+	 * @param e [object] "Event data"
+	 */
+	function _onClick(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var data = e.data;
+
+		if (!data.$select.is(":disabled")) {
+			$(".selecter").not(data.$selecter).trigger("close.selecter", [data]);
+
+			// Handle mobile
+			if (isMobile) {
+				var el = data.$select[0];
+				if (window.document.createEvent) { // All
+					var evt = window.document.createEvent("MouseEvents");
+					evt.initMouseEvent("mousedown", false, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+					el.dispatchEvent(evt);
+				} else if (el.fireEvent) { // IE
+					el.fireEvent("onmousedown");
+				}
+			} else {
+				// Delegate intent
+				if (data.$selecter.hasClass("closed")) {
+					_onOpen(e);
+				} else if (data.$selecter.hasClass("open")) {
+					_onClose(e);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _onOpen
+	 * @description Opens option set
+	 * @param e [object] "Event data"
+	 */
+	function _onOpen(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var data = e.data;
+
+		// Make sure it's not alerady open
+		if (!data.$selecter.hasClass("open")) {
+			var offset = data.$selecter.offset(),
+				bodyHeight = $body.outerHeight(),
+				optionsHeight = data.$itemsWrapper.outerHeight(true),
+				selectedOffset = (data.index >= 0) ? data.$items.eq(data.index).position() : { left: 0, top: 0 };
+
+			// Calculate bottom of document
+			if (offset.top + optionsHeight > bodyHeight) {
+				data.$selecter.addClass("bottom");
+			}
+
+			data.$itemsWrapper.show();
+
+			// Bind Events
+			data.$selecter.removeClass("closed")
+						  .addClass("open");
+			$body.on("click.selecter-" + data.guid, ":not(.selecter-options)", data, _onCloseHelper);
+
+			if ($.fn.scroller !== undefined) {
+				data.$itemsWrapper.scroller("scroll", (data.$itemsWrapper.find(".scroller-content").scrollTop() + selectedOffset.top), 0)
+								  .scroller("reset");
+			} else {
+				data.$itemsWrapper.scrollTop( data.$itemsWrapper.scrollTop() + selectedOffset.top );
+			}
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _onCloseHelper
+	 * @description Determines if event target is outside instance before closing
+	 * @param e [object] "Event data"
+	 */
+	function _onCloseHelper(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if ($(e.currentTarget).parents(".selecter").length === 0) {
+			_onClose(e);
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _onClose
+	 * @description Closes option set
+	 * @param e [object] "Event data"
+	 */
+	function _onClose(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var data = e.data;
+
+		// Make sure it's actually open
+		if (data.$selecter.hasClass("open")) {
+			data.$itemsWrapper.hide();
+			data.$selecter.removeClass("open bottom")
+						  .addClass("closed");
+
+			$body.off(".selecter-" + data.guid);
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _onSelect
+	 * @description Handles option select
+	 * @param e [object] "Event data"
+	 */
+	function _onSelect(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var $target = $(this),
+			data = e.data;
+
+		if (!data.$select.is(":disabled")) {
+			if (data.$itemsWrapper.is(":visible")) {
+				// Update
+				var index = data.$items.index($target);
+				_update(index, data);
+				_handleChange(data);
+			}
+
+			if (!data.multiple) {
+				// Clean up
+				_onClose(e);
+			}
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _onChange
+	 * @description Handles external changes
+	 * @param e [object] "Event data"
+	 */
+	function _onChange(e, internal) {
+		var $target = $(this),
+			data = e.data;
+
+		if (!internal && !data.multiple) {
+			var index = data.$options.index(data.$options.filter("[value='" + _escape($target.val()) + "']"));
+			_update(index, data);
+			_handleChange(data);
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _onFocus
+	 * @description Handles instance focus
+	 * @param e [object] "Event data"
+	 */
+	function _onFocus(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var data = e.data;
+
+		if (!data.$select.is(":disabled") && !data.multiple) {
+			data.$selecter.addClass("focus")
+						  .on("keydown.selecter" + data.guid, data, _onKeypress);
+
+			$(".selecter").not(data.$selecter)
+						  .trigger("close.selecter", [ data ]);
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _onBlur
+	 * @description Handles instance focus
+	 * @param e [object] "Event data"
+	 */
+	function _onBlur(e, internal, two) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var data = e.data;
+
+		data.$selecter.removeClass("focus")
+					  .off("keydown.selecter" + data.guid + " keyup.selecter" + data.guid);
+
+		$(".selecter").not(data.$selecter)
+					  .trigger("close.selecter", [ data ]);
+	}
+
+	/**
+	 * @method private
+	 * @name _onKeypress
+	 * @description Handles instance keypress, once focused
+	 * @param e [object] "Event data"
+	 */
+	function _onKeypress(e) {
+		var data = e.data;
+
+		if (e.keyCode === 13) {
+			if (data.$selecter.hasClass("open")) {
+				_onClose(e);
+				_update(data.index, data);
+			}
+			_handleChange(data);
+		} else if (e.keyCode !== 9 && (!e.metaKey && !e.altKey && !e.ctrlKey && !e.shiftKey)) {
+			// Ignore modifiers & tabs
+			e.preventDefault();
+			e.stopPropagation();
+
+			var total = data.$items.length - 1,
+				index = (data.index < 0) ? 0 : data.index;
+
+			// Firefox left/right support thanks to Kylemade
+			if ($.inArray(e.keyCode, (isFirefox) ? [38, 40, 37, 39] : [38, 40]) > -1) {
+				// Increment / decrement using the arrow keys
+				index = index + ((e.keyCode === 38 || (isFirefox && e.keyCode === 37)) ? -1 : 1);
+
+				if (index < 0) {
+					index = 0;
+				}
+				if (index > total) {
+					index = total;
+				}
+			} else {
+				var input = String.fromCharCode(e.keyCode).toUpperCase(),
+					letter,
+					i;
+
+				// Search for input from original index
+				for (i = data.index + 1; i <= total; i++) {
+					letter = data.$options.eq(i).text().charAt(0).toUpperCase();
+					if (letter === input) {
+						index = i;
+						break;
+					}
+				}
+
+				// If not, start from the beginning
+				if (index < 0) {
+					for (i = 0; i <= total; i++) {
+						letter = data.$options.eq(i).text().charAt(0).toUpperCase();
+						if (letter === input) {
+							index = i;
+							break;
+						}
+					}
+				}
+			}
+
+			// Update
+			if (index >= 0) {
+				_update(index, data);
+				//_fireChange(data);
+			}
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _update
+	 * @description Updates instance based on new target index
+	 * @param index [int] "Selected option index"
+	 * @param data [object] "instance data"
+	 */
+	function _update(index, data) {
+		var $item = data.$items.eq(index),
+			isSelected = $item.hasClass("selected"),
+			isDisabled = $item.hasClass("disabled");
+
+		// Check for disabled options
+		if (!isDisabled) {
+			// Make sure we have a new index to prevent false 'change' triggers
+
+			if (index === -1 && data.label !== "") {
+				data.$selected.html(data.label);
+			} else if (!isSelected) {
+				var newLabel = $item.html(),
+					newValue = $item.data("value");
+
+				// Modify DOM
+				if (data.multiple) {
+					data.$options.eq(index).prop("selected", true);
+				} else {
+					data.$selected.html(newLabel)
+								  .removeClass('placeholder');
+					data.$items.filter(".selected")
+							   .removeClass("selected");
+
+					data.$select[0].selectedIndex = index;
+				}
+
+				$item.addClass("selected");
+			} else if (data.multiple) {
+				data.$options.eq(index).prop("selected", null);
+				$item.removeClass("selected");
+			}
+
+			if (!isSelected || data.multiple) {
+				// Update index
+				data.index = index;
+			}
+		}
+	}
+
+	function _handleChange(data) {
+		if (data.links) {
+			_launch(data);
+		} else {
+			data.callback.call(data.$selecter, data.$select.val(), data.index);
+			data.$select.trigger("change", [ true ]);
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _launch
+	 * @description Launches link
+	 * @param data [object] "Instance data"
+	 */
+	function _launch(data) {
+		//var url = (isMobile) ? data.$select.val() : data.$options.filter(":selected").attr("href");
+		var url = data.$select.val();
+
+		if (data.external) {
+			// Open link in a new tab/window
+			window.open(url);
+		} else {
+			// Open link in same tab/window
+			window.location.href = url;
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _trim
+	 * @description Trims text, if specified length is greater then 0
+	 * @param length [int] "Length to trim at"
+	 * @param text [string] "Text to trim"
+	 * @return [string] "Trimmed string"
+	 */
+	function _trim(text, length) {
+		if (length === 0) {
+			return text;
+		} else {
+			if (text.length > length) {
+				return text.substring(0, length) + "...";
+			} else {
+				return text;
+			}
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name _escape
+	 * @description Escapes text
+	 * @param text [string] "Text to escape"
+	 */
+	function _escape(text) {
+		return text.replace(/([;&,\.\+\*\~':"\!\^#$%@\[\]\(\)=>\|])/g, '\\$1');
+	}
+
+	$.fn.selecter = function(method) {
+		if (pub[method]) {
+			return pub[method].apply(this, Array.prototype.slice.call(arguments, 1));
+		} else if (typeof method === 'object' || !method) {
+			return _init.apply(this, arguments);
+		}
+		return this;
+	};
+
+	$.selecter = function(method) {
+		if (method === "defaults") {
+			pub.defaults.apply(this, Array.prototype.slice.call(arguments, 1));
+		}
+	};
+})(jQuery, window);
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -23760,9 +24491,543 @@ function ngViewFillContentFactory($compile, $controller, $route) {
   }
 }).call(this);
 
+/* ========================================================================
+ * Bootstrap: tooltip.js v3.1.1
+ * http://getbootstrap.com/javascript/#tooltip
+ * Inspired by the original jQuery.tipsy by Jason Frame
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // TOOLTIP PUBLIC CLASS DEFINITION
+  // ===============================
+
+  var Tooltip = function (element, options) {
+    this.type       =
+    this.options    =
+    this.enabled    =
+    this.timeout    =
+    this.hoverState =
+    this.$element   = null
+
+    this.init('tooltip', element, options)
+  }
+
+  Tooltip.DEFAULTS = {
+    animation: true,
+    placement: 'top',
+    selector: false,
+    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    trigger: 'hover focus',
+    title: '',
+    delay: 0,
+    html: false,
+    container: false,
+    viewport: {
+      selector: 'body',
+      padding: 0
+    }
+  }
+
+  Tooltip.prototype.init = function (type, element, options) {
+    this.enabled   = true
+    this.type      = type
+    this.$element  = $(element)
+    this.options   = this.getOptions(options)
+    this.$viewport = this.options.viewport && $(this.options.viewport.selector || this.options.viewport)
+
+    var triggers = this.options.trigger.split(' ')
+
+    for (var i = triggers.length; i--;) {
+      var trigger = triggers[i]
+
+      if (trigger == 'click') {
+        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
+      } else if (trigger != 'manual') {
+        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
+        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
+
+        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
+        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
+      }
+    }
+
+    this.options.selector ?
+      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
+      this.fixTitle()
+  }
+
+  Tooltip.prototype.getDefaults = function () {
+    return Tooltip.DEFAULTS
+  }
+
+  Tooltip.prototype.getOptions = function (options) {
+    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
+
+    if (options.delay && typeof options.delay == 'number') {
+      options.delay = {
+        show: options.delay,
+        hide: options.delay
+      }
+    }
+
+    return options
+  }
+
+  Tooltip.prototype.getDelegateOptions = function () {
+    var options  = {}
+    var defaults = this.getDefaults()
+
+    this._options && $.each(this._options, function (key, value) {
+      if (defaults[key] != value) options[key] = value
+    })
+
+    return options
+  }
+
+  Tooltip.prototype.enter = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type)
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'in'
+
+    if (!self.options.delay || !self.options.delay.show) return self.show()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'in') self.show()
+    }, self.options.delay.show)
+  }
+
+  Tooltip.prototype.leave = function (obj) {
+    var self = obj instanceof this.constructor ?
+      obj : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type)
+
+    clearTimeout(self.timeout)
+
+    self.hoverState = 'out'
+
+    if (!self.options.delay || !self.options.delay.hide) return self.hide()
+
+    self.timeout = setTimeout(function () {
+      if (self.hoverState == 'out') self.hide()
+    }, self.options.delay.hide)
+  }
+
+  Tooltip.prototype.show = function () {
+    var e = $.Event('show.bs.' + this.type)
+
+    if (this.hasContent() && this.enabled) {
+      this.$element.trigger(e)
+
+      if (e.isDefaultPrevented()) return
+      var that = this;
+
+      var $tip = this.tip()
+
+      this.setContent()
+
+      if (this.options.animation) $tip.addClass('fade')
+
+      var placement = typeof this.options.placement == 'function' ?
+        this.options.placement.call(this, $tip[0], this.$element[0]) :
+        this.options.placement
+
+      var autoToken = /\s?auto?\s?/i
+      var autoPlace = autoToken.test(placement)
+      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
+
+      $tip
+        .detach()
+        .css({ top: 0, left: 0, display: 'block' })
+        .addClass(placement)
+
+      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
+
+      var pos          = this.getPosition()
+      var actualWidth  = $tip[0].offsetWidth
+      var actualHeight = $tip[0].offsetHeight
+
+      if (autoPlace) {
+        var orgPlacement = placement
+        var $parent      = this.$element.parent()
+        var parentDim    = this.getPosition($parent)
+
+        placement = placement == 'bottom' && pos.top   + pos.height       + actualHeight - parentDim.scroll > parentDim.height ? 'top'    :
+                    placement == 'top'    && pos.top   - parentDim.scroll - actualHeight < 0                                   ? 'bottom' :
+                    placement == 'right'  && pos.right + actualWidth      > parentDim.width                                    ? 'left'   :
+                    placement == 'left'   && pos.left  - actualWidth      < parentDim.left                                     ? 'right'  :
+                    placement
+
+        $tip
+          .removeClass(orgPlacement)
+          .addClass(placement)
+      }
+
+      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
+
+      this.applyPlacement(calculatedOffset, placement)
+      this.hoverState = null
+
+      var complete = function() {
+        that.$element.trigger('shown.bs.' + that.type)
+      }
+
+      $.support.transition && this.$tip.hasClass('fade') ?
+        $tip
+          .one($.support.transition.end, complete)
+          .emulateTransitionEnd(150) :
+        complete()
+    }
+  }
+
+  Tooltip.prototype.applyPlacement = function (offset, placement) {
+    var replace
+    var $tip   = this.tip()
+    var width  = $tip[0].offsetWidth
+    var height = $tip[0].offsetHeight
+
+    // manually read margins because getBoundingClientRect includes difference
+    var marginTop = parseInt($tip.css('margin-top'), 10)
+    var marginLeft = parseInt($tip.css('margin-left'), 10)
+
+    // we must check for NaN for ie 8/9
+    if (isNaN(marginTop))  marginTop  = 0
+    if (isNaN(marginLeft)) marginLeft = 0
+
+    offset.top  = offset.top  + marginTop
+    offset.left = offset.left + marginLeft
+
+    // $.fn.offset doesn't round pixel values
+    // so we use setOffset directly with our own function B-0
+    $.offset.setOffset($tip[0], $.extend({
+      using: function (props) {
+        $tip.css({
+          top: Math.round(props.top),
+          left: Math.round(props.left)
+        })
+      }
+    }, offset), 0)
+
+    $tip.addClass('in')
+
+    // check to see if placing tip in new offset caused the tip to resize itself
+    var actualWidth  = $tip[0].offsetWidth
+    var actualHeight = $tip[0].offsetHeight
+
+    if (placement == 'top' && actualHeight != height) {
+      offset.top = offset.top + height - actualHeight
+    }
+
+    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
+
+    if (delta.left) offset.left += delta.left
+    else offset.top += delta.top
+
+    var arrowDelta          = delta.left ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
+    var arrowPosition       = delta.left ? 'left'        : 'top'
+    var arrowOffsetPosition = delta.left ? 'offsetWidth' : 'offsetHeight'
+
+    $tip.offset(offset)
+    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], arrowPosition)
+  }
+
+  Tooltip.prototype.replaceArrow = function (delta, dimension, position) {
+    this.arrow().css(position, delta ? (50 * (1 - delta / dimension) + '%') : '')
+  }
+
+  Tooltip.prototype.setContent = function () {
+    var $tip  = this.tip()
+    var title = this.getTitle()
+
+    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
+    $tip.removeClass('fade in top bottom left right')
+  }
+
+  Tooltip.prototype.hide = function () {
+    var that = this
+    var $tip = this.tip()
+    var e    = $.Event('hide.bs.' + this.type)
+
+    function complete() {
+      if (that.hoverState != 'in') $tip.detach()
+      that.$element.trigger('hidden.bs.' + that.type)
+    }
+
+    this.$element.trigger(e)
+
+    if (e.isDefaultPrevented()) return
+
+    $tip.removeClass('in')
+
+    $.support.transition && this.$tip.hasClass('fade') ?
+      $tip
+        .one($.support.transition.end, complete)
+        .emulateTransitionEnd(150) :
+      complete()
+
+    this.hoverState = null
+
+    return this
+  }
+
+  Tooltip.prototype.fixTitle = function () {
+    var $e = this.$element
+    if ($e.attr('title') || typeof($e.attr('data-original-title')) != 'string') {
+      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
+    }
+  }
+
+  Tooltip.prototype.hasContent = function () {
+    return this.getTitle()
+  }
+
+  Tooltip.prototype.getPosition = function ($element) {
+    $element   = $element || this.$element
+    var el     = $element[0]
+    var isBody = el.tagName == 'BODY'
+    return $.extend({}, (typeof el.getBoundingClientRect == 'function') ? el.getBoundingClientRect() : null, {
+      scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop(),
+      width:  isBody ? $(window).width()  : $element.outerWidth(),
+      height: isBody ? $(window).height() : $element.outerHeight()
+    }, isBody ? {top: 0, left: 0} : $element.offset())
+  }
+
+  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
+    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2  } :
+           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2  } :
+           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
+        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width   }
+
+  }
+
+  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
+    var delta = { top: 0, left: 0 }
+    if (!this.$viewport) return delta
+
+    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
+    var viewportDimensions = this.getPosition(this.$viewport)
+
+    if (/right|left/.test(placement)) {
+      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
+      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
+      if (topEdgeOffset < viewportDimensions.top) { // top overflow
+        delta.top = viewportDimensions.top - topEdgeOffset
+      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
+        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
+      }
+    } else {
+      var leftEdgeOffset  = pos.left - viewportPadding
+      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
+      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
+        delta.left = viewportDimensions.left - leftEdgeOffset
+      } else if (rightEdgeOffset > viewportDimensions.width) { // right overflow
+        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
+      }
+    }
+
+    return delta
+  }
+
+  Tooltip.prototype.getTitle = function () {
+    var title
+    var $e = this.$element
+    var o  = this.options
+
+    title = $e.attr('data-original-title')
+      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
+
+    return title
+  }
+
+  Tooltip.prototype.tip = function () {
+    return this.$tip = this.$tip || $(this.options.template)
+  }
+
+  Tooltip.prototype.arrow = function () {
+    return this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow')
+  }
+
+  Tooltip.prototype.validate = function () {
+    if (!this.$element[0].parentNode) {
+      this.hide()
+      this.$element = null
+      this.options  = null
+    }
+  }
+
+  Tooltip.prototype.enable = function () {
+    this.enabled = true
+  }
+
+  Tooltip.prototype.disable = function () {
+    this.enabled = false
+  }
+
+  Tooltip.prototype.toggleEnabled = function () {
+    this.enabled = !this.enabled
+  }
+
+  Tooltip.prototype.toggle = function (e) {
+    var self = e ? $(e.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type) : this
+    self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
+  }
+
+  Tooltip.prototype.destroy = function () {
+    clearTimeout(this.timeout)
+    this.hide().$element.off('.' + this.type).removeData('bs.' + this.type)
+  }
+
+
+  // TOOLTIP PLUGIN DEFINITION
+  // =========================
+
+  var old = $.fn.tooltip
+
+  $.fn.tooltip = function (option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.tooltip')
+      var options = typeof option == 'object' && option
+
+      if (!data && option == 'destroy') return
+      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  $.fn.tooltip.Constructor = Tooltip
+
+
+  // TOOLTIP NO CONFLICT
+  // ===================
+
+  $.fn.tooltip.noConflict = function () {
+    $.fn.tooltip = old
+    return this
+  }
+
+}(jQuery);
+
+/* ========================================================================
+ * Bootstrap: popover.js v3.1.1
+ * http://getbootstrap.com/javascript/#popovers
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // POPOVER PUBLIC CLASS DEFINITION
+  // ===============================
+
+  var Popover = function (element, options) {
+    this.init('popover', element, options)
+  }
+
+  if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
+
+  Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
+    placement: 'right',
+    trigger: 'click',
+    content: '',
+    template: '<div class="popover"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+  })
+
+
+  // NOTE: POPOVER EXTENDS tooltip.js
+  // ================================
+
+  Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
+
+  Popover.prototype.constructor = Popover
+
+  Popover.prototype.getDefaults = function () {
+    return Popover.DEFAULTS
+  }
+
+  Popover.prototype.setContent = function () {
+    var $tip    = this.tip()
+    var title   = this.getTitle()
+    var content = this.getContent()
+
+    $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title)
+    $tip.find('.popover-content').empty()[ // we use append for html objects to maintain js events
+      this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
+    ](content)
+
+    $tip.removeClass('fade top bottom left right in')
+
+    // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
+    // this manually by checking the contents.
+    if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
+  }
+
+  Popover.prototype.hasContent = function () {
+    return this.getTitle() || this.getContent()
+  }
+
+  Popover.prototype.getContent = function () {
+    var $e = this.$element
+    var o  = this.options
+
+    return $e.attr('data-content')
+      || (typeof o.content == 'function' ?
+            o.content.call($e[0]) :
+            o.content)
+  }
+
+  Popover.prototype.arrow = function () {
+    return this.$arrow = this.$arrow || this.tip().find('.arrow')
+  }
+
+  Popover.prototype.tip = function () {
+    if (!this.$tip) this.$tip = $(this.options.template)
+    return this.$tip
+  }
+
+
+  // POPOVER PLUGIN DEFINITION
+  // =========================
+
+  var old = $.fn.popover
+
+  $.fn.popover = function (option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.popover')
+      var options = typeof option == 'object' && option
+
+      if (!data && option == 'destroy') return
+      if (!data) $this.data('bs.popover', (data = new Popover(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  $.fn.popover.Constructor = Popover
+
+
+  // POPOVER NO CONFLICT
+  // ===================
+
+  $.fn.popover.noConflict = function () {
+    $.fn.popover = old
+    return this
+  }
+
+}(jQuery);
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['dashboard/dashboard.tpl.html', 'home/home.tpl.html', 'login/login.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html']);
+angular.module('templates-app', ['dashboard/dashboard.tpl.html', 'home/home.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html']);
 
 angular.module("dashboard/dashboard.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/dashboard.tpl.html",
@@ -23788,6 +25053,30 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "    </div>\n" +
     "  </div>  \n" +
     "\n" +
+    "</section>");
+}]);
+
+angular.module("login/activate.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("login/activate.tpl.html",
+    "<section class=\"section-green section-activate\" fill-screen>\n" +
+    "  <div class=\"container\">\n" +
+    "    <div class=\"row\">\n" +
+    "      <div class=\"col-sm-offset-3 col-sm-6 text-center\">\n" +
+    "\n" +
+    "        <div ng-show=\"!activated\">\n" +
+    "          <h1>Activating Account</h1>\n" +
+    "          <p>Please wait while your account is being activated...</p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div ng-show=\"activated\">\n" +
+    "          <h1>Your account as been activated</h1>\n" +
+    "          <p>Your account has been activated successfully. You may now login.</p>\n" +
+    "          <a href=\"/login\" class=\"btn btn-default btn-icon-right\">Proceed to login <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "        </div>\n" +
+    "\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "</section>");
 }]);
 
@@ -23828,7 +25117,84 @@ angular.module("login/login.tpl.html", []).run(["$templateCache", function($temp
     "          </div>\n" +
     "        </div>\n" +
     "\n" +
+    "        <p class=\"animation-group text-center link-lost-password\"><a href=\"/password-reset\">Lost your password?</a></p>\n" +
+    "\n" +
     "      </form>\n" +
+    "\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "</section>");
+}]);
+
+angular.module("login/password-reset.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("login/password-reset.tpl.html",
+    "<section class=\"section-green section-password-reset\" fill-screen>\n" +
+    "  \n" +
+    "  <div class=\"container\">\n" +
+    "    <div class=\"row\">\n" +
+    "\n" +
+    "      <div class=\"col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels text-center\">\n" +
+    "        \n" +
+    "        <!-- Send reset -->\n" +
+    "        <div ng-show=\"action == 'send'\">\n" +
+    "          \n" +
+    "          <!-- Send form -->\n" +
+    "          <form ng-submit=\"send()\" role=\"form\" animated-form ng-if=\"!sendSuccess\">\n" +
+    "            <h1 class=\"text-center animation-group\">Password Reset</h1>\n" +
+    "\n" +
+    "            <div class=\"form-group animation-group\">\n" +
+    "              <label for=\"\">Email</label>\n" +
+    "              <input type=\"email\" name=\"email\" ng-model=\"reset.email\" class=\"form-control\" placeholder=\"Your account's email address\" float-label>\n" +
+    "            </div>\n" +
+    "\n" +
+    "\n" +
+    "            <div class=\"form-group animation-group\">\n" +
+    "              <button type=\"submit\" class=\"btn btn-default btn-icon-right\">Send Confirmation Email <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "            </div>\n" +
+    "          </form>\n" +
+    "\n" +
+    "          <!-- Send confirmation -->\n" +
+    "          <div ng-if=\"sendSuccess\">\n" +
+    "            <h1>Confirmation Send</h1>\n" +
+    "            <p>A confirmation email has been sent to the address you provided. Please click the link in this email to set a new password for your account.</p>\n" +
+    "          </div>\n" +
+    "          \n" +
+    "        </div>\n" +
+    "        \n" +
+    "\n" +
+    "\n" +
+    "        <!-- Reset password -->\n" +
+    "        <div ng-show=\"action == 'reset'\">\n" +
+    "          \n" +
+    "          <!-- Reset form -->\n" +
+    "          <form ng-submit=\"reset()\" role=\"form\" animated-form ng-if=\"!resetSuccess\">\n" +
+    "            <h1 class=\"text-center animation-group\">Password Reset</h1>\n" +
+    "\n" +
+    "            <div class=\"form-group animation-group\">\n" +
+    "              <label for=\"\">New Password</label>\n" +
+    "              <input type=\"password\" name=\"password\" ng-model=\"reset.password\" class=\"form-control\" placeholder=\"New password for your account\" float-label>\n" +
+    "            </div>\n" +
+    "\n" +
+    "\n" +
+    "            <div class=\"form-group animation-group\">\n" +
+    "              <button type=\"submit\" class=\"btn btn-default btn-icon-right\">Reset Password <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "            </div>\n" +
+    "          </form>\n" +
+    "\n" +
+    "          <!-- Reset confirmation -->\n" +
+    "          <div ng-show=\"resetSuccess\">\n" +
+    "            <h1>Your password has been reset</h1>\n" +
+    "            <p>Your password has been reset successfully. You may now login using your new password.</p>\n" +
+    "            <a href=\"/login\" class=\"btn btn-default btn-icon-right\">Proceed to login <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "          </div>\n" +
+    "\n" +
+    "\n" +
+    "        </div>\n" +
+    "\n" +
+    "      </div>\n" +
+    "\n" +
+    "      \n" +
     "\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -23853,17 +25219,17 @@ angular.module("register/register-form.tpl.html", []).run(["$templateCache", fun
     "      <div class=\"animation-group form-step-title\">\n" +
     "        <i class=\"number\">1</i>\n" +
     "        <h3 class=\"title\">My Account</h3>\n" +
-    "        <p class=\"message\">Your account details will be used to login. Your name will also be displayed to employers.</p>\n" +
+    "        <p class=\"message\">Your account details will be used to login.</p>\n" +
     "      </div>\n" +
     "\n" +
     "      <div class=\"form-group animation-group\">\n" +
     "        <div class=\"row-sm\">\n" +
     "          <div class=\"col-sm-6\">\n" +
     "            <label>Your Name</label>\n" +
-    "            <input type=\"text\" name=\"profile.firstName\" ng-model=\"user.profile.firstName\" class=\"form-control\" placeholder=\"First Name\" float-label>\n" +
+    "            <input type=\"text\" name=\"user.profile.firstName\" ng-model=\"user.profile.firstName\" class=\"form-control\" placeholder=\"First Name\" float-label>\n" +
     "          </div>\n" +
     "          <div class=\"col-sm-6\">\n" +
-    "            <input type=\"text\" name=\"profile.lastName\" ng-model=\"user.profile.lastName\" class=\"form-control\" placeholder=\"Last Name\" float-label>\n" +
+    "            <input type=\"text\" name=\"user.profile.lastName\" ng-model=\"user.profile.lastName\" class=\"form-control\" placeholder=\"Last Name\" float-label>\n" +
     "          </div>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -23884,27 +25250,192 @@ angular.module("register/register-form.tpl.html", []).run(["$templateCache", fun
     "    </fieldset>\n" +
     "\n" +
     "\n" +
-    "    \n" +
+    "\n" +
     "    <!-- My Profile -->\n" +
-    "    <fieldset class=\"form-step\">\n" +
+    "    <fieldset class=\"form-step\" ng-if=\"user.type == 'student'\">\n" +
     "\n" +
     "      <div class=\"form-step-title\">\n" +
     "        <i class=\"number\">2</i>\n" +
     "        <h3 class=\"title\">My Profile</h3>\n" +
-    "        <p class=\"message\">Your profile will help us match interships relative to your skills and interests. It will also be made available to emloyers.</p>\n" +
+    "        <p class=\"message\">Your profile will help us match interships relative to your skills and interests. It will also be made available to employers.</p>\n" +
     "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group \">\n" +
+    "      <div class=\"form-group\">\n" +
     "        <label>Introduction</label>\n" +
     "        <textarea name=\"user.profile.introduction\" ng-model=\"user.profile.introduction\" class=\"form-control\" placeholder=\"Introduction\" float-label></textarea>\n" +
+    "        <div class=\"inline-help\">\n" +
+    "          <i class=\"help-icon\" popover=\"Your introduction is a great opportunity to introduce yourself to employers.\" popover-title=\"Introduction\"></i>\n" +
+    "        </div>\n" +
     "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group \">\n" +
-    "        <label>Website</label>\n" +
-    "        <input type=\"test\" name=\"user.profile.introduction\" ng-model=\"user.profile.introduction\" class=\"form-control\" placeholder=\"Website URL\" float-label>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <div class=\"row-sm\">\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label>Course Name</label>\n" +
+    "            <input type=\"test\" name=\"user.profile.courseName\" ng-model=\"user.profile.courseName\" class=\"form-control\" placeholder=\"Course Name\" float-label>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label class=\"sr-only\">University</label>\n" +
+    "            <select selecter name=\"user.profile.university\" ng-model=\"user.profile.university\" placeholder=\"University\" float-label>\n" +
+    "              <option value=\"\">Select a University</option>\n" +
+    "              <option>Australian Catholic University</option>\n" +
+    "              <option>Australian National University</option>\n" +
+    "              <option>Bond University</option>\n" +
+    "              <option>Central Queensland University</option>\n" +
+    "              <option>Charles Darwin University</option>\n" +
+    "              <option>Charles Sturt University</option>\n" +
+    "              <option>Curtin University</option>\n" +
+    "              <option>Deakin University</option>\n" +
+    "              <option>Edith Cowan University</option>\n" +
+    "              <option>Federation University</option>\n" +
+    "              <option>Flinders University</option>\n" +
+    "              <option>Griffith University</option>\n" +
+    "              <option>James Cook University</option>\n" +
+    "              <option>La Trobe University</option>\n" +
+    "              <option>Macquarie University</option>\n" +
+    "              <option>Monash University</option>\n" +
+    "              <option>Murdoch University</option>\n" +
+    "              <option>Queensland University of Technology</option>\n" +
+    "              <option>RMIT University</option>\n" +
+    "              <option>Southern Cross University</option>\n" +
+    "              <option>Swinburne University of Technology</option>\n" +
+    "              <option>University of Adelaide</option>\n" +
+    "              <option>University of Canberra</option>\n" +
+    "              <option>University of Melbourne</option>\n" +
+    "              <option>University of New England</option>\n" +
+    "              <option>University of New South Wales</option>\n" +
+    "              <option>University of Newcastle</option>\n" +
+    "              <option>University of Notre Dame</option>\n" +
+    "              <option>University of Queensland</option>\n" +
+    "              <option>University of South Australia</option>\n" +
+    "              <option>University of Southern Queensland</option>\n" +
+    "              <option>University of Sydney</option>\n" +
+    "              <option>University of Tasmania</option>\n" +
+    "              <option>University of Technology Sydney</option>\n" +
+    "              <option>University of the Sunshine Coast</option>\n" +
+    "              <option>University of Western Australia</option>\n" +
+    "              <option>University of Western Sydney</option>\n" +
+    "              <option>University of Wollongong</option>\n" +
+    "              <option>Victoria University</option>\n" +
+    "            </select>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>LinkedIn Profile</label>\n" +
+    "        <input type=\"test\" name=\"user.profile.linkedIn\" ng-model=\"user.profile.linkedIn\" class=\"form-control\" placeholder=\"LinkedIn Profile URL\" float-label>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Skills</label>\n" +
+    "        <input type=\"test\" name=\"user.profile.skills\" ng-model=\"user.profile.skills\" class=\"form-control\" placeholder=\"Comma seperated list of skills\" float-label>\n" +
+    "        <div class=\"inline-help\">\n" +
+    "          <i class=\"help-icon\" popover=\"Enter a comma seperated list of your key skills. (For example; Graphic Design, Adobe Photoshop, etc.)\" popover-title=\"Key Skills\"></i>\n" +
+    "        </div>\n" +
     "      </div>\n" +
     "      \n" +
     "      <div class=\"form-group \">\n" +
+    "        <a href=\"#\" class=\"previous btn btn-link btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
+    "        <button type=\"submit\" class=\"btn btn-default pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "      </div>\n" +
+    "    </fieldset>\n" +
+    "\n" +
+    "\n" +
+    "    \n" +
+    "    <!-- Company Profile -->\n" +
+    "    <fieldset class=\"form-step\" ng-if=\"user.type == 'employer'\">\n" +
+    "\n" +
+    "      <div class=\"form-step-title\">\n" +
+    "        <i class=\"number\">2</i>\n" +
+    "        <h3 class=\"title\">Company Profile</h3>\n" +
+    "        <p class=\"message\">Your company profile will be displayed to students interested in applying for internships with you.</p>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Company Name</label>\n" +
+    "        <input type=\"test\" name=\"user.company.name\" ng-model=\"user.company.name\" class=\"form-control\" placeholder=\"Company Name\" float-label>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Company Introduction</label>\n" +
+    "        <textarea name=\"user.company.introduction\" ng-model=\"user.company.introduction\" class=\"form-control\" placeholder=\"Company Introduction\" float-label></textarea>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Website</label>\n" +
+    "        <input type=\"test\" name=\"user.company.website\" ng-model=\"user.company.website\" class=\"form-control\" placeholder=\"Website URL\" float-label>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Skills</label>\n" +
+    "        <input type=\"test\" name=\"user.company.skills\" ng-model=\"user.company.skills\" class=\"form-control\" placeholder=\"Comma seperated list of skills\" float-label>\n" +
+    "        <div class=\"inline-help\">\n" +
+    "          <i class=\"help-icon\" popover=\"Enter a comma seperated list of the skills your company looks for in interns. (For example; Graphic Design, Project Management, etc.)\" popover-title=\"Key Skills\"></i>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      \n" +
+    "      <div class=\"form-group\">\n" +
+    "        <a href=\"#\" class=\"previous btn btn-link btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
+    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "      </div>\n" +
+    "    </fieldset>\n" +
+    "\n" +
+    "\n" +
+    "    <!-- Company Profile -->\n" +
+    "    <fieldset class=\"form-step\" ng-if=\"user.type == 'employer'\">\n" +
+    "\n" +
+    "      <div class=\"form-step-title\">\n" +
+    "        <i class=\"number\">3</i>\n" +
+    "        <h3 class=\"title\">Company Address</h3>\n" +
+    "        <p class=\"message\">Please provide your company's address to help your interns locate you.</p>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group vertical-input-stack\">\n" +
+    "        <label>Street Address</label>\n" +
+    "        <input type=\"test\" name=\"user.company.address.line1\" ng-model=\"user.company.address.line1\" class=\"form-control\" placeholder=\"Street Address\" float-label>\n" +
+    "        <input type=\"test\" name=\"user.company.address.line2\" ng-model=\"user.company.address.line2\" class=\"form-control\">\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group \">\n" +
+    "        <div class=\"row-sm\">\n" +
+    "          <div class=\"col-sm-5\">\n" +
+    "            <label>City / State / Postcode</label>\n" +
+    "            <input type=\"test\" name=\"user.company.address.city\" ng-model=\"user.company.address.city\" class=\"form-control\" placeholder=\"City\" float-label>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div class=\"col-sm-5\">\n" +
+    "            <label class=\"sr-only\">State</label>\n" +
+    "            <select selecter name=\"user.company.address.state\" ng-model=\"user.company.address.state\" placeholder=\"State\">\n" +
+    "              <option value=\"\">Select a State</option>\n" +
+    "              <option>Australian Capital Territory</option>\n" +
+    "              <option>New South Wales</option>\n" +
+    "              <option>Northern Territory</option>\n" +
+    "              <option>Queensland</option>\n" +
+    "              <option>South Australia</option>\n" +
+    "              <option>Tasmania</option>\n" +
+    "              <option>Victoria</option>\n" +
+    "              <option>Western Australia</option>\n" +
+    "            </select>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div class=\"col-sm-2\">\n" +
+    "            <label class=\"sr-only\">Postcode</label>\n" +
+    "            <input type=\"test\" name=\"user.company.address.postcode\" ng-model=\"user.company.address.postcode\" class=\"form-control\" placeholder=\"1234\">\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group \">\n" +
+    "        <label>Country</label>\n" +
+    "        <select selecter name=\"user.company.address.country\" ng-model=\"user.company.address.country\" placeholder=\"Country\" float-label>\n" +
+    "          <option value=\"\">Select a Country</option>\n" +
+    "          <option selected=\"selected\">Australia</option>\n" +
+    "        </select>\n" +
+    "      </div>\n" +
+    "      \n" +
+    "      <div class=\"form-group\">\n" +
     "        <a href=\"#\" class=\"previous btn btn-link btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
     "        <button type=\"submit\" class=\"btn btn-default pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
     "      </div>\n" +
@@ -24028,6 +25559,31 @@ angular.module('InternLabs.common', [])
 
 
   /**
+   * Bootstrap: Popover
+   */
+  .directive('popover', function() {
+    return {
+      restrict: 'A',
+      replace: false,
+      link: function(scope, elem, attrs) {
+
+        var options = {
+          placement: attrs.popoverPlacement || 'top',
+          trigger: attrs.popoverTrigger || 'hover',
+          content: attrs.popoverContent || attrs.popover
+        };
+
+        if ( attrs.popoverTitle ) {
+          options.title = attrs.popoverTitle;
+        }
+
+        elem.popover(options);
+      }
+    };
+  })
+
+
+  /**
    * Formstone: Picker
    *
    * http://formstone.it/components/Picker/demo/index.html
@@ -24037,6 +25593,34 @@ angular.module('InternLabs.common', [])
       restrict: 'A',
       link: function(scope, elem, attrs) {
         elem.picker();
+      }
+    };
+  })
+
+
+  /**
+   * Formstone: Selecter
+   */
+  .directive('selecter', function() {
+    return {
+      restrict: 'A',
+      replace: false,
+      link: function(scope, elem, attrs) {
+
+        elem.selecter({
+          label: elem.attr('placeholder')
+        });
+
+        scope.$watch(function() {
+          return scope.$eval(elem.attr('selecter'));
+        }, function(newVal){
+          _.defer(function() {
+            elem.selecter("destroy");
+            elem.selecter({
+              label: elem.attr('placeholder')
+            });
+          });
+        }, true);
       }
     };
   })
@@ -24061,12 +25645,12 @@ angular.module('InternLabs.common', [])
             position: 'relative',
             bottom: -20
           })
-          .staggerTo($items, 0.3, {
+          .staggerTo($items, 0.2, {
             autoAlpha: 1,
             bottom: 0,
             force3D: true,
             ease: Quad.easeOut
-          }, 0.15, '+0.1')
+          }, 0.1, '+0.1')
           .resume();
       }
     };
@@ -24083,22 +25667,30 @@ angular.module('InternLabs.common', [])
       restrict: 'A',
       link: function(scope, elem, attrs) {
 
-        var $fieldsets = elem.find('.form-step').css({
-          position: 'absolute',
-          width: '100%',
-          top: 0
-        });
+        var $fieldsets;
 
-        elem.css({
-          position: 'relative'
-        });
+        var initialize = function() {
+          $fieldsets = elem.find('.form-step').css({
+            position: 'absolute',
+            width: '100%',
+            top: 0
+          });
 
+          elem.css({
+            position: 'relative'
+          });
 
-        // Set first fieldset as active and hide others
-        $fieldsets.first().addClass('active');
-        TweenLite.set($fieldsets.not(':first'), {
-          autoAlpha: 0
-        });
+          // Set first fieldset as active and hide others
+          $fieldsets.first().addClass('active');
+          TweenLite.set($fieldsets.not(':first'), {
+            autoAlpha: 0
+          });
+
+          elem.find('a.next').on('click', next);
+          elem.find('a.previous').on('click', previous);
+
+          setHeight();
+        };
 
 
         /**
@@ -24196,10 +25788,7 @@ angular.module('InternLabs.common', [])
         };
 
 
-        elem.find('a.next').on('click', next);
-        elem.find('a.previous').on('click', previous);
-
-        setHeight();
+        _.defer(initialize);
       }
     };
   })
@@ -24391,6 +25980,18 @@ angular.module('InternLabs.login', [])
         pageTitle: 'Login'
       })
 
+      .when('/activate', {
+        templateUrl: 'login/activate.tpl.html',
+        controller: 'ActivateCtrl',
+        pageTitle: 'Account Activation'
+      })
+
+      .when('/password-reset', {
+        templateUrl: 'login/password-reset.tpl.html',
+        controller: 'PasswordResetCtrl',
+        pageTitle: 'Reset Password'
+      })
+
       .when('/logout', {
         pageTitle: 'Logout',
         resolve: {
@@ -24419,6 +26020,62 @@ angular.module('InternLabs.login', [])
         $scope.errors = error;
       });
     };
+  })
+
+
+  .controller('ActivateCtrl', function($rootScope, $scope, $location, Auth) {
+    $rootScope.loading = true;
+    $scope.activated = false;
+    var params = $location.search();
+
+    Auth.activate({
+      activationToken: params.token,
+      userId: params.user
+    }).then(function(response) {
+      $rootScope.loading = false;
+      $scope.activated = true;
+    });
+  })
+
+
+  .controller('PasswordResetCtrl', function($rootScope, $scope, $location, Auth) {
+    
+    var params = $location.search();
+    $scope.action = (_.isEmpty(params)) ? 'send' : 'reset';
+    
+    $scope.reset = {};
+    $scope.sendSuccess = false;
+    $scope.resetSuccess = false;
+
+    /**
+     * Send password reset email
+     */
+    $scope.send = function() {
+      $rootScope.loading = true;
+      
+      Auth.sendPasswordReset({
+        email: $scope.reset.email
+      }).then(function(response) {
+        $rootScope.loading = false;
+        $scope.sendSuccess = true;
+      });
+    };
+
+    /**
+     * Reset the user's password using the provided token and credentials
+     */
+    $scope.reset = function() {
+      $rootScope.loading = true;
+      
+      Auth.passwordReset({
+        userId: params.user,
+        password: $scope.reset.password,
+        resetToken: params.token
+      }).then(function(response) {
+        $rootScope.loading = false;
+        $scope.resetSuccess = true;
+      });
+    }
   })
 
 
@@ -24577,6 +26234,51 @@ angular.module('InternLabs.services', [])
 
         return deferred.promise;
       };
+
+
+      /**
+       * Activate
+       */
+      this.activate = function(data) {
+        var deferred = $q.defer();
+
+        $http.put(Options.apiUrl('activate'), data)
+          .success(function(data, status) {
+            deferred.resolve(data);
+          });
+
+        return deferred.promise;
+      };
+
+
+      /**
+       * Send password reset
+       */
+      this.sendPasswordReset = function(data) {
+        var deferred = $q.defer();
+
+        $http.post(Options.apiUrl('password-reset'), data)
+          .success(function(data, status) {
+            deferred.resolve(data);
+          });
+
+        return deferred.promise;
+      }
+
+
+      /**
+       * Reset password
+       */
+      this.passwordReset = function(data) {
+        var deferred = $q.defer();
+
+        $http.put(Options.apiUrl('password-reset'), data)
+          .success(function(data, status) {
+            deferred.resolve(data);
+          });
+
+        return deferred.promise;
+      }
 
 
       /**

@@ -1,6 +1,7 @@
 @import "bootstrap/bootstrap.less";
 @import "font-awesome/font-awesome.less";
 @import "vendor/picker.less";
+@import "vendor/selecter.less";
 
 html {
   height: 100%;
@@ -10,6 +11,40 @@ html {
 body {
   overflow-x: hidden;
 }
+
+
+/*
+
+  Common
+
+ */
+
+.help-icon {
+  .icon-font;
+  font-size: 26px;
+  .transition(0.2s);
+  cursor: help;
+
+  &:hover {
+    .scale(1.1);
+  }
+
+  &:before {
+    content: @fa-var-question-circle;
+  }
+}
+
+.form-group .inline-help {
+  position: absolute;
+  right: -40px;
+  top: 10px;
+
+  .popover {
+    min-width: 260px;
+    margin-bottom: 10px;
+  }
+}
+
 
 
 /*
@@ -55,6 +90,10 @@ body {
   background-size: cover;
   color: #fff;
 
+  a:not(.btn) {
+    color: #fff;
+  }
+
   a.btn-link {
     background: rgba(0, 0, 0, 0.07);
     color: #fff;
@@ -65,6 +104,10 @@ body {
       background: rgba(0, 0, 0, 0.09);
       border-bottom: 4px solid rgba(0, 0, 0, 0.11);
     }
+  }
+
+  .popover {
+    color: @text-color;
   }
 }
 
@@ -81,9 +124,9 @@ form.floating-labels .form-group {
 
 label.floating-label {
   position: absolute;
-  width: 120px;
+  width: 200px;
   top: 0;
-  left: -120px;
+  left: -200px;
   padding: @padding-base-horizontal;
   text-align: right;
   opacity: 0;

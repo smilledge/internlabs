@@ -5,6 +5,7 @@
 //          "500": "errors/500",
 //          "503": "errors/503"
 //      }
+     "multipart": true,
      "appsec": {
        "csrf": false,
        "csp": false,

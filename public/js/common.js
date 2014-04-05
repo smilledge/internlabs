@@ -37,6 +37,31 @@ angular.module('InternLabs.common', [])
 
 
   /**
+   * Bootstrap: Popover
+   */
+  .directive('popover', function() {
+    return {
+      restrict: 'A',
+      replace: false,
+      link: function(scope, elem, attrs) {
+
+        var options = {
+          placement: attrs.popoverPlacement || 'top',
+          trigger: attrs.popoverTrigger || 'hover',
+          content: attrs.popoverContent || attrs.popover
+        };
+
+        if ( attrs.popoverTitle ) {
+          options.title = attrs.popoverTitle;
+        }
+
+        elem.popover(options);
+      }
+    };
+  })
+
+
+  /**
    * Formstone: Picker
    *
    * http://formstone.it/components/Picker/demo/index.html
@@ -46,6 +71,34 @@ angular.module('InternLabs.common', [])
       restrict: 'A',
       link: function(scope, elem, attrs) {
         elem.picker();
+      }
+    };
+  })
+
+
+  /**
+   * Formstone: Selecter
+   */
+  .directive('selecter', function() {
+    return {
+      restrict: 'A',
+      replace: false,
+      link: function(scope, elem, attrs) {
+
+        elem.selecter({
+          label: elem.attr('placeholder')
+        });
+
+        scope.$watch(function() {
+          return scope.$eval(elem.attr('selecter'));
+        }, function(newVal){
+          _.defer(function() {
+            elem.selecter("destroy");
+            elem.selecter({
+              label: elem.attr('placeholder')
+            });
+          });
+        }, true);
       }
     };
   })
@@ -70,12 +123,12 @@ angular.module('InternLabs.common', [])
             position: 'relative',
             bottom: -20
           })
-          .staggerTo($items, 0.3, {
+          .staggerTo($items, 0.2, {
             autoAlpha: 1,
             bottom: 0,
             force3D: true,
             ease: Quad.easeOut
-          }, 0.15, '+0.1')
+          }, 0.1, '+0.1')
           .resume();
       }
     };
@@ -92,22 +145,30 @@ angular.module('InternLabs.common', [])
       restrict: 'A',
       link: function(scope, elem, attrs) {
 
-        var $fieldsets = elem.find('.form-step').css({
-          position: 'absolute',
-          width: '100%',
-          top: 0
-        });
+        var $fieldsets;
 
-        elem.css({
-          position: 'relative'
-        });
+        var initialize = function() {
+          $fieldsets = elem.find('.form-step').css({
+            position: 'absolute',
+            width: '100%',
+            top: 0
+          });
 
+          elem.css({
+            position: 'relative'
+          });
 
-        // Set first fieldset as active and hide others
-        $fieldsets.first().addClass('active');
-        TweenLite.set($fieldsets.not(':first'), {
-          autoAlpha: 0
-        });
+          // Set first fieldset as active and hide others
+          $fieldsets.first().addClass('active');
+          TweenLite.set($fieldsets.not(':first'), {
+            autoAlpha: 0
+          });
+
+          elem.find('a.next').on('click', next);
+          elem.find('a.previous').on('click', previous);
+
+          setHeight();
+        };
 
 
         /**
@@ -205,10 +266,7 @@ angular.module('InternLabs.common', [])
         };
 
 
-        elem.find('a.next').on('click', next);
-        elem.find('a.previous').on('click', previous);
-
-        setHeight();
+        _.defer(initialize);
       }
     };
   })

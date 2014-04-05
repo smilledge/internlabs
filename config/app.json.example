@@ -1,4 +1,7 @@
 {
+
+  "url": "http://internlabs.dev/",
+
   "host": "localhost",
 
   "port": 8000,

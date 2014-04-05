@@ -5,7 +5,11 @@ var User = require('../models/user'),
     Profile = require('../models/profile'),
     async = require('async'),
     auth = require('../lib/auth'),
-    passport = require('passport');
+    mailer = require('../lib/mailer'),
+    passport = require('passport'),
+    companyService = require('../services/company'),
+    _ = require('lodash'),
+    nconf = require('nconf');
 
 
 module.exports = function(app) {
@@ -43,11 +47,25 @@ module.exports = function(app) {
         // Create the profile
         function(callback) {
 
+          if ( ! req.body.profile || _.isEmpty(req.body.profile) ) {
+            return callback(null, null);
+          }
+
+          // Make sure skills is an array
+          if ( _.isString(req.body.profile.skills) ) {
+            req.body.profile.skills = req.body.profile.skills.split(',');
+          }
+
+          // Trim skills, remove empty strings and remove duplicates
+          req.body.profile.skills = _.uniq(_.compact(_.map(req.body.profile.skills, function(skill) {
+            return skill.trim();
+          })));
+
           var profile = new Profile(req.body.profile);
 
           profile.save(function(err) {
             if (err) {
-              return res.apiError("Unknown error... Ooops");
+              return res.apiError(err);
             }
 
             callback(null, profile);
@@ -55,23 +73,73 @@ module.exports = function(app) {
 
         },
 
-        // Create the account
+        // Create the company
         function(profile, callback) {
-
-          delete req.body.profile;
-          req.body.profile = profile._id;
-
-          var user = new User(req.body);
-          user.provider = 'local';
-
-          user.save(function (err) {
-            if (err) {
-              return res.apiError("Unknown error... Ooops");
+          companyService.create(req.body.company, function(err, company) {
+            // If there's an error creating the company, also remove the profile
+            if ( err ) {
+              return profile.remove(function() {
+                res.apiError(err);
+              });
             }
 
-            callback(null, user);
+            callback(null, profile, company);
           });
+        },
 
+        // Create the account
+        function(profile, company, callback) {
+
+          var user = req.body;
+          user.provider = 'local';
+
+          if (profile) {
+            user.profile = profile._id;
+          }
+
+          if (company) {
+            user.company = company._id;
+          }
+
+          new User(user).save(function (err, user) {
+
+              if (err) {
+                return async.parallel([function(callback) {
+                  if ( company ) company.remove();
+                  callback();
+                }, function(callback) {
+                  if (profile) profile.remove();
+                  callback();
+                }], function() {
+                  res.apiError(err);
+                })
+              }
+
+              callback(null, user);
+            });
+
+        },
+
+        // Get the user with the profile and company populated
+        function(user, callback) {
+          console.log(user);
+          user.populate('company profile', function(err, user) {
+            callback(err, user);
+          });
+        },
+
+        // Send the activation email
+        function(user, callback) {
+          mailer.send({
+            to: user.email,
+            subject: "Activate your account",
+            template: "activate.ejs",
+            model: {
+              activationUrl: nconf.get("url") + 'activate?token=' + user.activationToken + '&user=' + user._id
+            }
+          }, function(err) {
+            callback(err, user);
+          });
         }
 
       ], function(err, user) {
@@ -79,6 +147,141 @@ module.exports = function(app) {
           return res.apiSuccess("Your account has been created successfully", { user: user });
       });
       
+    });
+
+
+    /**
+     * Activate an account
+     */
+    app.put('/api/activate', function(req, res) {
+
+      async.waterfall([
+
+        // Ge the users account
+        function(callback) {
+          User.findOne({ _id: req.body.userId }, function(err, user) {
+            if ( err || ! user ) {
+              return res.apiError("Could not find you account.");
+            }
+            callback(null, user);
+          });
+        },
+
+        // Activate the account
+        function(user, callback) {
+          // Check if their account has already been activated
+          if ( ! user.activationToken || user.activated ) {
+            return res.apiSuccess("Your account has already been activated.", { user: user });
+          }
+
+          // Make sure they have the correct token
+          if ( ! user.activationToken === req.body.activationToken ) {
+            return res.apiError("Sorry, but the activation token you provided was incorrect.");
+          }
+
+          user.activated = true;
+
+          user.save(function(err, user) {
+            callback(err, user);
+          });
+        }
+
+      ], function(user) {
+        return res.apiSuccess("Your account has been activated successfully.", { user: user });
+      });
+
+    });
+
+
+    /**
+     * Send password reset email
+     */
+    app.post('/api/password-reset', function(req, res) {
+
+      async.waterfall([
+
+        // Ge the users account
+        function(callback) {
+          User.findOne({ email: req.body.email }, function(err, user) {
+            if ( err || ! user ) {
+              return res.apiError("Could not find an account with that email.");
+            }
+            callback(null, user);
+          });
+        },
+
+        // Create a reset token for the user
+        function(user, callback) {
+
+          user.resetToken = user.getResetToken();
+
+          user.save(function(err, user) {
+            if ( err ) {
+              return res.apiError("Please provide a vaild password.");
+            }
+
+            callback(err, user);
+          });
+        },
+
+        // Send the confirmation email
+        function(user, callback) {
+          mailer.send({
+            to: user.email,
+            subject: "Confirm password reset",
+            template: "password-reset.ejs",
+            model: {
+              resetUrl: nconf.get("url") + 'password-reset?token=' + user.resetToken + '&user=' + user._id
+            }
+          }, function(err) {
+            callback(err, user);
+          });
+        }
+
+      ], function(user) {
+        return res.apiSuccess("A confirmation email has been sent to the address you provided.", { user: user });
+      });
+
+    });
+
+
+    /**
+     * Reset password
+     */
+    app.put('/api/password-reset', function(req, res) {
+      
+      async.waterfall([
+
+        // Ge the users account
+        function(callback) {
+          User.findOne({ _id: req.body.userId }, function(err, user) {
+            if ( err || ! user ) {
+              return res.apiError("Could not find you account.");
+            }
+            callback(null, user);
+          });
+        },
+
+        // Reset the password
+        function(user, callback) {
+
+          // Make sure they have the correct token
+          if ( ! user.resetToken === req.body.resetToken ) {
+            return res.apiError("Sorry, but the reset token you provided was incorrect.");
+          }
+
+          // Password will be hashed using the save hook int he user model
+          user.password = req.body.password;
+
+          user.save(function(err, user) {
+            callback(err, user);
+          });
+        }
+
+      ], function(user) {
+        return res.apiSuccess("Your password has been reset successfully.", { user: user });
+      });
+
     });
 
 
@@ -95,6 +298,11 @@ module.exports = function(app) {
 
         if (!user) {
           return res.apiError("Sorry, there are no accounts with that email address.");
+        }
+
+        // Is the user activated
+        if ( ! user.activated ) {
+          return res.apiError("Sorry, your account has not been activated yet. Please check your email for an activation link.");
         }
 
         // Remember me

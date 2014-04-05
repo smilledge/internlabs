@@ -1,0 +1,20 @@
+<section class="section-green section-activate" fill-screen>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-offset-3 col-sm-6 text-center">
+
+        <div ng-show="!activated">
+          <h1>Activating Account</h1>
+          <p>Please wait while your account is being activated...</p>
+        </div>
+
+        <div ng-show="activated">
+          <h1>Your account as been activated</h1>
+          <p>Your account has been activated successfully. You may now login.</p>
+          <a href="/login" class="btn btn-default btn-icon-right">Proceed to login <i class="fa fa-arrow-right"></i></a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

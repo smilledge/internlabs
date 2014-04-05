@@ -77,6 +77,51 @@ angular.module('InternLabs.services', [])
 
 
       /**
+       * Activate
+       */
+      this.activate = function(data) {
+        var deferred = $q.defer();
+
+        $http.put(Options.apiUrl('activate'), data)
+          .success(function(data, status) {
+            deferred.resolve(data);
+          });
+
+        return deferred.promise;
+      };
+
+
+      /**
+       * Send password reset
+       */
+      this.sendPasswordReset = function(data) {
+        var deferred = $q.defer();
+
+        $http.post(Options.apiUrl('password-reset'), data)
+          .success(function(data, status) {
+            deferred.resolve(data);
+          });
+
+        return deferred.promise;
+      }
+
+
+      /**
+       * Reset password
+       */
+      this.passwordReset = function(data) {
+        var deferred = $q.defer();
+
+        $http.put(Options.apiUrl('password-reset'), data)
+          .success(function(data, status) {
+            deferred.resolve(data);
+          });
+
+        return deferred.promise;
+      }
+
+
+      /**
        * Logout
        */
       this.logout = function() {
