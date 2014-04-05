@@ -103,7 +103,7 @@ angular.module('InternLabs.services', [])
           });
 
         return deferred.promise;
-      }
+      };
 
 
       /**
@@ -118,7 +118,7 @@ angular.module('InternLabs.services', [])
           });
 
         return deferred.promise;
-      }
+      };
 
 
       /**

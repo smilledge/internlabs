@@ -2411,6 +2411,27 @@ textarea.form-control {
 .form-control:focus {
   outline: none;
 }
+.form-control.form-control-invalid {
+  color: #d9534f;
+}
+.form-control-invalid + .field-errors {
+  position: relative;
+  padding-left: 25px;
+  margin: 7px 0 0 0;
+}
+.form-control-invalid + .field-errors:before {
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f071";
+}
 input[type="search"] {
   -webkit-appearance: none;
 }
@@ -7664,6 +7685,9 @@ textarea.selecter .selecter-selected {
 }
 .selecter .selecter-selected:focus {
   outline: none;
+}
+.selecter .selecter-selected.form-control-invalid {
+  color: #d9534f;
 }
 .selecter .selecter-options {
   border: 1px solid #cccccc;

@@ -20,22 +20,22 @@
         <div class="row-sm">
           <div class="col-sm-6">
             <label>Your Name</label>
-            <input type="text" name="user.profile.firstName" ng-model="user.profile.firstName" class="form-control" placeholder="First Name" float-label>
+            <input type="text" name="user.profile.firstName" ng-model="user.profile.firstName" class="form-control" placeholder="First Name" float-label required>
           </div>
           <div class="col-sm-6">
-            <input type="text" name="user.profile.lastName" ng-model="user.profile.lastName" class="form-control" placeholder="Last Name" float-label>
+            <input type="text" name="user.profile.lastName" ng-model="user.profile.lastName" class="form-control" placeholder="Last Name" float-label required>
           </div>
         </div>
       </div>
 
       <div class="form-group animation-group">
         <label for="">Email</label>
-        <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email" float-label>
+        <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email" float-label required>
       </div>
 
       <div class="form-group animation-group">
         <label for="">Password</label>
-        <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" float-label>
+        <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" float-label required data-parsley-minlength="6">
       </div>
 
       <div class="form-group animation-group">
@@ -149,7 +149,7 @@
 
       <div class="form-group">
         <label>Company Name</label>
-        <input type="test" name="user.company.name" ng-model="user.company.name" class="form-control" placeholder="Company Name" float-label>
+        <input type="test" name="user.company.name" ng-model="user.company.name" class="form-control" placeholder="Company Name" float-label required>
       </div>
 
       <div class="form-group">
@@ -188,7 +188,7 @@
 
       <div class="form-group vertical-input-stack">
         <label>Street Address</label>
-        <input type="test" name="user.company.address.line1" ng-model="user.company.address.line1" class="form-control" placeholder="Street Address" float-label>
+        <input type="test" name="user.company.address.line1" ng-model="user.company.address.line1" class="form-control" placeholder="Street Address" float-label required>
         <input type="test" name="user.company.address.line2" ng-model="user.company.address.line2" class="form-control">
       </div>
 
@@ -196,12 +196,12 @@
         <div class="row-sm">
           <div class="col-sm-5">
             <label>City / State / Postcode</label>
-            <input type="test" name="user.company.address.city" ng-model="user.company.address.city" class="form-control" placeholder="City" float-label>
+            <input type="test" name="user.company.address.city" ng-model="user.company.address.city" class="form-control" placeholder="City" float-label required>
           </div>
 
           <div class="col-sm-5">
             <label class="sr-only">State</label>
-            <select selecter name="user.company.address.state" ng-model="user.company.address.state" placeholder="State">
+            <select selecter name="user.company.address.state" ng-model="user.company.address.state" placeholder="State" required>
               <option value="">Select a State</option>
               <option>Australian Capital Territory</option>
               <option>New South Wales</option>
@@ -216,14 +216,14 @@
 
           <div class="col-sm-2">
             <label class="sr-only">Postcode</label>
-            <input type="test" name="user.company.address.postcode" ng-model="user.company.address.postcode" class="form-control" placeholder="1234">
+            <input type="test" name="user.company.address.postcode" ng-model="user.company.address.postcode" class="form-control" placeholder="1234" required data-parsley-type="integer">
           </div>
         </div>
       </div>
 
       <div class="form-group ">
         <label>Country</label>
-        <select selecter name="user.company.address.country" ng-model="user.company.address.country" placeholder="Country" float-label>
+        <select selecter name="user.company.address.country" ng-model="user.company.address.country" placeholder="Country" float-label required>
           <option value="">Select a Country</option>
           <option selected="selected">Australia</option>
         </select>

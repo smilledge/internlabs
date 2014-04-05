@@ -52,6 +52,15 @@
         </div>
     </footer>
 
+    <script>
+    // Global config for parsley
+    window.ParsleyConfig = {
+        errorClass: 'form-control-invalid',
+        successClass: 'form-control-valid',
+        errorsWrapper: '<div class="field-errors"></div>',
+        errorTemplate: '<div class="field-error"></div>'
+    };
+    </script>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>

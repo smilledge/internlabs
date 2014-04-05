@@ -257,7 +257,7 @@ module.exports = function ( grunt ) {
     'clean:clear', 
     'html2js', 'jshint', 'less',
     'concat:compile_css', 'ngmin', 'concat:compile_js', 
-    'uglify',
+    // 'uglify',
     'copy:fonts',
     'clean:clear'
   ]);

@@ -139,6 +139,7 @@ angular.module('InternLabs.common', [])
    * Stepped form
    *  - Step through a seriese of fieldsets
    *  - Give each a class of .form-step
+   *  - Runs validation using parsley before moving to the next step
    */
   .directive('steppedForm', function ($q) {
     return {
@@ -166,6 +167,9 @@ angular.module('InternLabs.common', [])
 
           elem.find('a.next').on('click', next);
           elem.find('a.previous').on('click', previous);
+
+          // Init parsley for validation
+          elem.parsley({});
 
           setHeight();
         };
@@ -207,11 +211,6 @@ angular.module('InternLabs.common', [])
               left: (reverse) ? '-110%' : '110%'
             })
 
-            // Fade in next
-            // .to(nextElem, 0.15, {
-            //   autoAlpha: 1
-            // })
-
             // Slide both
             .to(currentElem, 0.35, {
               autoAlpha: 0,
@@ -221,16 +220,32 @@ angular.module('InternLabs.common', [])
               autoAlpha: 1,
               left: 0
             }, '-=0.35')
-
-            // Fade out previous
-            // .to(currentElem, 0.15, {
-            //   autoAlpha: 0
-            // })
             
             // Play!
             .resume();
 
           return deferred.promise;
+        };
+
+
+        /**
+         * Run validation on each field in the provided fieldset
+         *
+         * @param {elem} fieldset element
+         * @return {boolean} success?
+         */
+        var validateFieldset = function($fieldset) {
+          var $inputs = $fieldset.find(":input");
+
+          // Run validation on each field and return if that field is valid
+          var validationResults = _.map($inputs, function($input) {
+            var validator = new Parsley($input);
+            validator.validate();
+            return validator.isValid();
+          });
+
+          // Are all the fields valid
+          return _.indexOf(validationResults, false) === -1;
         };
 
 
@@ -242,6 +257,12 @@ angular.module('InternLabs.common', [])
           var $current = elem.find('.form-step.active'),
               $next = $current.next('.form-step');
 
+          // Validate the current fieldset
+          if ( ! validateFieldset($current) ) {
+            return;
+          }
+
+          // Play the transition animation
           transitionSteps($current, $next, false).then(function() {
             // Animtion done
             $current.removeClass('active');
@@ -271,6 +292,34 @@ angular.module('InternLabs.common', [])
     };
   })
 
+  
+  /**
+   * Validated Form
+   *  - Adds validation to a form
+   */
+  .directive('form', function() {
+    return {
+      restrict: 'E',
+      priority: -100,
+      link: function(scope, elem, attrs) {
+
+        // Stepped forms have their own validation
+        if ( elem.find('[stepped-form]').length ) {
+          return;
+        }
+
+        var validator = new Parsley(elem);
+
+        elem.on('submit', function(e) {
+          validator.validate();
+
+          if ( ! validator.isValid() ) {
+            e.preventDefault();
+          }
+        });
+      }
+    };
+  })
 
   /**
    * Show / hide elements based on login status / user level

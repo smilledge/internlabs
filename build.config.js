@@ -56,7 +56,8 @@ module.exports = {
       'public/vendor/selecter.js',
       'public/vendor/underscore.js',
       'public/vendor/tooltip.js',
-      'public/vendor/popover.js'
+      'public/vendor/popover.js',
+      'public/vendor/parsley.js'
       // 'public/vendor/TweenLite.js',
       // 'public/vendor/TimelineLite.js',
       // 'public/vendor/EasePack.js'

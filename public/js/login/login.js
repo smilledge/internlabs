@@ -106,7 +106,7 @@ angular.module('InternLabs.login', [])
         $rootScope.loading = false;
         $scope.resetSuccess = true;
       });
-    }
+    };
   })
 
 

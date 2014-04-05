@@ -154,6 +154,29 @@ output {
   &:focus {
     outline: none;
   }
+
+  &.form-control-invalid {
+    color: @brand-danger;
+  }
+
+  // &.form-control-valid {
+  //   color: @brand-success;
+  // }
+}
+
+
+.form-control-invalid + .field-errors {
+  position: relative;
+  padding-left: 25px;
+  margin: 7px 0 0 0;
+
+  &:before {
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    .icon-font;
+    content: @fa-var-exclamation-triangle;
+  }
 }
 
 
