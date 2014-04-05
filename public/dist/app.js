@@ -30476,10 +30476,13 @@ angular.module('InternLabs.common.directives', [])
 
         _.defer(renderMap);
 
-        $(window).on('resize', _.debounce(function() {
+        $(window).on('resize.gmap', _.debounce(function() {
           renderMap();
         }, 100));
 
+        elem.on('$destroy', function() {
+          $(window).off('resize.gmap');
+        });
       }
     };
   })
