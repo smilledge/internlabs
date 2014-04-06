@@ -17,6 +17,12 @@ angular.module('InternLabs.login', [])
         pageTitle: 'Account Activation'
       })
 
+      .when('/resend-activation', {
+        templateUrl: 'login/resend-activation.tpl.html',
+        controller: 'ResendActivationCtrl',
+        pageTitle: 'Resend Activation Email'
+      })
+
       .when('/password-reset', {
         templateUrl: 'login/password-reset.tpl.html',
         controller: 'PasswordResetCtrl',
@@ -105,6 +111,31 @@ angular.module('InternLabs.login', [])
       }).then(function(response) {
         $rootScope.loading = false;
         $scope.resetSuccess = true;
+      });
+    };
+  })
+
+
+  .controller('ResendActivationCtrl', function($rootScope, $scope, Auth) {
+    $scope.resend = {};
+    $scope.success = false;
+
+    /**
+     * Send password reset email
+     */
+    $scope.send = function() {
+      $rootScope.loading = true;
+      
+      Auth.resendActivation({
+        email: $scope.resend.email
+      }).then(function(response) {
+        $rootScope.loading = false;
+
+        if ( ! response.data.success ) {
+          return $scope.errors = response.data.error;
+        }
+        
+        $scope.success = true;
       });
     };
   })

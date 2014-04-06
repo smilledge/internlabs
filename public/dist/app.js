@@ -29852,7 +29852,7 @@ app.factory('$fileUploader', [ '$compile', '$rootScope', '$http', '$window', fun
 }));
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['company/details.tpl.html', 'dashboard/dashboard.tpl.html', 'home/home.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html']);
+angular.module('templates-app', ['company/details.tpl.html', 'dashboard/dashboard.tpl.html', 'home/home.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html']);
 
 angular.module("company/details.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("company/details.tpl.html",
@@ -30008,7 +30008,7 @@ angular.module("login/login.tpl.html", []).run(["$templateCache", function($temp
     "          </div>\n" +
     "        </div>\n" +
     "\n" +
-    "        <p class=\"animation-group text-center link-lost-password\"><a href=\"/password-reset\">Lost your password?</a></p>\n" +
+    "        <p class=\"animation-group text-center link-lost-password\"><a href=\"/password-reset\">Lost your password?</a> | <a href=\"/resend-activation\">Resend Activation Email</a></p>\n" +
     "\n" +
     "      </form>\n" +
     "\n" +
@@ -30090,6 +30090,41 @@ angular.module("login/password-reset.tpl.html", []).run(["$templateCache", funct
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
+    "</section>");
+}]);
+
+angular.module("login/resend-activation.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("login/resend-activation.tpl.html",
+    "<section class=\"section-green section-resend-activation\" fill-screen>\n" +
+    "  <div class=\"container\">\n" +
+    "    <div class=\"row\">\n" +
+    "      <div class=\"col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels text-center\">\n" +
+    "\n" +
+    "        <!-- Send form -->\n" +
+    "        <form ng-submit=\"send()\" role=\"form\" animated-form ng-if=\"!success\">\n" +
+    "          <h1 class=\"text-center animation-group\">Resend Activation</h1>\n" +
+    "\n" +
+    "          <div form-errors=\"errors\"></div>\n" +
+    "\n" +
+    "          <div class=\"form-group animation-group\">\n" +
+    "            <label for=\"\">Email</label>\n" +
+    "            <input type=\"email\" name=\"email\" ng-model=\"resend.email\" class=\"form-control\" placeholder=\"Your account's email address\" float-label required>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div class=\"form-group animation-group\">\n" +
+    "            <button type=\"submit\" class=\"btn btn-default btn-icon-right\">Resend Activation Email <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "          </div>\n" +
+    "        </form>\n" +
+    "\n" +
+    "        <!-- Send confirmation -->\n" +
+    "        <div ng-if=\"success\">\n" +
+    "          <h1>Activation Email Send</h1>\n" +
+    "          <p>An activation email has been sent to the address you provided. Please click the link in this email to verify your account.</p>\n" +
+    "        </div>\n" +
+    "        \n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "</section>");
 }]);
 
@@ -30985,6 +31020,14 @@ angular.module('InternLabs.services')
 
 
       /**
+       * Activate
+       */
+      this.resendActivation = function(data) {
+        return $http.post(Options.apiUrl('resend-activation'), data);
+      };
+
+
+      /**
        * Send password reset
        */
       this.sendPasswordReset = function(data) {
@@ -31287,6 +31330,12 @@ angular.module('InternLabs.login', [])
         pageTitle: 'Account Activation'
       })
 
+      .when('/resend-activation', {
+        templateUrl: 'login/resend-activation.tpl.html',
+        controller: 'ResendActivationCtrl',
+        pageTitle: 'Resend Activation Email'
+      })
+
       .when('/password-reset', {
         templateUrl: 'login/password-reset.tpl.html',
         controller: 'PasswordResetCtrl',
@@ -31375,6 +31424,31 @@ angular.module('InternLabs.login', [])
       }).then(function(response) {
         $rootScope.loading = false;
         $scope.resetSuccess = true;
+      });
+    };
+  })
+
+
+  .controller('ResendActivationCtrl', function($rootScope, $scope, Auth) {
+    $scope.resend = {};
+    $scope.success = false;
+
+    /**
+     * Send password reset email
+     */
+    $scope.send = function() {
+      $rootScope.loading = true;
+      
+      Auth.resendActivation({
+        email: $scope.resend.email
+      }).then(function(response) {
+        $rootScope.loading = false;
+
+        if ( ! response.data.success ) {
+          return $scope.errors = response.data.error;
+        }
+        
+        $scope.success = true;
       });
     };
   })

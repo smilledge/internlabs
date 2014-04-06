@@ -2422,6 +2422,7 @@ textarea.form-control {
   position: relative;
   padding-left: 25px;
   margin: 7px 0 0 0;
+  text-align: left;
 }
 .form-control-invalid + .field-errors:before,
 .form-errors:before {
@@ -8183,10 +8184,12 @@ label.floating-label.open {
 .section-activate p {
   margin-bottom: 50px;
 }
-.section-password-reset h1 {
+.section-password-reset h1,
+.section-resend-activation h1 {
   margin-bottom: 30px;
 }
-.section-password-reset .btn {
+.section-password-reset .btn,
+.section-resend-activation .btn {
   margin-top: 30px;
 }
 .section-register h1 {

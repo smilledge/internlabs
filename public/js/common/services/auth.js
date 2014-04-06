@@ -77,6 +77,14 @@ angular.module('InternLabs.services')
 
 
       /**
+       * Activate
+       */
+      this.resendActivation = function(data) {
+        return $http.post(Options.apiUrl('resend-activation'), data);
+      };
+
+
+      /**
        * Send password reset
        */
       this.sendPasswordReset = function(data) {

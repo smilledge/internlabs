@@ -194,6 +194,41 @@ module.exports = function(app) {
 
 
     /**
+     * Resend the users activation email
+     */
+    app.post('/api/resend-activation', function(req, res) {
+      async.waterfall([
+        // Get the users account
+        function(callback) {
+          User.findOne({ email: req.body.email }, function(err, user) {
+            if ( err || ! user ) {
+              return res.apiError("Could not find an account what the provided email.");
+            }
+            callback(null, user);
+          });
+        },
+
+        // Send the activation email
+        function(user, callback) {
+          mailer.send({
+            to: user.email,
+            subject: "Activate your account",
+            template: "activate.ejs",
+            model: {
+              activationUrl: nconf.get("url") + 'activate?token=' + user.activationToken + '&user=' + user._id
+            }
+          }, function(err) {
+            callback(err, user);
+          });
+        }
+
+      ], function(user) {
+        return res.apiSuccess("An activation email has been sent to your address.", { user: user });
+      });
+    });
+
+
+    /**
      * Send password reset email
      */
     app.post('/api/password-reset', function(req, res) {
