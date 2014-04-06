@@ -23,9 +23,6 @@ angular.module('InternLabs.company', [])
 
   .controller('CompanyDetailsCtrl', function($scope, $sce, company) {
 
-    console.log("company details");
-    console.log(company);
-
     $scope.company = company;
     $scope.company.displayAddress = $sce.trustAsHtml(company.getDisplayAddress());
 

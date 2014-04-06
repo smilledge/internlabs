@@ -2417,12 +2417,14 @@ textarea.form-control {
 .form-control.form-control-invalid {
   color: #d9534f;
 }
-.form-control-invalid + .field-errors {
+.form-control-invalid + .field-errors,
+.form-errors {
   position: relative;
   padding-left: 25px;
   margin: 7px 0 0 0;
 }
-.form-control-invalid + .field-errors:before {
+.form-control-invalid + .field-errors:before,
+.form-errors:before {
   position: absolute;
   top: 3px;
   left: 5px;
@@ -2434,6 +2436,9 @@ textarea.form-control {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "\f071";
+}
+.form-errors {
+  margin-bottom: 20px;
 }
 input[type="search"] {
   -webkit-appearance: none;
@@ -8073,9 +8078,10 @@ label.floating-label.open {
   padding: 4px 10px;
   margin: 5px 5px 5px 0;
   float: left;
-  background: #39b54a;
-  color: #fff;
+  color: #666;
+  border: 1px solid #CCC;
   border-radius: 5px;
+  background: #FCFCFC;
 }
 .profile-meta {
   list-style: none;

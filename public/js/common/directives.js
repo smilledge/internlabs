@@ -53,6 +53,40 @@ angular.module('InternLabs.common.directives', [])
 
 
   /**
+   * Form errors
+   *  - Displays errors at the top of a form
+   */
+   .directive('formErrors', function () {
+    return {
+      restrict: 'A',
+      scope: {
+        formErrors: '='
+      },
+      template: '<div class="form-errors">' +
+                  '<div class="error" ng-repeat="error in errors">{{ error }}</div>' +
+                '</div>',
+      link: function(scope, elem, attrs) {
+        elem.hide();
+
+        scope.$watch('formErrors', function(errors) {
+          if ( errors ) {
+            if ( ! _.isArray(errors) ) {
+              errors = [errors];
+            }
+
+            scope.errors = errors;
+            return elem.fadeIn();
+          }
+
+          errors = [];
+          elem.fadeOut();
+        });
+      }
+    };
+  })
+
+
+  /**
    * Floating labels
    *
    * Add the float-label attribute to an input elem

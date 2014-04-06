@@ -1,5 +1,5 @@
 /**
- * internlabs - v0.1.0 - 2014-04-05
+ * internlabs - v0.1.0 - 2014-04-06
  * 
  */
 /**
@@ -29980,6 +29980,8 @@ angular.module("login/login.tpl.html", []).run(["$templateCache", function($temp
     "\n" +
     "        <h1 class=\"text-center animation-group\">Login</h1>\n" +
     "\n" +
+    "        <div form-errors=\"errors\"></div>\n" +
+    "\n" +
     "        <div class=\"form-group animation-group\">\n" +
     "          <label for=\"\">Email</label>\n" +
     "          <input type=\"email\" name=\"email\" ng-model=\"credentials.email\" class=\"form-control\" placeholder=\"Email\" float-label required>\n" +
@@ -30482,6 +30484,40 @@ angular.module('InternLabs.common.directives', [])
 
         elem.on('$destroy', function() {
           $(window).off('resize.gmap');
+        });
+      }
+    };
+  })
+
+
+  /**
+   * Form errors
+   *  - Displays errors at the top of a form
+   */
+   .directive('formErrors', function () {
+    return {
+      restrict: 'A',
+      scope: {
+        formErrors: '='
+      },
+      template: '<div class="form-errors">' +
+                  '<div class="error" ng-repeat="error in errors">{{ error }}</div>' +
+                '</div>',
+      link: function(scope, elem, attrs) {
+        elem.hide();
+
+        scope.$watch('formErrors', function(errors) {
+          if ( errors ) {
+            if ( ! _.isArray(errors) ) {
+              errors = [errors];
+            }
+
+            scope.errors = errors;
+            return elem.fadeIn();
+          }
+
+          errors = [];
+          elem.fadeOut();
         });
       }
     };
@@ -31095,9 +31131,6 @@ angular.module('InternLabs.company', [])
 
 
   .controller('CompanyDetailsCtrl', function($scope, $sce, company) {
-
-    console.log("company details");
-    console.log(company);
 
     $scope.company = company;
     $scope.company.displayAddress = $sce.trustAsHtml(company.getDisplayAddress());

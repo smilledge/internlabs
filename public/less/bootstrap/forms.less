@@ -165,7 +165,7 @@ output {
 }
 
 
-.form-control-invalid + .field-errors {
+.form-control-invalid + .field-errors, .form-errors {
   position: relative;
   padding-left: 25px;
   margin: 7px 0 0 0;
@@ -177,6 +177,10 @@ output {
     .icon-font;
     content: @fa-var-exclamation-triangle;
   }
+}
+
+.form-errors {
+  margin-bottom: 20px;
 }
 
 
