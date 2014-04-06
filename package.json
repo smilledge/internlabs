@@ -9,7 +9,8 @@
     "start": "nodemon index.js localhost 8000"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=0.10.0",
+    "npm": ">= 1.4.0"
   },
   "dependencies": {
     "kraken-js": "~0.7.0",
