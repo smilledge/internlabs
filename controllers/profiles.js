@@ -13,5 +13,11 @@ module.exports = function(app) {
         return res.apiSuccess(profile);
     });
   });
-
+   app.put('/api/profiles/:profileid', auth.check(), function(req, res) {
+   Profile.findByIdAndUpdate(req.params.profileid, req.body, function (err, profile) {
+  	if (err) return handleError(err);
+  	return res.apiSuccess("Your profile has been updated", profile);
+  });
+});
 };
+
