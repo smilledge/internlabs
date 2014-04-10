@@ -60,6 +60,9 @@
         errorsWrapper: '<div class="field-errors"></div>',
         errorTemplate: '<div class="field-error"></div>'
     };
+
+    window.internlabs = window.internlabs || {};
+    window.internlabs.user = <%-JSON.stringify(user)%>;
     </script>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

@@ -52,12 +52,14 @@ module.exports = {
     js: [
       'public/vendor/angular.js',
       'public/vendor/angular-route.js',
+      'public/vendor/restangular.js',
       // 'public/vendor/angular-sanitize.js',
       'public/vendor/picker.js',
       'public/vendor/selecter.js',
       'public/vendor/underscore.js',
       'public/vendor/tooltip.js',
       'public/vendor/popover.js',
+      'public/vendor/modal.js',
       'public/vendor/parsley.js',
       'public/vendor/gmaps.js',
       'public/vendor/angular-file-upload.js'

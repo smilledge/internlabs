@@ -1,0 +1,29 @@
+<article class="content-page">
+  <header>
+    <div class="container">
+      <h1 class="page-title">Dashboard</h1>
+    </div>
+  </header>
+
+  <section class="main">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-sm-3">
+          <ul class="nav nav-pills nav-stacked">
+            <li ng-class="{active:active=='dashboard'}"><a href="/dashboard">Dashboard</a></li>
+            <li ng-class="{active:active=='internships'}"><a href="/dashboard/internships">Internships</a></li>
+            <li ng-class="{active:active=='applications'}"><a href="/dashboard/applications">Pending Applications</a></li>
+            <li ng-class="{active:active=='roles'}"><a href="/dashboard/roles">Available Roles</a></li>
+            <li ng-class="{active:active=='profile'}"><a href="/dashboard/company-profile">Company Profile</a></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-9">
+          <div ng-include="state.main"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</article>

@@ -1,0 +1,22 @@
+<header class="section-header">
+  <h2>Available Roles</h2>
+
+  <div class="actions">
+    <button type="button" ng-click="add()" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add Role</button>
+  </div>
+</header>
+
+
+<section class="list-view">
+  
+  <div ng-repeat="role in roles" class="internship-role">
+    <strong>{{ role.title }}</strong>
+    <p>{{ role.description }}</p>
+    <div class="actions">
+      <button ng-click="delete(role)" class="btn btn-sm btn-danger"><i class="fa fa-times"></i> Delete</button>
+      <button ng-click="edit(role)" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i> Edit</button>
+    </div>
+    <hr>
+  </div>
+
+</section>

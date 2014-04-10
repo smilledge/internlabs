@@ -12,7 +12,9 @@ module.exports = function(app) {
         return next();
       }
 
-      res.render('index.ejs');
+      res.render('index.ejs', {
+        user: (req.user) ? req.user.toJSON() : null
+      });
     });
     
 };

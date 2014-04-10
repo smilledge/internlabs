@@ -8,28 +8,19 @@ angular.module('InternLabs.home', [])
       .when('/', {
         templateUrl: 'home/home.tpl.html',
         controller: 'HomeCtrl',
-        pageTitle: 'InternLabs',
-        resolve: {
-          user: function($q, $location, Auth) {
-            var deferred = $q.defer();
-
-            Auth.getUser().then(function(user) {
-              // If the user is logged in, redirect to the dashboard
-              $location.path('/dashboard');
-            }, function() {
-              // If they're not logged in, show the homepage
-              deferred.resolve();
-            });
-            
-            return deferred.promise;
-          }
-        }
+        pageTitle: 'InternLabs'
       });
 
   })
 
 
-  .controller('HomeCtrl', function($scope) {})
+  .controller('HomeCtrl', function($scope, $location, Auth) {
+
+    if ( Auth.check() ) {
+      $location.path('/dashboard');
+    }
+    
+  })
 
 
   /**

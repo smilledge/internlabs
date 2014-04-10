@@ -1,6 +1,97 @@
 angular.module('InternLabs.common.directives', [])
 
-  
+  /**
+   * Creates models
+   */
+  .service('ModalFactory', function($rootScope, $templateCache, $http, $compile) {
+
+    // tempalte for the modal container
+    var modalTemplate = '<div class="modal fade">' +
+                          '<div class="modal-dialog">' +
+                            '<div class="modal-content">' +
+                              '<div class="modal-header">' +
+                                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                                '<h4 class="modal-title">{{ title }}</h4>' +
+                              '</div>' +
+                              '<div class="modal-body">' +
+                              '</div>' +
+                            '</div>' +
+                          '</div>' +
+                        '</div>';
+
+    // Default options
+    var defaultOptions = {
+      className: false,
+      scope: false,
+      tempalte: false,
+      templateUrl: false
+    };
+
+    /**
+     * Load the provided templateUrl
+     * @param  {[type]} tmpl [description]
+     * @return {[type]}      [description]
+     */
+    var loadTemplate = function(templateUrl) {
+      return $templateCache.get(templateUrl);
+    };
+
+    var renderModal = function() {
+
+    }
+
+    /**
+     * Create a new modal
+     * @param  {object} options
+     * @return {void}
+     */
+    this.create = function(options) {
+      options = _.extend(defaultOptions, options);
+
+      var scope = $rootScope.$new(),
+          $body = $('body'),
+          $modal = $(modalTemplate),
+          template;
+
+      if (_.isObject(options.scope)) {
+        _.extend(scope, options.scope);
+      }
+
+      if ( options.template ) {
+        template = options.template;
+      }
+
+      if ( options.templateUrl ) {
+        template = loadTemplate(options.templateUrl);
+      }
+
+      $modal.find('.modal-body').append(template);
+
+      if ( options.className ) {
+        $modal.find('.modal-dialog').addClass(options.className);
+      }
+
+      var complied = $compile($modal)(scope);
+      complied.appendTo('body').modal({});
+
+      _.extend(scope, {
+        close: function() {
+          $(complied).modal('hide')
+        }
+      });
+
+      // Remove the modal after it is hidden
+      complied.on('hidden.bs.modal', function(e) {
+        $(this).remove();
+      });
+
+      scope.$on('$destroy', function () {
+        $modal.remove();
+      });
+    };
+  })
+
+
   /**
    * Google map
    *  - Uses gmaps.js
@@ -425,13 +516,13 @@ angular.module('InternLabs.common.directives', [])
         // Show hide the elem depending on auth status
         var check = function() {
           if ( scope.logged ) {
-            if ( Auth.check() ) {
+            if ( Auth.check(true) ) {
               elem.removeClass('hide');
             } else {
               elem.addClass('hide');
             }
           } else {
-            if ( ! Auth.check() ) {
+            if ( ! Auth.check(true) ) {
               elem.removeClass('hide');
             } else {
               elem.addClass('hide');

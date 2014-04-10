@@ -1,28 +1,15 @@
 angular.module('InternLabs.services')
 
-  .service('Auth', function($rootScope, $http, $q, Options) {
+  .service('Auth', function($rootScope, $http, $q, $location, Options) {
 
-    var _user = null;
-
+    var _user = angular.fromJson(window.internlabs.user);
+console.log(_user);
     this.check = function() {
       return !!_user;
     };
 
     this.getUser = function() {
-      var deferred = $q.defer();
-
-      if ( _user ) {
-        deferred.resolve(_user);
-      } else {
-        $http.get(Options.apiUrl('me')).success(function(data) {
-          if ( ! data.success ) {
-            return deferred.reject();
-          }
-          deferred.resolve(data.data.user);
-        });
-      }
-
-      return deferred.promise;
+      return _user || false;
     };
 
     /**
@@ -37,9 +24,9 @@ angular.module('InternLabs.services')
           return deferred.reject(data.error);
         }
 
-        _user = data.data.user;
-        $rootScope.$broadcast('auth:login');
-        deferred.resolve(_user);
+        // Do a full page reload
+        // Allows us to attached the user to the page
+        window.location.href = "/";
       });
 
       return deferred.promise;
@@ -118,19 +105,16 @@ angular.module('InternLabs.services')
        * Logout
        */
       this.logout = function() {
-        var deferred = $q.defer();
         var httpPromise = $http({
           method: 'DELETE',
           url: Options.apiUrl('logout')
         });
         
         httpPromise.success(function(data) {
-          _user = null;
-          $rootScope.$broadcast('auth:logout');
-           deferred.resolve();
+          // Do a page reload
+          // Make sure any temp data is cleared
+          window.location.href = "/";
         });
-
-        return deferred.promise;
       };
 
   })

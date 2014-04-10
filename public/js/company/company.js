@@ -10,8 +10,8 @@ angular.module('InternLabs.company', [])
         controller: 'CompanyDetailsCtrl',
         pageTitle: 'Company Details',
         resolve: {
-          company: function(CompanyService, $q, $route) {
-            return CompanyService.get($route.current.params.companyId);
+          company: function($route, Restangular) {
+            return Restangular.one('companies', $route.current.params.companyId).get();
           }
         }
       })
@@ -21,10 +21,19 @@ angular.module('InternLabs.company', [])
   })
 
 
-  .controller('CompanyDetailsCtrl', function($scope, $sce, company) {
+  .controller('CompanyDetailsCtrl', function($scope, $sce, company, ModalFactory) {
 
     $scope.company = company;
     $scope.company.displayAddress = $sce.trustAsHtml(company.getDisplayAddress());
+
+    $scope.showRoleDetails = function(role) {
+      ModalFactory.create({
+        scope: {
+          title: role.title
+        },
+        template: role.description
+      });
+    }
 
   })
 

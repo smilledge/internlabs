@@ -161,7 +161,7 @@ module.exports = function(app) {
         function(callback) {
           User.findOne({ _id: req.body.userId }, function(err, user) {
             if ( err || ! user ) {
-              return res.apiError("Could not find you account.");
+              return callback(new Error("Could not find you account."));
             }
             callback(null, user);
           });
@@ -171,22 +171,25 @@ module.exports = function(app) {
         function(user, callback) {
           // Check if their account has already been activated
           if ( ! user.activationToken || user.activated ) {
-            return res.apiSuccess("Your account has already been activated.", { user: user });
+            return callback(null, user);
           }
 
           // Make sure they have the correct token
           if ( ! user.activationToken === req.body.activationToken ) {
-            return res.apiError("Sorry, but the activation token you provided was incorrect.");
+            return callback(new Error("Sorry, but the activation token you provided was incorrect."));
           }
 
           user.activated = true;
 
           user.save(function(err, user) {
-            callback(err, user);
+            callback(null, user);
           });
         }
 
-      ], function(user) {
+      ], function(err, user) {
+        if ( err ) {
+          return res.apiError(err.message);
+        }
         return res.apiSuccess("Your account has been activated successfully.", { user: user });
       });
 
@@ -342,7 +345,7 @@ module.exports = function(app) {
 
         // Remember me
         if (req.body.remember) {
-          req.session.cookie.maxAge = 1000 * 60 * 3;
+          req.session.cookie.maxAge = 9999999999;
         } else {
           req.session.cookie.expires = false;
         }

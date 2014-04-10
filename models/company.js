@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    ObjectId = mongoose.Schema.ObjectId;
+    ObjectId = mongoose.Schema.ObjectId,
+    Role = require('./role');
 
 
 var CompanyModel = function () {
@@ -13,7 +14,11 @@ var CompanyModel = function () {
         email: { type: String },
         logo: { type: String },
         address: { type: ObjectId, ref: 'Address', index: true },
-        skills: { type: Array }
+        skills: { type: Array },
+        roles: [{
+            type: ObjectId,
+            ref: 'Role'
+        }]
     });
 
     return mongoose.model('Company', CompanySchema);

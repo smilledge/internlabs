@@ -106,8 +106,61 @@ body {
     }
   }
 
+  .btn-default {
+    background: #fff;
+    border-bottom-color: #DDD;
+    &:hover {
+      border-bottom-color: #CECECE;
+      background: #F2F2F2;
+    }
+  }
+
   .popover {
     color: @text-color;
+  }
+
+  .form-control {
+    background: #fff;
+    border-bottom-color: #ddd;
+  }
+}
+
+
+/*
+
+  Regular content page
+
+ */
+
+.content-page {
+  > header {
+    padding: 40px 0;
+    margin: 0 0 50px 0;
+    background: @gray-lighter;
+
+    h1 {
+      margin: 0;
+    }
+  }
+
+  .main {
+    margin-bottom: 80px;
+
+    .section-header {
+      .clearfix;
+      margin: 0 0 20px 0;
+      border-bottom: 1px solid #DDD;
+      padding: 0 0 10px 0;
+
+      h2 {
+        margin: 0;
+        float: left;
+      }
+
+      .actions {
+        float: right;
+      }
+    }
   }
 }
 

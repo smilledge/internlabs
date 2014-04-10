@@ -59,6 +59,15 @@ var UserModel = function () {
         next();
     });
 
+    UserSchema.methods.toJSON = function() {
+        return {
+            _id: this._id,
+            email: this.email,
+            profile: this.profile,
+            company: this.company
+        };
+    };
+
     /**
      * Helper function that takes a plaintext password and compares it against the user's hashed password.
      * @param plainText
