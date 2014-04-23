@@ -1,0 +1,19 @@
+<div class="results-map">
+
+  <div results-view-toggle query="query"></div>
+
+  <div id="map"></div>
+  <script type="text/ng-template" id="infoWindowTemplate">
+    <div class="infobox-content">
+      <article>
+        <button type="button" class="close close-button">&times;</button>
+        <a href="{{ result.url }}"><img ng-src="{{ result.logoUrl }}" alt="{{ result.name }}"></a>
+        <hr />
+        <header class="clearfix">
+          <h4 class="pull-left"><a href="{{ result.url }}">{{ result.name }}</a></h4>
+          <a href="{{ result.url }}" class="btn btn-primary btn-sm pull-right">More Info <i class="fa fa-arrow-right small"></i></a>
+        </header>
+      </article>
+    </div>
+  </script>
+</div>

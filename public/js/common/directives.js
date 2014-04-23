@@ -484,15 +484,17 @@ angular.module('InternLabs.common.directives', [])
           return;
         }
 
-        var validator = new Parsley(elem);
+        if ( attrs.validate ) {
+          var validator = new Parsley(elem);
 
-        elem.on('submit', function(e) {
-          validator.validate();
+          elem.on('submit', function(e) {
+            validator.validate();
 
-          if ( ! validator.isValid() ) {
-            e.preventDefault();
-          }
-        });
+            if ( ! validator.isValid() ) {
+              e.preventDefault();
+            }
+          });
+        }        
       }
     };
   })
@@ -531,9 +533,65 @@ angular.module('InternLabs.common.directives', [])
         };
 
         check();
+      }
+    };
+  })
 
-        scope.$on('auth:login', check);
-        scope.$on('auth:logout', check);
+
+
+  /**
+   * Checkbox list input (filter search filter)
+   */
+  .directive('checkboxList', function() {
+    return {
+      restrict: 'A',
+      replace: true,
+      scope: {
+        options: '=',
+        selected: '=',
+        filterable: '=?'
+      },
+      template: '<div class="checkbox-list">' +
+                  '<input ng-show="filterable" type="text" ng-model="query" placeholder="Filter results...">' +
+                  '<div class="scroll-box">' +
+                    '<div class="group" ng-repeat="group in _options">' +
+                      '<strong ng-if="group.group" class="group-title">{{ group.group }}</strong>' +
+                      '<div class="checkbox" ng-repeat="item in group.children | filter:query"><label><input type="checkbox" ng-checked="isSelected(item)" ng-click="toggle(item)"> {{ item }}</label></div>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>',
+      link: function(scope, elem, attrs) {
+
+        scope.toggle = function(value) {
+          var index = _.indexOf(scope.selected, value);
+
+          if ( index > -1 ) {
+            scope.selected = _.without(scope.selected, value);
+          } else {
+            scope.selected.push(value);
+          }
+        };
+
+        scope.isSelected = function(value) {
+          return _.indexOf(scope.selected, value) > -1;
+        };
+
+        scope.$watch('selected', function(newVal) {
+          if ( _.isString(newVal) ) {
+            newVal = [newVal];
+          }
+          scope.selected = newVal || [];
+        }, true);
+
+        scope.$watch('options', function(newVal) {
+          if ( _.isArray(newVal) && _.isUndefined(newVal[0].children) ) {
+            scope._options = [{
+              children: newVal
+            }]
+          } else {
+            scope._options = newVal;
+          }
+        }, true);
       }
     };
   })

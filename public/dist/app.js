@@ -1,5 +1,5 @@
 /**
- * internlabs - v0.1.0 - 2014-04-10
+ * internlabs - v0.1.0 - 2014-04-24
  * 
  */
 /**
@@ -22097,6 +22097,33 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 
 })(window, window.angular);
+/*
+ AngularJS v1.2.15
+ (c) 2010-2014 Google, Inc. http://angularjs.org
+ License: MIT
+*/
+(function(F,g,P){'use strict';g.module("ngAnimate",["ng"]).factory("$$animateReflow",["$$rAF","$document",function(g,F){return function(e){return g(function(){e()})}}]).config(["$provide","$animateProvider",function(V,G){function e(e){for(var p=0;p<e.length;p++){var g=e[p];if(g.nodeType==ba)return g}}function u(p){return g.element(e(p))}var m=g.noop,p=g.forEach,ga=G.$$selectors,ba=1,h="$$ngAnimateState",J="ng-animate",r={running:!0};V.decorator("$animate",["$delegate","$injector","$sniffer","$rootElement",
+"$$asyncCallback","$rootScope","$document",function(x,F,aa,K,E,H,P){function Q(a){if(a){var b=[],c={};a=a.substr(1).split(".");(aa.transitions||aa.animations)&&a.push("");for(var d=0;d<a.length;d++){var f=a[d],e=ga[f];e&&!c[f]&&(b.push(F.get(e)),c[f]=!0)}return b}}function L(a,b,c){function d(a,b){var c=a[b],d=a["before"+b.charAt(0).toUpperCase()+b.substr(1)];if(c||d)return"leave"==b&&(d=c,c=null),y.push({event:b,fn:c}),l.push({event:b,fn:d}),!0}function f(b,d,e){var f=[];p(b,function(a){a.fn&&f.push(a)});
+var n=0;p(f,function(b,p){var C=function(){a:{if(d){(d[p]||m)();if(++n<f.length)break a;d=null}e()}};switch(b.event){case "setClass":d.push(b.fn(a,q,z,C));break;case "addClass":d.push(b.fn(a,q||c,C));break;case "removeClass":d.push(b.fn(a,z||c,C));break;default:d.push(b.fn(a,C))}});d&&0===d.length&&e()}var e=a[0];if(e){var h="setClass"==b,r=h||"addClass"==b||"removeClass"==b,q,z;g.isArray(c)&&(q=c[0],z=c[1],c=q+" "+z);var s=a.attr("class")+" "+c;if(S(s)){var t=m,v=[],l=[],w=m,n=[],y=[],s=(" "+s).replace(/\s+/g,
+".");p(Q(s),function(a){!d(a,b)&&h&&(d(a,"addClass"),d(a,"removeClass"))});return{node:e,event:b,className:c,isClassBased:r,isSetClassOperation:h,before:function(a){t=a;f(l,v,function(){t=m;a()})},after:function(a){w=a;f(y,n,function(){w=m;a()})},cancel:function(){v&&(p(v,function(a){(a||m)(!0)}),t(!0));n&&(p(n,function(a){(a||m)(!0)}),w(!0))}}}}}function A(a,b,c,d,f,e,r){function m(d){var e="$animate:"+d;w&&(w[e]&&0<w[e].length)&&E(function(){c.triggerHandler(e,{event:a,className:b})})}function q(){m("before")}
+function z(){m("after")}function s(){m("close");r&&E(function(){r()})}function t(){t.hasBeenRun||(t.hasBeenRun=!0,e())}function v(){if(!v.hasBeenRun){v.hasBeenRun=!0;var d=c.data(h);d&&(l&&l.isClassBased?B(c,b):(E(function(){var d=c.data(h)||{};A==d.index&&B(c,b,a)}),c.data(h,d)));s()}}var l=L(c,a,b);if(l){b=l.className;var w=g.element._data(l.node),w=w&&w.events;d||(d=f?f.parent():c.parent());var n=c.data(h)||{};f=n.active||{};var y=n.totalActive||0,C=n.last;if(l.isClassBased&&(n.disabled||C&&!C.isClassBased)||
+N(c,d))t(),q(),z(),v();else{d=!1;if(0<y){n=[];if(l.isClassBased)"setClass"==C.event?(n.push(C),B(c,b)):f[b]&&(x=f[b],x.event==a?d=!0:(n.push(x),B(c,b)));else if("leave"==a&&f["ng-leave"])d=!0;else{for(var x in f)n.push(f[x]),B(c,x);f={};y=0}0<n.length&&p(n,function(a){a.cancel()})}!l.isClassBased||(l.isSetClassOperation||d)||(d="addClass"==a==c.hasClass(b));if(d)q(),z(),s();else{if("leave"==a)c.one("$destroy",function(a){a=g.element(this);var b=a.data(h);b&&(b=b.active["ng-leave"])&&(b.cancel(),B(a,
+"ng-leave"))});c.addClass(J);var A=O++;y++;f[b]=l;c.data(h,{last:l,active:f,index:A,totalActive:y});q();l.before(function(d){var e=c.data(h);d=d||!e||!e.active[b]||l.isClassBased&&e.active[b].event!=a;t();!0===d?v():(z(),l.after(v))})}}}else t(),q(),z(),v()}function T(a){if(a=e(a))a=g.isFunction(a.getElementsByClassName)?a.getElementsByClassName(J):a.querySelectorAll("."+J),p(a,function(a){a=g.element(a);(a=a.data(h))&&a.active&&p(a.active,function(a){a.cancel()})})}function B(a,b){if(e(a)==e(K))r.disabled||
+(r.running=!1,r.structural=!1);else if(b){var c=a.data(h)||{},d=!0===b;!d&&(c.active&&c.active[b])&&(c.totalActive--,delete c.active[b]);if(d||!c.totalActive)a.removeClass(J),a.removeData(h)}}function N(a,b){if(r.disabled)return!0;if(e(a)==e(K))return r.disabled||r.running;do{if(0===b.length)break;var c=e(b)==e(K),d=c?r:b.data(h),d=d&&(!!d.disabled||d.running||0<d.totalActive);if(c||d)return d;if(c)break}while(b=b.parent());return!0}var O=0;K.data(h,r);H.$$postDigest(function(){H.$$postDigest(function(){r.running=
+!1})});var U=G.classNameFilter(),S=U?function(a){return U.test(a)}:function(){return!0};return{enter:function(a,b,c,d){this.enabled(!1,a);x.enter(a,b,c);H.$$postDigest(function(){a=u(a);A("enter","ng-enter",a,b,c,m,d)})},leave:function(a,b){T(a);this.enabled(!1,a);H.$$postDigest(function(){A("leave","ng-leave",u(a),null,null,function(){x.leave(a)},b)})},move:function(a,b,c,d){T(a);this.enabled(!1,a);x.move(a,b,c);H.$$postDigest(function(){a=u(a);A("move","ng-move",a,b,c,m,d)})},addClass:function(a,
+b,c){a=u(a);A("addClass",b,a,null,null,function(){x.addClass(a,b)},c)},removeClass:function(a,b,c){a=u(a);A("removeClass",b,a,null,null,function(){x.removeClass(a,b)},c)},setClass:function(a,b,c,d){a=u(a);A("setClass",[b,c],a,null,null,function(){x.setClass(a,b,c)},d)},enabled:function(a,b){switch(arguments.length){case 2:if(a)B(b);else{var c=b.data(h)||{};c.disabled=!0;b.data(h,c)}break;case 1:r.disabled=!a;break;default:a=!r.disabled}return!!a}}}]);G.register("",["$window","$sniffer","$timeout",
+"$$animateReflow",function(h,r,u,K){function E(a,k){R&&R();W.push(k);R=K(function(){p(W,function(a){a()});W=[];R=null;M={}})}function H(a,k){var b=e(a);a=g.element(b);Y.push(a);b=Date.now()+1E3*k;b<=fa||(u.cancel(ea),fa=b,ea=u(function(){J(Y);Y=[]},k,!1))}function J(a){p(a,function(a){(a=a.data(n))&&(a.closeAnimationFn||m)()})}function Q(a,k){var b=k?M[k]:null;if(!b){var c=0,d=0,e=0,f=0,n,Z,$,g;p(a,function(a){if(a.nodeType==ba){a=h.getComputedStyle(a)||{};$=a[I+s];c=Math.max(L($),c);g=a[I+t];n=a[I+
+v];d=Math.max(L(n),d);Z=a[q+v];f=Math.max(L(Z),f);var k=L(a[q+s]);0<k&&(k*=parseInt(a[q+l],10)||1);e=Math.max(k,e)}});b={total:0,transitionPropertyStyle:g,transitionDurationStyle:$,transitionDelayStyle:n,transitionDelay:d,transitionDuration:c,animationDelayStyle:Z,animationDelay:f,animationDuration:e};k&&(M[k]=b)}return b}function L(a){var k=0;a=g.isString(a)?a.split(/\s*,\s*/):[];p(a,function(a){k=Math.max(parseFloat(a)||0,k)});return k}function A(a){var k=a.parent(),b=k.data(w);b||(k.data(w,++da),
+b=da);return b+"-"+e(a).className}function T(a,k,b,c){var d=A(k),f=d+" "+b,p=M[f]?++M[f].total:0,g={};if(0<p){var h=b+"-stagger",g=d+" "+h;(d=!M[g])&&k.addClass(h);g=Q(k,g);d&&k.removeClass(h)}c=c||function(a){return a()};k.addClass(b);var h=k.data(n)||{},l=c(function(){return Q(k,f)});c=l.transitionDuration;d=l.animationDuration;if(0===c&&0===d)return k.removeClass(b),!1;k.data(n,{running:h.running||0,itemIndex:p,stagger:g,timings:l,closeAnimationFn:m});a=0<h.running||"setClass"==a;0<c&&B(k,b,a);
+0<d&&(0<g.animationDelay&&0===g.animationDuration)&&(e(k).style[q]="none 0s");return!0}function B(a,b,c){"ng-enter"!=b&&("ng-move"!=b&&"ng-leave"!=b)&&c?a.addClass(y):e(a).style[I+t]="none"}function N(a,b){var c=I+t,d=e(a);d.style[c]&&0<d.style[c].length&&(d.style[c]="");a.removeClass(y)}function O(a){var b=q;a=e(a);a.style[b]&&0<a.style[b].length&&(a.style[b]="")}function U(a,b,c,f){function g(a){b.off(y,h);b.removeClass(r);d(b,c);a=e(b);for(var X in u)a.style.removeProperty(u[X])}function h(a){a.stopPropagation();
+var b=a.originalEvent||a;a=b.$manualTimeStamp||b.timeStamp||Date.now();b=parseFloat(b.elapsedTime.toFixed(C));Math.max(a-A,0)>=x&&b>=v&&f()}var l=e(b);a=b.data(n);if(-1!=l.className.indexOf(c)&&a){var r="";p(c.split(" "),function(a,b){r+=(0<b?" ":"")+a+"-active"});var q=a.stagger,m=a.timings,t=a.itemIndex,v=Math.max(m.transitionDuration,m.animationDuration),w=Math.max(m.transitionDelay,m.animationDelay),x=w*ca,A=Date.now(),y=z+" "+G,s="",u=[];if(0<m.transitionDuration){var B=m.transitionPropertyStyle;
+-1==B.indexOf("all")&&(s+=D+"transition-property: "+B+";",s+=D+"transition-duration: "+m.transitionDurationStyle+";",u.push(D+"transition-property"),u.push(D+"transition-duration"))}0<t&&(0<q.transitionDelay&&0===q.transitionDuration&&(s+=D+"transition-delay: "+S(m.transitionDelayStyle,q.transitionDelay,t)+"; ",u.push(D+"transition-delay")),0<q.animationDelay&&0===q.animationDuration&&(s+=D+"animation-delay: "+S(m.animationDelayStyle,q.animationDelay,t)+"; ",u.push(D+"animation-delay")));0<u.length&&
+(m=l.getAttribute("style")||"",l.setAttribute("style",m+" "+s));b.on(y,h);b.addClass(r);a.closeAnimationFn=function(){g();f()};l=(t*(Math.max(q.animationDelay,q.transitionDelay)||0)+(w+v)*V)*ca;a.running++;H(b,l);return g}f()}function S(a,b,c){var d="";p(a.split(","),function(a,X){d+=(0<X?",":"")+(c*b+parseInt(a,10))+"s"});return d}function a(a,b,c,e){if(T(a,b,c,e))return function(a){a&&d(b,c)}}function b(a,b,c,e){if(b.data(n))return U(a,b,c,e);d(b,c);e()}function c(c,d,e,f){var g=a(c,d,e);if(g){var h=
+g;E(d,function(){N(d,e);O(d);h=b(c,d,e,f)});return function(a){(h||m)(a)}}f()}function d(a,b){a.removeClass(b);var c=a.data(n);c&&(c.running&&c.running--,c.running&&0!==c.running||a.removeData(n))}function f(a,b){var c="";a=g.isArray(a)?a:a.split(/\s+/);p(a,function(a,d){a&&0<a.length&&(c+=(0<d?" ":"")+a+b)});return c}var D="",I,G,q,z;F.ontransitionend===P&&F.onwebkittransitionend!==P?(D="-webkit-",I="WebkitTransition",G="webkitTransitionEnd transitionend"):(I="transition",G="transitionend");F.onanimationend===
+P&&F.onwebkitanimationend!==P?(D="-webkit-",q="WebkitAnimation",z="webkitAnimationEnd animationend"):(q="animation",z="animationend");var s="Duration",t="Property",v="Delay",l="IterationCount",w="$$ngAnimateKey",n="$$ngAnimateCSS3Data",y="ng-animate-block-transitions",C=3,V=1.5,ca=1E3,M={},da=0,W=[],R,ea=null,fa=0,Y=[];return{enter:function(a,b){return c("enter",a,"ng-enter",b)},leave:function(a,b){return c("leave",a,"ng-leave",b)},move:function(a,b){return c("move",a,"ng-move",b)},beforeSetClass:function(b,
+c,d,e){var g=f(d,"-remove")+" "+f(c,"-add"),h=a("setClass",b,g,function(a){var e=b.attr("class");b.removeClass(d);b.addClass(c);a=a();b.attr("class",e);return a});if(h)return E(b,function(){N(b,g);O(b);e()}),h;e()},beforeAddClass:function(b,c,d){var e=a("addClass",b,f(c,"-add"),function(a){b.addClass(c);a=a();b.removeClass(c);return a});if(e)return E(b,function(){N(b,c);O(b);d()}),e;d()},setClass:function(a,c,d,e){d=f(d,"-remove");c=f(c,"-add");return b("setClass",a,d+" "+c,e)},addClass:function(a,
+c,d){return b("addClass",a,f(c,"-add"),d)},beforeRemoveClass:function(b,c,d){var e=a("removeClass",b,f(c,"-remove"),function(a){var d=b.attr("class");b.removeClass(c);a=a();b.attr("class",d);return a});if(e)return E(b,function(){N(b,c);O(b);d()}),e;d()},removeClass:function(a,c,d){return b("removeClass",a,f(c,"-remove"),d)}}}])}])})(window,window.angular);
+//# sourceMappingURL=angular-animate.min.js.map
 /**
  * Restful Resources service for AngularJS apps
  * @version v1.3.1 - 2014-01-29 * @link https://github.com/mgonto/restangular
@@ -31393,9 +31420,1180 @@ app.factory('$fileUploader', [ '$compile', '$rootScope', '$http', '$window', fun
 
     return app;
 }));
+/*! angular-deckgrid (v0.4.1) - Copyright: 2013 - 2014, André König (andre.koenig@posteo.de) - MIT */
+/*
+ * angular-deckgrid
+ *
+ * Copyright(c) 2013-2014 André König <andre.koenig@posteo.de>
+ * MIT Licensed
+ *
+ */
+
+/**
+ * @author André König (andre.koenig@posteo.de)
+ *
+ */
+
+angular.module('akoenig.deckgrid', []);
+
+angular.module('akoenig.deckgrid').directive('deckgrid', [
+
+    'DeckgridDescriptor',
+
+    function initialize (DeckgridDescriptor) {
+
+        'use strict';
+
+        return DeckgridDescriptor.create();
+    }
+]);
+/*
+ * angular-deckgrid
+ *
+ * Copyright(c) 2013-2014 André König <andre.koenig@posteo.de>
+ * MIT Licensed
+ *
+ */
+
+/**
+ * @author André König (andre.koenig@posteo.de)
+ *
+ */
+
+angular.module('akoenig.deckgrid').factory('DeckgridDescriptor', [
+
+    'Deckgrid',
+    '$templateCache',
+
+    function initialize (Deckgrid, $templateCache) {
+
+        'use strict';
+
+        /**
+         * This is a wrapper around the AngularJS
+         * directive description object.
+         *
+         */
+        function Descriptor () {
+            this.restrict = 'AE';
+
+            this.template = '<div data-ng-repeat="column in columns" class="{{layout.classList}}">' +
+                                '<div data-ng-repeat="card in column" data-ng-include="cardTemplate"></div>' +
+                            '</div>';
+
+            this.scope = {
+                'model': '=source'
+            };
+
+            //
+            // Will be created in the linking function.
+            //
+            this.$$deckgrid = null;
+
+            this.transclude = true;
+            this.link = this.$$link.bind(this);
+
+            //
+            // Will be incremented if using inline templates.
+            //
+            this.$$templateKeyIndex = 0;
+
+        }
+
+        /**
+         * @private
+         *
+         * Cleanup method. Will be called when the
+         * deckgrid directive should be destroyed.
+         *
+         */
+        Descriptor.prototype.$$destroy = function $$destroy () {
+            this.$$deckgrid.destroy();
+        };
+
+        /**
+         * @private
+         *
+         * The deckgrid link method. Will instantiate the deckgrid.
+         *
+         */
+        Descriptor.prototype.$$link = function $$link (scope, elem, attrs, nullController, transclude) {
+            var templateKey = 'deckgrid/innerHtmlTemplate' + (++this.$$templateKeyIndex);
+
+            scope.$on('$destroy', this.$$destroy.bind(this));
+
+            if (attrs.cardtemplate === undefined) {
+                if (attrs.cardtemplatestring === undefined) {
+                    // use the provided inner html as template
+                    transclude(scope, function onTransclude (innerHTML) {
+                        var extractedInnerHTML = [],
+                            i = 0,
+                            len = innerHTML.length,
+                            outerHTML;
+
+                        for (i; i < len; i = i + 1) {
+                            outerHTML = innerHTML[i].outerHTML;
+
+                            if (outerHTML !== undefined) {
+                                extractedInnerHTML.push(outerHTML);
+                            }
+                        }
+
+                        $templateCache.put(templateKey, extractedInnerHTML.join());
+                    });
+                } else {
+                    // use the provided template string
+                    //
+                    // note: the attr is accessed via the elem object, as the attrs content
+                    // is already compiled and thus lacks the {{...}} expressions
+                    $templateCache.put(templateKey, elem.attr('cardtemplatestring'));
+                }
+
+                scope.cardTemplate = templateKey;
+            } else {
+                // use the provided template file
+                scope.cardTemplate = attrs.cardtemplate;
+            }
+
+            scope.mother = scope.$parent;
+
+            this.$$deckgrid = Deckgrid.create(scope, elem[0]);
+        };
+
+        return {
+            create : function create () {
+                return new Descriptor();
+            }
+        };
+    }
+]);
+
+/*
+ * angular-deckgrid
+ *
+ * Copyright(c) 2013-2014 André König <andre.koenig@posteo.de>
+ * MIT Licensed
+ *
+ */
+
+/**
+ * @author André König (andre.koenig@posteo.de)
+ *
+ */
+
+angular.module('akoenig.deckgrid').factory('Deckgrid', [
+
+    '$window',
+    '$log',
+
+    function initialize ($window, $log) {
+
+        'use strict';
+
+        /**
+         * The deckgrid directive.
+         *
+         */
+        function Deckgrid (scope, element) {
+            var self = this,
+                watcher;
+
+            this.$$elem = element;
+            this.$$watchers = [];
+
+            this.$$scope = scope;
+            this.$$scope.columns = [];
+
+            //
+            // The layout configuration will be parsed from
+            // the pseudo "before element." There you have to save all
+            // the column configurations.
+            //
+            this.$$scope.layout = this.$$getLayout();
+
+            this.$$createColumns();
+
+            //
+            // Register model change.
+            //
+            watcher = this.$$scope.$watch('model', this.$$onModelChange.bind(this), true);
+            this.$$watchers.push(watcher);
+
+            //
+            // Register media query change events.
+            //
+            angular.forEach(self.$$getMediaQueries(), function onIteration (rule) {
+                function onDestroy () {
+                    rule.removeListener(self.$$onMediaQueryChange.bind(self));
+                }
+
+                rule.addListener(self.$$onMediaQueryChange.bind(self));
+
+                self.$$watchers.push(onDestroy);
+            });
+
+            angular.element(window).on('resize', self.$$onMediaQueryChange.bind(self));
+        }
+
+        /**
+         * @private
+         *
+         * Extracts the media queries out of the stylesheets.
+         *
+         * This method will fetch the media queries out of the stylesheets that are
+         * responsible for styling the angular-deckgrid.
+         *
+         * @return {array} An array with all respective styles.
+         *
+         */
+        Deckgrid.prototype.$$getMediaQueries = function $$getMediaQueries () {
+            var stylesheets = [],
+                mediaQueries = [];
+
+            stylesheets = Array.prototype.concat.call(
+                Array.prototype.slice.call(document.querySelectorAll('style[type=\'text/css\']')),
+                Array.prototype.slice.call(document.querySelectorAll('link[rel=\'stylesheet\']'))
+            );
+
+            function extractRules (stylesheet) {
+                try {
+                    return (stylesheet.sheet.cssRules || []);
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            function hasDeckgridStyles (rule) {
+                var regexe   = /\[(\w*-)?deckgrid\]::?before/g,
+                    i        = 0,
+                    selector = '';
+
+                if (!rule.media || angular.isUndefined(rule.cssRules)) {
+                    return false;
+                }
+
+                i = rule.cssRules.length - 1;
+
+                for (i; i >= 0; i = i - 1) {
+                    selector = rule.cssRules[i].selectorText;
+
+                    if (angular.isDefined(selector) && selector.match(regexe)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            angular.forEach(stylesheets, function onIteration (stylesheet) {
+                var rules = extractRules(stylesheet);
+
+                angular.forEach(rules, function inRuleIteration (rule) {
+                    if (hasDeckgridStyles(rule)) {
+                        mediaQueries.push($window.matchMedia(rule.media.mediaText));
+                    }
+                });
+            });
+
+            return mediaQueries;
+        };
+
+        /**
+         * @private
+         *
+         * Creates the column segmentation. With other words:
+         * This method creates the internal data structure from the
+         * passed "source" attribute. Every card within this "source"
+         * model will be passed into this internal column structure by
+         * reference. So if you modify the data within your controller
+         * this directive will reflect these changes immediately.
+         *
+         * NOTE that calling this method will trigger a complete template "redraw".
+         *
+         */
+        Deckgrid.prototype.$$createColumns = function $$createColumns () {
+            var self = this;
+
+            if (!this.$$scope.layout) {
+                return $log.error('angular-deckgrid: No CSS configuration found (see ' +
+                                   'https://github.com/akoenig/angular-deckgrid#the-grid-configuration)');
+            }
+
+            this.$$scope.columns = [];
+
+            angular.forEach(this.$$scope.model, function onIteration (card, index) {
+                var column = (index % self.$$scope.layout.columns) | 0;
+
+                if (!self.$$scope.columns[column]) {
+                    self.$$scope.columns[column] = [];
+                }
+
+                card.$index = index;
+                self.$$scope.columns[column].push(card);
+            });
+        };
+
+        /**
+         * @private
+         *
+         * Parses the configuration out of the configured CSS styles.
+         *
+         * Example:
+         *
+         *     .deckgrid::before {
+         *         content: '3 .column.size-1-3';
+         *     }
+         *
+         * Will result in a three column grid where each column will have the
+         * classes: "column size-1-3".
+         *
+         * You are responsible for defining the respective styles within your CSS.
+         *
+         */
+        Deckgrid.prototype.$$getLayout = function $$getLayout () {
+            var content = $window.getComputedStyle(this.$$elem, ':before').content,
+                layout;
+
+            if (content) {
+                content = content.replace(/'/g, '');  // before e.g. '3 .column.size-1of3'
+                content = content.replace(/"/g, '');  // before e.g. "3 .column.size-1of3"
+                content = content.split(' ');
+
+                if (2 === content.length) {
+                    layout = {};
+                    layout.columns = (content[0] | 0);
+                    layout.classList = content[1].replace(/\./g, ' ').trim();
+                }
+            }
+
+            return layout;
+        };
+
+        /**
+         * @private
+         *
+         * Event that will be triggered if a CSS media query changed.
+         *
+         */
+        Deckgrid.prototype.$$onMediaQueryChange = function $$onMediaQueryChange () {
+            var self = this,
+                layout = this.$$getLayout();
+
+            //
+            // Okay, the layout has changed.
+            // Creating a new column structure is not avoidable.
+            //
+            if (layout.columns !== this.$$scope.layout.columns) {
+                self.$$scope.layout = layout;
+
+                self.$$scope.$apply(function onApply () {
+                    self.$$createColumns();
+                });
+            }
+        };
+
+        /**
+         * @private
+         *
+         * Event that will be triggered when the source model has changed.
+         *
+         */
+        Deckgrid.prototype.$$onModelChange = function $$onModelChange (newModel, oldModel) {
+            var self = this;
+
+            newModel = newModel || [];
+            oldModel = oldModel || [];
+
+            if (oldModel.length !== newModel.length) {
+                self.$$createColumns();
+            }
+        };
+
+        /**
+         * Destroys the directive. Takes care of cleaning all
+         * watchers and event handlers.
+         *
+         */
+        Deckgrid.prototype.destroy = function destroy () {
+            var i = this.$$watchers.length - 1;
+
+            for (i; i >= 0; i = i - 1) {
+                this.$$watchers[i]();
+            }
+        };
+
+        return {
+            create : function create (scope, element) {
+                return new Deckgrid(scope, element);
+            }
+        };
+    }
+]);
+/**
+ * @name InfoBox
+ * @version 1.1.5 [March 1, 2011]
+ * @author Gary Little (inspired by proof-of-concept code from Pamela Fox of Google)
+ * @copyright Copyright 2010 Gary Little [gary at luxcentral.com]
+ * @fileoverview InfoBox extends the Google Maps JavaScript API V3 <tt>OverlayView</tt> class.
+ *  <p>
+ *  An InfoBox behaves like a <tt>google.maps.InfoWindow</tt>, but it supports several
+ *  additional properties for advanced styling. An InfoBox can also be used as a map label.
+ *  <p>
+ *  An InfoBox also fires the same events as a <tt>google.maps.InfoWindow</tt>.
+ *  <p>
+ *  Browsers tested:
+ *  <p>
+ *  Mac -- Safari (4.0.4), Firefox (3.6), Opera (10.10), Chrome (4.0.249.43), OmniWeb (5.10.1)
+ *  <br>
+ *  Win -- Safari, Firefox, Opera, Chrome (3.0.195.38), Internet Explorer (8.0.6001.18702)
+ *  <br>
+ *  iPod Touch/iPhone -- Safari (3.1.2)
+ */
+
+/*!
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*jslint browser:true */
+/*global google */
+
+/**
+ * @name InfoBoxOptions
+ * @class This class represents the optional parameter passed to the {@link InfoBox} constructor.
+ * @property {string|Node} content The content of the InfoBox (plain text or an HTML DOM node).
+ * @property {boolean} disableAutoPan Disable auto-pan on <tt>open</tt> (default is <tt>false</tt>).
+ * @property {number} maxWidth The maximum width (in pixels) of the InfoBox. Set to 0 if no maximum.
+ * @property {Size} pixelOffset The offset (in pixels) from the top left corner of the InfoBox
+ *  (or the bottom left corner if the <code>alignBottom</code> property is <code>true</code>)
+ *  to the map pixel corresponding to <tt>position</tt>.
+ * @property {LatLng} position The geographic location at which to display the InfoBox.
+ * @property {number} zIndex The CSS z-index style value for the InfoBox.
+ *  Note: This value overrides a zIndex setting specified in the <tt>boxStyle</tt> property.
+ * @property {string} boxClass The name of the CSS class defining the styles for the InfoBox container.
+ *  The default name is <code>infoBox</code>.
+ * @property {Object} [boxStyle] An object literal whose properties define specific CSS
+ *  style values to be applied to the InfoBox. Style values defined here override those that may
+ *  be defined in the <code>boxClass</code> style sheet. If this property is changed after the
+ *  InfoBox has been created, all previously set styles (except those defined in the style sheet)
+ *  are removed from the InfoBox before the new style values are applied.
+ * @property {string} closeBoxMargin The CSS margin style value for the close box.
+ *  The default is "2px" (a 2-pixel margin on all sides).
+ * @property {string} closeBoxURL The URL of the image representing the close box.
+ *  Note: The default is the URL for Google's standard close box.
+ *  Set this property to "" if no close box is required.
+ * @property {Size} infoBoxClearance Minimum offset (in pixels) from the InfoBox to the
+ *  map edge after an auto-pan.
+ * @property {boolean} isHidden Hide the InfoBox on <tt>open</tt> (default is <tt>false</tt>).
+ * @property {boolean} alignBottom Align the bottom left corner of the InfoBox to the <code>position</code>
+ *  location (default is <tt>false</tt> which means that the top left corner of the InfoBox is aligned).
+ * @property {string} pane The pane where the InfoBox is to appear (default is "floatPane").
+ *  Set the pane to "mapPane" if the InfoBox is being used as a map label.
+ *  Valid pane names are the property names for the <tt>google.maps.MapPanes</tt> object.
+ * @property {boolean} enableEventPropagation Propagate mousedown, click, dblclick,
+ *  and contextmenu events in the InfoBox (default is <tt>false</tt> to mimic the behavior
+ *  of a <tt>google.maps.InfoWindow</tt>). Set this property to <tt>true</tt> if the InfoBox
+ *  is being used as a map label. iPhone note: This property setting has no effect; events are
+ *  always propagated.
+ */
+
+/**
+ * Creates an InfoBox with the options specified in {@link InfoBoxOptions}.
+ *  Call <tt>InfoBox.open</tt> to add the box to the map.
+ * @constructor
+ * @param {InfoBoxOptions} [opt_opts]
+ */
+function InfoBox(opt_opts) {
+
+  opt_opts = opt_opts || {};
+
+  google.maps.OverlayView.apply(this, arguments);
+
+  // Standard options (in common with google.maps.InfoWindow):
+  //
+  this.content_ = opt_opts.content || "";
+  this.disableAutoPan_ = opt_opts.disableAutoPan || false;
+  this.maxWidth_ = opt_opts.maxWidth || 0;
+  this.pixelOffset_ = opt_opts.pixelOffset || new google.maps.Size(0, 0);
+  this.position_ = opt_opts.position || new google.maps.LatLng(0, 0);
+  this.zIndex_ = opt_opts.zIndex || null;
+
+  // Additional options (unique to InfoBox):
+  //
+  this.boxClass_ = opt_opts.boxClass || "infoBox";
+  this.boxStyle_ = opt_opts.boxStyle || {};
+  this.closeBoxMargin_ = opt_opts.closeBoxMargin || "2px";
+  this.closeBoxURL_ = opt_opts.closeBoxURL || "http://www.google.com/intl/en_us/mapfiles/close.gif";
+  if (opt_opts.closeBoxURL === "") {
+    this.closeBoxURL_ = "";
+  }
+  this.infoBoxClearance_ = opt_opts.infoBoxClearance || new google.maps.Size(1, 1);
+  this.isHidden_ = opt_opts.isHidden || false;
+  this.alignBottom_ = opt_opts.alignBottom || false;
+  this.pane_ = opt_opts.pane || "floatPane";
+  this.enableEventPropagation_ = opt_opts.enableEventPropagation || false;
+
+  this.div_ = null;
+  this.closeListener_ = null;
+  this.eventListener1_ = null;
+  this.eventListener2_ = null;
+  this.eventListener3_ = null;
+  this.moveListener_ = null;
+  this.contextListener_ = null;
+  this.fixedWidthSet_ = null;
+}
+
+/* InfoBox extends OverlayView in the Google Maps API v3.
+ */
+InfoBox.prototype = new google.maps.OverlayView();
+
+/**
+ * Creates the DIV representing the InfoBox.
+ * @private
+ */
+InfoBox.prototype.createInfoBoxDiv_ = function () {
+
+  var bw;
+  var me = this;
+
+  // This handler prevents an event in the InfoBox from being passed on to the map.
+  //
+  var cancelHandler = function (e) {
+    e.cancelBubble = true;
+
+    if (e.stopPropagation) {
+
+      e.stopPropagation();
+    }
+  };
+
+  // This handler ignores the current event in the InfoBox and conditionally prevents
+  // the event from being passed on to the map. It is used for the contextmenu event.
+  //
+  var ignoreHandler = function (e) {
+
+    e.returnValue = false;
+
+    if (e.preventDefault) {
+
+      e.preventDefault();
+    }
+
+    if (!me.enableEventPropagation_) {
+
+      cancelHandler(e);
+    }
+  };
+
+  if (!this.div_) {
+
+    this.div_ = document.createElement("div");
+
+    this.setBoxStyle_();
+
+    if (typeof this.content_.nodeType === "undefined") {
+      this.div_.innerHTML = this.getCloseBoxImg_() + this.content_;
+    } else {
+      this.div_.innerHTML = this.getCloseBoxImg_();
+      this.div_.appendChild(this.content_);
+    }
+
+    // Add the InfoBox DIV to the DOM
+    this.getPanes()[this.pane_].appendChild(this.div_);
+
+    this.addClickHandler_();
+
+    if (this.div_.style.width) {
+
+      this.fixedWidthSet_ = true;
+
+    } else {
+
+      if (this.maxWidth_ !== 0 && this.div_.offsetWidth > this.maxWidth_) {
+
+        this.div_.style.width = this.maxWidth_;
+        this.div_.style.overflow = "auto";
+        this.fixedWidthSet_ = true;
+
+      } else { // The following code is needed to overcome problems with MSIE
+
+        bw = this.getBoxWidths_();
+
+        this.div_.style.width = (this.div_.offsetWidth - bw.left - bw.right) + "px";
+        this.fixedWidthSet_ = false;
+      }
+    }
+
+    this.panBox_(this.disableAutoPan_);
+
+    if (!this.enableEventPropagation_) {
+
+      // Cancel event propagation.
+      //
+      this.eventListener1_ = google.maps.event.addDomListener(this.div_, "mousedown", cancelHandler);
+      this.eventListener2_ = google.maps.event.addDomListener(this.div_, "click", cancelHandler);
+      this.eventListener3_ = google.maps.event.addDomListener(this.div_, "dblclick", cancelHandler);
+    }
+
+    this.contextListener_ = google.maps.event.addDomListener(this.div_, "contextmenu", ignoreHandler);
+
+    /**
+     * This event is fired when the DIV containing the InfoBox's content is attached to the DOM.
+     * @name InfoBox#domready
+     * @event
+     */
+    google.maps.event.trigger(this, "domready");
+  }
+};
+
+/**
+ * Returns the HTML <IMG> tag for the close box.
+ * @private
+ */
+InfoBox.prototype.getCloseBoxImg_ = function () {
+
+  var img = "";
+
+  if (this.closeBoxURL_ !== "") {
+
+    img  = "<img";
+    img += " src='" + this.closeBoxURL_ + "'";
+    img += " align=right"; // Do this because Opera chokes on style='float: right;'
+    img += " style='";
+    img += " position: relative;"; // Required by MSIE
+    img += " cursor: pointer;";
+    img += " margin: " + this.closeBoxMargin_ + ";";
+    img += "'>";
+  }
+
+  return img;
+};
+
+/**
+ * Adds the click handler to the InfoBox close box.
+ * @private
+ */
+InfoBox.prototype.addClickHandler_ = function () {
+
+  var closeBox;
+
+  if (this.closeBoxURL_ !== "") {
+
+    closeBox = this.div_.firstChild;
+    this.closeListener_ = google.maps.event.addDomListener(closeBox, 'click', this.getCloseClickHandler_());
+
+  } else {
+
+    this.closeListener_ = null;
+  }
+};
+
+/**
+ * Returns the function to call when the user clicks the close box of an InfoBox.
+ * @private
+ */
+InfoBox.prototype.getCloseClickHandler_ = function () {
+
+  var me = this;
+
+  return function (e) {
+
+    // 1.0.3 fix: Always prevent propagation of a close box click to the map:
+    e.cancelBubble = true;
+
+    if (e.stopPropagation) {
+
+      e.stopPropagation();
+    }
+
+    me.close();
+
+    /**
+     * This event is fired when the InfoBox's close box is clicked.
+     * @name InfoBox#closeclick
+     * @event
+     */
+    google.maps.event.trigger(me, "closeclick");
+  };
+};
+
+/**
+ * Pans the map so that the InfoBox appears entirely within the map's visible area.
+ * @private
+ */
+InfoBox.prototype.panBox_ = function (disablePan) {
+
+  var map;
+  var bounds;
+  var xOffset = 0, yOffset = 0;
+
+  if (!disablePan) {
+
+    map = this.getMap();
+
+    if (map instanceof google.maps.Map) { // Only pan if attached to map, not panorama
+
+      if (!map.getBounds().contains(this.position_)) {
+      // Marker not in visible area of map, so set center
+      // of map to the marker position first.
+        map.setCenter(this.position_);
+      }
+
+      bounds = map.getBounds();
+
+      var mapDiv = map.getDiv();
+      var mapWidth = mapDiv.offsetWidth;
+      var mapHeight = mapDiv.offsetHeight;
+      var iwOffsetX = this.pixelOffset_.width;
+      var iwOffsetY = this.pixelOffset_.height;
+      var iwWidth = this.div_.offsetWidth;
+      var iwHeight = this.div_.offsetHeight;
+      var padX = this.infoBoxClearance_.width;
+      var padY = this.infoBoxClearance_.height;
+      var pixPosition = this.getProjection().fromLatLngToContainerPixel(this.position_);
+
+      if (pixPosition.x < (-iwOffsetX + padX)) {
+        xOffset = pixPosition.x + iwOffsetX - padX;
+      } else if ((pixPosition.x + iwWidth + iwOffsetX + padX) > mapWidth) {
+        xOffset = pixPosition.x + iwWidth + iwOffsetX + padX - mapWidth;
+      }
+      if (this.alignBottom_) {
+        if (pixPosition.y < (-iwOffsetY + padY + iwHeight)) {
+          yOffset = pixPosition.y + iwOffsetY - padY - iwHeight;
+        } else if ((pixPosition.y + iwOffsetY + padY) > mapHeight) {
+          yOffset = pixPosition.y + iwOffsetY + padY - mapHeight;
+        }
+      } else {
+        if (pixPosition.y < (-iwOffsetY + padY)) {
+          yOffset = pixPosition.y + iwOffsetY - padY;
+        } else if ((pixPosition.y + iwHeight + iwOffsetY + padY) > mapHeight) {
+          yOffset = pixPosition.y + iwHeight + iwOffsetY + padY - mapHeight;
+        }
+      }
+
+      if (!(xOffset === 0 && yOffset === 0)) {
+
+        // Move the map to the shifted center.
+        //
+        var c = map.getCenter();
+        map.panBy(xOffset, yOffset);
+      }
+    }
+  }
+};
+
+/**
+ * Sets the style of the InfoBox by setting the style sheet and applying
+ * other specific styles requested.
+ * @private
+ */
+InfoBox.prototype.setBoxStyle_ = function () {
+
+  var i, boxStyle;
+
+  if (this.div_) {
+
+    // Apply style values from the style sheet defined in the boxClass parameter:
+    this.div_.className = this.boxClass_;
+
+    // Clear existing inline style values:
+    this.div_.style.cssText = "";
+
+    // Apply style values defined in the boxStyle parameter:
+    boxStyle = this.boxStyle_;
+    for (i in boxStyle) {
+
+      if (boxStyle.hasOwnProperty(i)) {
+
+        this.div_.style[i] = boxStyle[i];
+      }
+    }
+
+    // Fix up opacity style for benefit of MSIE:
+    //
+    if (typeof this.div_.style.opacity !== "undefined" && this.div_.style.opacity !== "") {
+
+      this.div_.style.filter = "alpha(opacity=" + (this.div_.style.opacity * 100) + ")";
+    }
+
+    // Apply required styles:
+    //
+    this.div_.style.position = "absolute";
+    this.div_.style.visibility = 'hidden';
+    if (this.zIndex_ !== null) {
+
+      this.div_.style.zIndex = this.zIndex_;
+    }
+  }
+};
+
+/**
+ * Get the widths of the borders of the InfoBox.
+ * @private
+ * @return {Object} widths object (top, bottom left, right)
+ */
+InfoBox.prototype.getBoxWidths_ = function () {
+
+  var computedStyle;
+  var bw = {top: 0, bottom: 0, left: 0, right: 0};
+  var box = this.div_;
+
+  if (document.defaultView && document.defaultView.getComputedStyle) {
+
+    computedStyle = box.ownerDocument.defaultView.getComputedStyle(box, "");
+
+    if (computedStyle) {
+
+      // The computed styles are always in pixel units (good!)
+      bw.top = parseInt(computedStyle.borderTopWidth, 10) || 0;
+      bw.bottom = parseInt(computedStyle.borderBottomWidth, 10) || 0;
+      bw.left = parseInt(computedStyle.borderLeftWidth, 10) || 0;
+      bw.right = parseInt(computedStyle.borderRightWidth, 10) || 0;
+    }
+
+  } else if (document.documentElement.currentStyle) { // MSIE
+
+    if (box.currentStyle) {
+
+      // The current styles may not be in pixel units, but assume they are (bad!)
+      bw.top = parseInt(box.currentStyle.borderTopWidth, 10) || 0;
+      bw.bottom = parseInt(box.currentStyle.borderBottomWidth, 10) || 0;
+      bw.left = parseInt(box.currentStyle.borderLeftWidth, 10) || 0;
+      bw.right = parseInt(box.currentStyle.borderRightWidth, 10) || 0;
+    }
+  }
+
+  return bw;
+};
+
+/**
+ * Invoked when <tt>close</tt> is called. Do not call it directly.
+ */
+InfoBox.prototype.onRemove = function () {
+
+  if (this.div_) {
+
+    this.div_.parentNode.removeChild(this.div_);
+    this.div_ = null;
+  }
+};
+
+/**
+ * Draws the InfoBox based on the current map projection and zoom level.
+ */
+InfoBox.prototype.draw = function () {
+
+  this.createInfoBoxDiv_();
+
+  var pixPosition = this.getProjection().fromLatLngToDivPixel(this.position_);
+
+  this.div_.style.left = (pixPosition.x + this.pixelOffset_.width) + "px";
+  
+  if (this.alignBottom_) {
+    this.div_.style.bottom = -(pixPosition.y + this.pixelOffset_.height) + "px";
+  } else {
+    this.div_.style.top = (pixPosition.y + this.pixelOffset_.height) + "px";
+  }
+
+  if (this.isHidden_) {
+
+    this.div_.style.visibility = 'hidden';
+
+  } else {
+
+    this.div_.style.visibility = "visible";
+  }
+};
+
+/**
+ * Sets the options for the InfoBox. Note that changes to the <tt>maxWidth</tt>,
+ *  <tt>closeBoxMargin</tt>, <tt>closeBoxURL</tt>, and <tt>enableEventPropagation</tt>
+ *  properties have no affect until the current InfoBox is <tt>close</tt>d and a new one
+ *  is <tt>open</tt>ed.
+ * @param {InfoBoxOptions} opt_opts
+ */
+InfoBox.prototype.setOptions = function (opt_opts) {
+  if (typeof opt_opts.boxClass !== "undefined") { // Must be first
+
+    this.boxClass_ = opt_opts.boxClass;
+    this.setBoxStyle_();
+  }
+  if (typeof opt_opts.boxStyle !== "undefined") { // Must be second
+
+    this.boxStyle_ = opt_opts.boxStyle;
+    this.setBoxStyle_();
+  }
+  if (typeof opt_opts.content !== "undefined") {
+
+    this.setContent(opt_opts.content);
+  }
+  if (typeof opt_opts.disableAutoPan !== "undefined") {
+
+    this.disableAutoPan_ = opt_opts.disableAutoPan;
+  }
+  if (typeof opt_opts.maxWidth !== "undefined") {
+
+    this.maxWidth_ = opt_opts.maxWidth;
+  }
+  if (typeof opt_opts.pixelOffset !== "undefined") {
+
+    this.pixelOffset_ = opt_opts.pixelOffset;
+  }
+  if (typeof opt_opts.position !== "undefined") {
+
+    this.setPosition(opt_opts.position);
+  }
+  if (typeof opt_opts.zIndex !== "undefined") {
+
+    this.setZIndex(opt_opts.zIndex);
+  }
+  if (typeof opt_opts.closeBoxMargin !== "undefined") {
+
+    this.closeBoxMargin_ = opt_opts.closeBoxMargin;
+  }
+  if (typeof opt_opts.closeBoxURL !== "undefined") {
+
+    this.closeBoxURL_ = opt_opts.closeBoxURL;
+  }
+  if (typeof opt_opts.infoBoxClearance !== "undefined") {
+
+    this.infoBoxClearance_ = opt_opts.infoBoxClearance;
+  }
+  if (typeof opt_opts.isHidden !== "undefined") {
+
+    this.isHidden_ = opt_opts.isHidden;
+  }
+  if (typeof opt_opts.enableEventPropagation !== "undefined") {
+
+    this.enableEventPropagation_ = opt_opts.enableEventPropagation;
+  }
+
+  if (this.div_) {
+
+    this.draw();
+  }
+};
+
+/**
+ * Sets the content of the InfoBox.
+ *  The content can be plain text or an HTML DOM node.
+ * @param {string|Node} content
+ */
+InfoBox.prototype.setContent = function (content) {
+  this.content_ = content;
+
+  if (this.div_) {
+
+    if (this.closeListener_) {
+
+      google.maps.event.removeListener(this.closeListener_);
+      this.closeListener_ = null;
+    }
+
+    // Odd code required to make things work with MSIE.
+    //
+    if (!this.fixedWidthSet_) {
+
+      this.div_.style.width = "";
+    }
+
+    if (typeof content.nodeType === "undefined") {
+      this.div_.innerHTML = this.getCloseBoxImg_() + content;
+    } else {
+      this.div_.innerHTML = this.getCloseBoxImg_();
+      this.div_.appendChild(content);
+    }
+
+    // Perverse code required to make things work with MSIE.
+    // (Ensures the close box does, in fact, float to the right.)
+    //
+    if (!this.fixedWidthSet_) {
+
+      this.div_.style.width = this.div_.offsetWidth + "px";
+      this.div_.innerHTML = this.getCloseBoxImg_() + content;
+    }
+
+    this.addClickHandler_();
+  }
+
+  /**
+   * This event is fired when the content of the InfoBox changes.
+   * @name InfoBox#content_changed
+   * @event
+   */
+  google.maps.event.trigger(this, "content_changed");
+};
+
+/**
+ * Sets the geographic location of the InfoBox.
+ * @param {LatLng} latlng
+ */
+InfoBox.prototype.setPosition = function (latlng) {
+
+  this.position_ = latlng;
+
+  if (this.div_) {
+
+    this.draw();
+  }
+
+  /**
+   * This event is fired when the position of the InfoBox changes.
+   * @name InfoBox#position_changed
+   * @event
+   */
+  google.maps.event.trigger(this, "position_changed");
+};
+
+/**
+ * Sets the zIndex style for the InfoBox.
+ * @param {number} index
+ */
+InfoBox.prototype.setZIndex = function (index) {
+
+  this.zIndex_ = index;
+
+  if (this.div_) {
+
+    this.div_.style.zIndex = index;
+  }
+
+  /**
+   * This event is fired when the zIndex of the InfoBox changes.
+   * @name InfoBox#zindex_changed
+   * @event
+   */
+  google.maps.event.trigger(this, "zindex_changed");
+};
+
+/**
+ * Returns the content of the InfoBox.
+ * @returns {string}
+ */
+InfoBox.prototype.getContent = function () {
+
+  return this.content_;
+};
+
+/**
+ * Returns the geographic location of the InfoBox.
+ * @returns {LatLng}
+ */
+InfoBox.prototype.getPosition = function () {
+
+  return this.position_;
+};
+
+/**
+ * Returns the zIndex for the InfoBox.
+ * @returns {number}
+ */
+InfoBox.prototype.getZIndex = function () {
+
+  return this.zIndex_;
+};
+
+/**
+ * Shows the InfoBox.
+ */
+InfoBox.prototype.show = function () {
+
+  this.isHidden_ = false;
+  if (this.div_) {
+    this.div_.style.visibility = "visible";
+  }
+};
+
+/**
+ * Hides the InfoBox.
+ */
+InfoBox.prototype.hide = function () {
+
+  this.isHidden_ = true;
+  if (this.div_) {
+    this.div_.style.visibility = "hidden";
+  }
+};
+
+/**
+ * Adds the InfoBox to the specified map or Street View panorama. If <tt>anchor</tt>
+ *  (usually a <tt>google.maps.Marker</tt>) is specified, the position
+ *  of the InfoBox is set to the position of the <tt>anchor</tt>. If the
+ *  anchor is dragged to a new location, the InfoBox moves as well.
+ * @param {Map|StreetViewPanorama} map
+ * @param {MVCObject} [anchor]
+ */
+InfoBox.prototype.open = function (map, anchor) {
+
+  var me = this;
+
+  if (anchor) {
+
+    this.position_ = anchor.getPosition();
+    this.moveListener_ = google.maps.event.addListener(anchor, "position_changed", function () {
+      me.setPosition(this.getPosition());
+    });
+  }
+
+  this.setMap(map);
+
+  if (this.div_) {
+
+    this.panBox_();
+  }
+};
+
+/**
+ * Removes the InfoBox from the map.
+ */
+InfoBox.prototype.close = function () {
+
+  if (this.closeListener_) {
+
+    google.maps.event.removeListener(this.closeListener_);
+    this.closeListener_ = null;
+  }
+
+  if (this.eventListener1_) {
+
+    google.maps.event.removeListener(this.eventListener1_);
+    google.maps.event.removeListener(this.eventListener2_);
+    google.maps.event.removeListener(this.eventListener3_);
+    this.eventListener1_ = null;
+    this.eventListener2_ = null;
+    this.eventListener3_ = null;
+  }
+
+  if (this.moveListener_) {
+
+    google.maps.event.removeListener(this.moveListener_);
+    this.moveListener_ = null;
+  }
+
+  if (this.contextListener_) {
+
+    google.maps.event.removeListener(this.contextListener_);
+    this.contextListener_ = null;
+  }
+
+  this.setMap(null);
+};
+
+/*! pace 0.5.1 */
+(function(){var a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W=[].slice,X={}.hasOwnProperty,Y=function(a,b){function c(){this.constructor=a}for(var d in b)X.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new c,a.__super__=b.prototype,a},Z=[].indexOf||function(a){for(var b=0,c=this.length;c>b;b++)if(b in this&&this[b]===a)return b;return-1};for(t={catchupTime:500,initialRate:.03,minTime:500,ghostTime:500,maxProgressPerFrame:10,easeFactor:1.25,startOnPageLoad:!0,restartOnPushState:!0,restartOnRequestAfter:500,target:"body",elements:{checkInterval:100,selectors:["body"]},eventLag:{minSamples:10,sampleCount:3,lagThreshold:3},ajax:{trackMethods:["GET"],trackWebSockets:!0,ignoreURLs:[]}},B=function(){var a;return null!=(a="undefined"!=typeof performance&&null!==performance?"function"==typeof performance.now?performance.now():void 0:void 0)?a:+new Date},D=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame,s=window.cancelAnimationFrame||window.mozCancelAnimationFrame,null==D&&(D=function(a){return setTimeout(a,50)},s=function(a){return clearTimeout(a)}),F=function(a){var b,c;return b=B(),(c=function(){var d;return d=B()-b,d>=33?(b=B(),a(d,function(){return D(c)})):setTimeout(c,33-d)})()},E=function(){var a,b,c;return c=arguments[0],b=arguments[1],a=3<=arguments.length?W.call(arguments,2):[],"function"==typeof c[b]?c[b].apply(c,a):c[b]},u=function(){var a,b,c,d,e,f,g;for(b=arguments[0],d=2<=arguments.length?W.call(arguments,1):[],f=0,g=d.length;g>f;f++)if(c=d[f])for(a in c)X.call(c,a)&&(e=c[a],null!=b[a]&&"object"==typeof b[a]&&null!=e&&"object"==typeof e?u(b[a],e):b[a]=e);return b},p=function(a){var b,c,d,e,f;for(c=b=0,e=0,f=a.length;f>e;e++)d=a[e],c+=Math.abs(d),b++;return c/b},w=function(a,b){var c,d,e;if(null==a&&(a="options"),null==b&&(b=!0),e=document.querySelector("[data-pace-"+a+"]")){if(c=e.getAttribute("data-pace-"+a),!b)return c;try{return JSON.parse(c)}catch(f){return d=f,"undefined"!=typeof console&&null!==console?console.error("Error parsing inline pace options",d):void 0}}},g=function(){function a(){}return a.prototype.on=function(a,b,c,d){var e;return null==d&&(d=!1),null==this.bindings&&(this.bindings={}),null==(e=this.bindings)[a]&&(e[a]=[]),this.bindings[a].push({handler:b,ctx:c,once:d})},a.prototype.once=function(a,b,c){return this.on(a,b,c,!0)},a.prototype.off=function(a,b){var c,d,e;if(null!=(null!=(d=this.bindings)?d[a]:void 0)){if(null==b)return delete this.bindings[a];for(c=0,e=[];c<this.bindings[a].length;)this.bindings[a][c].handler===b?e.push(this.bindings[a].splice(c,1)):e.push(c++);return e}},a.prototype.trigger=function(){var a,b,c,d,e,f,g,h,i;if(c=arguments[0],a=2<=arguments.length?W.call(arguments,1):[],null!=(g=this.bindings)?g[c]:void 0){for(e=0,i=[];e<this.bindings[c].length;)h=this.bindings[c][e],d=h.handler,b=h.ctx,f=h.once,d.apply(null!=b?b:this,a),f?i.push(this.bindings[c].splice(e,1)):i.push(e++);return i}},a}(),null==window.Pace&&(window.Pace={}),u(Pace,g.prototype),C=Pace.options=u({},t,window.paceOptions,w()),T=["ajax","document","eventLag","elements"],P=0,R=T.length;R>P;P++)J=T[P],C[J]===!0&&(C[J]=t[J]);i=function(a){function b(){return U=b.__super__.constructor.apply(this,arguments)}return Y(b,a),b}(Error),b=function(){function a(){this.progress=0}return a.prototype.getElement=function(){var a;if(null==this.el){if(a=document.querySelector(C.target),!a)throw new i;this.el=document.createElement("div"),this.el.className="pace pace-active",document.body.className=document.body.className.replace(/pace-done/g,""),document.body.className+=" pace-running",this.el.innerHTML='<div class="pace-progress">\n  <div class="pace-progress-inner"></div>\n</div>\n<div class="pace-activity"></div>',null!=a.firstChild?a.insertBefore(this.el,a.firstChild):a.appendChild(this.el)}return this.el},a.prototype.finish=function(){var a;return a=this.getElement(),a.className=a.className.replace("pace-active",""),a.className+=" pace-inactive",document.body.className=document.body.className.replace("pace-running",""),document.body.className+=" pace-done"},a.prototype.update=function(a){return this.progress=a,this.render()},a.prototype.destroy=function(){try{this.getElement().parentNode.removeChild(this.getElement())}catch(a){i=a}return this.el=void 0},a.prototype.render=function(){var a,b;return null==document.querySelector(C.target)?!1:(a=this.getElement(),a.children[0].style.width=""+this.progress+"%",(!this.lastRenderedProgress||this.lastRenderedProgress|0!==this.progress|0)&&(a.children[0].setAttribute("data-progress-text",""+(0|this.progress)+"%"),this.progress>=100?b="99":(b=this.progress<10?"0":"",b+=0|this.progress),a.children[0].setAttribute("data-progress",""+b)),this.lastRenderedProgress=this.progress)},a.prototype.done=function(){return this.progress>=100},a}(),h=function(){function a(){this.bindings={}}return a.prototype.trigger=function(a,b){var c,d,e,f,g;if(null!=this.bindings[a]){for(f=this.bindings[a],g=[],d=0,e=f.length;e>d;d++)c=f[d],g.push(c.call(this,b));return g}},a.prototype.on=function(a,b){var c;return null==(c=this.bindings)[a]&&(c[a]=[]),this.bindings[a].push(b)},a}(),O=window.XMLHttpRequest,N=window.XDomainRequest,M=window.WebSocket,v=function(a,b){var c,d,e,f;f=[];for(d in b.prototype)try{e=b.prototype[d],null==a[d]&&"function"!=typeof e?f.push(a[d]=e):f.push(void 0)}catch(g){c=g}return f},z=[],Pace.ignore=function(){var a,b,c;return b=arguments[0],a=2<=arguments.length?W.call(arguments,1):[],z.unshift("ignore"),c=b.apply(null,a),z.shift(),c},Pace.track=function(){var a,b,c;return b=arguments[0],a=2<=arguments.length?W.call(arguments,1):[],z.unshift("track"),c=b.apply(null,a),z.shift(),c},I=function(a){var b;if(null==a&&(a="GET"),"track"===z[0])return"force";if(!z.length&&C.ajax){if("socket"===a&&C.ajax.trackWebSockets)return!0;if(b=a.toUpperCase(),Z.call(C.ajax.trackMethods,b)>=0)return!0}return!1},j=function(a){function b(){var a,c=this;b.__super__.constructor.apply(this,arguments),a=function(a){var b;return b=a.open,a.open=function(d,e){return I(d)&&c.trigger("request",{type:d,url:e,request:a}),b.apply(a,arguments)}},window.XMLHttpRequest=function(b){var c;return c=new O(b),a(c),c},v(window.XMLHttpRequest,O),null!=N&&(window.XDomainRequest=function(){var b;return b=new N,a(b),b},v(window.XDomainRequest,N)),null!=M&&C.ajax.trackWebSockets&&(window.WebSocket=function(a,b){var d;return d=null!=b?new M(a,b):new M(a),I("socket")&&c.trigger("request",{type:"socket",url:a,protocols:b,request:d}),d},v(window.WebSocket,M))}return Y(b,a),b}(h),Q=null,x=function(){return null==Q&&(Q=new j),Q},H=function(a){var b,c,d,e;for(e=C.ajax.ignoreURLs,c=0,d=e.length;d>c;c++)if(b=e[c],"string"==typeof b){if(-1!==a.indexOf(b))return!0}else if(b.test(a))return!0;return!1},x().on("request",function(b){var c,d,e,f,g;return f=b.type,e=b.request,g=b.url,H(g)?void 0:Pace.running||C.restartOnRequestAfter===!1&&"force"!==I(f)?void 0:(d=arguments,c=C.restartOnRequestAfter||0,"boolean"==typeof c&&(c=0),setTimeout(function(){var b,c,g,h,i,j;if(b="socket"===f?e.readyState<2:0<(h=e.readyState)&&4>h){for(Pace.restart(),i=Pace.sources,j=[],c=0,g=i.length;g>c;c++){if(J=i[c],J instanceof a){J.watch.apply(J,d);break}j.push(void 0)}return j}},c))}),a=function(){function a(){var a=this;this.elements=[],x().on("request",function(){return a.watch.apply(a,arguments)})}return a.prototype.watch=function(a){var b,c,d,e;return d=a.type,b=a.request,e=a.url,H(e)?void 0:(c="socket"===d?new m(b):new n(b),this.elements.push(c))},a}(),n=function(){function a(a){var b,c,d,e,f,g,h=this;if(this.progress=0,null!=window.ProgressEvent)for(c=null,a.addEventListener("progress",function(a){return h.progress=a.lengthComputable?100*a.loaded/a.total:h.progress+(100-h.progress)/2}),g=["load","abort","timeout","error"],d=0,e=g.length;e>d;d++)b=g[d],a.addEventListener(b,function(){return h.progress=100});else f=a.onreadystatechange,a.onreadystatechange=function(){var b;return 0===(b=a.readyState)||4===b?h.progress=100:3===a.readyState&&(h.progress=50),"function"==typeof f?f.apply(null,arguments):void 0}}return a}(),m=function(){function a(a){var b,c,d,e,f=this;for(this.progress=0,e=["error","open"],c=0,d=e.length;d>c;c++)b=e[c],a.addEventListener(b,function(){return f.progress=100})}return a}(),d=function(){function a(a){var b,c,d,f;for(null==a&&(a={}),this.elements=[],null==a.selectors&&(a.selectors=[]),f=a.selectors,c=0,d=f.length;d>c;c++)b=f[c],this.elements.push(new e(b))}return a}(),e=function(){function a(a){this.selector=a,this.progress=0,this.check()}return a.prototype.check=function(){var a=this;return document.querySelector(this.selector)?this.done():setTimeout(function(){return a.check()},C.elements.checkInterval)},a.prototype.done=function(){return this.progress=100},a}(),c=function(){function a(){var a,b,c=this;this.progress=null!=(b=this.states[document.readyState])?b:100,a=document.onreadystatechange,document.onreadystatechange=function(){return null!=c.states[document.readyState]&&(c.progress=c.states[document.readyState]),"function"==typeof a?a.apply(null,arguments):void 0}}return a.prototype.states={loading:0,interactive:50,complete:100},a}(),f=function(){function a(){var a,b,c,d,e,f=this;this.progress=0,a=0,e=[],d=0,c=B(),b=setInterval(function(){var g;return g=B()-c-50,c=B(),e.push(g),e.length>C.eventLag.sampleCount&&e.shift(),a=p(e),++d>=C.eventLag.minSamples&&a<C.eventLag.lagThreshold?(f.progress=100,clearInterval(b)):f.progress=100*(3/(a+3))},50)}return a}(),l=function(){function a(a){this.source=a,this.last=this.sinceLastUpdate=0,this.rate=C.initialRate,this.catchup=0,this.progress=this.lastProgress=0,null!=this.source&&(this.progress=E(this.source,"progress"))}return a.prototype.tick=function(a,b){var c;return null==b&&(b=E(this.source,"progress")),b>=100&&(this.done=!0),b===this.last?this.sinceLastUpdate+=a:(this.sinceLastUpdate&&(this.rate=(b-this.last)/this.sinceLastUpdate),this.catchup=(b-this.progress)/C.catchupTime,this.sinceLastUpdate=0,this.last=b),b>this.progress&&(this.progress+=this.catchup*a),c=1-Math.pow(this.progress/100,C.easeFactor),this.progress+=c*this.rate*a,this.progress=Math.min(this.lastProgress+C.maxProgressPerFrame,this.progress),this.progress=Math.max(0,this.progress),this.progress=Math.min(100,this.progress),this.lastProgress=this.progress,this.progress},a}(),K=null,G=null,q=null,L=null,o=null,r=null,Pace.running=!1,y=function(){return C.restartOnPushState?Pace.restart():void 0},null!=window.history.pushState&&(S=window.history.pushState,window.history.pushState=function(){return y(),S.apply(window.history,arguments)}),null!=window.history.replaceState&&(V=window.history.replaceState,window.history.replaceState=function(){return y(),V.apply(window.history,arguments)}),k={ajax:a,elements:d,document:c,eventLag:f},(A=function(){var a,c,d,e,f,g,h,i;for(Pace.sources=K=[],g=["ajax","elements","document","eventLag"],c=0,e=g.length;e>c;c++)a=g[c],C[a]!==!1&&K.push(new k[a](C[a]));for(i=null!=(h=C.extraSources)?h:[],d=0,f=i.length;f>d;d++)J=i[d],K.push(new J(C));return Pace.bar=q=new b,G=[],L=new l})(),Pace.stop=function(){return Pace.trigger("stop"),Pace.running=!1,q.destroy(),r=!0,null!=o&&("function"==typeof s&&s(o),o=null),A()},Pace.restart=function(){return Pace.trigger("restart"),Pace.stop(),Pace.start()},Pace.go=function(){var a;return Pace.running=!0,q.render(),a=B(),r=!1,o=F(function(b,c){var d,e,f,g,h,i,j,k,m,n,o,p,s,t,u,v;for(k=100-q.progress,e=o=0,f=!0,i=p=0,t=K.length;t>p;i=++p)for(J=K[i],n=null!=G[i]?G[i]:G[i]=[],h=null!=(v=J.elements)?v:[J],j=s=0,u=h.length;u>s;j=++s)g=h[j],m=null!=n[j]?n[j]:n[j]=new l(g),f&=m.done,m.done||(e++,o+=m.tick(b));return d=o/e,q.update(L.tick(b,d)),q.done()||f||r?(q.update(100),Pace.trigger("done"),setTimeout(function(){return q.finish(),Pace.running=!1,Pace.trigger("hide")},Math.max(C.ghostTime,Math.max(C.minTime-(B()-a),0)))):c()})},Pace.start=function(a){u(C,a),Pace.running=!0;try{q.render()}catch(b){i=b}return document.querySelector(".pace")?(Pace.trigger("start"),Pace.go()):setTimeout(Pace.start,50)},"function"==typeof define&&define.amd?define(function(){return Pace}):"object"==typeof exports?module.exports=Pace:C.startOnPageLoad&&Pace.start()}).call(this);
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['company/details.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'home/home.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html']);
+angular.module('templates-app', ['company/details.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'home/home.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search-widget.tpl.html', 'search/search.tpl.html']);
 
 angular.module("company/details.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("company/details.tpl.html",
@@ -31421,7 +32619,7 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
     "\n" +
     "          <ul class=\"profile-meta\">\n" +
     "            <li class=\"icon-left\"><i class=\"fa fa-map-marker\"></i> {{ company.address.city + ', ' +  company.address.country }}</li>\n" +
-    "            <li class=\"icon-left\"><i class=\"fa fa-globe\"></i> <a href=\"{{ company.website }}\">{{ company.website }}</a></li>\n" +
+    "            <li class=\"icon-left\"><i class=\"fa fa-globe\"></i> <a href=\"{{ company.website }}\" target=\"_blank\">{{ company.website }}</a></li>\n" +
     "          </ul>\n" +
     "        </div>\n" +
     "\n" +
@@ -31438,12 +32636,17 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
     "            </ul>\n" +
     "          </section>\n" +
     "          \n" +
-    "          <section>\n" +
+    "          <section ng-if=\"company.roles\">\n" +
     "            <h2>Available Internship Roles</h2>\n" +
-    "            <div ng-repeat=\"role in company.roles\" class=\"clearfix\">\n" +
-    "              <strong>{{ role.title }}</strong>\n" +
-    "              <button ng-click=\"showRoleDetails(role)\" type=\"button\" class=\"btn btn-primary btn-sm pull-right\">More Info <i class=\"fa fa-chevron-right\"></i></button>\n" +
-    "            </div>\n" +
+    "            <ul class=\"list-roles\">\n" +
+    "              <li ng-repeat=\"role in company.roles\" class=\"clearfix\">\n" +
+    "                <strong>{{ role.title }}</strong>\n" +
+    "                <div class=\"actions\">\n" +
+    "                  <button ng-click=\"showRoleDetails(role)\" type=\"button\" class=\"btn btn-default btn-sm\"><i class=\"fa fa-info-circle\"></i> More Info</button>\n" +
+    "                  <button ng-click=\"apply(role)\" type=\"button\" class=\"btn btn-primary btn-sm\">Apply <i class=\"fa fa-chevron-right\"></i></button>\n" +
+    "                </div>\n" +
+    "              </li>\n" +
+    "            </ul>\n" +
     "          </section>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -31506,7 +32709,7 @@ angular.module("dashboard/forms/role-delete.tpl.html", []).run(["$templateCache"
 
 angular.module("dashboard/forms/role.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/forms/role.tpl.html",
-    "<form role=\"form\" ng-submit=\"save()\">\n" +
+    "<form validate=\"true\" role=\"form\" ng-submit=\"save()\">\n" +
     "  \n" +
     "  <div class=\"form-group\">\n" +
     "    <label>Role Title</label>\n" +
@@ -31641,7 +32844,7 @@ angular.module("login/login.tpl.html", []).run(["$templateCache", function($temp
     "  <div class=\"container\">\n" +
     "    <div class=\"row\">\n" +
     "\n" +
-    "      <form ng-submit=\"submit()\" role=\"form\" class=\"col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels\" login-form animated-form>\n" +
+    "      <form validate=\"true\" ng-submit=\"submit()\" role=\"form\" class=\"col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels\" login-form animated-form>\n" +
     "\n" +
     "        <h1 class=\"text-center animation-group\">Login</h1>\n" +
     "\n" +
@@ -31696,7 +32899,7 @@ angular.module("login/password-reset.tpl.html", []).run(["$templateCache", funct
     "        <div ng-show=\"action == 'send'\">\n" +
     "          \n" +
     "          <!-- Send form -->\n" +
-    "          <form ng-submit=\"send()\" role=\"form\" animated-form ng-if=\"!sendSuccess\">\n" +
+    "          <form validate=\"true\" ng-submit=\"send()\" role=\"form\" animated-form ng-if=\"!sendSuccess\">\n" +
     "            <h1 class=\"text-center animation-group\">Password Reset</h1>\n" +
     "\n" +
     "            <div class=\"form-group animation-group\">\n" +
@@ -31724,7 +32927,7 @@ angular.module("login/password-reset.tpl.html", []).run(["$templateCache", funct
     "        <div ng-show=\"action == 'reset'\">\n" +
     "          \n" +
     "          <!-- Reset form -->\n" +
-    "          <form ng-submit=\"reset()\" role=\"form\" animated-form ng-if=\"!resetSuccess\">\n" +
+    "          <form validate=\"true\" ng-submit=\"reset()\" role=\"form\" animated-form ng-if=\"!resetSuccess\">\n" +
     "            <h1 class=\"text-center animation-group\">Password Reset</h1>\n" +
     "\n" +
     "            <div class=\"form-group animation-group\">\n" +
@@ -31766,7 +32969,7 @@ angular.module("login/resend-activation.tpl.html", []).run(["$templateCache", fu
     "      <div class=\"col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels text-center\">\n" +
     "\n" +
     "        <!-- Send form -->\n" +
-    "        <form ng-submit=\"send()\" role=\"form\" animated-form ng-if=\"!success\">\n" +
+    "        <form validate=\"true\" ng-submit=\"send()\" role=\"form\" animated-form ng-if=\"!success\">\n" +
     "          <h1 class=\"text-center animation-group\">Resend Activation</h1>\n" +
     "\n" +
     "          <div form-errors=\"errors\"></div>\n" +
@@ -31793,9 +32996,23 @@ angular.module("login/resend-activation.tpl.html", []).run(["$templateCache", fu
     "</section>");
 }]);
 
+angular.module("register/modal-error.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("register/modal-error.tpl.html",
+    "<div>\n" +
+    "  <p>The following errors occured when creating you account;</p>\n" +
+    "  <ul>\n" +
+    "    <li ng-repeat=\"error in errors\">{{ error }}</li>\n" +
+    "  </ul>\n" +
+    "\n" +
+    "  <p class=\"actions text-center\">\n" +
+    "    <button ng-click=\"close()\" type=\"submit\" class=\"btn btn-primary\">Ok</button>\n" +
+    "  </p>\n" +
+    "</div>");
+}]);
+
 angular.module("register/register-form.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("register/register-form.tpl.html",
-    "<form ng-submit=\"submit()\" role=\"form\" class=\"col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 floating-labels\" animated-form>\n" +
+    "<form validate=\"true\" ng-submit=\"submit()\" role=\"form\" class=\"col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 floating-labels\" animated-form>\n" +
     "\n" +
     "  <div class=\"form-group animation-group\">\n" +
     "    <h1 class=\"text-center\">{{ type() }} Signup</h1>\n" +
@@ -32051,7 +33268,7 @@ angular.module("register/register-form.tpl.html", []).run(["$templateCache", fun
     "      \n" +
     "      <div class=\"form-group\">\n" +
     "        <a href=\"#\" class=\"previous btn btn-link btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
-    "        <button type=\"submit\" class=\"btn btn-default pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "        <button type=\"submit\" ng-disabled=\"loading\" class=\"btn btn-default pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
     "      </div>\n" +
     "    </fieldset>\n" +
     "\n" +
@@ -32077,16 +33294,130 @@ angular.module("register/register.tpl.html", []).run(["$templateCache", function
     "</section>");
 }]);
 
+angular.module("search/results-map.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("search/results-map.tpl.html",
+    "<div class=\"results-map\">\n" +
+    "\n" +
+    "  <div results-view-toggle query=\"query\"></div>\n" +
+    "\n" +
+    "  <div id=\"map\"></div>\n" +
+    "  <script type=\"text/ng-template\" id=\"infoWindowTemplate\">\n" +
+    "    <div class=\"infobox-content\">\n" +
+    "      <article>\n" +
+    "        <button type=\"button\" class=\"close close-button\">&times;</button>\n" +
+    "        <a href=\"{{ result.url }}\"><img ng-src=\"{{ result.logoUrl }}\" alt=\"{{ result.name }}\"></a>\n" +
+    "        <hr />\n" +
+    "        <header class=\"clearfix\">\n" +
+    "          <h4 class=\"pull-left\"><a href=\"{{ result.url }}\">{{ result.name }}</a></h4>\n" +
+    "          <a href=\"{{ result.url }}\" class=\"btn btn-primary btn-sm pull-right\">More Info <i class=\"fa fa-arrow-right small\"></i></a>\n" +
+    "        </header>\n" +
+    "      </article>\n" +
+    "    </div>\n" +
+    "  </script>\n" +
+    "</div>");
+}]);
+
+angular.module("search/search-widget.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("search/search-widget.tpl.html",
+    "<div class=\"search-widget\">\n" +
+    "\n" +
+    "  <form role=\"form\" ng-submit=\"search()\">\n" +
+    "    <div class=\"row\">\n" +
+    "      <div class=\"col-sm-6\">\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <input type=\"text\" ng-model=\"query.query\" class=\"form-control\" placeholder=\"Search for...\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"col-sm-2\">\n" +
+    "        <button type=\"submit\" class=\"btn btn-primary btn-icon-right\">Search <i class=\"fa fa-search\"></i></button>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"col-sm-2 pull-right\">\n" +
+    "        <button type=\"button\" ng-click=\"toggleAdvanced()\" class=\"btn btn-link\">Advanced Search <i ng-class=\"{'fa fa-chevron-up':showAdvanced,'fa fa-chevron-down':!showAdvanced}\"></i></button>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"row advanced\" ng-show=\"showAdvanced\">\n" +
+    "\n" +
+    "      <div class=\"col-sm-6\">\n" +
+    "        <h4>Locations</h4>\n" +
+    "        <div checkbox-list selected=\"query.locations\" options=\"options.locations\" filterable=\"true\"></div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"col-sm-6\">\n" +
+    "        <h4>Skills</h4>\n" +
+    "        <div checkbox-list selected=\"query.skills\" options=\"options.skills\" filterable=\"true\"></div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "    </div>\n" +
+    "\n" +
+    "  </form>\n" +
+    "\n" +
+    "</div>");
+}]);
+
+angular.module("search/search.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("search/search.tpl.html",
+    "<article class=\"content-page\">\n" +
+    "  <header>\n" +
+    "    <div class=\"container\">\n" +
+    "      <h1 class=\"page-title\">Search</h1>\n" +
+    "    </div>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <!-- List View -->\n" +
+    "  <section ng-show=\"query.view == 'list'\" class=\"main\">\n" +
+    "    <div class=\"container\">\n" +
+    "\n" +
+    "      <div search-widget query=\"query\" options=\"options\"></div>\n" +
+    "\n" +
+    "      <h2>\n" +
+    "        Results <span ng-if=\"query.query\">for \"{{ query.query }}\"</span> \n" +
+    "        <span ng-if=\"meta.totalResults\" class=\"muted pull-right\">{{ meta.totalResults }} results</span>\n" +
+    "        <div class=\"pull-right\" results-view-toggle query=\"query\"></div>\n" +
+    "      </h2>\n" +
+    "\n" +
+    "      <hr />\n" +
+    "\n" +
+    "      <div class=\"search-results deckgrid\" deckgrid source=\"results\">\n" +
+    "        <div class=\"search-result\">\n" +
+    "          <div class=\"box\">\n" +
+    "            <a href=\"{{ card.url }}\"><img ng-src=\"{{ card.logoUrl }}\" alt=\"{{ card.name }}\"></a>\n" +
+    "            <h4 class=\"text-center\"><a href=\"{{ card.url }}\">{{ card.name }}</a></h4>\n" +
+    "            <hr />\n" +
+    "            <p class=\"text-center\">\n" +
+    "              <a href=\"{{ card.url }}\" class=\"btn btn-default btn-sm\">More Info</a>\n" +
+    "              <a href=\"#apply\" class=\"btn btn-sm btn-primary\">Apply Online</a>\n" +
+    "            </p>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "    </div>\n" +
+    "  </section>\n" +
+    "\n" +
+    "\n" +
+    "  <section ng-if=\"query.view=='map'\" class=\"main\">\n" +
+    "    <div results-map results=\"results\" query=\"query\"></div>\n" +
+    "  </section>\n" +
+    "\n" +
+    "</article>");
+}]);
+
 angular.module('InternLabs', [
   'ngRoute',
+  'ngAnimate',
   'angularFileUpload',
   'restangular',
+  'akoenig.deckgrid',
   'templates-app',
   'InternLabs.services',
   'InternLabs.common.directives',
   'InternLabs.home',
   'InternLabs.login',
   'InternLabs.register',
+  'InternLabs.search',
   'InternLabs.dashboard',
   'InternLabs.company'
 ])
@@ -32115,6 +33446,47 @@ angular.module('InternLabs', [
       }
     });
 
+    _.mixin({
+      compactObject : function(o) {
+        _.each(o, function(v, k){
+          if(!v) delete o[k];
+        });
+        return o;
+      }
+    });
+
+  })
+
+  .animation('.reveal-animation', function() {
+    var $body = $('body');
+
+    return {
+      enter: function(element, done) {
+        TweenLite.set(element, {
+          autoAlpha: 0
+        });
+        TweenLite.to(element, 0.35, {
+          delay: 0.2,
+          autoAlpha: 1,
+          onComplete: function() {
+            $body.css({ minHeight: 0 });
+            $body.css({ minHeight: $body.height() });
+            done();
+          }
+        });
+      },
+      leave: function(element, done) {
+        $body.css({ minHeight: $body.height() });
+
+        TweenLite.to(element, 0.2, {
+          autoAlpha: 0,
+          onComplete: function() {
+            $(window).scrollTop(0);
+            done();
+          }
+        });
+      }
+    }
   })
 
   .controller('AppCtrl', function($rootScope, $scope, $location, Auth) {
@@ -32126,7 +33498,6 @@ angular.module('InternLabs', [
       $rootScope.loading = true;
 
       if( next.auth && ! Auth.check() ) {
-        event.preventDefault();
         $location.path('/login');
       }
     });
@@ -32639,15 +34010,17 @@ angular.module('InternLabs.common.directives', [])
           return;
         }
 
-        var validator = new Parsley(elem);
+        if ( attrs.validate ) {
+          var validator = new Parsley(elem);
 
-        elem.on('submit', function(e) {
-          validator.validate();
+          elem.on('submit', function(e) {
+            validator.validate();
 
-          if ( ! validator.isValid() ) {
-            e.preventDefault();
-          }
-        });
+            if ( ! validator.isValid() ) {
+              e.preventDefault();
+            }
+          });
+        }        
       }
     };
   })
@@ -32686,9 +34059,65 @@ angular.module('InternLabs.common.directives', [])
         };
 
         check();
+      }
+    };
+  })
 
-        scope.$on('auth:login', check);
-        scope.$on('auth:logout', check);
+
+
+  /**
+   * Checkbox list input (filter search filter)
+   */
+  .directive('checkboxList', function() {
+    return {
+      restrict: 'A',
+      replace: true,
+      scope: {
+        options: '=',
+        selected: '=',
+        filterable: '=?'
+      },
+      template: '<div class="checkbox-list">' +
+                  '<input ng-show="filterable" type="text" ng-model="query" placeholder="Filter results...">' +
+                  '<div class="scroll-box">' +
+                    '<div class="group" ng-repeat="group in _options">' +
+                      '<strong ng-if="group.group" class="group-title">{{ group.group }}</strong>' +
+                      '<div class="checkbox" ng-repeat="item in group.children | filter:query"><label><input type="checkbox" ng-checked="isSelected(item)" ng-click="toggle(item)"> {{ item }}</label></div>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>',
+      link: function(scope, elem, attrs) {
+
+        scope.toggle = function(value) {
+          var index = _.indexOf(scope.selected, value);
+
+          if ( index > -1 ) {
+            scope.selected = _.without(scope.selected, value);
+          } else {
+            scope.selected.push(value);
+          }
+        };
+
+        scope.isSelected = function(value) {
+          return _.indexOf(scope.selected, value) > -1;
+        };
+
+        scope.$watch('selected', function(newVal) {
+          if ( _.isString(newVal) ) {
+            newVal = [newVal];
+          }
+          scope.selected = newVal || [];
+        }, true);
+
+        scope.$watch('options', function(newVal) {
+          if ( _.isArray(newVal) && _.isUndefined(newVal[0].children) ) {
+            scope._options = [{
+              children: newVal
+            }]
+          } else {
+            scope._options = newVal;
+          }
+        }, true);
       }
     };
   })
@@ -32719,7 +34148,7 @@ angular.module('InternLabs.services')
   .service('Auth', function($rootScope, $http, $q, $location, Options) {
 
     var _user = angular.fromJson(window.internlabs.user);
-console.log(_user);
+
     this.check = function() {
       return !!_user;
     };
@@ -32757,6 +34186,10 @@ console.log(_user);
         var httpPromise = $http.post(Options.apiUrl('register'), user);
         
         httpPromise.success(function(data, status) {
+          if (!data.success) {
+            return deferred.reject(data.error);
+          };
+
           deferred.resolve(data.data.user);
         });
 
@@ -32923,6 +34356,67 @@ angular.module('InternLabs.services')
   })
 
   ;
+angular.module('InternLabs.services')
+
+  /**
+   * Search Query
+   */
+  .service('SearchQuery', function() {
+
+    /**
+     * Convert a params object to an search query object
+     */
+    this.parse = function(params) {
+      params = _.clone(params);
+
+      if ( params.locations ) {
+        params.locations = params.locations.split(',');
+      }
+
+      if ( params.skills ) {
+        params.skills = params.skills.split(',');
+      }
+
+      return params;
+
+    };
+
+    /**
+     * Convert a search query object to a params object
+     */
+    this.serialize = function(query) {
+      query = _.clone(query);
+
+      if ( query.locations && _.isArray(query.locations) ) {
+        query.locations = _.compact(query.locations).join(',');
+      }
+
+      if ( query.skills && _.isArray(query.skills) ) {
+        query.skills = _.compact(query.skills).join(',');
+      }
+
+      return _.compactObject(query);
+
+    };
+
+  })
+
+  /**
+   * Search Service
+   */
+  .service('Search', function($http, Options) {
+
+    this.query = function(query) {
+      return $http.get(Options.apiUrl('search'), {
+        params: query
+      }).then(function(data) {
+        return data.data;
+      });
+    };
+
+  })
+
+  ;
 angular.module('InternLabs.company', [])
 
 
@@ -32930,7 +34424,7 @@ angular.module('InternLabs.company', [])
 
     $routeProvider
 
-      .when('/company/:companyId', {
+      .when('/company/:companyId/:slug?', {
         templateUrl: 'company/details.tpl.html',
         controller: 'CompanyDetailsCtrl',
         pageTitle: 'Company Details',
@@ -33391,7 +34885,7 @@ angular.module('InternLabs.register', [])
   })
 
 
-  .controller('RegisterCtrl', function($scope, $routeParams, $location, $fileUploader, Auth, Options) {
+  .controller('RegisterCtrl', function($scope, $rootScope, $routeParams, $location, $fileUploader, Auth, Options, ModalFactory) {
 
     if ( _.indexOf(['employer', 'student', 'supervisor'], $routeParams.type) === -1 ) {
       $location.path('/signup/student');
@@ -33406,6 +34900,8 @@ angular.module('InternLabs.register', [])
     });
 
     $scope.submit = function() {
+      $rootScope.loading = true;
+
       Auth.register($scope.user).then(function(user) {
 
         // Upload the logo
@@ -33417,10 +34913,20 @@ angular.module('InternLabs.register', [])
 
         uploader.uploadAll();
 
+        $rootScope.loading = false;
+
         $location.url('/login');
 
-      }, function(error) {
-        $scope.errors = error;
+      }, function(errors) {
+        $rootScope.loading = false;
+        ModalFactory.create({
+          scope: {
+            title: "An error occured",
+            errors: errors
+          },
+          templateUrl: "register/modal-error.tpl.html",
+          className: "modal-register-error"
+        });
       });
     };
 
@@ -33443,6 +34949,268 @@ angular.module('InternLabs.register', [])
         scope.type = function() {
           return _(scope.user.type).capitalize();
         };
+
+      }
+    };
+  })
+
+
+  ;
+angular.module('InternLabs.search', [])
+
+
+  .config(function($routeProvider) {
+
+    $routeProvider
+
+      .when('/search/', {
+        templateUrl: 'search/search.tpl.html',
+        controller: 'SearchCtrl',
+        pageTitle: 'Search',
+        resolve: {
+          results: function($route, Search, SearchQuery) {
+            return Search.query(SearchQuery.serialize($route.current.params));
+          },
+          options: function($http) {
+            return $http.get('/api/search/options').then(function(data) {
+              return data.data.data;
+            });
+          }
+        },
+        reloadOnSearch: false
+      })
+
+      ;
+
+  })
+
+
+  .controller('SearchCtrl', function($scope, $routeParams, $location, Search, SearchQuery, results, options) {
+    var initial = true;
+    
+    $scope.results = results.data.results;
+    $scope.query = SearchQuery.parse($routeParams);
+    $scope.query.view = 'list';
+    $scope.options = options;
+
+    $scope.search = function() {
+      if ( initial ) {
+        return initial = false;
+      }
+
+      $location.search(SearchQuery.serialize($scope.query));
+
+      Search.query(SearchQuery.serialize($scope.query)).then(function(data) {
+        $scope.results = [];
+        $scope.results = data.data.results;
+      })
+    };
+
+    $scope.$watch('query', $scope.search, true);
+
+    $scope.$on('$locationChangeSuccess', function() {
+      // Make sure we're in the same route
+      var path = $location.path().split('/')[1];
+      if ( path !== 'search' ) {
+        return;
+      }
+
+      $scope.query = $location.search();  
+    });
+  })
+
+
+  /**
+   * Search from
+   */
+  .directive('searchWidget', function() {
+    return {
+      restrict: 'A',
+      templateUrl: 'search/search-widget.tpl.html',
+      scope: {
+        _query: '=query',
+        options: '=?'
+      },
+      link: function(scope, elem, attrs) {
+        scope.showAdvanced = false;
+
+        scope.toggleAdvanced = function() {
+          scope.showAdvanced = !scope.showAdvanced;
+        };
+
+        scope.search = function() {
+          scope._query = angular.copy(scope.query);
+        }
+
+        scope.$watch('_query', function(newVal) {
+          if (newVal) {
+            scope.query = angular.copy(scope._query);
+          }
+        }, true);
+
+      }
+    };
+  })
+
+
+
+  /**
+   * Toggle between map and list view
+   */
+  .directive('resultsViewToggle', function() {
+    return {
+      restrict: 'A',
+      template: '<div class="btn-group results-view-toggle">' +
+                  '<button type="button" ng-class="{\'btn btn-default\': query.view!=\'list\', \'btn btn-primary\': query.view == \'list\'}" ng-click="set(\'list\')"><i class="fa fa-list"></i> List View</button>' +
+                  '<button type="button" ng-class="{\'btn btn-default\': query.view!=\'map\', \'btn btn-primary\': query.view == \'map\'}" ng-click="set(\'map\')"><i class="fa fa-map-marker"></i> Map View</button>' +
+                '</div>',
+      scope: {
+        query: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.set = function(view) {
+          scope.query.view = view;
+        };
+      }
+    };
+  })
+
+
+
+  /**
+   * Results map view
+   */
+  .directive('resultsMap', function($compile) {
+    return {
+      restrict: 'A',
+      templateUrl: 'search/results-map.tpl.html',
+      replace: true,
+      scope: {
+        query: '=',
+        results: '='
+      },
+      link: function(scope, elem, attrs) {
+
+        var infoWindowTemplate = elem.find('#infoWindowTemplate').html();
+
+        /**
+         * GMaps Object
+         */
+        var gmap = null;
+
+        /**
+         * Render Map
+         */
+        var initMap = function() {
+          gmap = new GMaps({
+            div: '#map',
+            lat: -12.043333,
+            lng: -77.028333,
+            mapTypeControl: false,
+            minZoom: 5,
+            visible: true,
+            idle: function() {
+              console.log('idle');
+            },
+            click: function() {
+              _.each(gmap.markers, function(marker) {
+                marker.infoBox.close();
+              });
+            }
+          });
+
+          addMarkers();
+        }
+
+        /**
+         * Add markers to the map for all results
+         */
+        var addMarkers = function() {
+          _.each(scope.results, function(result, key) {
+
+            // Marker Options
+            var markerOptions = {
+              lat: result.address.lat,
+              lng: result.address.lng,
+              animation: google.maps.Animation.DROP,
+              click: function() {
+                // Hide other infoboxes
+                var self = this;
+                _.each(gmap.markers, function(marker) {
+                  if ( marker != self ) {
+                    marker.infoBox.close();
+                  }
+                });
+
+                // Show the infobox
+                this.infoBox.open(this.map, this);
+
+                // Center on the map
+                gmap.setCenter(this.getPosition().lat(), this.getPosition().lng(), function() {});
+              }
+            }
+
+            var marker = gmap.addMarker(markerOptions);
+
+            // Attach the listing data to the marker
+            marker.result = result;
+            marker.infoBox = getInfoBox(marker);
+          });
+
+          fitBounds();
+        }
+
+        /**
+         * Get the bounds of all the results and resize the map
+         */
+        var fitBounds = function() {
+          var bounds = new google.maps.LatLngBounds();
+          _.each(scope.results, function(result, key){
+            if ( ! result.address.lat || ! result.address.lng ) { return; };
+            bounds.extend( new google.maps.LatLng( result.address.lat , result.address.lng ) );
+          });
+          gmap.fitBounds(bounds);
+        }
+        
+
+        /**
+         * Add an infobox to a map mapker
+         */
+        var getInfoBox = function(marker) {
+          var content = getInfoBoxContent(marker);
+
+          var options = {
+             content: content,
+             alignBottom: true,
+             closeBoxURL: "",
+             pixelOffset: new google.maps.Size(-160, 0),
+             infoBoxClearance: new google.maps.Size(1, 1)
+          }
+
+          return new InfoBox(options);
+        }
+
+        /**
+         * Get the content for an infobox
+         */
+        var getInfoBoxContent = function(marker) {
+          var boxScope = scope.$new(true);
+          boxScope.result = marker.result;
+
+          // Create the infobox
+          var elem = $compile(infoWindowTemplate)(boxScope);
+
+          elem.find('.close-button').on('click', function() {
+            marker.infoBox.close();
+          });
+
+          return elem[0];
+        }
+
+
+        $(window).on('resize', fitBounds);
+
+        initMap();
 
       }
     };

@@ -1,13 +1,16 @@
 angular.module('InternLabs', [
   'ngRoute',
+  'ngAnimate',
   'angularFileUpload',
   'restangular',
+  'akoenig.deckgrid',
   'templates-app',
   'InternLabs.services',
   'InternLabs.common.directives',
   'InternLabs.home',
   'InternLabs.login',
   'InternLabs.register',
+  'InternLabs.search',
   'InternLabs.dashboard',
   'InternLabs.company'
 ])
@@ -36,6 +39,47 @@ angular.module('InternLabs', [
       }
     });
 
+    _.mixin({
+      compactObject : function(o) {
+        _.each(o, function(v, k){
+          if(!v) delete o[k];
+        });
+        return o;
+      }
+    });
+
+  })
+
+  .animation('.reveal-animation', function() {
+    var $body = $('body');
+
+    return {
+      enter: function(element, done) {
+        TweenLite.set(element, {
+          autoAlpha: 0
+        });
+        TweenLite.to(element, 0.35, {
+          delay: 0.2,
+          autoAlpha: 1,
+          onComplete: function() {
+            $body.css({ minHeight: 0 });
+            $body.css({ minHeight: $body.height() });
+            done();
+          }
+        });
+      },
+      leave: function(element, done) {
+        $body.css({ minHeight: $body.height() });
+
+        TweenLite.to(element, 0.2, {
+          autoAlpha: 0,
+          onComplete: function() {
+            $(window).scrollTop(0);
+            done();
+          }
+        });
+      }
+    }
   })
 
   .controller('AppCtrl', function($rootScope, $scope, $location, Auth) {
@@ -47,7 +91,6 @@ angular.module('InternLabs', [
       $rootScope.loading = true;
 
       if( next.auth && ! Auth.check() ) {
-        event.preventDefault();
         $location.path('/login');
       }
     });

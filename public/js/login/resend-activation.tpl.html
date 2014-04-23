@@ -4,7 +4,7 @@
       <div class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels text-center">
 
         <!-- Send form -->
-        <form ng-submit="send()" role="form" animated-form ng-if="!success">
+        <form validate="true" ng-submit="send()" role="form" animated-form ng-if="!success">
           <h1 class="text-center animation-group">Resend Activation</h1>
 
           <div form-errors="errors"></div>

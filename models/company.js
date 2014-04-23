@@ -2,10 +2,13 @@
 
 var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId,
-    Role = require('./role');
+    mongoosastic = require('mongoosastic'),
+    Role = require('./role'),
+    nconf = require('nconf'),
+    slug = require('slug');
 
 
-var CompanyModel = function () {
+var CompanyModel = function() {
 
     var CompanySchema = mongoose.Schema({
         name: { type: String, required: true },
@@ -19,6 +22,25 @@ var CompanyModel = function () {
             type: ObjectId,
             ref: 'Role'
         }]
+    },
+    {
+        toObject: { virtuals: true },
+        toJSON: { virtuals: true }
+    });
+
+    // Index using elastic search
+    CompanySchema.plugin(mongoosastic)
+
+    CompanySchema.virtual('logoUrl').get(function() {
+        if ( this.logo ) {
+            return nconf.get('uploadsPath') + '/' + this.logo;
+        }
+    });
+
+    CompanySchema.virtual('url').get(function() {
+        if ( this._id && this.name ) {
+            return '/company/' + this._id + '/' + slug(this.name).toLowerCase();
+        }
     });
 
     return mongoose.model('Company', CompanySchema);

@@ -27,8 +27,11 @@
                 <a class="navbar-logo" href="/"><img src="/images/logo.svg" alt="InternLabs"></a>
             </div>
 
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/search">Search</a></li>
+            </ul>
 
+            <ul class="nav navbar-nav navbar-right">
                 <li auth logged="false" class="navbar-label text-muted">Already a member?</li>
                 <li auth logged="false"><a href="/login">Login</a></li>
                 <li auth logged="true"><a href="/logout">Logout</a></li>
@@ -39,10 +42,8 @@
 
 
     <!-- App Body -->
-    <div id="main" ng-view>
-        
-    </div>
-
+    <div id="main" class="reveal-animation" ng-view></div>
+    
 
     <!-- Footer -->
     <footer id="footer">
@@ -78,6 +79,7 @@
     <% } else { %>
         <script src="/dist/app.js"></script>
     <% } %>
+    <script>Pace.start();</script>
 
 </body>
 </html>

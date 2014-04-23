@@ -1,10 +1,10 @@
 'use strict';
 
 var Company = require('../models/company'),
+    CompanyService = require('../services/company'),
     Role = require('../models/role'),
     auth = require('../lib/auth'),
     async = require('async'),
-    fs = require('fs'),
     _ = require('lodash');
 
 
@@ -154,18 +154,12 @@ module.exports = function(app) {
         return res.apiError("Could not find your company.");
       }
 
-      // Move the file to the uploads dir
-      fs.readFile(req.files.file.path, function (err, data) {
-        var fileName = company._id + '-logo-' + req.files.file.name;
-        var newPath = __dirname + "/../public/uploads/" + fileName;
-        fs.writeFile(newPath, data, function (err) {
-          company.logo = fileName;
-          company.save(function() {
-            return res.apiSuccess("Logo uploaded successfully.", { company: company });
-          });
-        });
+      CompanyService.setLogo(company, req.files.file.path, function(err, company) {
+        if (err) {
+          return res.apiError(err);
+        }
+        return res.apiSuccess("Logo uploaded successfully.", { company: company });
       });
-
     });
   });
 

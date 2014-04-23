@@ -64,7 +64,8 @@ var UserModel = function () {
             _id: this._id,
             email: this.email,
             profile: this.profile,
-            company: this.company
+            company: this.company,
+            type: this.type
         };
     };
 

@@ -52,6 +52,7 @@ module.exports = {
     js: [
       'public/vendor/angular.js',
       'public/vendor/angular-route.js',
+      'public/vendor/angular-animate.js',
       'public/vendor/restangular.js',
       // 'public/vendor/angular-sanitize.js',
       'public/vendor/picker.js',
@@ -62,7 +63,11 @@ module.exports = {
       'public/vendor/modal.js',
       'public/vendor/parsley.js',
       'public/vendor/gmaps.js',
-      'public/vendor/angular-file-upload.js'
+      'public/vendor/angular-file-upload.js',
+      'public/vendor/angular-deckgrid.js',
+      'public/vendor/infoBox.js',
+      'public/vendor/pace.js'
+      // 'public/vendor/salvattore.js'
       // 'public/vendor/TweenLite.js',
       // 'public/vendor/TimelineLite.js',
       // 'public/vendor/EasePack.js'

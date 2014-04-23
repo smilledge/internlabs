@@ -1,0 +1,258 @@
+[
+
+  {
+    "activationToken": null,
+    "email": "student-1@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "student",
+    "profile": {
+      "firstName": "Walter",
+      "lastName": "White",
+      "skills": ["PHP", "Javascript", "HTML", "CSS", "Bootstrap", "Angular.js", "Backbone.js", "Laravel", "MongoDB", "Express.js", "Redis", "Nginx"],
+      "address": {
+        "line1": "11 Queen Street",
+        "city": "Brisbane",
+        "state": "Queensland",
+        "postcode": 4000,
+        "country": "Australia"
+      }
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "company-1@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "employer",
+    "profile": {
+      "firstName": "Annie",
+      "lastName": "Edison"
+    },
+    "company": {
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
+      "logo": "google.png",
+      "name": "Google",
+      "skills": ["Java", "HTML", "CSS", "Javascript", "Angular.js", "Linux"],
+      "website": "http://google.com",
+      "address": {
+        "line1": "5/48 Pirrama Rd",
+        "city": "Pyrmont",
+        "state": "New South Wales",
+        "postcode": 2009,
+        "country": "Australia"
+      }
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "company-2@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "employer",
+    "profile": {
+      "firstName": "Jeff",
+      "lastName": "Winger"
+    },
+    "company": {
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
+      "logo": "qut.jpg",
+      "name": "Queensland University of Technology",
+      "skills": ["Java", "ASP.NET", "CSS", "Javascript", "C#"],
+      "website": "http://qut.edu.au",
+      "address": {
+        "line1": "2 George St",
+        "city": "Brisbane",
+        "state": "Queensland",
+        "postcode": 4000,
+        "country": "Australia"
+      }
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "company-3@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "employer",
+    "profile": {
+      "firstName": "Ron",
+      "lastName": "Swanson"
+    },
+    "company": {
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
+      "logo": "redhat.png",
+      "name": "Red Hat",
+      "skills": ["Java", "Python", "CSS", "Javascript", "Node.js", "Perl", "PHP", "Linux"],
+      "website": "http://redhat.com",
+      "address": {
+        "line1": "193 N Quay",
+        "city": "Brisbane",
+        "state": "Queensland",
+        "postcode": 4000,
+        "country": "Australia"
+      }
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "company-4@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "employer",
+    "profile": {
+      "firstName": "Ron",
+      "lastName": "Swanson"
+    },
+    "company": {
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
+      "logo": "atlassian.png",
+      "name": "Atlassian",
+      "skills": ["Java", "Python", "CSS", "Javascript"],
+      "website": "http://atlassian.com",
+      "address": {
+        "line1": "173-185 Sussex St",
+        "city": "Sydney",
+        "state": "New South Wales",
+        "postcode": 2000,
+        "country": "Australia"
+      }
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "company-5@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "employer",
+    "profile": {
+      "firstName": "Ron",
+      "lastName": "Swanson"
+    },
+    "company": {
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
+      "logo": "data3.jpg",
+      "name": "Data#3",
+      "skills": ["SQLServer", ".NET", "C#", "VMWare", "Information Management", "Information Technology"],
+      "website": "http://data3.com",
+      "address": {
+        "line1": "67 High St",
+        "city": "Toowong",
+        "state": "Queensland",
+        "postcode": 4066,
+        "country": "Australia"
+      }
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "company-6@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "employer",
+    "profile": {
+      "firstName": "Ron",
+      "lastName": "Swanson"
+    },
+    "company": {
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
+      "logo": "dimensiondata.jpg",
+      "name": "Dimension Data",
+      "skills": ["Information Management", "Information Technology", "Network Systems", "Web Technologies", "Software Technologies"],
+      "website": "http://www.dimensiondata.com/",
+      "address": {
+        "line1": "Level 22",
+        "line2": "141 Queen Street",
+        "city": "Brisbane",
+        "state": "Queensland",
+        "postcode": 4000,
+        "country": "Australia"
+      }
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "company-7@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "employer",
+    "profile": {
+      "firstName": "Ron",
+      "lastName": "Swanson"
+    },
+    "company": {
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
+      "logo": "telstra.jpg",
+      "name": "Telstra",
+      "skills": ["Electrical Engineering", "Information Technology", "Information Management", "Mechatronics", "Software Engineering"],
+      "website": "http://careers.telstra.com",
+      "address": {
+        "line1": "275 George Street",
+        "city": "Brisbane",
+        "state": "Queensland",
+        "postcode": 4000,
+        "country": "Australia"
+      }
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "company-8@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "employer",
+    "profile": {
+      "firstName": "Ron",
+      "lastName": "Swanson"
+    },
+    "company": {
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
+      "logo": "suncorp.gif",
+      "name": "Suncorp Group",
+      "skills": ["Digital Warehousing", "Information Technology", "Information Management", "Enterprise Systems", "Software Engineering", "Web Technologies"],
+      "website": "http://www.suncorp.com.au/",
+      "address": {
+        "line1": "988 Waterworks Rd",
+        "city": "The Gap",
+        "state": "Queensland",
+        "postcode": 4061,
+        "country": "Australia"
+      }
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "company-9@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "employer",
+    "profile": {
+      "firstName": "Ron",
+      "lastName": "Swanson"
+    },
+    "company": {
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
+      "logo": "microsoft.jpg",
+      "name": "Microsoft",
+      "skills": ["Digital Warehousing", "Information Technology", "Information Management", "Enterprise Systems", "Software Engineering", "Web Technologies"],
+      "website": "http://www.microsoft.com/",
+      "address": {
+        "line1": "Level 28",
+        "line2": "400 George St",
+        "city": "Brisbane ",
+        "state": "Queensland",
+        "postcode": 4000,
+        "country": "Australia"
+      }
+    }
+  }
+]

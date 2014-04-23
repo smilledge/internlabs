@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+
+/**
+ * Database seeder
+ * ===============
+ *
+ * Fills the database with sample data (will delete existing data)
+ * 
+ */
+
+
+var db = require('../lib/database'),
+    _ = require('lodash'),
+    async = require('async'),
+    mongoose = require('mongoose');
+
+
+// Connect to DB
+db.config(require('../config/app.json').mongodb);
+
+
+
+// Run the seeders
+async.series([
+  // Drop existing users
+  function(callback) {
+    mongoose.connection.on('open', function(){
+      mongoose.connection.db.dropDatabase(function(err, result) {
+        console.log("Dropped existing database");
+        callback();
+      });
+    });
+  },
+
+  require('./seeders/users')
+
+], function(err) {
+  console.log("Seeding done!");
+  process.exit(0);
+});
+
+
+
+// Close db connection
+process.on('exit', function() {
+  mongoose.disconnect(function() {
+    console.log('Disconnected from mongoDB');
+  });
+});

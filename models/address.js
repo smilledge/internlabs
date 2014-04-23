@@ -36,7 +36,7 @@ var AddressModel = function () {
         ].join(', ');
 
         geocoder.geocode(addressString, function(err, response) {
-            if ( err || _.isEmpty(response) ) {
+            if ( err || _.isEmpty(response[0]) || ! response[0].latitude  ) {
                 return next();
             }
 

@@ -5,7 +5,7 @@ angular.module('InternLabs.company', [])
 
     $routeProvider
 
-      .when('/company/:companyId', {
+      .when('/company/:companyId/:slug?', {
         templateUrl: 'company/details.tpl.html',
         controller: 'CompanyDetailsCtrl',
         pageTitle: 'Company Details',

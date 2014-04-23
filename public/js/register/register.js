@@ -16,7 +16,7 @@ angular.module('InternLabs.register', [])
   })
 
 
-  .controller('RegisterCtrl', function($scope, $routeParams, $location, $fileUploader, Auth, Options) {
+  .controller('RegisterCtrl', function($scope, $rootScope, $routeParams, $location, $fileUploader, Auth, Options, ModalFactory) {
 
     if ( _.indexOf(['employer', 'student', 'supervisor'], $routeParams.type) === -1 ) {
       $location.path('/signup/student');
@@ -31,6 +31,8 @@ angular.module('InternLabs.register', [])
     });
 
     $scope.submit = function() {
+      $rootScope.loading = true;
+
       Auth.register($scope.user).then(function(user) {
 
         // Upload the logo
@@ -42,10 +44,20 @@ angular.module('InternLabs.register', [])
 
         uploader.uploadAll();
 
+        $rootScope.loading = false;
+
         $location.url('/login');
 
-      }, function(error) {
-        $scope.errors = error;
+      }, function(errors) {
+        $rootScope.loading = false;
+        ModalFactory.create({
+          scope: {
+            title: "An error occured",
+            errors: errors
+          },
+          templateUrl: "register/modal-error.tpl.html",
+          className: "modal-register-error"
+        });
       });
     };
 

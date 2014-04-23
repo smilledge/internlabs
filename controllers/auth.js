@@ -7,7 +7,7 @@ var User = require('../models/user'),
     auth = require('../lib/auth'),
     mailer = require('../lib/mailer'),
     passport = require('passport'),
-    companyService = require('../services/company'),
+    UserService = require('../services/user'),
     _ = require('lodash'),
     nconf = require('nconf');
 
@@ -27,108 +27,32 @@ module.exports = function(app) {
      * Register a new user
      */
     app.post('/api/register', function(req, res) {
-
       async.waterfall([
 
-        // Check if the account already exists
+        /**
+         * Check if the account already exists
+         */
         function(callback) {
-
           User.findOne({ email: req.body.email }).exec(function(err, user) {
-
             if ( ! err && user ) {  
-              return res.apiError("An account already exists for that email address");
+              return callback(new Error("An account already exists for that email address"));
             }
-
-            callback(null);
+            callback();
           });
-          
         },
 
-        // Create the profile
+        /**
+         * Create the account
+         */
         function(callback) {
-
-          if ( ! req.body.profile || _.isEmpty(req.body.profile) ) {
-            return callback(null, null);
-          }
-
-          // Make sure skills is an array
-          if ( _.isString(req.body.profile.skills) ) {
-            req.body.profile.skills = req.body.profile.skills.split(',');
-          }
-
-          // Trim skills, remove empty strings and remove duplicates
-          req.body.profile.skills = _.uniq(_.compact(_.map(req.body.profile.skills, function(skill) {
-            return skill.trim();
-          })));
-
-          var profile = new Profile(req.body.profile);
-
-          profile.save(function(err) {
-            if (err) {
-              return res.apiError(err);
-            }
-
-            callback(null, profile);
-          });
-
+          UserService.create(_.extend({}, req.body, {
+            provider: 'local'
+          }), callback);
         },
 
-        // Create the company
-        function(profile, callback) {
-          companyService.create(req.body.company, function(err, company) {
-            // If there's an error creating the company, also remove the profile
-            if ( err ) {
-              return profile.remove(function() {
-                res.apiError(err);
-              });
-            }
-
-            callback(null, profile, company);
-          });
-        },
-
-        // Create the account
-        function(profile, company, callback) {
-
-          var user = req.body;
-          user.provider = 'local';
-
-          if (profile) {
-            user.profile = profile._id;
-          }
-
-          if (company) {
-            user.company = company._id;
-          }
-
-          new User(user).save(function (err, user) {
-
-              if (err) {
-                return async.parallel([function(callback) {
-                  if ( company ) company.remove();
-                  callback();
-                }, function(callback) {
-                  if (profile) profile.remove();
-                  callback();
-                }], function() {
-                  res.apiError(err);
-                })
-              }
-
-              callback(null, user);
-            });
-
-        },
-
-        // Get the user with the profile and company populated
-        function(user, callback) {
-          console.log(user);
-          user.populate('company profile', function(err, user) {
-            callback(err, user);
-          });
-        },
-
-        // Send the activation email
+        /**
+         * Send the activation email
+         */
         function(user, callback) {
           mailer.send({
             to: user.email,
@@ -143,10 +67,11 @@ module.exports = function(app) {
         }
 
       ], function(err, user) {
-        // Everything was completed
-          return res.apiSuccess("Your account has been created successfully", { user: user });
+        if ( err ) {
+          return res.apiError(err);
+        }
+        return res.apiSuccess("Your account has been created successfully", { user: user });
       });
-      
     });
 
 

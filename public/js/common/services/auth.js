@@ -3,7 +3,7 @@ angular.module('InternLabs.services')
   .service('Auth', function($rootScope, $http, $q, $location, Options) {
 
     var _user = angular.fromJson(window.internlabs.user);
-console.log(_user);
+
     this.check = function() {
       return !!_user;
     };
@@ -41,6 +41,10 @@ console.log(_user);
         var httpPromise = $http.post(Options.apiUrl('register'), user);
         
         httpPromise.success(function(data, status) {
+          if (!data.success) {
+            return deferred.reject(data.error);
+          };
+
           deferred.resolve(data.data.user);
         });
 

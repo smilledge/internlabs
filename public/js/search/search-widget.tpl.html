@@ -1,0 +1,36 @@
+<div class="search-widget">
+
+  <form role="form" ng-submit="search()">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <input type="text" ng-model="query.query" class="form-control" placeholder="Search for...">
+        </div>
+      </div>
+
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary btn-icon-right">Search <i class="fa fa-search"></i></button>
+      </div>
+
+      <div class="col-sm-2 pull-right">
+        <button type="button" ng-click="toggleAdvanced()" class="btn btn-link">Advanced Search <i ng-class="{'fa fa-chevron-up':showAdvanced,'fa fa-chevron-down':!showAdvanced}"></i></button>
+      </div>
+    </div>
+
+    <div class="row advanced" ng-show="showAdvanced">
+
+      <div class="col-sm-6">
+        <h4>Locations</h4>
+        <div checkbox-list selected="query.locations" options="options.locations" filterable="true"></div>
+      </div>
+
+      <div class="col-sm-6">
+        <h4>Skills</h4>
+        <div checkbox-list selected="query.skills" options="options.skills" filterable="true"></div>
+      </div>
+
+    </div>
+
+  </form>
+
+</div>
