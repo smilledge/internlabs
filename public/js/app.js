@@ -63,16 +63,12 @@ angular.module('InternLabs', [
           autoAlpha: 1,
           onComplete: function() {
             $body.css({ minHeight: 0 });
-            _.defer(function() {
-              $body.css({ minHeight: $body.height() });
-            });
             done();
           }
         });
       },
       leave: function(element, done) {
         $body.css({ minHeight: $body.height() });
-
         TweenLite.to(element, 0.2, {
           autoAlpha: 0,
           onComplete: function() {

@@ -68,6 +68,10 @@ body {
 }
 
 
+/* Fix for grey line through google maps */
+.map *, .map *:before, .map *:after {
+    -webkit-transform: none !important; 
+}
 
 
 .pace {
@@ -150,6 +154,11 @@ body {
 @keyframes pace-stripe-animation {
   0% { transform: none; transform: none; }
   100% { transform: translate(-32px, 0); transform: translate(-32px, 0); }
+}
+
+
+.reveal-animation {
+  background: #fff;
 }
 
 
