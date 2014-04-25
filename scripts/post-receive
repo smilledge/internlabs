@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# 
+# Example Git post receive hook;
+# /internlabs.com.au.git/hooks/post-receive
+# 
+# Make sure you comment out "Default requiretty" in /etc/sudoers
+# 
+
+GIT_WORK_TREE=/var/www/internlabs.com.au git checkout -f
+
+echo "Running NPM install"
+cd /var/www/internlabs.com.au
+npm install
+
+echo "Restarting internlabs process..."
+sudo restart internlabs
+echo "DONE!"
