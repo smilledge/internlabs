@@ -8,7 +8,8 @@ angular.module('InternLabs.home', [])
       .when('/', {
         templateUrl: 'home/home.tpl.html',
         controller: 'HomeCtrl',
-        pageTitle: 'InternLabs'
+        pageTitle: 'InternLabs',
+        className: 'background-primary'
       });
 
   })

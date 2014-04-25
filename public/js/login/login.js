@@ -8,25 +8,29 @@ angular.module('InternLabs.login', [])
       .when('/login', {
         templateUrl: 'login/login.tpl.html',
         controller: 'LoginCtrl',
-        pageTitle: 'Login'
+        pageTitle: 'Login',
+        className: 'background-primary'
       })
 
       .when('/activate', {
         templateUrl: 'login/activate.tpl.html',
         controller: 'ActivateCtrl',
-        pageTitle: 'Account Activation'
+        pageTitle: 'Account Activation',
+        className: 'background-primary'
       })
 
       .when('/resend-activation', {
         templateUrl: 'login/resend-activation.tpl.html',
         controller: 'ResendActivationCtrl',
-        pageTitle: 'Resend Activation Email'
+        pageTitle: 'Resend Activation Email',
+        className: 'background-primary'
       })
 
       .when('/password-reset', {
         templateUrl: 'login/password-reset.tpl.html',
         controller: 'PasswordResetCtrl',
-        pageTitle: 'Reset Password'
+        pageTitle: 'Reset Password',
+        className: 'background-primary'
       })
 
       .when('/logout', {

@@ -33455,6 +33455,23 @@ angular.module('InternLabs', [
       }
     });
 
+    _.mixin({
+      slugify: function(title){
+        var replace = '-';
+        var str = title.toString()
+              .replace(/[\s\.]+/g,replace)
+              .toLowerCase()
+              .replace(new RegExp('[^a-z0-9'+replace+']','g'), replace)
+              .replace(new RegExp(replace+'+','g'),replace)
+            ;
+     
+        if( str.charAt(str.length-1) == replace ) str = str.substring(0,str.length-1);
+        if ( str.charAt(0) == replace ) str = str.substring(1);
+     
+        return str;
+      }
+    });
+
   })
 
   .animation('.reveal-animation', function() {
@@ -33504,14 +33521,21 @@ angular.module('InternLabs', [
     $scope.$on('$routeChangeSuccess', function(event, current, previous) {
       $rootScope.loading = false;
 
+      $('body').removeClass();
+
       if ( ! angular.isDefined( current ) ) {
         return;
       }
 
       if ( angular.isDefined( current.$$route.pageTitle ) ) {
         $scope.pageTitle = current.$$route.pageTitle;
+        $('body').addClass(_.slugify($scope.pageTitle));
       } else {
         $scope.pageTitle = $scope.appTitle;
+      }
+
+      if (current.$$route.className) {
+        $('body').addClass(current.$$route.className);
       }
     });
     
@@ -34629,7 +34653,8 @@ angular.module('InternLabs.home', [])
       .when('/', {
         templateUrl: 'home/home.tpl.html',
         controller: 'HomeCtrl',
-        pageTitle: 'InternLabs'
+        pageTitle: 'InternLabs',
+        className: 'background-primary'
       });
 
   })
@@ -34716,25 +34741,29 @@ angular.module('InternLabs.login', [])
       .when('/login', {
         templateUrl: 'login/login.tpl.html',
         controller: 'LoginCtrl',
-        pageTitle: 'Login'
+        pageTitle: 'Login',
+        className: 'background-primary'
       })
 
       .when('/activate', {
         templateUrl: 'login/activate.tpl.html',
         controller: 'ActivateCtrl',
-        pageTitle: 'Account Activation'
+        pageTitle: 'Account Activation',
+        className: 'background-primary'
       })
 
       .when('/resend-activation', {
         templateUrl: 'login/resend-activation.tpl.html',
         controller: 'ResendActivationCtrl',
-        pageTitle: 'Resend Activation Email'
+        pageTitle: 'Resend Activation Email',
+        className: 'background-primary'
       })
 
       .when('/password-reset', {
         templateUrl: 'login/password-reset.tpl.html',
         controller: 'PasswordResetCtrl',
-        pageTitle: 'Reset Password'
+        pageTitle: 'Reset Password',
+        className: 'background-primary'
       })
 
       .when('/logout', {
@@ -34875,7 +34904,8 @@ angular.module('InternLabs.register', [])
       .when('/signup/:type', {
         templateUrl: 'register/register.tpl.html',
         controller: 'RegisterCtrl',
-        pageTitle: 'Signup'
+        pageTitle: 'Signup',
+        className: 'background-primary'
       })
 
       ;

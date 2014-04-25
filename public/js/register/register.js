@@ -8,7 +8,8 @@ angular.module('InternLabs.register', [])
       .when('/signup/:type', {
         templateUrl: 'register/register.tpl.html',
         controller: 'RegisterCtrl',
-        pageTitle: 'Signup'
+        pageTitle: 'Signup',
+        className: 'background-primary'
       })
 
       ;

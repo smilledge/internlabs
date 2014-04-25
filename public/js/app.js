@@ -48,6 +48,23 @@ angular.module('InternLabs', [
       }
     });
 
+    _.mixin({
+      slugify: function(title){
+        var replace = '-';
+        var str = title.toString()
+              .replace(/[\s\.]+/g,replace)
+              .toLowerCase()
+              .replace(new RegExp('[^a-z0-9'+replace+']','g'), replace)
+              .replace(new RegExp(replace+'+','g'),replace)
+            ;
+     
+        if( str.charAt(str.length-1) == replace ) str = str.substring(0,str.length-1);
+        if ( str.charAt(0) == replace ) str = str.substring(1);
+     
+        return str;
+      }
+    });
+
   })
 
   .animation('.reveal-animation', function() {
@@ -97,14 +114,21 @@ angular.module('InternLabs', [
     $scope.$on('$routeChangeSuccess', function(event, current, previous) {
       $rootScope.loading = false;
 
+      $('body').removeClass();
+
       if ( ! angular.isDefined( current ) ) {
         return;
       }
 
       if ( angular.isDefined( current.$$route.pageTitle ) ) {
         $scope.pageTitle = current.$$route.pageTitle;
+        $('body').addClass(_.slugify($scope.pageTitle));
       } else {
         $scope.pageTitle = $scope.appTitle;
+      }
+
+      if (current.$$route.className) {
+        $('body').addClass(current.$$route.className);
       }
     });
     

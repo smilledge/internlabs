@@ -7883,6 +7883,12 @@ body {
   Common
 
  */
+.background-primary {
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+  background: #39b54a;
+}
 .help-icon {
   display: inline-block;
   font-family: FontAwesome;
