@@ -25,6 +25,18 @@ var seed = function(callback) {
   console.log("+---------------+");
 
 
+  // Delete the existing elasticsearch index
+  tasks.push(function(callback) {
+    console.log("  | ---> Deleting ElasticSearch Index: ");
+    request({
+      uri: 'http://127.0.0.1:9200/companies',
+      method: 'DELETE'
+    }, function(err, response, body) {
+      console.log("    | ---> Deleted existing documents : " + body);
+      callback();
+    });
+  });
+
 
   // Create the import tasks models
   _.each(data, function(user) {
@@ -68,31 +80,31 @@ var seed = function(callback) {
   });
 
 
-  // Add the reindexer task
-  tasks.push(function(callback) {
-    console.log("  | ---> Building ElasticSearch Index: ");
+  // // Add the reindexer task
+  // tasks.push(function(callback) {
+  //   console.log("  | ---> Building ElasticSearch Index: ");
 
-    request({
-      uri: 'http://127.0.0.1:9200/companys',
-      method: 'DELETE'
-    }, function(err, response, body) {
+  //   request({
+  //     uri: 'http://127.0.0.1:9200/companies',
+  //     method: 'DELETE'
+  //   }, function(err, response, body) {
 
-      console.log("    | ---> Deleted existing documents : " + body);
+  //     console.log("    | ---> Deleted existing documents : " + body);
 
-      var stream = Company.synchronize(), count = 0;
+  //     var stream = Company.synchronize(), count = 0;
 
-      stream.on('data', function(err, doc) {
-        count++;
-      });
-      stream.on('close', function() {
-        console.log("    | ---> Done! Total indexed: " + count);
-        callback();
-      });
-      stream.on('error', function(err) {
-        console.log("    | ---> ERROR Indexing: " + err.message);
-      });
-    });
-  });
+  //     stream.on('data', function(err, doc) {
+  //       count++;
+  //     });
+  //     stream.on('close', function() {
+  //       console.log("    | ---> Done! Total indexed: " + count);
+  //       callback();
+  //     });
+  //     stream.on('error', function(err) {
+  //       console.log("    | ---> ERROR Indexing: " + err.message);
+  //     });
+  //   });
+  // });
 
 
 

@@ -1,5 +1,5 @@
 /**
- * internlabs - v0.1.0 - 2014-04-24
+ * internlabs - v0.1.0 - 2014-04-25
  * 
  */
 /**
@@ -33470,7 +33470,9 @@ angular.module('InternLabs', [
           autoAlpha: 1,
           onComplete: function() {
             $body.css({ minHeight: 0 });
-            $body.css({ minHeight: $body.height() });
+            _.defer(function() {
+              $body.css({ minHeight: $body.height() });
+            });
             done();
           }
         });

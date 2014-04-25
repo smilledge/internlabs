@@ -11,12 +11,12 @@ var AddressModel = function () {
     var AddressSchema = mongoose.Schema({
         line1: { type: String },
         line2: { type: String },
-        city: { type: String },
+        city: { type: String, es_indexed: true, es_boost: 1.8 },
         postcode: { type: Number },
-        state: { type: String },
-        country: { type: String },
-        lat: { type: String },
-        lng: { type: String }
+        state: { type: String, es_indexed: true, es_boost: 1.5 },
+        country: { type: String, es_indexed: true, es_boost: 1.1 },
+        lat: { type: String, es_indexed: true },
+        lng: { type: String, es_indexed: true }
     });
 
 
