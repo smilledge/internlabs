@@ -57,6 +57,11 @@ angular.module('InternLabs.dashboard', [])
         auth: true,
         state: {
           main: 'dashboard/company-profile.tpl.html'
+        },
+        resolve: {
+          company: function(Auth, Restangular) {
+            return Restangular.one('companies', Auth.getUser().company).get();
+          }
         }
       })
 
@@ -153,10 +158,60 @@ angular.module('InternLabs.dashboard', [])
   })
 
 
-  .controller('CompanyProfileCtrl', function($route, $scope) {
+  .controller('CompanyProfileCtrl', function($route, $scope, $fileUploader, Options, company, ModalFactory) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'profile';
+    $scope.company = company;
 
+    /**
+     * Upload Logo
+     */
+    $scope.uploadLogo = function() {
+      var uploader;
+      ModalFactory.create({
+        scope: {
+          title: "Upload Company Logo",
+          initialize: function() {
+            uploader = $fileUploader.create({
+              scope: this,
+              url: Options.apiUrl('companies/' + company._id + '/logo')
+            });
+          },
+          upload: function() {
+            uploader.uploadAll();
+            uploader.bind('complete', function (event, xhr, item, response) {
+              $scope.$apply(function() {
+                $scope.company = response.data;
+              });
+              this.close();
+            }.bind(this));
+          }
+        },
+        templateUrl: "dashboard/forms/logo-upload.tpl.html",
+        className: "modal-upload-logo"
+      });
+    };
+
+
+    /**
+     * Delete Logo
+     */
+    $scope.deleteLogo = function() {
+      ModalFactory.create({
+        scope: {
+          title: "Remove Company Logo",
+          delete: function() {
+            company.customDELETE('logo').then(function(data) {
+              $scope.company = data.data;
+              this.close();
+            }.bind(this));
+          }
+        },
+        templateUrl: "dashboard/forms/logo-delete.tpl.html",
+        className: "modal-delete-logo"
+      });
+    };
+    
   })
 
 

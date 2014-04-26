@@ -46,7 +46,7 @@ angular.module('InternLabs.common.directives', [])
      * @return {void}
      */
     this.create = function(options) {
-      options = _.extend(defaultOptions, options);
+      options = _.extend({}, defaultOptions, options);
 
       var scope = $rootScope.$new(),
           $body = $('body'),

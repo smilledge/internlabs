@@ -4,9 +4,12 @@ var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId,
     mongoosastic = require('mongoosastic'),
     Role = require('./role'),
+    User = require('./user'),
     Address = require('./address'),
     nconf = require('nconf'),
-    slug = require('slug');
+    slug = require('slug'),
+    acl = require('mongoose-acl'),
+    aclAuth = require('../lib/aclAuth');
 
 
 var CompanyModel = function() {
@@ -31,6 +34,12 @@ var CompanyModel = function() {
         toJSON: { virtuals: true }
     });
 
+
+    // Access control list
+    CompanySchema.plugin(acl.object);
+    CompanySchema.plugin(aclAuth);
+
+
     // Index using elastic search
     CompanySchema.plugin(mongoosastic, {
         index: 'companies',
@@ -48,7 +57,6 @@ var CompanyModel = function() {
 
         next();
     });
-
 
     CompanySchema.virtual('logoUrl').get(function() {
         if ( this.logo ) {

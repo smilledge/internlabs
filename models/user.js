@@ -3,7 +3,8 @@
 
 var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
-    ObjectId = mongoose.Schema.ObjectId;
+    ObjectId = mongoose.Schema.ObjectId,
+    acl = require('mongoose-acl');
 
 
 var UserModel = function () {
@@ -18,6 +19,15 @@ var UserModel = function () {
         resetToken: { type: String },
         activated: { type: Boolean, default: false }
     });
+
+
+    // Access control list
+    UserSchema.plugin(acl.subject, {
+        key: function() {
+            return 'user:' + this._id;
+        }
+    });
+
 
     /**
      * Helper function that hooks into the 'save' method, and replaces plaintext passwords with a hashed version.

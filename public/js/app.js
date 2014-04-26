@@ -75,8 +75,8 @@ angular.module('InternLabs', [
         TweenLite.set(element, {
           autoAlpha: 0
         });
-        TweenLite.to(element, 0.35, {
-          delay: 0.2,
+        TweenLite.to(element, 0.2, {
+          delay: 0.1,
           autoAlpha: 1,
           onComplete: function() {
             $body.css({ minHeight: 0 });
@@ -86,7 +86,7 @@ angular.module('InternLabs', [
       },
       leave: function(element, done) {
         $body.css({ minHeight: $body.height() });
-        TweenLite.to(element, 0.2, {
+        TweenLite.to(element, 0.1, {
           autoAlpha: 0,
           onComplete: function() {
             $(window).scrollTop(0);

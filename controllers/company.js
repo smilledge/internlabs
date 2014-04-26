@@ -146,20 +146,11 @@ module.exports = function(app) {
    * Add a logo to a company's profile
    */
   app.post('/api/companies/:companyId/logo', function(req, res) {
-    Company.findOne({
-      _id: req.params.companyId
-    }, function(err, company) {
-      
-      if ( err || ! company ) {
-        return res.apiError("Could not find your company.");
+    CompanyService.setLogo(req.user, req.params.companyId, req.files.file, function(err, company) {
+      if (err) {
+        return res.apiError(err);
       }
-
-      CompanyService.setLogo(company, req.files.file.path, function(err, company) {
-        if (err) {
-          return res.apiError(err);
-        }
-        return res.apiSuccess("Logo uploaded successfully.", { company: company });
-      });
+      return res.apiSuccess("Logo uploaded successfully.", company);
     });
   });
 
@@ -167,8 +158,13 @@ module.exports = function(app) {
   /**
    * Remove a comanies logo
    */
-  app.delete('/api/companies/:companyId/logo/:logoId?', auth.check(), function(req, res) {
-    
+  app.delete('/api/companies/:companyId/logo/:logoId?', auth.check(), function(req, res) {    
+    CompanyService.deleteLogo(req.user, req.params.companyId, function(err, company) {
+      if (err) {
+        return res.apiError(err);
+      }
+      return res.apiSuccess("Logo removed successfully.", company);
+    });
   });
 
 

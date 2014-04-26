@@ -7878,6 +7878,9 @@ body {
 *:focus {
   outline: none;
 }
+img {
+  max-width: 100%;
+}
 /*
 
   Common
@@ -8509,4 +8512,7 @@ label.floating-label.open {
 }
 .list-roles .actions .btn {
   margin-left: 5px;
+}
+.edit-company-profile .company-logo {
+  padding: 20px 0;
 }
