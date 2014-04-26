@@ -5,14 +5,17 @@ InternLabs connects students with employers and helps create successful internsh
 
 
 ## Installation
-1. Install [Node.js](http://nodejs.org/) and [MongoDB](https://www.mongodb.org/)
+1. Install [Node.js](http://nodejs.org/), [MongoDB](https://www.mongodb.org/) and [Elasticsearch](http://www.elasticsearch.org/)
 2. Clone this repo `git clone https://github.com/smilledge/internlabs InternLabs`
 3. Install required packages `npm install` (run inside of InternLabs folder)
 4. Make sure you have [nodemon](https://github.com/remy/nodemon) installed globally `npm install -g nodemon` (automatically restarts node applications when developing)
 5. Copy example config and update if required `cp config/app.json.example config/app.json`
 6. Compile LESS / JS and watch for changes `grunt -v --force`
 8. Start MongoDB server `mongod`
-9. Start node.js server `npm start`
+9. Start elasticsearch server
+10. (Optional) Seed mongo / elasticsearch with some sample data `scripts/seed`
+11. Start node.js server `npm start` or `nodemon index.js`
+
 
 
 ## Notes
@@ -20,4 +23,5 @@ InternLabs connects students with employers and helps create successful internsh
  - [MongoDB](https://www.mongodb.org/) will be used for the database
  - [Mongoose](http://mongoosejs.com/) will be the ODM used 
  - Frontend will be developed using [Angular.js](http://angularjs.org/) and [Bootstrap](http://getbootstrap.com/)
- - [Passport.js](http://passportjs.org/) will be used for user authentication
+ - [Passport.js](http://passportjs.org/) will be used for user authentication 
+ - [Elasticsearch](http://www.elasticsearch.org/) will be used for searching
