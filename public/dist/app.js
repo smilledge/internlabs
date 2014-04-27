@@ -32604,7 +32604,7 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
     "      <h1 class=\"page-title pull-left\">{{ company.name }}</h1>\n" +
     "\n" +
     "      <div class=\"actions pull-right\">\n" +
-    "        <a href=\"#\" class=\"btn btn-primary btn-icon-right\">Apply for Internship <i class=\"fa fa-envelope\"></i></a>\n" +
+    "        <a auth-group=\"student\" href=\"#\" class=\"btn btn-primary btn-icon-right\">Apply for Internship <i class=\"fa fa-envelope\"></i></a>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "  </header>\n" +
@@ -32643,7 +32643,7 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
     "                <strong>{{ role.title }}</strong>\n" +
     "                <div class=\"actions\">\n" +
     "                  <button ng-click=\"showRoleDetails(role)\" type=\"button\" class=\"btn btn-default btn-sm\"><i class=\"fa fa-info-circle\"></i> More Info</button>\n" +
-    "                  <button ng-click=\"apply(role)\" type=\"button\" class=\"btn btn-primary btn-sm\">Apply <i class=\"fa fa-chevron-right small\"></i></button>\n" +
+    "                  <button auth-group=\"student\" ng-click=\"apply(role)\" type=\"button\" class=\"btn btn-primary btn-sm\">Apply <i class=\"fa fa-chevron-right small\"></i></button>\n" +
     "                </div>\n" +
     "              </li>\n" +
     "            </ul>\n" +

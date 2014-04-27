@@ -5,7 +5,7 @@
       <h1 class="page-title pull-left">{{ company.name }}</h1>
 
       <div class="actions pull-right">
-        <a href="#" class="btn btn-primary btn-icon-right">Apply for Internship <i class="fa fa-envelope"></i></a>
+        <a auth-group="student" href="#" class="btn btn-primary btn-icon-right">Apply for Internship <i class="fa fa-envelope"></i></a>
       </div>
     </div>
   </header>
@@ -44,7 +44,7 @@
                 <strong>{{ role.title }}</strong>
                 <div class="actions">
                   <button ng-click="showRoleDetails(role)" type="button" class="btn btn-default btn-sm"><i class="fa fa-info-circle"></i> More Info</button>
-                  <button ng-click="apply(role)" type="button" class="btn btn-primary btn-sm">Apply <i class="fa fa-chevron-right small"></i></button>
+                  <button auth-group="student" ng-click="apply(role)" type="button" class="btn btn-primary btn-sm">Apply <i class="fa fa-chevron-right small"></i></button>
                 </div>
               </li>
             </ul>
