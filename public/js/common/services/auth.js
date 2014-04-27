@@ -12,6 +12,10 @@ angular.module('InternLabs.services')
       return _user || false;
     };
 
+    this.hasAccess = function(type) {
+      return type === _user.type;
+    };
+
     /**
      * login
      */

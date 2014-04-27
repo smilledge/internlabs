@@ -500,36 +500,51 @@ angular.module('InternLabs.common.directives', [])
   })
 
   /**
-   * Show / hide elements based on login status / user level
+   * Show / hide elements based on login status
    *
-   * Example: <div auth logged="true">Only logged in users will see this</div>
+   * Example: <div logged-in="true">Only logged in users will see this</div>
    */
-  .directive('auth', function(Auth) {
+  .directive('loggedIn', function(Auth) {
     return {
       restrict: 'A',
-      scope: {
-        logged: '=?',
-        group: '=?'
-      },
       link: function(scope, elem, attrs) {
-
         elem = $(elem);
-        
-        // Show hide the elem depending on auth status
+  
         var check = function() {
-          if ( scope.logged ) {
-            if ( Auth.check(true) ) {
-              elem.removeClass('hide');
-            } else {
-              elem.addClass('hide');
-            }
-          } else {
-            if ( ! Auth.check(true) ) {
-              elem.removeClass('hide');
-            } else {
-              elem.addClass('hide');
-            }
+          var logged = scope.$eval(elem.attr('logged-in'));
+
+          if ( (logged && !Auth.check()) || (!logged && Auth.check()) ) {
+            return elem.addClass('hide');
           }
+
+          elem.removeClass('hide');
+        };
+
+        check();
+      }
+    };
+  })
+
+
+  /**
+   * Show / hide elements based on users type ('employer', 'student', 'supervisor')
+   *
+   * Example: <div auth-group="student">Only students will see this</div>
+   */
+  .directive('authGroup', function(Auth) {
+    return {
+      restrict: 'A',
+      link: function(scope, elem, attrs) {
+        elem = $(elem);
+
+        var check = function() {
+          var group = attrs.authGroup;
+
+          if ( ! Auth.hasAccess(group) ) {
+            return elem.addClass('hide');
+          }
+
+          elem.removeClass('hide');
         };
 
         check();
