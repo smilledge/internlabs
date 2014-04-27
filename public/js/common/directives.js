@@ -356,9 +356,16 @@ angular.module('InternLabs.common.directives', [])
          * 
          * @return {void}
          */
-        var setHeight = function() {
-          var height = elem.find('.form-step.active').height();
-          elem.css({
+        var setHeight = function($elem) {
+          var height;
+
+          if ($elem) {
+            height = $elem.height();
+          } else {
+            height = elem.find('.form-step.active').height();
+          }
+
+          TweenLite.to(elem, 0.3, {
             'min-height': height 
           });
         };
@@ -416,8 +423,11 @@ angular.module('InternLabs.common.directives', [])
           // Run validation on each field and return if that field is valid
           var validationResults = _.map($inputs, function($input) {
             var validator = new Parsley($input);
-            validator.validate();
-            return validator.isValid();
+            if ( _.has(validator, 'validate') ) {
+              validator.validate();
+              return validator.isValid();
+            }
+            return true;
           });
 
           // Are all the fields valid
@@ -438,12 +448,13 @@ angular.module('InternLabs.common.directives', [])
             return;
           }
 
+          setHeight($next);
+
           // Play the transition animation
           transitionSteps($current, $next, false).then(function() {
             // Animtion done
             $current.removeClass('active');
             $next.addClass('active');
-            setHeight();
           });
         };
 
@@ -454,11 +465,12 @@ angular.module('InternLabs.common.directives', [])
           var $current = elem.find('.form-step.active'),
               $prev = $current.prev('.form-step');
 
+          setHeight($prev);
+
           transitionSteps($current, $prev, true).then(function() {
             // Animtion done
             $current.removeClass('active');
             $prev.addClass('active');
-            setHeight();
           });
         };
 

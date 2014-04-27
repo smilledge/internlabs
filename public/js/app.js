@@ -12,7 +12,8 @@ angular.module('InternLabs', [
   'InternLabs.register',
   'InternLabs.search',
   'InternLabs.dashboard',
-  'InternLabs.company'
+  'InternLabs.company',
+  'InternLabs.internships'
 ])
 
   .config(function($locationProvider, RestangularProvider) {

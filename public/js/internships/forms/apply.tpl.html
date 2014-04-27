@@ -1,0 +1,102 @@
+<form apply-form role="form" ng-submit="save()">
+
+  <div class="form-group">
+    <p>Your internship proposal contains everything your employer will need to know. This includes the internship length, your availability, required documentation and anything else that will be required of the employer.</p>
+    <p>Your profile and resume will also be attached to your application.</p>
+  </div>
+
+  <div stepped-form>
+
+    <fieldset class="form-step">
+      
+      <legend>Proposed Role</legend>
+
+      <div class="custom-role">
+        <div class="form-group">
+          <label>Role Title</label>
+          <input ng-model="application.role.title" ng-disabled="existingRole" type="text" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="">Role Description</label>
+          <textarea ng-model="application.role.description" ng-disabled="existingRole" class="form-control" rows="6"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <a href="#" class="next btn btn-default pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
+      </div>
+
+    </fieldset>
+
+
+    <fieldset class="form-step">
+
+      <legend>Internship Details</legend>
+  
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-4">
+            <label for="">Start Date</label>
+            <input ng-model="application.startDate" type="text" class="form-control">
+          </div>
+
+          <div class="col-sm-4">
+            <label for="">End Date</label>
+            <input ng-model="application.endDate" type="text" class="form-control">
+          </div>
+          <div class="col-sm-4">
+            <label for="">Total Hours</label>
+            <input ng-model="application.totalHours" type="text" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="">Availability</label>
+        <div checkbox-list selected="application.availability" options="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" filterable="false"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="field-comment">Comments</label>
+        <textarea ng-model="application.comment" id="field-comment" rows="6" class="form-control"></textarea>
+      </div>
+
+      <div class="form-group">
+        <a href="#" class="previous btn btn-default pull-left btn-icon-left">Back <i class="fa fa-arrow-left"></i></a>
+        <a href="#" class="next btn btn-default pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
+      </div>
+
+    </fieldset>
+
+
+    <fieldset class="form-step">
+
+      <legend>Attached Documents</legend>
+
+      <p class="lead">TODO!</p>
+
+      <div class="form-group">
+        <a href="#" class="previous btn btn-default pull-left btn-icon-left">Back <i class="fa fa-arrow-left"></i></a>
+        <a href="#" class="next btn btn-default pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
+      </div>
+
+    </fieldset>
+
+
+    <fieldset class="form-step">
+
+      <legend>Confirm Application</legend>
+
+      <p class="lead">TODO!</p>
+
+      <div class="form-group">
+        <a href="#" class="previous btn btn-default pull-left btn-icon-left">Back <i class="fa fa-arrow-left"></i></a>
+        <button type="submit" class="btn btn-primary btn-icon-right pull-right">Apply <i class="fa fa-arrow-right"></i></button>
+      </div>
+
+    </fieldset>
+
+  </div>
+
+</form>

@@ -87,7 +87,7 @@ module.exports.create = function(data, done) {
      */
     function(profile, address, callback) {
       if ( ! _.isObject(data.company) ) {
-        return callback(null, null, null);
+        return callback(null, profile, null);
       }
 
       if ( ! _.isUndefined(data.company.skills) ) {

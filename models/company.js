@@ -39,7 +39,6 @@ var CompanyModel = function() {
     CompanySchema.plugin(acl.object);
     CompanySchema.plugin(aclAuth);
 
-
     // Index using elastic search
     CompanySchema.plugin(mongoosastic, {
         index: 'companies',

@@ -13,7 +13,7 @@ angular.module('InternLabs.services')
     };
 
     this.hasAccess = function(type) {
-      return type === _user.type;
+      return _user && type === _user.type;
     };
 
     /**

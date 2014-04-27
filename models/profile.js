@@ -16,11 +16,19 @@ var profileModel = function () {
         linkedIn: { type: String },
         skills: { type: Array },
         resume: { type: String }
+    },
+    {
+        toObject: { virtuals: true },
+        toJSON: { virtuals: true }
     });
 
     // Access control list
     ProfileSchema.plugin(acl.object);
     ProfileSchema.plugin(aclAuth);
+
+    ProfileSchema.virtual('name').get(function() {
+        return this.firstName + ' ' + this.lastName;
+    });
 
     return mongoose.model('Profile', ProfileSchema);
 };
