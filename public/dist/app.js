@@ -1,5 +1,5 @@
 /**
- * internlabs - v0.1.0 - 2014-04-26
+ * internlabs - v0.1.0 - 2014-04-27
  * 
  */
 /**
@@ -33526,35 +33526,35 @@ angular.module('InternLabs', [
 
   })
 
-  .animation('.reveal-animation', function() {
-    var $body = $('body');
+  // .animation('.reveal-animation', function() {
+  //   var $body = $('body');
 
-    return {
-      enter: function(element, done) {
-        TweenLite.set(element, {
-          autoAlpha: 0
-        });
-        TweenLite.to(element, 0.2, {
-          delay: 0.1,
-          autoAlpha: 1,
-          onComplete: function() {
-            $body.css({ minHeight: 0 });
-            done();
-          }
-        });
-      },
-      leave: function(element, done) {
-        $body.css({ minHeight: $body.height() });
-        TweenLite.to(element, 0.1, {
-          autoAlpha: 0,
-          onComplete: function() {
-            $(window).scrollTop(0);
-            done();
-          }
-        });
-      }
-    }
-  })
+  //   return {
+  //     enter: function(element, done) {
+  //       TweenLite.set(element, {
+  //         autoAlpha: 0
+  //       });
+  //       TweenLite.to(element, 0.2, {
+  //         delay: 0.1,
+  //         autoAlpha: 1,
+  //         onComplete: function() {
+  //           $body.css({ minHeight: 0 });
+  //           done();
+  //         }
+  //       });
+  //     },
+  //     leave: function(element, done) {
+  //       $body.css({ minHeight: $body.height() });
+  //       TweenLite.to(element, 0.1, {
+  //         autoAlpha: 0,
+  //         onComplete: function() {
+  //           $(window).scrollTop(0);
+  //           done();
+  //         }
+  //       });
+  //     }
+  //   }
+  // })
 
   .controller('AppCtrl', function($rootScope, $scope, $location, Auth) {
 
@@ -33574,6 +33574,7 @@ angular.module('InternLabs', [
       $rootScope.loading = false;
 
       $('body').removeClass();
+      $(window).scrollTop(0);
 
       if ( ! angular.isDefined( current ) ) {
         return;
