@@ -7944,6 +7944,10 @@ img {
 .map *:after {
   -webkit-transform: none !important;
 }
+.map img,
+#map img {
+  max-width: none;
+}
 .pace {
   -webkit-pointer-events: none;
   pointer-events: none;
@@ -8471,6 +8475,9 @@ label.floating-label.open {
 }
 .infoBox hr {
   margin: 10px 0;
+}
+.infoBox img {
+  max-width: 100%;
 }
 .infoBox .close-button {
   width: 30px;
