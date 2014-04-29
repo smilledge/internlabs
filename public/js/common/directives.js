@@ -93,6 +93,36 @@ angular.module('InternLabs.common.directives', [])
 
 
   /**
+   * Primary navigation
+   */
+   .directive('primaryNav', function($location) {
+    return {
+      restrict: 'A',
+      link: function(scope, elem, attrs) {
+
+        scope.search = {
+          query: ""
+        };
+
+        scope.focus = function() {
+          elem.find('input').focus();
+        };
+
+        scope.blur = function() {
+          elem.find('input').blur();
+        };
+
+        scope.search = function() {
+          $location.url('/search?query=' + scope.search.query);
+          scope.search.query = "";
+        };
+      }
+    }
+  })
+
+
+
+  /**
    * Google map
    *  - Uses gmaps.js
    */

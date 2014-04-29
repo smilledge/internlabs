@@ -101,6 +101,7 @@ angular.module('InternLabs', [
   .controller('AppCtrl', function($rootScope, $scope, $location, Auth) {
 
     $scope.appTitle = 'InternLabs';
+    $rootScope.user = window.internlabs.user || {};
     $rootScope.loading = false;
 
     $scope.$on('$routeChangeStart', function(event, next, current) {
@@ -115,7 +116,7 @@ angular.module('InternLabs', [
     $scope.$on('$routeChangeSuccess', function(event, current, previous) {
       $rootScope.loading = false;
 
-      $('body').removeClass();
+      // $('body').removeClass();
       $(window).scrollTop(0);
 
       if ( ! angular.isDefined( current ) ) {
@@ -124,13 +125,13 @@ angular.module('InternLabs', [
 
       if ( angular.isDefined( current.$$route.pageTitle ) ) {
         $scope.pageTitle = current.$$route.pageTitle;
-        $('body').addClass(_.slugify($scope.pageTitle));
+        // $('body').addClass(_.slugify($scope.pageTitle));
       } else {
         $scope.pageTitle = $scope.appTitle;
       }
 
       if (current.$$route.className) {
-        $('body').addClass(current.$$route.className);
+        // $('body').addClass(current.$$route.className);
       }
     });
     
