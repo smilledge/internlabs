@@ -4845,6 +4845,7 @@ a.thumbnail.active {
   list-style: none;
 }
 .list-group {
+  clear: both;
   margin-bottom: 20px;
   padding-left: 0;
 }
@@ -7969,9 +7970,9 @@ a {
   left: 0;
   height: 5px;
   overflow: hidden;
-  -webkit-transition: width 1s;
-  -o-transition: width 1s;
-  transition: width 1s;
+  -webkit-transition: width 0.35s;
+  -o-transition: width 0.35s;
+  transition: width 0.35s;
 }
 .pace .pace-progress-inner {
   position: absolute;

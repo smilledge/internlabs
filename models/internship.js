@@ -7,7 +7,8 @@ var mongoose = require('mongoose'),
     Address = require('./address'),
     nconf = require('nconf'),
     acl = require('mongoose-acl'),
-    aclAuth = require('../lib/aclAuth');
+    aclAuth = require('../lib/aclAuth'),
+    slug = require('slug');
 
 
 var InternshipModel = function() {
@@ -82,11 +83,22 @@ var InternshipModel = function() {
         next();
     });
 
+    InternshipSchema.statics.getUrl = function(internship) {
+        var url = "/internship/" + internship._id + "/";
+
+        if (internship.role && internship.role.title) {
+            url += slug(internship.role.title).toLowerCase();
+
+            if (internship.company && internship.company.name) {
+                url += "-at-" + slug(internship.company.name).toLowerCase();
+            }
+        }
+
+        return url;
+    }
 
     InternshipSchema.virtual('url').get(function() {
-        if ( this._id && this.name ) {
-            return '/internship/' + this._id;
-        }
+        return this.getUrl();
     });
 
     return mongoose.model('Internship', InternshipSchema);

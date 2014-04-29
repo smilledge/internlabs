@@ -18,10 +18,15 @@ angular.module('InternLabs.dashboard', [])
       .when('/dashboard/internships', {
         templateUrl: 'dashboard/layout.tpl.html',
         controller: 'InternshipsCtrl',
-        pageTitle: 'Active Internships',
+        pageTitle: 'My Internships',
         auth: true,
         state: {
           main: 'dashboard/internships.tpl.html'
+        },
+        resolve: {
+          internships: function(Restangular) {
+            return Restangular.one('me').all('internships').getList();
+          }
         }
       })
 
@@ -77,9 +82,11 @@ angular.module('InternLabs.dashboard', [])
   })
 
 
-  .controller('InternshipsCtrl', function($route, $scope) {
+  .controller('InternshipsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'internships';
+
+    $scope.internships = internships;
 
   })
 

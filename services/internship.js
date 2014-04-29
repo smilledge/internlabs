@@ -8,6 +8,64 @@ var Internship = require('../models/internship'),
 
 
 /**
+ * Get all internships for a user
+ * 
+ * @param  {string}   user _id 
+ * @param  {function} done
+ * @return {void}
+ */
+module.exports.findByUser = function(user, done) {
+
+  if (user._id) {
+    user = user._id;
+  }
+
+  async.waterfall([
+
+    /**
+     * Get the student
+     */
+    function(callback) {
+      User.findById(user).lean().populate('profile').exec(function(err, student) {
+        if ( err || ! student ) {
+          return callback(new Error("Student not found."));
+        }
+        callback(null, student);
+      });
+    },
+
+    /**
+     * Get the internship
+     */
+    function(student, callback) {
+      Internship.find({
+        student: student._id
+      }).lean().populate('company student').exec(function(err, internships) {
+        if ( err || ! internships ) {
+          return callback(new Error("Could not find any matching internships."));
+        }
+
+        callback(null, student, internships);
+      });
+    },
+
+    /**
+     * Populate the students profile and internship url
+     * (URL virtual gets stripped out when running lean())
+     */
+    function(student, internships, callback) {
+      _.each(internships, function(internship) {
+        internship.url = Internship.getUrl(internship);
+        internship.student.profile = student.profile;
+      });
+      callback(null, internships);
+    }
+
+  ], done);
+};
+
+
+/**
  * Git an internship by id
  * 
  * @param  {string}   internshipId 

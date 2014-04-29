@@ -10,6 +10,19 @@ module.exports = function(app) {
 
 
   /**
+   * Get the current user's internships
+   */
+  app.get('/api/me/internships', auth.check(), function(req, res) {
+    InternshipService.findByUser(req.user._id, function(err, internships) {
+      if ( err || ! internships ) {
+        return res.apiError(new Error('Could not find any matching internships.'));
+      }
+      return res.apiSuccess(internships);
+    });
+  });
+
+
+  /**
    * Create an internships
    */
   app.get('/api/internships/:internshipId', auth.check(), function(req, res) {

@@ -32783,9 +32783,25 @@ angular.module("dashboard/forms/role.tpl.html", []).run(["$templateCache", funct
 angular.module("dashboard/internships.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/internships.tpl.html",
     "<header class=\"section-header\">\n" +
-    "  <h2>Active Internships</h2>\n" +
+    "  <h2>My Internships</h2>\n" +
     "</header>\n" +
-    "");
+    "\n" +
+    "\n" +
+    "<div class=\"list-group\">\n" +
+    "  <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item\">\n" +
+    "    <h4 class=\"list-group-item-heading\">\n" +
+    "      {{ internship.role.title || \"Internship\" }} \n" +
+    "      <span class=\"text-muted\">at</span> \n" +
+    "      {{ internship.company.name }}\n" +
+    "      <span class=\"label label-primary pull-right\">{{ internship.status }}</span>\n" +
+    "    </h4>\n" +
+    "\n" +
+    "    <p class=\"list-group-item-text\">\n" +
+    "      {{ internship.startDate | date:short }}\n" +
+    "      <span ng-show=\"internship.startDate && internship.endDate\" class=\"text-muted\">to</span>\n" +
+    "      {{ internship.endDate | date:short }}</p>\n" +
+    "  </a>\n" +
+    "</div>");
 }]);
 
 angular.module("dashboard/layout.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -32804,11 +32820,11 @@ angular.module("dashboard/layout.tpl.html", []).run(["$templateCache", function(
     "        <div class=\"col-sm-3\">\n" +
     "          <ul class=\"nav nav-pills nav-stacked\">\n" +
     "            <li ng-class=\"{active:active=='dashboard'}\"><a href=\"/dashboard\">Dashboard</a></li>\n" +
-    "            <li auth-group=\"employer\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">Internships</a></li>\n" +
+    "            <li auth-group=\"student\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">Internships</a></li>\n" +
     "            <li auth-group=\"employer\" ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
     "            <li auth-group=\"employer\" ng-class=\"{active:active=='roles'}\"><a href=\"/dashboard/roles\">Available Roles</a></li>\n" +
     "            <li auth-group=\"employer\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/company-profile\">Company Profile</a></li>\n" +
-    "            <li auth-group=\"student\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">My Profile</a></li>\n" +
+    "            <li auth-group=\"student\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">Edit Profile</a></li>\n" +
     "          </ul>\n" +
     "        </div>\n" +
     "\n" +
@@ -33844,7 +33860,7 @@ angular.module('InternLabs.common.directives', [])
         };
 
         scope.search = function() {
-          $location.url('/search?query=' + scope.search.query);
+          $location.url('/search?query=' + (scope.search.query || ""));
           scope.search.query = "";
         };
       }
@@ -34765,10 +34781,15 @@ angular.module('InternLabs.dashboard', [])
       .when('/dashboard/internships', {
         templateUrl: 'dashboard/layout.tpl.html',
         controller: 'InternshipsCtrl',
-        pageTitle: 'Active Internships',
+        pageTitle: 'My Internships',
         auth: true,
         state: {
           main: 'dashboard/internships.tpl.html'
+        },
+        resolve: {
+          internships: function(Restangular) {
+            return Restangular.one('me').all('internships').getList();
+          }
         }
       })
 
@@ -34824,9 +34845,11 @@ angular.module('InternLabs.dashboard', [])
   })
 
 
-  .controller('InternshipsCtrl', function($route, $scope) {
+  .controller('InternshipsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'internships';
+
+    $scope.internships = internships;
 
   })
 

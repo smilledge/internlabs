@@ -113,7 +113,7 @@ angular.module('InternLabs.common.directives', [])
         };
 
         scope.search = function() {
-          $location.url('/search?query=' + scope.search.query);
+          $location.url('/search?query=' + (scope.search.query || ""));
           scope.search.query = "";
         };
       }
