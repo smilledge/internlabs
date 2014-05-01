@@ -96,10 +96,8 @@ module.exports = function ( grunt ) {
       compile: {
         files: [
           {
-            src: [ '<%= app_files.js %>' ],
-            cwd: '<%= tmp_dir %>',
-            dest: '<%= tmp_dir %>',
-            expand: true
+            src: [ '<%= concat.compile_js.dest %>' ],
+            dest: '<%= concat.compile_js.dest %>'
           }
         ]
       }
@@ -123,7 +121,9 @@ module.exports = function ( grunt ) {
      */
     less: {
       build: {
-        options: {},
+        options: {
+          compress: true
+        },
         files: {
           '<%= compile_dir %>/app.css': '<%= app_files.less %>'
         }
@@ -250,8 +250,17 @@ module.exports = function ( grunt ) {
   grunt.registerTask( 'build', [
     'clean:clear', 
     'html2js', 'jshint', 'less',
-    'concat:compile_css', 'ngmin', 'concat:compile_js', 
-    // 'uglify',
+    'concat:compile_css', 'concat:compile_js',
+    'copy:fonts',
+    'clean:clear'
+  ]);
+
+
+  grunt.registerTask( 'compile', [
+    'clean:clear', 
+    'html2js', 'jshint', 'less',
+    'concat:compile_css', 'concat:compile_js', 
+    'ngmin', 'uglify',
     'copy:fonts',
     'clean:clear'
   ]);
