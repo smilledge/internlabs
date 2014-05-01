@@ -76,9 +76,6 @@ module.exports = function ( grunt ) {
        * code and all specified vendor source code into a single file.
        */
       compile_js: {
-        options: {
-          banner: '<%= meta.banner %>'
-        },
         src: [ 
           '<%= vendor_files.js %>', 
           'module.prefix', 
@@ -113,9 +110,6 @@ module.exports = function ( grunt ) {
      */
     uglify: {
       compile: {
-        options: {
-          banner: '<%= meta.banner %>'
-        },
         files: {
           '<%= compile_dir %>/app.min.js': '<%= concat.compile_js.dest %>'
         }

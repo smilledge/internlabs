@@ -1,8 +1,4 @@
 /**
- * internlabs - v0.1.0 - 2014-04-30
- * 
- */
-/**
  * @license AngularJS v1.2.15
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
