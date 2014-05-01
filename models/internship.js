@@ -98,7 +98,7 @@ var InternshipModel = function() {
     }
 
     InternshipSchema.virtual('url').get(function() {
-        return this.getUrl();
+        return InternshipSchema.statics.getUrl();
     });
 
     return mongoose.model('Internship', InternshipSchema);
