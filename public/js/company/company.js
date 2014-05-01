@@ -21,10 +21,31 @@ angular.module('InternLabs.company', [])
   })
 
 
-  .controller('CompanyDetailsCtrl', function($scope, $sce, company, ModalFactory) {
+  .controller('CompanyDetailsCtrl', function($scope, $sce, Restangular, company, ModalFactory) {
 
     $scope.company = company;
     $scope.company.displayAddress = $sce.trustAsHtml(company.getDisplayAddress());
+    $scope.application = {
+      company: company._id
+    };
+
+    $scope.apply = function(role) {
+      ModalFactory.create({
+        scope: {
+          title: "Apply for internship",
+          application: $scope.application,
+          role: role,
+          save: function() {
+            Restangular.all("internships").post(this.application).then(function(response) {
+              console.log(response);
+              this.close();
+            }.bind(this));
+          }
+        },
+        templateUrl: "internships/forms/apply.tpl.html",
+        className: "modal-lg modal-create-application"
+      });
+    };
 
     $scope.showRoleDetails = function(role) {
       ModalFactory.create({

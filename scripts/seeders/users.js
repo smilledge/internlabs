@@ -58,7 +58,7 @@ var seed = function(callback) {
           if ( _.isObject(user.company) ) {
             Company.findOne(user.company, function(err, company) {
               if (company) {
-                CompanyService.setLogo(company, __dirname + '/images/' + company.logo, function(err) {
+                CompanyService.setLogo(user, company, __dirname + '/images/' + company.logo, function(err, company) {
                   if (err) {
                     console.log("  | ---> Imported user: " + user.email);
                     console.log("    | ---> ERROR uploading logo: " + err.message);

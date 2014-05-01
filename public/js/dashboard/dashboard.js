@@ -18,10 +18,15 @@ angular.module('InternLabs.dashboard', [])
       .when('/dashboard/internships', {
         templateUrl: 'dashboard/layout.tpl.html',
         controller: 'InternshipsCtrl',
-        pageTitle: 'Active Internships',
+        pageTitle: 'My Internships',
         auth: true,
         state: {
           main: 'dashboard/internships.tpl.html'
+        },
+        resolve: {
+          internships: function(Restangular) {
+            return Restangular.one('me').all('internships').getList();
+          }
         }
       })
 
@@ -57,6 +62,11 @@ angular.module('InternLabs.dashboard', [])
         auth: true,
         state: {
           main: 'dashboard/company-profile.tpl.html'
+        },
+        resolve: {
+          company: function(Auth, Restangular) {
+            return Restangular.one('companies', Auth.getUser().company).get();
+          }
         }
       })
 
@@ -72,9 +82,11 @@ angular.module('InternLabs.dashboard', [])
   })
 
 
-  .controller('InternshipsCtrl', function($route, $scope) {
+  .controller('InternshipsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'internships';
+
+    $scope.internships = internships;
 
   })
 
@@ -153,10 +165,60 @@ angular.module('InternLabs.dashboard', [])
   })
 
 
-  .controller('CompanyProfileCtrl', function($route, $scope) {
+  .controller('CompanyProfileCtrl', function($route, $scope, $fileUploader, Options, company, ModalFactory) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'profile';
+    $scope.company = company;
 
+    /**
+     * Upload Logo
+     */
+    $scope.uploadLogo = function() {
+      var uploader;
+      ModalFactory.create({
+        scope: {
+          title: "Upload Company Logo",
+          initialize: function() {
+            uploader = $fileUploader.create({
+              scope: this,
+              url: Options.apiUrl('companies/' + company._id + '/logo')
+            });
+          },
+          upload: function() {
+            uploader.uploadAll();
+            uploader.bind('complete', function (event, xhr, item, response) {
+              $scope.$apply(function() {
+                $scope.company = response.data;
+              });
+              this.close();
+            }.bind(this));
+          }
+        },
+        templateUrl: "dashboard/forms/logo-upload.tpl.html",
+        className: "modal-upload-logo"
+      });
+    };
+
+
+    /**
+     * Delete Logo
+     */
+    $scope.deleteLogo = function() {
+      ModalFactory.create({
+        scope: {
+          title: "Remove Company Logo",
+          delete: function() {
+            company.customDELETE('logo').then(function(data) {
+              $scope.company = data.data;
+              this.close();
+            }.bind(this));
+          }
+        },
+        templateUrl: "dashboard/forms/logo-delete.tpl.html",
+        className: "modal-delete-logo"
+      });
+    };
+    
   })
 
 

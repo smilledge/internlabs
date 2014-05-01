@@ -5,7 +5,7 @@
       <h1 class="page-title pull-left">{{ company.name }}</h1>
 
       <div class="actions pull-right">
-        <a href="#" class="btn btn-primary btn-icon-right">Apply for Internship <i class="fa fa-envelope"></i></a>
+        <button type="button" auth-group="student" ng-click="apply()" class="btn btn-primary btn-icon-right">Apply for Internship <i class="fa fa-envelope"></i></button>
       </div>
     </div>
   </header>
@@ -15,7 +15,7 @@
       <div class="row">
         <div class="col-sm-4 profile-sidebar">
           <div class="profile-logo">
-            <img src="/uploads/{{ company.logo }}" alt="">
+            <img ng-show="company.logoUrl" ng-src="{{ company.logoUrl }}" alt="{{ company.name }}">
           </div>
 
           <ul class="profile-meta">
@@ -44,7 +44,7 @@
                 <strong>{{ role.title }}</strong>
                 <div class="actions">
                   <button ng-click="showRoleDetails(role)" type="button" class="btn btn-default btn-sm"><i class="fa fa-info-circle"></i> More Info</button>
-                  <button ng-click="apply(role)" type="button" class="btn btn-primary btn-sm">Apply <i class="fa fa-chevron-right"></i></button>
+                  <button auth-group="student" ng-click="apply(role)" type="button" class="btn btn-primary btn-sm">Apply <i class="fa fa-chevron-right small"></i></button>
                 </div>
               </li>
             </ul>

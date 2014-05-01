@@ -17,6 +17,13 @@ body {
   outline: none;
 }
 
+img {
+  max-width: 100%;
+}
+
+a {
+  cursor: pointer;
+}
 
 /*
 
@@ -79,13 +86,15 @@ body {
     -webkit-transform: none !important; 
 }
 
+.map img, #map img {
+  max-width: none;
+}
+
 
 .pace {
   -webkit-pointer-events: none;
   pointer-events: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+  .user-select(none);
 }
 
 .pace-inactive {
@@ -98,7 +107,7 @@ body {
   z-index: 1900;
   top: 0;
   left: 0;
-  height: 5px;
+  height: 6px;
   width: 100%;
 }
 
@@ -110,11 +119,7 @@ body {
   left: 0;
   height: 5px;
   overflow: hidden;
-
-  -webkit-transition: width 1s;
-  -moz-transition: width 1s;
-  -o-transition: width 1s;
-  transition: width 1s;
+  .transition(width 0.35s);
 }
 
 .pace .pace-progress-inner {
@@ -129,16 +134,9 @@ body {
   background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
   background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
-  -webkit-background-size: 32px 32px;
-  -moz-background-size: 32px 32px;
-  -o-background-size: 32px 32px;
-  background-size: 32px 32px;
 
-  -webkit-animation: pace-stripe-animation 500ms linear infinite;
-  -moz-animation: pace-stripe-animation 500ms linear infinite;
-  -ms-animation: pace-stripe-animation 500ms linear infinite;
-  -o-animation: pace-stripe-animation 500ms linear infinite;
-  animation: pace-stripe-animation 500ms linear infinite;
+  background-size: 32px 32px;  
+  .animation(pace-stripe-animation 500ms linear infinite);
 }
 
 @-webkit-keyframes pace-stripe-animation {
@@ -175,7 +173,24 @@ body {
  */
 
 body {
-  padding-top: 102px;
+  padding-top: @navbar-height;
+}
+
+.navbar-logo {
+  display: block;
+  height: @navbar-height;
+  padding: 10px 16px;
+  border-left: 1px solid #f4f4f4;
+
+  &:hover {
+    background: darken(#fff, 0.75%);
+  }
+  
+  img {
+    display: block;
+    height: 42px;
+    margin: 0;
+  }
 }
 
 #primary-nav {
@@ -183,11 +198,94 @@ body {
   top: 0;
   left: 0;
   width: 100%;
+  margin-top: 6px;
+  border: none;
+  .transition(margin-top 0.3s);
+
+  .navbar-nav {
+    border-left: 1px solid #f4f4f4;
+  }
+
+  .link-icon, .link-label {
+    margin: 0;
+    font-size: 20px;
+    border-right: 1px solid #f4f4f4;
+
+    a {
+      display: block;
+      padding: 0;
+      width: @navbar-height;
+      height: @navbar-height;
+      line-height: @navbar-height;
+      color: #999;
+      text-align: center;
+    }
+
+    &:hover {
+      background: darken(#fff, 0.75%);
+    }
+  }
+
+  .link-label {
+    width: auto;
+    padding: 0 20px;
+    font-size: @font-size-small;
+    line-height: @navbar-height;
+    color: #999;
+    border-left: 1px solid #fff;
+    margin-left: -1px;
+  }
+
+  .link-search {
+    a {
+      float: left;
+    }
+
+    &:hover {
+      input {
+        width: 160px;
+      }
+    }
+  }
 }
 
-.navbar-logo {
-  display: block;
-  padding: 20px 0;
+body.pace-done #primary-nav, body.pace-inactive #primary-nav {
+  margin-top: 0;
+}
+
+// Popovers
+#primary-nav {
+  .popover {
+    white-space: nowrap;
+    font-size: @font-size-small;
+    border: none;
+    .box-shadow(0 1px 3px rgba(0,0,0,.1));
+
+    > .arrow {
+      border-bottom-color: #fff;
+    }
+
+    > .arrow:after {
+      display: none;
+    }
+  }
+}
+
+.navbar-form {
+  margin: 0;
+  padding: 0;
+  float: left;
+
+  input {
+    width: 0;
+    border: none;
+    height: @navbar-height;
+    line-height: @navbar-height - 20px;
+    padding: 10px 0;
+    font-size: @font-size-base;
+    background-color: transparent;
+    .transition(width 0.4s ease-out);
+  }
 }
 
 
@@ -508,6 +606,7 @@ label.floating-label {
 @import "../js/register/register.less";
 @import "../js/search/search.less";
 @import "../js/company/company.less";
+@import "../js/dashboard/dashboard.less";
 
 
 

@@ -87,7 +87,7 @@ module.exports.create = function(data, done) {
      */
     function(profile, address, callback) {
       if ( ! _.isObject(data.company) ) {
-        return callback(null, null, null);
+        return callback(null, profile, null);
       }
 
       if ( ! _.isUndefined(data.company.skills) ) {
@@ -122,12 +122,39 @@ module.exports.create = function(data, done) {
           return callback(err, null);
         }
 
-        callback(null, user);
+        callback(null, user, profile, company);
       });
+    },
+
+    /**
+     * Set the access control perms on the company / profile
+     *  - Everyone can read a profile / company
+     *  - Only the user who created the profile / company can edit / delete
+     */
+    function(user, profile, company, callback) {
+      async.seq(function(next) {
+        if (profile) {
+          profile.setAccess('*', ['read'])
+          user.setAccess(profile, ['read', 'write', 'delete'])
+          profile.save(function() {
+            next();
+          });
+        } else {
+          next();
+        }
+      }, function(next) {
+        if (company) {
+          company.setAccess('*', ['read'])
+          user.setAccess(company, ['read', 'write', 'delete'])
+          company.save(function() {
+            callback(null, user);
+          });
+        } else {
+          callback(null, user);
+        }
+      })();
     }
 
-  ], function(err, user) {
-    return done(err, user)
-  });
+  ], done);
 
 };

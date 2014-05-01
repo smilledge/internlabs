@@ -230,12 +230,6 @@
 .navbar-nav {
   margin: (@navbar-padding-vertical / 2) -@navbar-padding-horizontal;
 
-  > li > a, > li.navbar-label {
-    padding-top:    10px;
-    padding-bottom: 10px;
-    line-height: @line-height-computed;
-  }
-
   @media (max-width: @grid-float-breakpoint-max) {
     // Dropdowns get custom display when collapsed
     .open .dropdown-menu {
@@ -271,11 +265,6 @@
         padding-top:    @navbar-padding-vertical;
         padding-bottom: @navbar-padding-vertical;
       }
-    }
-
-    li.navbar-label {
-      padding-top:    @navbar-padding-vertical;
-      padding-bottom: @navbar-padding-vertical;
     }
 
     &.navbar-right:last-child {

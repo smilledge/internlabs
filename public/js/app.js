@@ -12,7 +12,8 @@ angular.module('InternLabs', [
   'InternLabs.register',
   'InternLabs.search',
   'InternLabs.dashboard',
-  'InternLabs.company'
+  'InternLabs.company',
+  'InternLabs.internships'
 ])
 
   .config(function($locationProvider, RestangularProvider) {
@@ -67,39 +68,40 @@ angular.module('InternLabs', [
 
   })
 
-  .animation('.reveal-animation', function() {
-    var $body = $('body');
+  // .animation('.reveal-animation', function() {
+  //   var $body = $('body');
 
-    return {
-      enter: function(element, done) {
-        TweenLite.set(element, {
-          autoAlpha: 0
-        });
-        TweenLite.to(element, 0.35, {
-          delay: 0.2,
-          autoAlpha: 1,
-          onComplete: function() {
-            $body.css({ minHeight: 0 });
-            done();
-          }
-        });
-      },
-      leave: function(element, done) {
-        $body.css({ minHeight: $body.height() });
-        TweenLite.to(element, 0.2, {
-          autoAlpha: 0,
-          onComplete: function() {
-            $(window).scrollTop(0);
-            done();
-          }
-        });
-      }
-    }
-  })
+  //   return {
+  //     enter: function(element, done) {
+  //       TweenLite.set(element, {
+  //         autoAlpha: 0
+  //       });
+  //       TweenLite.to(element, 0.2, {
+  //         delay: 0.1,
+  //         autoAlpha: 1,
+  //         onComplete: function() {
+  //           $body.css({ minHeight: 0 });
+  //           done();
+  //         }
+  //       });
+  //     },
+  //     leave: function(element, done) {
+  //       $body.css({ minHeight: $body.height() });
+  //       TweenLite.to(element, 0.1, {
+  //         autoAlpha: 0,
+  //         onComplete: function() {
+  //           $(window).scrollTop(0);
+  //           done();
+  //         }
+  //       });
+  //     }
+  //   }
+  // })
 
   .controller('AppCtrl', function($rootScope, $scope, $location, Auth) {
 
     $scope.appTitle = 'InternLabs';
+    $rootScope.user = window.internlabs.user || {};
     $rootScope.loading = false;
 
     $scope.$on('$routeChangeStart', function(event, next, current) {
@@ -114,7 +116,8 @@ angular.module('InternLabs', [
     $scope.$on('$routeChangeSuccess', function(event, current, previous) {
       $rootScope.loading = false;
 
-      $('body').removeClass();
+      // $('body').removeClass();
+      $(window).scrollTop(0);
 
       if ( ! angular.isDefined( current ) ) {
         return;
@@ -122,13 +125,13 @@ angular.module('InternLabs', [
 
       if ( angular.isDefined( current.$$route.pageTitle ) ) {
         $scope.pageTitle = current.$$route.pageTitle;
-        $('body').addClass(_.slugify($scope.pageTitle));
+        // $('body').addClass(_.slugify($scope.pageTitle));
       } else {
         $scope.pageTitle = $scope.appTitle;
       }
 
       if (current.$$route.className) {
-        $('body').addClass(current.$$route.className);
+        // $('body').addClass(current.$$route.className);
       }
     });
     

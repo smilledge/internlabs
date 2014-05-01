@@ -20,7 +20,7 @@
 
 
     <!-- Primary navigation -->
-    <nav id="primary-nav" class="navbar navbar-default" role="navigation">
+    <nav primary-nav id="primary-nav" class="navbar navbar-default" role="navigation">
       <div class="container">
 
             <div class="navbar-header">
@@ -28,13 +28,22 @@
             </div>
 
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/search">Search</a></li>
+                <li logged-in="true" class="link-icon"><a href="/dashboard" popover="My Dashboard" popover-placement="bottom"><i class="fa fa-dashboard"></i></a></li>
+                <li logged-in="true" class="link-icon"><a href="" popover="My Profile" popover-placement="bottom"><i class="fa fa-user"></i></a></li>
+                <li class="link-icon link-search" ng-mouseover="focus()" ng-mouseout="blur()" popover="Search Companies" popover-placement="bottom">
+                    <a ng-click="search()"><i class="fa fa-search"></i></a>
+                    <form class="navbar-form" role="form" ng-submit="search()">
+                        <label for="field-navbar-search" class="sr-only">Search</label>
+                        <input type="text" id="field-navbar-search" ng-model="search.query" placeholder="Search for...">
+                    </form>
+                </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li auth logged="false" class="navbar-label text-muted">Already a member?</li>
-                <li auth logged="false"><a href="/login">Login</a></li>
-                <li auth logged="true"><a href="/logout">Logout</a></li>
+                <li logged-in="true" class="link-icon"><a href="" popover="Account Settings" popover-placement="bottom"><i class="fa fa-gear"></i></a></li>
+                <li logged-in="true" class="link-icon"><a href="/logout" popover="Logout" popover-placement="bottom"><i class="fa fa-sign-out"></i></a></li>
+                <li logged-in="false" class="link-label">Already a member?</li>
+                <li logged-in="false" class="link-icon"><a href="/login" popover="Login" popover-placement="bottom"><i class="fa fa-sign-in"></i></a></li>
             </ul>
 
         </div>

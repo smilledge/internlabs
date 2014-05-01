@@ -46,7 +46,7 @@ angular.module('InternLabs.common.directives', [])
      * @return {void}
      */
     this.create = function(options) {
-      options = _.extend(defaultOptions, options);
+      options = _.extend({}, defaultOptions, options);
 
       var scope = $rootScope.$new(),
           $body = $('body'),
@@ -90,6 +90,36 @@ angular.module('InternLabs.common.directives', [])
       });
     };
   })
+
+
+  /**
+   * Primary navigation
+   */
+   .directive('primaryNav', function($location) {
+    return {
+      restrict: 'A',
+      link: function(scope, elem, attrs) {
+
+        scope.search = {
+          query: ""
+        };
+
+        scope.focus = function() {
+          elem.find('input').focus();
+        };
+
+        scope.blur = function() {
+          elem.find('input').blur();
+        };
+
+        scope.search = function() {
+          $location.url('/search?query=' + (scope.search.query || ""));
+          scope.search.query = "";
+        };
+      }
+    }
+  })
+
 
 
   /**
@@ -356,9 +386,16 @@ angular.module('InternLabs.common.directives', [])
          * 
          * @return {void}
          */
-        var setHeight = function() {
-          var height = elem.find('.form-step.active').height();
-          elem.css({
+        var setHeight = function($elem) {
+          var height;
+
+          if ($elem) {
+            height = $elem.height();
+          } else {
+            height = elem.find('.form-step.active').height();
+          }
+
+          TweenLite.to(elem, 0.3, {
             'min-height': height 
           });
         };
@@ -416,8 +453,11 @@ angular.module('InternLabs.common.directives', [])
           // Run validation on each field and return if that field is valid
           var validationResults = _.map($inputs, function($input) {
             var validator = new Parsley($input);
-            validator.validate();
-            return validator.isValid();
+            if ( _.has(validator, 'validate') ) {
+              validator.validate();
+              return validator.isValid();
+            }
+            return true;
           });
 
           // Are all the fields valid
@@ -438,12 +478,13 @@ angular.module('InternLabs.common.directives', [])
             return;
           }
 
+          setHeight($next);
+
           // Play the transition animation
           transitionSteps($current, $next, false).then(function() {
             // Animtion done
             $current.removeClass('active');
             $next.addClass('active');
-            setHeight();
           });
         };
 
@@ -454,11 +495,12 @@ angular.module('InternLabs.common.directives', [])
           var $current = elem.find('.form-step.active'),
               $prev = $current.prev('.form-step');
 
+          setHeight($prev);
+
           transitionSteps($current, $prev, true).then(function() {
             // Animtion done
             $current.removeClass('active');
             $prev.addClass('active');
-            setHeight();
           });
         };
 
@@ -500,36 +542,51 @@ angular.module('InternLabs.common.directives', [])
   })
 
   /**
-   * Show / hide elements based on login status / user level
+   * Show / hide elements based on login status
    *
-   * Example: <div auth logged="true">Only logged in users will see this</div>
+   * Example: <div logged-in="true">Only logged in users will see this</div>
    */
-  .directive('auth', function(Auth) {
+  .directive('loggedIn', function(Auth) {
     return {
       restrict: 'A',
-      scope: {
-        logged: '=?',
-        group: '=?'
-      },
       link: function(scope, elem, attrs) {
-
         elem = $(elem);
-        
-        // Show hide the elem depending on auth status
+  
         var check = function() {
-          if ( scope.logged ) {
-            if ( Auth.check(true) ) {
-              elem.removeClass('hide');
-            } else {
-              elem.addClass('hide');
-            }
-          } else {
-            if ( ! Auth.check(true) ) {
-              elem.removeClass('hide');
-            } else {
-              elem.addClass('hide');
-            }
+          var logged = scope.$eval(elem.attr('logged-in'));
+
+          if ( (logged && !Auth.check()) || (!logged && Auth.check()) ) {
+            return elem.addClass('hide');
           }
+
+          elem.removeClass('hide');
+        };
+
+        check();
+      }
+    };
+  })
+
+
+  /**
+   * Show / hide elements based on users type ('employer', 'student', 'supervisor')
+   *
+   * Example: <div auth-group="student">Only students will see this</div>
+   */
+  .directive('authGroup', function(Auth) {
+    return {
+      restrict: 'A',
+      link: function(scope, elem, attrs) {
+        elem = $(elem);
+
+        var check = function() {
+          var group = attrs.authGroup;
+
+          if ( ! Auth.hasAccess(group) ) {
+            return elem.addClass('hide');
+          }
+
+          elem.removeClass('hide');
         };
 
         check();

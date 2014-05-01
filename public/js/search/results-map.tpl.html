@@ -7,7 +7,7 @@
     <div class="infobox-content">
       <article>
         <button type="button" class="close close-button">&times;</button>
-        <a href="{{ result.url }}"><img ng-src="{{ result.logoUrl }}" alt="{{ result.name }}"></a>
+        <a href="{{ result.url }}"><img ng-show="result.logoUrl" ng-src="{{ result.logoUrl }}" alt="{{ result.name }}"></a>
         <hr />
         <header class="clearfix">
           <h4 class="pull-left"><a href="{{ result.url }}">{{ result.name }}</a></h4>
