@@ -82,11 +82,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/easing/EasePack.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
 
-    <% if(process.env.NODE_ENV == 'production') { %>
-        <script src="/dist/app.min.js"></script>
-    <% } else { %>
-        <script src="/dist/app.js"></script>
-    <% } %>
+
+    <script src="/dist/app.js"></script>
     <script>Pace.start();</script>
 
 </body>

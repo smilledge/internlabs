@@ -23,6 +23,19 @@ module.exports.create = function(data, done) {
   async.waterfall([
 
     /**
+     * Check if the account already exists
+     */
+    function(callback) {
+      User.findOne({ email: data.email }).exec(function(err, user) {
+        if ( user ) {  
+          return callback(new Error("An account already exists for that email address"));
+        }
+        callback();
+      });
+    },
+
+
+    /**
      * Create the profile address
      */
     function(callback) {
@@ -74,7 +87,7 @@ module.exports.create = function(data, done) {
       new Address(data.company.address).save(function(err, address) {
         if ( err ) {
           return address.remove(function() {
-            callback(err, null);
+            callback(new Error("Could not save your address. Please make sure it is correct and try again."), null);
           });
         }
 
@@ -119,7 +132,7 @@ module.exports.create = function(data, done) {
         if ( err ) {
           if (company) company.remove();
           if (profile) profile.remove();
-          return callback(err, null);
+          return callback(new Error("An error occured while creating your account. Please try agian."), null);
         }
 
         callback(null, user, profile, company);

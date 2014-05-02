@@ -30,18 +30,6 @@ module.exports = function(app) {
       async.waterfall([
 
         /**
-         * Check if the account already exists
-         */
-        function(callback) {
-          User.findOne({ email: req.body.email }).exec(function(err, user) {
-            if ( ! err && user ) {  
-              return callback(new Error("An account already exists for that email address"));
-            }
-            callback();
-          });
-        },
-
-        /**
          * Create the account
          */
         function(callback) {
@@ -62,8 +50,10 @@ module.exports = function(app) {
               activationUrl: nconf.get("url") + 'activate?token=' + user.activationToken + '&user=' + user._id
             }
           }, function(err) {
-            callback(err, user);
+            // Don't wait for the email to be sent
           });
+
+          callback(null, user);
         }
 
       ], function(err, user) {

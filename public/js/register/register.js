@@ -36,6 +36,10 @@ angular.module('InternLabs.register', [])
 
       Auth.register($scope.user).then(function(user) {
 
+        if ( ! user.company ) {
+          return $location.url('/login');
+        }
+
         // Upload the logo
         var logoEndpoint = Options.apiUrl('companies/'+user.company._id+'/logo');
 
