@@ -52,6 +52,60 @@ angular.module('InternLabs.internships', [])
   })
 
 
+  /**
+   * Post message widget
+   */
+  .directive('messageWidget', function() {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/message.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.message = "";
+
+        scope.save = function() {
+          scope.internship.post('messages', {
+            message: scope.message
+          }).then(function(response) {
+            scope.message = "";
+            scope.internship.activity.unshift(response);
+          });
+        };
+      }
+    }
+  })
+
+
+  /**
+   * Widget to show the internship activity feed
+   */
+  .directive('activityWidget', function() {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/activity.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.canEdit = function(item) {
+          return window.internlabs.user._id === item.author._id;
+        };
+
+        scope.remove = function(activity) {
+          console.log(activity);
+          scope.internship.all('activity').customDELETE(activity._id).then(function() {
+            scope.internship.activity = _.without(scope.internship.activity, activity);
+          });
+        };
+      }
+    }
+  })
+
+
 
   /**
    * Display the user's schedule

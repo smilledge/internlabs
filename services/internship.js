@@ -26,7 +26,7 @@ module.exports.findByUser = function(user, done) {
      * Get the student
      */
     function(callback) {
-      User.findById(user).lean().populate('profile').exec(function(err, student) {
+      User.findById(user).populate('profile').exec(function(err, student) {
         if ( err || ! student ) {
           return callback(new Error("Student not found."));
         }
@@ -40,7 +40,7 @@ module.exports.findByUser = function(user, done) {
     function(student, callback) {
       Internship.find({
         student: student._id
-      }).lean().populate('company student').exec(function(err, internships) {
+      }).populate('company student').exec(function(err, internships) {
         if ( err || ! internships ) {
           return callback(new Error("Could not find any matching internships."));
         }
@@ -50,15 +50,12 @@ module.exports.findByUser = function(user, done) {
     },
 
     /**
-     * Populate the students profile and internship url
-     * (URL virtual gets stripped out when running lean())
+     * Populate the students profile
      */
     function(student, internships, callback) {
-      _.each(internships, function(internship) {
-        internship.url = Internship.getUrl(internship);
-        internship.student.profile = student.profile;
-      });
-      callback(null, internships);
+      Profile.populate(internships, {
+        path: 'student.profile'
+      }, callback);
     }
 
   ], done);
@@ -80,7 +77,6 @@ module.exports.findById = function(internshipId, done) {
      */
     function(callback) {
       Internship.findById(internshipId)
-      .lean()
       .populate('company student')
       .exec(function(err, internship) {
         if ( err || ! internship ) {
@@ -94,13 +90,26 @@ module.exports.findById = function(internshipId, done) {
      * Populate the student profile
      */
     function(internship, callback) {
-      Profile.findById(internship.student.profile, function(err, profile) {
-        if ( err || ! profile ) {
-          return callback(null, internship);
-        }
-        internship.student.profile = profile;
-        delete internship.student.password;
-        callback(null, internship);
+      Profile.populate(internship, {
+        path: 'student.profile'
+      }, callback);
+    },
+
+    /**
+     * Populate the activities author
+     */
+    function(internship, callback) {
+      User.populate(internship, {
+        path: 'activity.author'
+      }, function(err, internship) {
+        Profile.populate(internship, {
+          path: 'activity.author.profile',
+          select: {
+            firstName: 1,
+            lastName: 1,
+            name: 1
+          }
+        }, callback);
       });
     }
 
@@ -215,7 +224,8 @@ module.exports.create = function(data, done) {
 
       internship.addActivity({
         description: msg,
-        author: student._id
+        priority: 2,
+        type: 'update'
       }, function(err, activity) {
         callback(null, company, student, internship);
       });
@@ -229,7 +239,9 @@ module.exports.create = function(data, done) {
       if (comment) {
         internship.addActivity({
           description: comment,
-          author: student._id
+          author: student._id,
+          priority: 3,
+          type: 'message'
         }, function(err, activity) {
           callback(null, company, student, internship);
         });
@@ -360,8 +372,7 @@ module.exports.createSchedule = function(internship, user, data, done) {
       var msg = user.profile.name + ' updated the internship\'s schedule.';
 
       internship.addActivity({
-        description: msg,
-        author: user._id
+        description: msg
       }, function(err, activity) {
         callback(null, internship.schedule);
       });
@@ -370,5 +381,136 @@ module.exports.createSchedule = function(internship, user, data, done) {
 
   ], done);
 
-}
+};
+
+
+/**
+ * Add a message to the internship
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {string}   message string
+ * @param  {func}     callback
+ * @return {void}
+ */
+module.exports.createMessage = function(internship, user, message, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while saving your message. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'write') ) {
+        return callback(new Error('You are not authorized to post messages to this internship.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Add a message to the internships feed
+     */
+    function(internship, user, callback) {
+      internship.addActivity({
+        description: message,
+        author: user._id,
+        type: 'message',
+        priority: 3
+      }, function(err, internship) {
+        callback(null, internship);
+      });
+    }
+
+
+  ], done);
+
+};
+
+
+
+/**
+ * Delete an item from activity feed
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {string}   activity ID
+ * @param  {func}     callback
+ * @return {void}
+ */
+module.exports.deleteActivity = function(internship, user, activityId, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while deleteing. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has delete access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'write', 'delete') ) {
+        return callback(new Error('You are not authorized to delete messages in this internship.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Delete the message
+     */
+    function(internship, user, callback) {
+      internship.activity = _.filter(internship.activity, function(activity) {
+        return activity._id != activityId;
+      });
+      internship.save(done);
+    }
+
+
+  ], done);
+
+};
 

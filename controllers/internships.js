@@ -46,7 +46,7 @@ module.exports = function(app) {
 
     InternshipService.create(data, function(err, internship) {
       if ( err ) {
-        return res.apiError(err.message);
+        return res.apiError(err);
       }
 
       return res.apiSuccess("You have successfully applied for this internship.", internship);
@@ -60,10 +60,38 @@ module.exports = function(app) {
   app.post('/api/internships/:internshipId/schedule', auth.check(), function(req, res) {
     InternshipService.createSchedule(req.params.internshipId, req.user._id, req.body, function(err, schedule) {
       if ( err ) {
-        return res.apiError(err.message);
+        return res.apiError(err);
       }
 
       return res.apiSuccess("Your schedule has been saved successfully.", schedule);
+    });
+  });
+
+
+  /**
+   * Add a new message
+   */
+  app.post('/api/internships/:internshipId/messages', auth.check(), function(req, res) {
+    InternshipService.createMessage(req.params.internshipId, req.user._id, req.body.message, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      return res.apiSuccess("Your message has been saved successfully.", internship);
+    });
+  });
+
+
+  /**
+   * Delete something from the activity feed
+   */
+  app.delete('/api/internships/:internshipId/activity/:activityId', auth.check(), function(req, res) {
+    InternshipService.deleteActivity(req.params.internshipId, req.user._id, req.params.activityId, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      return res.apiSuccess("Activity post has been deleted successfully.", internship);
     });
   });
 

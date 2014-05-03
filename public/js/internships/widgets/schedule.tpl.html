@@ -4,12 +4,12 @@
       <strong class="date pull-left"><i class="fa fa-calendar"></i> {{ item.date | date:short }}</strong>
       <span class="time pull-right"><i class="fa fa-clock-o"></i> {{ item.startTime }} <span class="text-muted">to</span> {{ item.endTime }}</span>
     </div>
-
-    <div ng-show="!internship.schedule.length" class="no-results">
-      <p class="lead">Looks like you have not created a schedule yet!</p>
-      <a ng-click="edit()" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Create one now</a>
-    </div>
   </div>
 
-  <button ng-click="edit()" type="button" class="btn btn-link btn-sm"><i class="fa fa-pencil"></i> Edit Schedule</button>
+  <div ng-show="!internship.schedule.length" class="no-results">
+    <p class="lead">Looks like you have not created a schedule yet!</p>
+    <a ng-click="edit()" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Create one now</a>
+  </div>
+
+  <a ng-click="edit()"><i class="fa fa-pencil"></i> Edit Schedule</a>
 </div>

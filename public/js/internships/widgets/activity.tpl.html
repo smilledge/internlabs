@@ -1,0 +1,12 @@
+<div class="widget-activity">
+  <div class="list-group list-activity">
+    <div ng-repeat="item in internship.activity" class="list-group-item item-activity type-{{ item.type || 'update' }} priority-{{ item.priority || '1' }}" ng-class="{'editable': canEdit(item)}">
+      <p class="description">{{ item.description }}</p>
+      <div class="meta">
+        <span ng-show="item.author" class="user"><i class="fa fa-user"></i> {{ item.author.profile.name }}</span>
+        <span class="timestamp"><i class="fa fa-calendar"></i> {{ item.createdAt | date }} <span class="text-muted">at</span> {{ item.createdAt | date:'shortTime' }}</span>
+        <a ng-click="remove(item)" class="if-editable text-danger"><i class="fa fa-times"></i> Delete</a>
+      </div>
+    </div>
+  </div>
+</div>

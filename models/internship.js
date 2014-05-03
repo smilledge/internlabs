@@ -28,7 +28,9 @@ var InternshipModel = function() {
         activity: [{
             description: { type: String },
             author: { type: ObjectId, ref: 'User' },
-            createdAt: { type: Date, default: Date.now }
+            createdAt: { type: Date, default: Date.now },
+            type: { type: String, default: 'update' }, // Type of activity - 'message', 'update', 'worklog', 'event', 'notification'
+            priority: { type: Number, default: 1 } // How important is the post? (3 - 1) (3 is highest)
         }],
         interview: {
             location: {},
@@ -66,8 +68,7 @@ var InternshipModel = function() {
      * Add item to the activity stream
      */
     InternshipSchema.methods.addActivity = function(activity, callback) {
-        console.log(activity);
-        this.activity.push(activity);
+        this.activity.unshift(activity);
         this.save(callback);
     };
 

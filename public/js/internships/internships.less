@@ -13,3 +13,59 @@
     .clearfix;
   }
 }
+
+
+
+
+.item-activity {
+  .clearfix;
+  
+  .meta > * {
+    margin-right: 10px;
+  }
+  
+  &:not(.editable) {
+    .if-editable {
+      display: none;
+    }
+  }
+}
+
+
+.item-activity.priority-1 {
+  .text-muted;
+  background: #fafafa;
+
+  a {
+    opacity: 0.8;
+  }
+
+  p {
+    margin: 0;
+    float: left;
+    font-size: @font-size-base;
+  }
+
+  .meta {
+    float: right;
+    > * {
+      margin-left: 10px;
+    }
+  }
+
+  .user {
+    display: none;
+  }
+}
+
+.item-activity.priority-2, .item-activity.priority-3 {
+  padding: 15px;
+
+  p {
+    font-size: 18px;
+  }
+
+  .meta {
+    .text-muted;
+  }
+}
