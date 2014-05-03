@@ -35274,7 +35274,7 @@ angular.module('InternLabs.internships', [])
       },
       link: function(scope, elem, attrs) {
         scope.canEdit = function(item) {
-          return window.internlabs.user._id === item.author._id;
+          return item.author && window.internlabs.user._id === item.author._id;
         };
 
         scope.remove = function(activity) {
