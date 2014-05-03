@@ -42,7 +42,6 @@
   position: relative;
   width: auto;
   margin: 10px;
-  overflow: hidden;
 }
 
 // Actual modal
@@ -99,8 +98,8 @@
 // Footer (for actions)
 .modal-footer {
   padding: @modal-inner-padding;
-  text-align: right; // right align buttons
   border-top: 1px solid @modal-footer-border-color;
+  margin-top: 20px;
   &:extend(.clearfix all); // clear it in case folks use .pull-* classes on buttons
 
   // Properly space out buttons

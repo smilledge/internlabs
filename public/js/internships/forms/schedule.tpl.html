@@ -1,0 +1,45 @@
+<div>
+  
+  <!-- List existing -->
+  <div class="list-group list-schedule">
+    <div ng-repeat="item in _schedule" class="list-group-item">
+      <strong class="date pull-left"><i class="fa fa-calendar"></i> {{ item.date | date:short }}</strong>
+      <span class="pull-right">
+        <span class="time"><i class="fa fa-clock-o"></i> {{ item.startTime }} <span class="text-muted">to</span> {{ item.endTime }}</span>
+        <a ng-click="remove(item)" class="btn btn-danger btn-icon fa fa-times"></a>
+      </span>
+    </div>
+  </div>
+  
+  <button ng-click="showForm=true" ng-show="!showForm" type="button" class="btn btn-default btn-icon-left btn-block"><i class="fa fa-plus"></i> Add a work period</button>
+
+  <!-- Add to schedule -->
+  <form ng-show="showForm" ng-submit="add(newSchedule)" role="form" class="schedule-add well">
+    <div class="form-group">
+        <div class="row-sm">
+          <div class="col-sm-3">
+            <label>Date</label>
+            <input ng-model="newSchedule.date" type="text" class="form-control">
+          </div>
+          <div class="col-sm-3">
+            <label>End Date</label>
+            <select selecter ng-model="newSchedule.startTime" ng-options="o as o for o in timeOptions" class="form-control"></select>
+          </div>
+          <div class="col-sm-3">
+            <label>Total Hours</label>
+            <select selecter ng-model="newSchedule.endTime" ng-options="o as o for o in timeOptions" class="form-control"></select>
+          </div>
+          <div class="col-sm-3">
+            <label style="display:block">&nbsp;</label>
+            <button type="submit" class="btn btn-block btn-link"><i class="fa fa-plus"></i> Add to schedule</button>
+          </div>
+        </div>
+      </div>
+  </form>
+
+  <div class="modal-footer text-center">
+    <button ng-click="save()" type="button" class="btn btn-primary btn-icon-left"><i class="fa fa-check"></i> Save Schedule</button>
+    <button ng-click="close()" type="button" class="btn btn-default btn-icon-left"><i class="fa fa-times"></i> Cancel</button>
+  </div>
+  
+</div>

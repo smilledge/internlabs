@@ -99,6 +99,7 @@ module.exports.findById = function(internshipId, done) {
           return callback(null, internship);
         }
         internship.student.profile = profile;
+        delete internship.student.password;
         callback(null, internship);
       });
     }
@@ -290,3 +291,84 @@ module.exports.saveInterview = function(data, done) {
   ], done);
 
 };
+
+
+/**
+ * Add an interview to an internship
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {object}   data
+ * @param  {func}     callback
+ * @return {void}
+ */
+module.exports.createSchedule = function(internship, user, data, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while updating your schedule. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'write') ) {
+        return callback(new Error('You are not authorized to edit this schedule.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Update the internship schedule
+     */
+    function(internship, user, callback) {
+      internship.schedule = data;
+      internship.save(function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("An error occured while updating your schedule. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Add an activity to the internships feed
+     */
+    function(internship, user, callback) {
+      var msg = user.profile.name + ' updated the internship\'s schedule.';
+
+      internship.addActivity({
+        description: msg,
+        author: user._id
+      }, function(err, activity) {
+        callback(null, internship.schedule);
+      });
+    }
+
+
+  ], done);
+
+}
+

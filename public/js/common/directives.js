@@ -54,7 +54,9 @@ angular.module('InternLabs.common.directives', [])
           template;
 
       if (_.isObject(options.scope)) {
-        _.extend(scope, options.scope);
+        _.extend(scope, {
+          scope: scope
+        }, options.scope);
       }
 
       if ( options.template ) {

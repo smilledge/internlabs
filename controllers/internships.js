@@ -53,4 +53,18 @@ module.exports = function(app) {
     });
   });
 
+
+  /**
+   * Update the users schedule
+   */
+  app.post('/api/internships/:internshipId/schedule', auth.check(), function(req, res) {
+    InternshipService.createSchedule(req.params.internshipId, req.user._id, req.body, function(err, schedule) {
+      if ( err ) {
+        return res.apiError(err.message);
+      }
+
+      return res.apiSuccess("Your schedule has been saved successfully.", schedule);
+    });
+  });
+
 };
