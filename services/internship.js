@@ -26,7 +26,7 @@ module.exports.findByUser = function(user, done) {
      * Get the student
      */
     function(callback) {
-      User.findById(user).lean().populate('profile').exec(function(err, student) {
+      User.findById(user).populate('profile').exec(function(err, student) {
         if ( err || ! student ) {
           return callback(new Error("Student not found."));
         }
@@ -40,7 +40,7 @@ module.exports.findByUser = function(user, done) {
     function(student, callback) {
       Internship.find({
         student: student._id
-      }).lean().populate('company student').exec(function(err, internships) {
+      }).populate('company student').exec(function(err, internships) {
         if ( err || ! internships ) {
           return callback(new Error("Could not find any matching internships."));
         }
@@ -50,15 +50,12 @@ module.exports.findByUser = function(user, done) {
     },
 
     /**
-     * Populate the students profile and internship url
-     * (URL virtual gets stripped out when running lean())
+     * Populate the students profile
      */
     function(student, internships, callback) {
-      _.each(internships, function(internship) {
-        internship.url = Internship.getUrl(internship);
-        internship.student.profile = student.profile;
-      });
-      callback(null, internships);
+      Profile.populate(internships, {
+        path: 'student.profile'
+      }, callback);
     }
 
   ], done);
@@ -80,7 +77,6 @@ module.exports.findById = function(internshipId, done) {
      */
     function(callback) {
       Internship.findById(internshipId)
-      .lean()
       .populate('company student')
       .exec(function(err, internship) {
         if ( err || ! internship ) {
@@ -94,13 +90,26 @@ module.exports.findById = function(internshipId, done) {
      * Populate the student profile
      */
     function(internship, callback) {
-      Profile.findById(internship.student.profile, function(err, profile) {
-        if ( err || ! profile ) {
-          return callback(null, internship);
-        }
-        internship.student.profile = profile;
-        delete internship.student.password;
-        callback(null, internship);
+      Profile.populate(internship, {
+        path: 'student.profile'
+      }, callback);
+    },
+
+    /**
+     * Populate the activities author
+     */
+    function(internship, callback) {
+      User.populate(internship, {
+        path: 'activity.author'
+      }, function(err, internship) {
+        Profile.populate(internship, {
+          path: 'activity.author.profile',
+          select: {
+            firstName: 1,
+            lastName: 1,
+            name: 1
+          }
+        }, callback);
       });
     }
 

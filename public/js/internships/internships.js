@@ -52,6 +52,22 @@ angular.module('InternLabs.internships', [])
   })
 
 
+  /**
+   * Widget to show the internship activity feed
+   */
+  .directive('activityWidget', function() {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/activity.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {}
+    }
+  })
+
+
 
   /**
    * Display the user's schedule

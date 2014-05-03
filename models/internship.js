@@ -66,8 +66,7 @@ var InternshipModel = function() {
      * Add item to the activity stream
      */
     InternshipSchema.methods.addActivity = function(activity, callback) {
-        console.log(activity);
-        this.activity.push(activity);
+        this.activity.unshift(activity);
         this.save(callback);
     };
 

@@ -1,0 +1,9 @@
+<div class="widget-activity">
+  <div class="list-group list-activity">
+    <div ng-repeat="item in internship.activity" class="list-group-item">
+      <p class="lead">{{ item.description }}</p>
+      <span class="user"><i class="fa fa-user"></i> {{ item.author.profile.name }}</span>
+      <span class="timestamp"><i class="fa fa-calendar"></i> {{ item.createdAt | date }} <span class="text-muted">at</span> {{ item.createdAt | date:'shortTime' }}</span>
+    </div>
+  </div>
+</div>
