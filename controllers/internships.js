@@ -126,4 +126,36 @@ module.exports = function(app) {
     });
   });
 
+
+  /**
+   * Set a the interview
+   */
+  app.post('/api/internships/:internshipId/interview', auth.check(), function(req, res) {
+    InternshipService.createInterview(req.params.internshipId, req.user._id, req.body, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      InternshipService.findById(internship._id, function(err, internship) {
+        return res.apiSuccess("Interview has been scheduled successfully.", internship);
+      });
+    });
+  });
+
+
+  /**
+   * Cancel an interview
+   */
+  app.delete('/api/internships/:internshipId/interview', auth.check(), function(req, res) {
+    InternshipService.deleteInterview(req.params.internshipId, req.user._id, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      InternshipService.findById(internship._id, function(err, internship) {
+        return res.apiSuccess("Interview has been scheduled successfully.", internship);
+      });
+    });
+  });
+
 };

@@ -80,6 +80,65 @@ angular.module('InternLabs.internships', [])
 
 
   /**
+   * Interview widget
+   */
+  .directive('interviewWidget', function(ModalFactory, Options) {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/interview.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+
+        scope.edit = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Edit Interview",
+              internship: scope.internship,
+              _interview: _.extend({}, {
+                date: new Date(),
+                startTime: '12:00 PM',
+                endTime: '2:00 PM',
+              }, _.compactObject(scope.internship.interview)),
+              timeOptions: Options.timeOptions,
+              save: function() {
+                var self = this,
+                    data = this.scope._interview;
+
+                this.scope.internship.post('interview', data).then(function(internship) {
+                  scope.internship.interview = internship.interview;
+                  self.close();
+                });
+              }
+            },
+            templateUrl: "internships/forms/interview.tpl.html"
+          });
+        };
+
+        scope.remove = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Cancel Interview",
+              delete: function() {
+                var self = this;
+                scope.internship.customDELETE('interview/').then(function(internship) {
+                  scope.internship.interview = null;
+                  self.close();
+                });
+              }
+            },
+            templateUrl: "internships/forms/interview-delete.tpl.html"
+          });
+        };
+
+      }
+    }
+  })
+
+
+  /**
    * Widget to show the internship activity feed
    */
   .directive('activityWidget', function() {
@@ -96,7 +155,6 @@ angular.module('InternLabs.internships', [])
         };
 
         scope.remove = function(activity) {
-          console.log(activity);
           scope.internship.all('activity').customDELETE(activity._id).then(function() {
             scope.internship.activity = _.without(scope.internship.activity, activity);
           });
@@ -149,7 +207,6 @@ angular.module('InternLabs.internships', [])
               title: "Remove Supervisor",
               delete: function() {
                 var self = this;
-                console.log(scope.internship.customDelete);
                 scope.internship.customDELETE('supervisors/' + email).then(function(internship) {
                   scope.internship.supervisors = internship.supervisors;
                   scope.internship.invitedSupervisors = internship.invitedSupervisors;
@@ -172,7 +229,7 @@ angular.module('InternLabs.internships', [])
   /**
    * Display the user's schedule
    */
-  .directive('scheduleWidget', function(ModalFactory) {
+  .directive('scheduleWidget', function(ModalFactory, Options) {
     return {
       restrict: 'A',
       replace: true,
@@ -194,12 +251,7 @@ angular.module('InternLabs.internships', [])
                 startTime: '9:00 AM',
                 endTime: '5:00 PM',
               },
-              timeOptions: [
-                '5:00 AM', '5:30 AM', '6:00 AM', '6:30 AM', '7:00 AM', '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM',
-                '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', 
-                '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', 
-                '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM'
-              ],
+              timeOptions: Options.timeOptions,
               showForm: false,
               add: function(schedule) {
                 if (!schedule.date) {

@@ -19,14 +19,14 @@
         <div class="row-sm">
           <div class="col-sm-3">
             <label>Date</label>
-            <input ng-model="newSchedule.date" type="text" class="form-control">
+            <input date-picker="newSchedule.date" type="text" class="form-control">
           </div>
           <div class="col-sm-3">
-            <label>End Date</label>
+            <label>Start Time</label>
             <select selecter ng-model="newSchedule.startTime" ng-options="o as o for o in timeOptions" class="form-control"></select>
           </div>
           <div class="col-sm-3">
-            <label>Total Hours</label>
+            <label>End Time</label>
             <select selecter ng-model="newSchedule.endTime" ng-options="o as o for o in timeOptions" class="form-control"></select>
           </div>
           <div class="col-sm-3">

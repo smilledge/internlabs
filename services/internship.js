@@ -4,7 +4,8 @@ var Internship = require('../models/internship'),
     Company = require('../models/company'),
     async = require('async'),
     _ = require('lodash'),
-    Helpers = require('../helpers');
+    Helpers = require('../helpers'),
+    moment = require('moment');
 
 
 /**
@@ -752,6 +753,188 @@ module.exports.deleteSupervisor = function(internship, user, email, done) {
     function(supervisor, internship, user, callback) {
       var display = ( _.isObject(supervisor) ) ? supervisor.email : supervisor;
       var msg = user.profile.name + ' removed ' + display + ' as a supervisor of this internship.';
+
+      internship.addActivity({
+        description: msg,
+        priority: 1,
+        type: 'update'
+      }, function(err, activity) {
+        callback(null, internship);
+      });
+    }
+
+  ], done);
+
+};
+
+
+
+/**
+ * Create the interview
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {object}   interview data
+ * @param  {func}     callback
+ * @return {void}
+ */
+module.exports.createInterview = function(internship, user, data, done) {
+
+  var comment = data.comment;
+  delete data.comment;
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while saving the interview. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has delete access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'write') && user.type != 'student' ) {
+        return callback(new Error('You are not authorized to save interviews for this internship.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Save the interview
+     */
+    function(internship, user, callback) {
+      internship.interview = data;
+      internship.save(function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("An error occured while saving the interview. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Add to the activity feed
+     */
+    function(internship, user, callback) {
+      var date = moment(internship.interview.date).format("dddd, MMMM Do YYYY"),
+          from = internship.interview.startTime,
+          to = internship.interview.endTime;
+
+      var msg = user.profile.name + ' scheduled an interview on ' + date + ' from ' + from + ' to ' + to;
+
+      internship.addActivity({
+        description: msg,
+        priority: 2,
+        type: 'event'
+      }, function(err, activity) {
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Add comments to the activty feed
+     */
+    function(internship, user, callback) {
+      if ( ! comment || ! comment.length ) {
+        return callback(null, internship);
+      }
+
+      internship.addActivity({
+        description: comment,
+        priority: 3,
+        type: 'message',
+        author: user
+      }, function(err, activity) {
+        callback(null, internship);
+      });
+    }
+
+  ], done);
+
+};
+
+
+/**
+ * Cancel an interview
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {func}     callback
+ * @return {void}
+ */
+module.exports.deleteInterview = function(internship, user, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while canceling the interview. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has delete access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'delete') ) {
+        return callback(new Error('You are not authorized to cancel interviews on this internship.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Delete the interview
+     */
+    function(internship, user, callback) {
+      internship.interview = undefined;
+      internship.save(function(err, internship) {
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Add comments to the activty feed
+     */
+    function(internship, user, callback) {
+      var msg = user.profile.name + " canceled the scheduled interview.";
 
       internship.addActivity({
         description: msg,

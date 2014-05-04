@@ -1,0 +1,20 @@
+<div class="widget-interview">
+  <div ng-show="internship.interview" class="list-group list-interview">
+    <div class="list-group-item">
+      <strong><i class="fa fa-calendar"></i> Date</strong>
+      <span class="pull-right">{{ internship.interview.date | date }}</span>
+    </div>
+    <div class="list-group-item">
+      <strong><i class="fa fa-clock-o"></i> Time</strong>
+      <span class="pull-right">{{ internship.interview.startTime }} <span class="muted">to</span> {{ internship.interview.endTime }}</span>
+    </div>
+  </div>
+
+  <div ng-show="!internship.interview" class="no-results">
+    <p class="lead">No interview has been scheduled</p>
+    <a ng-click="edit()" class="btn btn-default btn-sm"><i class="fa fa-group"></i> Schedule an Interview</a>
+  </div>
+
+  <a ng-show="internship.interview" ng-click="edit()"><i class="fa fa-pencil"></i> Edit Interview</a> &nbsp; 
+  <a ng-show="internship.interview" ng-click="remove()" class="text-danger"><i class="fa fa-trash-o"></i> Cancel Interview</a>
+</div>
