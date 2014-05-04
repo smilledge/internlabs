@@ -92,7 +92,7 @@ angular.module('InternLabs.internships', [])
       },
       link: function(scope, elem, attrs) {
         scope.canEdit = function(item) {
-          return item.author && window.internlabs.user._id === item.author._id;
+          return ! item.author || window.internlabs.user._id === item.author._id;
         };
 
         scope.remove = function(activity) {
@@ -101,6 +101,68 @@ angular.module('InternLabs.internships', [])
             scope.internship.activity = _.without(scope.internship.activity, activity);
           });
         };
+      }
+    }
+  })
+
+
+
+  /**
+   * Widget for internship supervisors
+   */
+  .directive('supervisorsWidget', function(ModalFactory) {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/supervisors.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+
+        var mergeSupervisors = function(newVal, oldVar) {
+          scope._supervisors = _.union(scope.internship.supervisors, scope.internship.invitedSupervisors);
+        };
+
+        scope.add = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Add Internship Supervisor",
+              internship: scope.internship,
+              newSupervisor: "",
+              save: function() {
+                var self = this;
+                this.scope.internship.post('supervisors', { email: this.scope.newSupervisor }).then(function(internship) {
+                  scope.internship.supervisors = internship.supervisors;
+                  scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  self.close();
+                });
+              }
+            },
+            templateUrl: "internships/forms/supervisor-add.tpl.html"
+          });
+        };
+
+        scope.remove = function(email) {
+          ModalFactory.create({
+            scope: {
+              title: "Remove Supervisor",
+              delete: function() {
+                var self = this;
+                console.log(scope.internship.customDelete);
+                scope.internship.customDELETE('supervisors/' + email).then(function(internship) {
+                  scope.internship.supervisors = internship.supervisors;
+                  scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  self.close();
+                });
+              }
+            },
+            templateUrl: "internships/forms/supervisor-delete.tpl.html"
+          });
+        };
+
+        scope.$watch('internship.supervisors', mergeSupervisors, true);
+        scope.$watch('internship.invitedSupervisors', mergeSupervisors, true);
       }
     }
   })

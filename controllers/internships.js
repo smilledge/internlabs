@@ -95,4 +95,35 @@ module.exports = function(app) {
     });
   });
 
+
+  /**
+   * Add a supervisor
+   */
+  app.post('/api/internships/:internshipId/supervisors', auth.check(), function(req, res) {
+    InternshipService.createSupervisor(req.params.internshipId, req.user._id, req.body.email, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      InternshipService.findById(internship._id, function(err, internship) {
+        return res.apiSuccess("Supervisor has been added successfully.", internship);
+      });
+    });
+  });
+
+  /**
+   * Delete a supervisor
+   */
+  app.delete('/api/internships/:internshipId/supervisors/:email', auth.check(), function(req, res) {
+    InternshipService.deleteSupervisor(req.params.internshipId, req.user._id, req.params.email, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      InternshipService.findById(internship._id, function(err, internship) {
+        return res.apiSuccess("Supervisor has been removed successfully.", internship);
+      });
+    });
+  });
+
 };

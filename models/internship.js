@@ -17,6 +17,10 @@ var InternshipModel = function() {
         student: { type: ObjectId, ref: 'User' },
         company: { type: ObjectId, ref: 'Company' },
         supervisors: [{ type: ObjectId, ref: 'User' }],
+        // Supervisors who do not have an account yet
+        invitedSupervisors: [{
+            email: { type: String }
+        }],
         status: { type: String }, // 'pending', 'active', 'completed', 'cancelled', 'unsuccessful'
         role: {
             title: { type: String },
