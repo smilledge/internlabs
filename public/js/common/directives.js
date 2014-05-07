@@ -54,7 +54,9 @@ angular.module('InternLabs.common.directives', [])
           template;
 
       if (_.isObject(options.scope)) {
-        _.extend(scope, options.scope);
+        _.extend(scope, {
+          scope: scope
+        }, options.scope);
       }
 
       if ( options.template ) {
@@ -120,6 +122,35 @@ angular.module('InternLabs.common.directives', [])
     }
   })
 
+
+
+  /**
+   * Datepicker input field
+   */
+  .directive('datePicker', function(Utils) {
+    return {
+      restrict: 'A',
+      scope: {
+        datePicker: '='
+      },
+      link: function(scope, elem, attrs) {
+        elem.datepicker({
+          format: 'dd/mm/yyyy'
+        });
+
+        elem.attr('readonly', 'readonly');
+
+        elem.on('changeDate', function() {
+          scope.datePicker = Utils.toDate(elem.val());
+          scope.$apply();
+        });
+
+        scope.$watch('datePicker', function() {
+          elem.val(Utils.fromDate(scope.datePicker));
+        });
+      }
+    }
+  })
 
 
   /**

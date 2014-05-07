@@ -1,0 +1,15 @@
+<div class="widget-supervisors">
+  <div class="list-group list-supervisors">
+    <div ng-repeat="item in _supervisors" class="list-group-item">
+      <strong class="email"><i class="fa fa-eye"></i> {{ item.email }}</strong>
+      <a ng-click="remove(item.email)" class="btn btn-danger btn-icon fa fa-times pull-right"></a>
+    </div>
+  </div>
+
+  <div ng-show="!_supervisors.length" class="no-results">
+    <p class="lead">Looks like you have not added any supervisors yet!</p>
+    <a ng-click="add()" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Add one now</a>
+  </div>
+
+  <a ng-click="add()"><i class="fa fa-plus"></i> Add Supervisor</a>
+</div>

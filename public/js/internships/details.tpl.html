@@ -8,9 +8,26 @@
 
   <section class="main">
     <div class="container">
-      <pre>
-        {{ internship }}
-      </pre>
+      <div class="row">
+        <div class="col-sm-4">
+          <h3>Schedule</h3>
+          <div schedule-widget internship="internship"></div>
+
+          <h3>Supervisors</h3>
+          <div supervisors-widget internship="internship"></div>
+
+          <h3>Interview</h3>
+          <div interview-widget internship="internship"></div>
+        </div>
+
+        <div class="col-sm-8">
+          <h3>Post a message</h3>
+          <div message-widget internship="internship"></div>
+
+          <h3>Recent Activity</h3>
+          <div activity-widget internship="internship"></div>
+        </div>
+      </div>
     </div>
   </section>
 

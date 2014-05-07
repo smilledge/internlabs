@@ -66,7 +66,8 @@ module.exports = {
       'public/vendor/angular-file-upload.js',
       'public/vendor/angular-deckgrid.js',
       'public/vendor/infoBox.js',
-      'public/vendor/pace.js'
+      'public/vendor/pace.js',
+      'public/vendor/datepicker.js'
       // 'public/vendor/salvattore.js'
       // 'public/vendor/TweenLite.js',
       // 'public/vendor/TimelineLite.js',
