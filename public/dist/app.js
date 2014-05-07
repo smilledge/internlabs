@@ -33063,7 +33063,7 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['company/details.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/supervisors.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search-widget.tpl.html', 'search/search.tpl.html']);
+angular.module('templates-app', ['company/details.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/supervisors.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search-widget.tpl.html', 'search/search.tpl.html']);
 
 angular.module("company/details.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("company/details.tpl.html",
@@ -33374,6 +33374,9 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
     "\n" +
     "          <h3>Interview</h3>\n" +
     "          <div interview-widget internship=\"internship\"></div>\n" +
+    "\n" +
+    "          <h3>Availability</h3>\n" +
+    "          <div availability-widget internship=\"internship\"></div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-sm-8\">\n" +
@@ -33626,6 +33629,31 @@ angular.module("internships/widgets/activity.tpl.html", []).run(["$templateCache
     "        <span class=\"timestamp\"><i class=\"fa fa-calendar\"></i> {{ item.createdAt | date }} <span class=\"text-muted\">at</span> {{ item.createdAt | date:'shortTime' }}</span>\n" +
     "        <a ng-click=\"remove(item)\" class=\"if-editable text-danger\"><i class=\"fa fa-times\"></i> Delete</a>\n" +
     "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
+angular.module("internships/widgets/availability.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/widgets/availability.tpl.html",
+    "<div class=\"widget-availability\">\n" +
+    "  <div class=\"list-group\">\n" +
+    "    <div class=\"list-group-item\">\n" +
+    "      <strong><i class=\"fa fa-calendar\"></i> Available</strong>\n" +
+    "      <span class=\"pull-right\">{{ internship.startDate | date:'d/M/yyyy' }}<span class=\"text-muted\"> to </span> {{ internship.endDate | date:'d/M/yyyy' }}</span>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"list-group-item\">\n" +
+    "      <strong><i class=\"fa fa-clock-o\"></i> Internship Length</strong>\n" +
+    "      <span class=\"pull-right\">{{ internship.totalHours }} <span class=\"text-muted\">hours</span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div ng-show=\"internship.availability\" class=\"list-group\">\n" +
+    "    <div class=\"list-group-item\" ng-repeat=\"day in _availability\">\n" +
+    "      <strong>{{ day.day }}</strong>\n" +
+    "      <i ng-show=\"day.available\" class=\"fa fa-check text-success pull-right\"></i>\n" +
+    "      <i ng-show=\"!day.available\" class=\"fa fa-times text-muted pull-right\"></i>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</div>");
@@ -35152,6 +35180,8 @@ angular.module('InternLabs.services', [])
       '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM'
     ];
 
+    this.dayOptions = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
   })
 
 
@@ -35911,6 +35941,41 @@ angular.module('InternLabs.internships', [])
             scope.internship.activity.unshift(response);
           });
         };
+      }
+    }
+  })
+
+
+  /**
+   * Availability
+   */
+  .directive('availabilityWidget', function(Options) {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/availability.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        var days = Options.dayOptions,
+            avail = scope.internship.availability;
+
+        var getAvailability = function() {
+          scope._availability = _.map(days, function(day) {
+            return {
+              day: day,
+              available: _.indexOf(avail, day) !== -1
+            }
+          });
+        };
+
+        scope.$watch('internship.availability', function(newVal, oldVal) {
+
+          if (newVal) {
+            getAvailability();
+          }
+        }, true);
       }
     }
   })
