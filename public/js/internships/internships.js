@@ -282,7 +282,7 @@ angular.module('InternLabs.internships', [])
               schedule: scope.internship.schedule,
               _schedule: angular.copy(scope.internship.schedule),
               newSchedule: {
-                date: '2014-06-01',
+                date: new Date(),
                 startTime: '9:00 AM',
                 endTime: '5:00 PM',
               },
@@ -293,10 +293,7 @@ angular.module('InternLabs.internships', [])
                   return;
                 }
 
-                var parts = schedule.date.split('-');
-                var newSchedule = _.union(this.scope._schedule, _.extend({}, schedule, {
-                  date: new Date(parts[0], parts[1] - 1, parts[2]).toISOString()
-                }));
+                var newSchedule = _.union(this.scope._schedule, angular.copy(schedule));
 
                 // Sort the dates                
                 this.scope._schedule = _.sortBy(newSchedule, function(item) {
