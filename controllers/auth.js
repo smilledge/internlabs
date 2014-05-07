@@ -47,13 +47,12 @@ module.exports = function(app) {
             subject: "Activate your account",
             template: "activate.ejs",
             model: {
-              activationUrl: nconf.get("url") + 'activate?token=' + user.activationToken + '&user=' + user._id
+              activationUrl: nconf.get("url") + 'activate?token=' + user.activationToken + '&user=' + user._id,
+              user: user
             }
           }, function(err) {
-            // Don't wait for the email to be sent
+            callback(null, user);
           });
-
-          callback(null, user);
         }
 
       ], function(err, user) {
