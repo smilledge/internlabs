@@ -80,6 +80,41 @@ angular.module('InternLabs.internships', [])
 
 
   /**
+   * Availability
+   */
+  .directive('availabilityWidget', function(Options) {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/availability.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        var days = Options.dayOptions,
+            avail = scope.internship.availability;
+
+        var getAvailability = function() {
+          scope._availability = _.map(days, function(day) {
+            return {
+              day: day,
+              available: _.indexOf(avail, day) !== -1
+            }
+          });
+        };
+
+        scope.$watch('internship.availability', function(newVal, oldVal) {
+
+          if (newVal) {
+            getAvailability();
+          }
+        }, true);
+      }
+    }
+  })
+
+
+  /**
    * Interview widget
    */
   .directive('interviewWidget', function(ModalFactory, Options) {

@@ -1,0 +1,21 @@
+<div class="widget-availability">
+  <div class="list-group">
+    <div class="list-group-item">
+      <strong><i class="fa fa-calendar"></i> Available</strong>
+      <span class="pull-right">{{ internship.startDate | date:'d/M/yyyy' }}<span class="text-muted"> to </span> {{ internship.endDate | date:'d/M/yyyy' }}</span>
+    </div>
+
+    <div class="list-group-item">
+      <strong><i class="fa fa-clock-o"></i> Internship Length</strong>
+      <span class="pull-right">{{ internship.totalHours }} <span class="text-muted">hours</span>
+    </div>
+  </div>
+
+  <div ng-show="internship.availability" class="list-group">
+    <div class="list-group-item" ng-repeat="day in _availability">
+      <strong>{{ day.day }}</strong>
+      <i ng-show="day.available" class="fa fa-check text-success pull-right"></i>
+      <i ng-show="!day.available" class="fa fa-times text-muted pull-right"></i>
+    </div>
+  </div>
+</div>

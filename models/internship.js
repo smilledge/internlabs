@@ -29,6 +29,7 @@ var InternshipModel = function() {
         startDate: { type: Date },
         endDate: { type: Date },
         totalHours: { type: Number },
+        availability: [String],
         activity: [{
             description: { type: String },
             author: { type: ObjectId, ref: 'User' },
