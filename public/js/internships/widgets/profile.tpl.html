@@ -1,0 +1,19 @@
+<article class="widget-profile">
+  <header>
+    <h3>{{ profile.name }}</h3>
+    <p class="text-muted">
+      <span ng-show="profile.university">Student at {{ profile.university }}</span><br />
+      <span ng-show="profile.courseName">Studying {{ profile.courseName }}</span>
+    </p>
+  </header>
+
+  <section class="profile-links">
+    <a ng-show="profile.linkedIn" href="{{ profile.linkedIn }}"><i class="fa fa-linkedin-square"></i> LinkedIn Profile</a>
+  </section>
+
+  <section class="profile-skills">
+    <ul class="skills">
+      <li ng-repeat="skill in profile.skills">{{ skill }}</li>
+    </ul>
+  </section>
+</article>

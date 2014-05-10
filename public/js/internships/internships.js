@@ -77,6 +77,24 @@ angular.module('InternLabs.internships', [])
 
 
   /**
+   * Applicant profile widget
+   */
+  .directive('profileWidget', function() {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/profile.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.profile = scope.internship.student.profile;
+      }
+    }
+  })
+
+
+  /**
    * Availability
    */
   .directive('availabilityWidget', function(Options) {
