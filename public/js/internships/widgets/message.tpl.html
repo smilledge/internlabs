@@ -1,9 +1,15 @@
-<form ng-submit="save()" class="widget-message">
-  <div class="form-group">
-    <textarea ng-model="message" rows="5" class="form-control"></textarea>
-  </div>
+<div class="content-box widget-message">
+  <header>
+    <h3>Post a message</h3>
+  </header>
 
-  <div class="form-group text-right">
-    <button type="submit" class="btn btn-primary btn-icon-right"><i class="fa fa-check"></i> Post Message</button>
-  </div>
-</form>
+  <form ng-submit="save()">
+    <div class="form-group">
+      <textarea ng-model="message" rows="3" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group text-right">
+      <button type="submit" class="btn btn-primary btn-icon-right"><i class="fa fa-check"></i> Post Message</button>
+    </div>
+  </form>
+</div>

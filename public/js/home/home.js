@@ -15,11 +15,13 @@ angular.module('InternLabs.home', [])
   })
 
 
-  .controller('HomeCtrl', function($scope, $location, Auth) {
+  .controller('HomeCtrl', function($rootScope, $scope, $location, Auth) {
 
     if ( Auth.check() ) {
-      $location.path('/dashboard');
+      return $location.path('/dashboard');
     }
+
+    // $rootScope.altNav = true;
     
   })
 

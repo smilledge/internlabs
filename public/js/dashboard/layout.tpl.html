@@ -10,14 +10,20 @@
 
       <div class="row">
         <div class="col-sm-3">
-          <ul class="nav nav-pills nav-stacked">
-            <li ng-class="{active:active=='dashboard'}"><a href="/dashboard">Dashboard</a></li>
-            <li auth-group="student" ng-class="{active:active=='internships'}"><a href="/dashboard/internships">Internships</a></li>
-            <li auth-group="employer" ng-class="{active:active=='applications'}"><a href="/dashboard/applications">Pending Applications</a></li>
-            <li auth-group="employer" ng-class="{active:active=='roles'}"><a href="/dashboard/roles">Available Roles</a></li>
-            <li auth-group="employer" ng-class="{active:active=='profile'}"><a href="/dashboard/company-profile">Company Profile</a></li>
-            <li auth-group="student" ng-class="{active:active=='profile'}"><a href="/dashboard/profile">Edit Profile</a></li>
-          </ul>
+          <div class="content-box widget-navigation">
+            <header>
+              <h3>Dashboard</h3>
+            </header>
+
+            <ul class="nav nav-pills nav-stacked">
+              <li ng-class="{active:active=='dashboard'}"><a href="/dashboard">Dashboard</a></li>
+              <li auth-group="student" ng-class="{active:active=='internships'}"><a href="/dashboard/internships">Internships</a></li>
+              <li auth-group="employer" ng-class="{active:active=='applications'}"><a href="/dashboard/applications">Pending Applications</a></li>
+              <li auth-group="employer" ng-class="{active:active=='roles'}"><a href="/dashboard/roles">Available Roles</a></li>
+              <li auth-group="employer" ng-class="{active:active=='profile'}"><a href="/dashboard/company-profile">Company Profile</a></li>
+              <li auth-group="student" ng-class="{active:active=='profile'}"><a href="/dashboard/profile">Edit Profile</a></li>
+            </ul>
+          </div>
         </div>
 
         <div class="col-sm-9">

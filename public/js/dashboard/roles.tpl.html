@@ -1,22 +1,32 @@
-<header class="section-header">
-  <h2>Available Roles</h2>
+<div class="content-box">
+  <header>
+    <h3>Available Roles</h3>
 
-  <div class="actions">
-    <button type="button" ng-click="add()" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add Role</button>
-  </div>
-</header>
-
-
-<section class="list-view">
-  
-  <div ng-repeat="role in roles" class="internship-role">
-    <strong>{{ role.title }}</strong>
-    <p>{{ role.description }}</p>
-    <div class="actions">
-      <button ng-click="delete(role)" class="btn btn-sm btn-danger"><i class="fa fa-times"></i> Delete</button>
-      <button ng-click="edit(role)" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i> Edit</button>
+    <div dropdown-menu>
+      <a ng-click="toggle()"><i class="fa fa-bars"></i></a>
+      <ul>
+        <li><a ng-click="add()">Add Role</a></li>
+      </ul>
     </div>
-    <hr>
+  </header>
+
+  <div class="list-group">
+    <div ng-repeat="role in roles" class="list-group-item">
+      <strong>{{ role.title }}</strong>
+      <p>{{ role.description }}</p>
+
+      <div dropdown-menu>
+        <a ng-click="toggle()"><i class="fa fa-bars"></i></a>
+        <ul>
+          <li><a ng-click="edit(role)">Edit Role</a></li>
+          <li><a ng-click="delete(role)">Delete Role</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 
-</section>
+  <div ng-show="!roles.length" class="no-results">
+    <p class="lead">Looks like you have not created any internship roles yet!</p>
+    <a ng-click="add()" class="btn btn-link"><i class="fa fa-plus"></i> Create one now</a>
+  </div>
+</div>

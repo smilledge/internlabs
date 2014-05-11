@@ -1,4 +1,8 @@
-<div class="widget-activity">
+<div class="content-box widget-activity">
+  <header>
+    <h3>Recent Activity</h3>
+  </header>
+
   <div class="list-group list-activity">
     <div ng-repeat="item in internship.activity" class="list-group-item item-activity type-{{ item.type || 'update' }} priority-{{ item.priority || '1' }}" ng-class="{'editable': canEdit(item)}">
       <p class="description">{{ item.description }}</p>

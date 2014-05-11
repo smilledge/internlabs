@@ -1,0 +1,14 @@
+<div class="content-box">
+  <div class="profile-logo clearfix">
+    <img ng-show="company.logoUrl" ng-src="{{ company.logoUrl }}" alt="{{ company.name }}">
+  </div>
+
+  <div class="list-group">
+    <div class="list-group-item">
+      <i class="fa fa-map-marker"></i> {{ company.address.city + ', ' +  company.address.country }}
+    </div>
+    <div class="list-group-item">
+      <i class="fa fa-globe"></i> <a href="{{ company.website }}" target="_blank">{{ company.website }}</a>
+    </div>
+  </div>
+</div>

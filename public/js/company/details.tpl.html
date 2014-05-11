@@ -14,41 +14,12 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-4 profile-sidebar">
-          <div class="profile-logo">
-            <img ng-show="company.logoUrl" ng-src="{{ company.logoUrl }}" alt="{{ company.name }}">
-          </div>
-
-          <ul class="profile-meta">
-            <li class="icon-left"><i class="fa fa-map-marker"></i> {{ company.address.city + ', ' +  company.address.country }}</li>
-            <li class="icon-left"><i class="fa fa-globe"></i> <a href="{{ company.website }}" target="_blank">{{ company.website }}</a></li>
-          </ul>
+          <div ng-include="'company/widgets/sidebar.tpl.html'"></div>
         </div>
 
         <div class="col-sm-8 profile-body">
-          <section>
-            <h2>Company profile</h2>
-            {{ company.introduction }}
-          </section>
-
-          <section>
-            <h4>{{ company.name }} is looking for interns with the following skills</h4>
-            <ul class="skills">
-              <li ng-repeat="skill in company.skills">{{ skill }}</li>
-            </ul>
-          </section>
-          
-          <section ng-if="company.roles">
-            <h2>Available Internship Roles</h2>
-            <ul class="list-roles">
-              <li ng-repeat="role in company.roles" class="clearfix">
-                <strong>{{ role.title }}</strong>
-                <div class="actions">
-                  <button ng-click="showRoleDetails(role)" type="button" class="btn btn-default btn-sm"><i class="fa fa-info-circle"></i> More Info</button>
-                  <button auth-group="student" ng-click="apply(role)" type="button" class="btn btn-primary btn-sm">Apply <i class="fa fa-chevron-right small"></i></button>
-                </div>
-              </li>
-            </ul>
-          </section>
+          <div ng-include="'company/widgets/profile.tpl.html'"></div>
+          <div ng-include="'company/widgets/roles.tpl.html'"></div>
         </div>
       </div>
     </div>

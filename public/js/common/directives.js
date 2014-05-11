@@ -123,6 +123,51 @@ angular.module('InternLabs.common.directives', [])
   })
 
 
+  /**
+   * Dropdown menu
+   */
+  .directive('dropdownMenu', function() {
+    return {
+      restrict: 'A',
+      scope: true,
+      link: function(scope, elem, attrs) {
+        elem.addClass('dropdown');
+        var $menu = elem.find('ul').first(),
+            $toggle = elem.find('a').first();
+        $menu.addClass('dropdown-menu');
+        var uniqId = _.uniqueId('menu-');
+        var isOpen = false;
+        
+        scope.toggle = function(close) {
+          if ( isOpen ) {
+            $menu.hide();
+            $toggle.removeClass('active');
+            isOpen = false;
+          } else if ( ! close ) {
+            $menu.show();
+            $toggle.addClass('active');
+            isOpen = true;
+          }
+        };
+
+        elem.find('li > a').on('click', function() {
+          scope.toggle(true);
+        });
+
+        $(window).on('click.' + uniqId, function(e) {
+          if ($(e.target).parents('.dropdown')[0] === elem[0]) {
+            return;
+          }
+          scope.toggle(true);
+        });
+
+        elem.on('$destroy', function() {
+          $(window).off('click.' + uniqId);
+        });
+      }
+    }
+  })
+
 
   /**
    * Datepicker input field
