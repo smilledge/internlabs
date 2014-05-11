@@ -36,7 +36,6 @@ angular.module('InternLabs.search', [])
     $scope.options = options;
 
     $scope.search = function() {
-      console.log($scope.query);
       if ( initial ) {
         return initial = false;
       }
