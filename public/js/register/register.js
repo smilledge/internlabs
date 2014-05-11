@@ -23,6 +23,8 @@ angular.module('InternLabs.register', [])
       $location.path('/signup/student');
     }
 
+    $rootScope.altNav = true;
+
     $scope.user = {
       type: $routeParams.type
     };

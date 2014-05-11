@@ -51,8 +51,9 @@ angular.module('InternLabs.login', [])
   })
 
 
-  .controller('LoginCtrl', function($scope, $location, Auth) {
+  .controller('LoginCtrl', function($rootScope, $scope, $location, Auth) {
     $scope.credentials = {};
+    $rootScope.altNav = true;
 
     $scope.submit = function() {
       Auth.login($scope.credentials).then(function(data) {
@@ -65,15 +66,14 @@ angular.module('InternLabs.login', [])
 
 
   .controller('ActivateCtrl', function($rootScope, $scope, $location, Auth) {
-    $rootScope.loading = true;
     $scope.activated = false;
     var params = $location.search();
+    $rootScope.altNav = true;
 
     Auth.activate({
       activationToken: params.token,
       userId: params.user
     }).then(function(response) {
-      $rootScope.loading = false;
       $scope.activated = true;
     });
   })
@@ -83,6 +83,7 @@ angular.module('InternLabs.login', [])
     
     var params = $location.search();
     $scope.action = (_.isEmpty(params)) ? 'send' : 'reset';
+    $rootScope.altNav = true;
     
     $scope.reset = {};
     $scope.sendSuccess = false;
@@ -92,12 +93,9 @@ angular.module('InternLabs.login', [])
      * Send password reset email
      */
     $scope.send = function() {
-      $rootScope.loading = true;
-      
       Auth.sendPasswordReset({
         email: $scope.reset.email
       }).then(function(response) {
-        $rootScope.loading = false;
         $scope.sendSuccess = true;
       });
     };
@@ -106,14 +104,11 @@ angular.module('InternLabs.login', [])
      * Reset the user's password using the provided token and credentials
      */
     $scope.reset = function() {
-      $rootScope.loading = true;
-      
       Auth.passwordReset({
         userId: params.user,
         password: $scope.reset.password,
         resetToken: params.token
       }).then(function(response) {
-        $rootScope.loading = false;
         $scope.resetSuccess = true;
       });
     };
@@ -123,18 +118,15 @@ angular.module('InternLabs.login', [])
   .controller('ResendActivationCtrl', function($rootScope, $scope, Auth) {
     $scope.resend = {};
     $scope.success = false;
+    $rootScope.altNav = true;
 
     /**
      * Send password reset email
      */
     $scope.send = function() {
-      $rootScope.loading = true;
-      
       Auth.resendActivation({
         email: $scope.resend.email
       }).then(function(response) {
-        $rootScope.loading = false;
-
         if ( ! response.data.success ) {
           return $scope.errors = response.data.error;
         }

@@ -1,26 +1,4 @@
 <article class="edit-company-profile">
-  
-  <header class="section-header">
-    <h2>Company Profile</h2>
-  </header>
-
-
-  <section class="company-logo">
-    
-    <div class="row">
-      <div class="col-sm-4">
-        <img ng-if="company.logoUrl" ng-src="{{ company.logoUrl }}" alt="{{ company.name }}">
-      </div>
-
-      <div class="col-sm-8">
-        
-        <a ng-click="deleteLogo()" class="btn btn-danger btn-icon-right">Remove Logo <i class="fa fa-trash-o"></i></a>
-        <a ng-click="uploadLogo()" class="btn btn-primary btn-icon-right">Upload Logo <i class="fa fa-arrow-up"></i></a>
-
-      </div>
-    </div>
-    
-
-  </section>
+  <div ng-include="'dashboard/widgets/company-logo.tpl.html'"></div>
 
 </article>

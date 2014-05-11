@@ -33063,7 +33063,7 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['company/details.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/supervisors.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search-widget.tpl.html', 'search/search.tpl.html']);
+angular.module('templates-app', ['company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/supervisors.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
 
 angular.module("company/details.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("company/details.tpl.html",
@@ -33083,41 +33083,12 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
     "    <div class=\"container\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-sm-4 profile-sidebar\">\n" +
-    "          <div class=\"profile-logo\">\n" +
-    "            <img ng-show=\"company.logoUrl\" ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
-    "          </div>\n" +
-    "\n" +
-    "          <ul class=\"profile-meta\">\n" +
-    "            <li class=\"icon-left\"><i class=\"fa fa-map-marker\"></i> {{ company.address.city + ', ' +  company.address.country }}</li>\n" +
-    "            <li class=\"icon-left\"><i class=\"fa fa-globe\"></i> <a href=\"{{ company.website }}\" target=\"_blank\">{{ company.website }}</a></li>\n" +
-    "          </ul>\n" +
+    "          <div ng-include=\"'company/widgets/sidebar.tpl.html'\"></div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-sm-8 profile-body\">\n" +
-    "          <section>\n" +
-    "            <h2>Company profile</h2>\n" +
-    "            {{ company.introduction }}\n" +
-    "          </section>\n" +
-    "\n" +
-    "          <section>\n" +
-    "            <h4>{{ company.name }} is looking for interns with the following skills</h4>\n" +
-    "            <ul class=\"skills\">\n" +
-    "              <li ng-repeat=\"skill in company.skills\">{{ skill }}</li>\n" +
-    "            </ul>\n" +
-    "          </section>\n" +
-    "          \n" +
-    "          <section ng-if=\"company.roles\">\n" +
-    "            <h2>Available Internship Roles</h2>\n" +
-    "            <ul class=\"list-roles\">\n" +
-    "              <li ng-repeat=\"role in company.roles\" class=\"clearfix\">\n" +
-    "                <strong>{{ role.title }}</strong>\n" +
-    "                <div class=\"actions\">\n" +
-    "                  <button ng-click=\"showRoleDetails(role)\" type=\"button\" class=\"btn btn-default btn-sm\"><i class=\"fa fa-info-circle\"></i> More Info</button>\n" +
-    "                  <button auth-group=\"student\" ng-click=\"apply(role)\" type=\"button\" class=\"btn btn-primary btn-sm\">Apply <i class=\"fa fa-chevron-right small\"></i></button>\n" +
-    "                </div>\n" +
-    "              </li>\n" +
-    "            </ul>\n" +
-    "          </section>\n" +
+    "          <div ng-include=\"'company/widgets/profile.tpl.html'\"></div>\n" +
+    "          <div ng-include=\"'company/widgets/roles.tpl.html'\"></div>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
@@ -33139,6 +33110,78 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
     "</article>");
 }]);
 
+angular.module("company/widgets/profile.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("company/widgets/profile.tpl.html",
+    "<div ng-if=\"company.introduction\" class=\"content-box\">\n" +
+    "  <header>\n" +
+    "    <h3>Company profile</h3>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <div class=\"list-group\">\n" +
+    "    <div class=\"list-group-item\">\n" +
+    "      {{ company.introduction }}\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "\n" +
+    "\n" +
+    "<div ng-if=\"company.skills\" class=\"content-box\">\n" +
+    "  <header>\n" +
+    "    <h3>{{ company.name }} is looking for interns with the following skills</h3>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <div class=\"list-group\">\n" +
+    "    <div class=\"list-group-item\">\n" +
+    "      <ul class=\"skills\">\n" +
+    "        <li ng-repeat=\"skill in company.skills\">{{ skill }}</li>\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
+angular.module("company/widgets/roles.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("company/widgets/roles.tpl.html",
+    "<div ng-if=\"company.roles.length\" class=\"content-box\">\n" +
+    "  <header>\n" +
+    "    <h3>Available Internship Roles</h3>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <div class=\"list-group\">\n" +
+    "    <div ng-repeat=\"role in company.roles\" class=\"list-group-item\">\n" +
+    "      <strong>{{ role.title }}</strong>\n" +
+    "      <p>{{ role.description | limitTo:80 }}...</p>\n" +
+    "\n" +
+    "      <div dropdown-menu>\n" +
+    "        <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "        <ul>\n" +
+    "          <li><a ng-click=\"showRoleDetails(role)\">More Info</a></li>\n" +
+    "          <li><a auth-group=\"student\" ng-click=\"apply(role)\">Apply</a></li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
+angular.module("company/widgets/sidebar.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("company/widgets/sidebar.tpl.html",
+    "<div class=\"content-box\">\n" +
+    "  <div class=\"profile-logo clearfix\">\n" +
+    "    <img ng-show=\"company.logoUrl\" ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"list-group\">\n" +
+    "    <div class=\"list-group-item\">\n" +
+    "      <i class=\"fa fa-map-marker\"></i> {{ company.address.city + ', ' +  company.address.country }}\n" +
+    "    </div>\n" +
+    "    <div class=\"list-group-item\">\n" +
+    "      <i class=\"fa fa-globe\"></i> <a href=\"{{ company.website }}\" target=\"_blank\">{{ company.website }}</a>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
 angular.module("dashboard/applications.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/applications.tpl.html",
     "<header class=\"section-header\">\n" +
@@ -33150,29 +33193,7 @@ angular.module("dashboard/applications.tpl.html", []).run(["$templateCache", fun
 angular.module("dashboard/company-profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/company-profile.tpl.html",
     "<article class=\"edit-company-profile\">\n" +
-    "  \n" +
-    "  <header class=\"section-header\">\n" +
-    "    <h2>Company Profile</h2>\n" +
-    "  </header>\n" +
-    "\n" +
-    "\n" +
-    "  <section class=\"company-logo\">\n" +
-    "    \n" +
-    "    <div class=\"row\">\n" +
-    "      <div class=\"col-sm-4\">\n" +
-    "        <img ng-if=\"company.logoUrl\" ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"col-sm-8\">\n" +
-    "        \n" +
-    "        <a ng-click=\"deleteLogo()\" class=\"btn btn-danger btn-icon-right\">Remove Logo <i class=\"fa fa-trash-o\"></i></a>\n" +
-    "        <a ng-click=\"uploadLogo()\" class=\"btn btn-primary btn-icon-right\">Upload Logo <i class=\"fa fa-arrow-up\"></i></a>\n" +
-    "\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "    \n" +
-    "\n" +
-    "  </section>\n" +
+    "  <div ng-include=\"'dashboard/widgets/company-logo.tpl.html'\"></div>\n" +
     "\n" +
     "</article>");
 }]);
@@ -33252,25 +33273,26 @@ angular.module("dashboard/forms/role.tpl.html", []).run(["$templateCache", funct
 
 angular.module("dashboard/internships.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/internships.tpl.html",
-    "<header class=\"section-header\">\n" +
-    "  <h2>My Internships</h2>\n" +
-    "</header>\n" +
+    "<div class=\"content-box\">\n" +
+    "  <header>\n" +
+    "    <h3>My Internships</h3>\n" +
+    "  </header>\n" +
     "\n" +
+    "  <div class=\"list-group\">\n" +
+    "    <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item\">\n" +
+    "      <h4 class=\"list-group-item-heading\">\n" +
+    "        {{ internship.role.title || \"Internship\" }} \n" +
+    "        <span class=\"text-muted\">at</span> \n" +
+    "        {{ internship.company.name }}\n" +
+    "        <span class=\"label label-primary pull-right\">{{ internship.status }}</span>\n" +
+    "      </h4>\n" +
     "\n" +
-    "<div class=\"list-group\">\n" +
-    "  <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item\">\n" +
-    "    <h4 class=\"list-group-item-heading\">\n" +
-    "      {{ internship.role.title || \"Internship\" }} \n" +
-    "      <span class=\"text-muted\">at</span> \n" +
-    "      {{ internship.company.name }}\n" +
-    "      <span class=\"label label-primary pull-right\">{{ internship.status }}</span>\n" +
-    "    </h4>\n" +
-    "\n" +
-    "    <p class=\"list-group-item-text\">\n" +
-    "      {{ internship.startDate | date:short }}\n" +
-    "      <span ng-show=\"internship.startDate && internship.endDate\" class=\"text-muted\">to</span>\n" +
-    "      {{ internship.endDate | date:short }}</p>\n" +
-    "  </a>\n" +
+    "      <p class=\"list-group-item-text\">\n" +
+    "        {{ internship.startDate | date:short }}\n" +
+    "        <span ng-show=\"internship.startDate && internship.endDate\" class=\"text-muted\">to</span>\n" +
+    "        {{ internship.endDate | date:short }}</p>\n" +
+    "    </a>\n" +
+    "  </div>\n" +
     "</div>");
 }]);
 
@@ -33288,14 +33310,20 @@ angular.module("dashboard/layout.tpl.html", []).run(["$templateCache", function(
     "\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-sm-3\">\n" +
-    "          <ul class=\"nav nav-pills nav-stacked\">\n" +
-    "            <li ng-class=\"{active:active=='dashboard'}\"><a href=\"/dashboard\">Dashboard</a></li>\n" +
-    "            <li auth-group=\"student\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">Internships</a></li>\n" +
-    "            <li auth-group=\"employer\" ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
-    "            <li auth-group=\"employer\" ng-class=\"{active:active=='roles'}\"><a href=\"/dashboard/roles\">Available Roles</a></li>\n" +
-    "            <li auth-group=\"employer\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/company-profile\">Company Profile</a></li>\n" +
-    "            <li auth-group=\"student\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">Edit Profile</a></li>\n" +
-    "          </ul>\n" +
+    "          <div class=\"content-box widget-navigation\">\n" +
+    "            <header>\n" +
+    "              <h3>Dashboard</h3>\n" +
+    "            </header>\n" +
+    "\n" +
+    "            <ul class=\"nav nav-pills nav-stacked\">\n" +
+    "              <li ng-class=\"{active:active=='dashboard'}\"><a href=\"/dashboard\">Dashboard</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">Internships</a></li>\n" +
+    "              <li auth-group=\"employer\" ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
+    "              <li auth-group=\"employer\" ng-class=\"{active:active=='roles'}\"><a href=\"/dashboard/roles\">Available Roles</a></li>\n" +
+    "              <li auth-group=\"employer\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/company-profile\">Company Profile</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">Edit Profile</a></li>\n" +
+    "            </ul>\n" +
+    "          </div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-sm-9\">\n" +
@@ -33310,28 +33338,64 @@ angular.module("dashboard/layout.tpl.html", []).run(["$templateCache", function(
 
 angular.module("dashboard/roles.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/roles.tpl.html",
-    "<header class=\"section-header\">\n" +
-    "  <h2>Available Roles</h2>\n" +
+    "<div class=\"content-box\">\n" +
+    "  <header>\n" +
+    "    <h3>Available Roles</h3>\n" +
     "\n" +
-    "  <div class=\"actions\">\n" +
-    "    <button type=\"button\" ng-click=\"add()\" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\"></i> Add Role</button>\n" +
-    "  </div>\n" +
-    "</header>\n" +
-    "\n" +
-    "\n" +
-    "<section class=\"list-view\">\n" +
-    "  \n" +
-    "  <div ng-repeat=\"role in roles\" class=\"internship-role\">\n" +
-    "    <strong>{{ role.title }}</strong>\n" +
-    "    <p>{{ role.description }}</p>\n" +
-    "    <div class=\"actions\">\n" +
-    "      <button ng-click=\"delete(role)\" class=\"btn btn-sm btn-danger\"><i class=\"fa fa-times\"></i> Delete</button>\n" +
-    "      <button ng-click=\"edit(role)\" class=\"btn btn-sm btn-default\"><i class=\"fa fa-pencil\"></i> Edit</button>\n" +
+    "    <div dropdown-menu>\n" +
+    "      <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "      <ul>\n" +
+    "        <li><a ng-click=\"add()\">Add Role</a></li>\n" +
+    "      </ul>\n" +
     "    </div>\n" +
-    "    <hr>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <div class=\"list-group\">\n" +
+    "    <div ng-repeat=\"role in roles\" class=\"list-group-item\">\n" +
+    "      <strong>{{ role.title }}</strong>\n" +
+    "      <p>{{ role.description }}</p>\n" +
+    "\n" +
+    "      <div dropdown-menu>\n" +
+    "        <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "        <ul>\n" +
+    "          <li><a ng-click=\"edit(role)\">Edit Role</a></li>\n" +
+    "          <li><a ng-click=\"delete(role)\">Delete Role</a></li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "</section>");
+    "  <div ng-show=\"!roles.length\" class=\"no-results\">\n" +
+    "    <p class=\"lead\">Looks like you have not created any internship roles yet!</p>\n" +
+    "    <a ng-click=\"add()\" class=\"btn btn-link\"><i class=\"fa fa-plus\"></i> Create one now</a>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
+angular.module("dashboard/widgets/company-logo.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("dashboard/widgets/company-logo.tpl.html",
+    "<div class=\"content-box\">\n" +
+    "  <header>\n" +
+    "    <h3>Company Logo</h3>\n" +
+    "\n" +
+    "    <div dropdown-menu>\n" +
+    "      <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "      <ul>\n" +
+    "        <li><a ng-click=\"uploadLogo()\">Upload Logo</a></li>\n" +
+    "        <li><a ng-click=\"deleteLogo()\">Remove Logo</a></li>\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <div class=\"list-group\">\n" +
+    "    <div class=\"list-group-item\">\n" +
+    "      <div class=\"profile-logo\">\n" +
+    "        <img ng-if=\"company.logoUrl\" ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "");
 }]);
 
 angular.module("home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -33339,13 +33403,15 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "<section class=\"section-green section-home\" fill-screen homepage-hero>\n" +
     "  \n" +
     "  <div class=\"container text-center\">\n" +
-    "    <h2 class=\"hero-title\">InternLabs connects students with employers and helps create successful internships</h2>\n" +
+    "    <div class=\"content-box\">\n" +
+    "      <h2>InternLabs connects students with employers and helps create successful internships</h2>\n" +
     "\n" +
-    "    <p class=\"lead call-to-action\">Ready to get started?</p>\n" +
+    "      <p class=\"lead call-to-action\">Ready to get started?</p>\n" +
     "\n" +
-    "    <div class=\"actions\">\n" +
-    "      <a href=\"/signup/employer\" class=\"btn btn-default btn-lg\">I'm an Employer</a>\n" +
-    "      <a href=\"/signup/student\" class=\"btn btn-default btn-lg\">I'm a Student</a>\n" +
+    "      <div class=\"actions\">\n" +
+    "        <a href=\"/signup/employer\" class=\"btn btn-primary btn-lg\">I'm an Employer</a>\n" +
+    "        <a href=\"/signup/student\" class=\"btn btn-primary btn-lg\">I'm a Student</a>\n" +
+    "      </div>\n" +
     "    </div>\n" +
     "  </div>  \n" +
     "\n" +
@@ -33358,32 +33424,28 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
     "  \n" +
     "  <header>\n" +
     "    <div class=\"container clearfix\">\n" +
-    "      <h1 class=\"page-title pull-left\">{{ internship.role.title }} - {{ profile.name }}</h1>\n" +
+    "      <h1 class=\"page-title pull-left\">Internship Dashboard</h1>\n" +
     "    </div>\n" +
     "  </header>\n" +
+    "\n" +
+    "  <section class=\"sub-header\">\n" +
+    "    <div class=\"container clearfix\">\n" +
+    "      <h2>{{ internship.role.title }} - {{ profile.name }}</h2>\n" +
+    "    </div>\n" +
+    "  </section>\n" +
     "\n" +
     "  <section class=\"main\">\n" +
     "    <div class=\"container\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-sm-4\">\n" +
-    "          <h3>Schedule</h3>\n" +
     "          <div schedule-widget internship=\"internship\"></div>\n" +
-    "\n" +
-    "          <h3>Supervisors</h3>\n" +
     "          <div supervisors-widget internship=\"internship\"></div>\n" +
-    "\n" +
-    "          <h3>Interview</h3>\n" +
     "          <div interview-widget internship=\"internship\"></div>\n" +
-    "\n" +
-    "          <h3>Availability</h3>\n" +
     "          <div availability-widget internship=\"internship\"></div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-sm-8\">\n" +
-    "          <h3>Post a message</h3>\n" +
     "          <div message-widget internship=\"internship\"></div>\n" +
-    "\n" +
-    "          <h3>Recent Activity</h3>\n" +
     "          <div activity-widget internship=\"internship\"></div>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -33620,7 +33682,11 @@ angular.module("internships/forms/supervisor-delete.tpl.html", []).run(["$templa
 
 angular.module("internships/widgets/activity.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/widgets/activity.tpl.html",
-    "<div class=\"widget-activity\">\n" +
+    "<div class=\"content-box widget-activity\">\n" +
+    "  <header>\n" +
+    "    <h3>Recent Activity</h3>\n" +
+    "  </header>\n" +
+    "\n" +
     "  <div class=\"list-group list-activity\">\n" +
     "    <div ng-repeat=\"item in internship.activity\" class=\"list-group-item item-activity type-{{ item.type || 'update' }} priority-{{ item.priority || '1' }}\" ng-class=\"{'editable': canEdit(item)}\">\n" +
     "      <p class=\"description\">{{ item.description }}</p>\n" +
@@ -33636,8 +33702,12 @@ angular.module("internships/widgets/activity.tpl.html", []).run(["$templateCache
 
 angular.module("internships/widgets/availability.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/widgets/availability.tpl.html",
-    "<div class=\"widget-availability\">\n" +
-    "  <div class=\"list-group\">\n" +
+    "<div class=\"content-box widget-availability\">\n" +
+    "  <header>\n" +
+    "    <h3>Availability</h3>\n" +
+    "  </header>\n" +
+    "\n" +
+    "    <div class=\"list-group\">\n" +
     "    <div class=\"list-group-item\">\n" +
     "      <strong><i class=\"fa fa-calendar\"></i> Available</strong>\n" +
     "      <span class=\"pull-right\">{{ internship.startDate | date:'d/M/yyyy' }}<span class=\"text-muted\"> to </span> {{ internship.endDate | date:'d/M/yyyy' }}</span>\n" +
@@ -33661,7 +33731,20 @@ angular.module("internships/widgets/availability.tpl.html", []).run(["$templateC
 
 angular.module("internships/widgets/interview.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/widgets/interview.tpl.html",
-    "<div class=\"widget-interview\">\n" +
+    "<div class=\"content-box widget-interview\">\n" +
+    "  <header>\n" +
+    "    <h3>Interview</h3>\n" +
+    "\n" +
+    "    <div dropdown-menu>\n" +
+    "      <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "      <ul>\n" +
+    "        <li ng-show=\"!internship.interview\"><a ng-click=\"edit()\">Schedule Interview</a></li>\n" +
+    "        <li ng-show=\"internship.interview\"><a ng-click=\"edit()\">Edit Interview</a></li>\n" +
+    "        <li ng-show=\"internship.interview\"><a ng-click=\"remove()\">Cancel Interview</a></li>\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
+    "  </header>\n" +
+    "\n" +
     "  <div ng-show=\"internship.interview\" class=\"list-group list-interview\">\n" +
     "    <div class=\"list-group-item\">\n" +
     "      <strong><i class=\"fa fa-calendar\"></i> Date</strong>\n" +
@@ -33675,30 +33758,45 @@ angular.module("internships/widgets/interview.tpl.html", []).run(["$templateCach
     "\n" +
     "  <div ng-show=\"!internship.interview\" class=\"no-results\">\n" +
     "    <p class=\"lead\">No interview has been scheduled</p>\n" +
-    "    <a ng-click=\"edit()\" class=\"btn btn-default btn-sm\"><i class=\"fa fa-group\"></i> Schedule an Interview</a>\n" +
+    "    <a ng-click=\"edit()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-group\"></i> Schedule an Interview</a>\n" +
     "  </div>\n" +
-    "\n" +
-    "  <a ng-show=\"internship.interview\" ng-click=\"edit()\"><i class=\"fa fa-pencil\"></i> Edit Interview</a> &nbsp; \n" +
-    "  <a ng-show=\"internship.interview\" ng-click=\"remove()\" class=\"text-danger\"><i class=\"fa fa-trash-o\"></i> Cancel Interview</a>\n" +
     "</div>");
 }]);
 
 angular.module("internships/widgets/message.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/widgets/message.tpl.html",
-    "<form ng-submit=\"save()\" class=\"widget-message\">\n" +
-    "  <div class=\"form-group\">\n" +
-    "    <textarea ng-model=\"message\" rows=\"5\" class=\"form-control\"></textarea>\n" +
-    "  </div>\n" +
+    "<div class=\"content-box widget-message\">\n" +
+    "  <header>\n" +
+    "    <h3>Post a message</h3>\n" +
+    "  </header>\n" +
     "\n" +
-    "  <div class=\"form-group text-right\">\n" +
-    "    <button type=\"submit\" class=\"btn btn-primary btn-icon-right\"><i class=\"fa fa-check\"></i> Post Message</button>\n" +
-    "  </div>\n" +
-    "</form>");
+    "  <form ng-submit=\"save()\">\n" +
+    "    <div class=\"form-group\">\n" +
+    "      <textarea ng-model=\"message\" rows=\"3\" class=\"form-control\"></textarea>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"form-group text-right\">\n" +
+    "      <button type=\"submit\" class=\"btn btn-primary btn-icon-right\"><i class=\"fa fa-check\"></i> Post Message</button>\n" +
+    "    </div>\n" +
+    "  </form>\n" +
+    "</div>");
 }]);
 
 angular.module("internships/widgets/schedule.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/widgets/schedule.tpl.html",
-    "<div class=\"widget-schedule\">\n" +
+    "<div class=\"content-box widget-schedule\">\n" +
+    "  <header>\n" +
+    "    <h3>Schedule</h3>\n" +
+    "\n" +
+    "    <div dropdown-menu>\n" +
+    "      <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "      <ul>\n" +
+    "        <li><a ng-click=\"edit()\">Edit Schedule</a></li>\n" +
+    "        <li><a ng-click=\"add()\">Add Scheduled Work</a></li>\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
+    "  </header>\n" +
+    "\n" +
     "  <div class=\"list-group list-schedule\">\n" +
     "    <div ng-repeat=\"item in internship.schedule\" class=\"list-group-item\">\n" +
     "      <strong class=\"date pull-left\"><i class=\"fa fa-calendar\"></i> {{ item.date | date:short }}</strong>\n" +
@@ -33708,16 +33806,25 @@ angular.module("internships/widgets/schedule.tpl.html", []).run(["$templateCache
     "\n" +
     "  <div ng-show=\"!internship.schedule.length\" class=\"no-results\">\n" +
     "    <p class=\"lead\">Looks like you have not created a schedule yet!</p>\n" +
-    "    <a ng-click=\"edit()\" class=\"btn btn-default btn-sm\"><i class=\"fa fa-plus\"></i> Create one now</a>\n" +
+    "    <a ng-click=\"edit()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-plus\"></i> Create one now</a>\n" +
     "  </div>\n" +
-    "\n" +
-    "  <a ng-click=\"edit()\"><i class=\"fa fa-pencil\"></i> Edit Schedule</a>\n" +
     "</div>");
 }]);
 
 angular.module("internships/widgets/supervisors.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/widgets/supervisors.tpl.html",
-    "<div class=\"widget-supervisors\">\n" +
+    "<div class=\"content-box widget-supervisors\">\n" +
+    "  <header>\n" +
+    "    <h3>Supervisors</h3>\n" +
+    "\n" +
+    "    <div dropdown-menu>\n" +
+    "      <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "      <ul>\n" +
+    "        <li><a ng-click=\"add()\">Add Supervisor</a></li>\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
+    "  </header>\n" +
+    "\n" +
     "  <div class=\"list-group list-supervisors\">\n" +
     "    <div ng-repeat=\"item in _supervisors\" class=\"list-group-item\">\n" +
     "      <strong class=\"email\"><i class=\"fa fa-eye\"></i> {{ item.email }}</strong>\n" +
@@ -33727,10 +33834,9 @@ angular.module("internships/widgets/supervisors.tpl.html", []).run(["$templateCa
     "\n" +
     "  <div ng-show=\"!_supervisors.length\" class=\"no-results\">\n" +
     "    <p class=\"lead\">Looks like you have not added any supervisors yet!</p>\n" +
-    "    <a ng-click=\"add()\" class=\"btn btn-default btn-sm\"><i class=\"fa fa-plus\"></i> Add one now</a>\n" +
+    "    <a ng-click=\"add()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-plus\"></i> Add one now</a>\n" +
     "  </div>\n" +
-    "\n" +
-    "  <a ng-click=\"add()\"><i class=\"fa fa-plus\"></i> Add Supervisor</a>\n" +
+    " \n" +
     "</div>");
 }]);
 
@@ -34219,7 +34325,8 @@ angular.module("search/results-map.tpl.html", []).run(["$templateCache", functio
   $templateCache.put("search/results-map.tpl.html",
     "<div class=\"results-map\">\n" +
     "\n" +
-    "  <div results-view-toggle query=\"query\"></div>\n" +
+    "<!--   <div results-view-toggle query=\"query\"></div> -->\n" +
+    "  <div search-widget query=\"query\" options=\"options\"></div>\n" +
     "\n" +
     "  <div id=\"map\"></div>\n" +
     "  <script type=\"text/ng-template\" id=\"infoWindowTemplate\">\n" +
@@ -34238,12 +34345,58 @@ angular.module("search/results-map.tpl.html", []).run(["$templateCache", functio
     "</div>");
 }]);
 
-angular.module("search/search-widget.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("search/search-widget.tpl.html",
-    "<div class=\"search-widget\">\n" +
+angular.module("search/search.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("search/search.tpl.html",
+    "<article class=\"content-page\">\n" +
+    "  <header>\n" +
+    "    <div class=\"container\">\n" +
+    "      <h1 class=\"page-title\">Search</h1>\n" +
+    "    </div>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <!-- List View -->\n" +
+    "  <section ng-show=\"query.view == 'list'\" class=\"main\">\n" +
+    "    <div class=\"container\">\n" +
+    "      <div search-widget query=\"query\" options=\"options\"></div>\n" +
+    "\n" +
+    "      <div class=\"search-results deckgrid\" deckgrid source=\"results\">\n" +
+    "        <div class=\"search-result\">\n" +
+    "          <div class=\"box\">\n" +
+    "            <a ng-show=\"card.logoUrl\" href=\"{{ card.url }}\"><img ng-src=\"{{ card.logoUrl }}\" alt=\"{{ card.name }}\"></a>\n" +
+    "            <h4 class=\"text-center\"><a href=\"{{ card.url }}\">{{ card.name }}</a></h4>\n" +
+    "            <p class=\"text-center\">\n" +
+    "              <a href=\"{{ card.url }}\" class=\"btn btn-default btn-sm\">More Info</a>\n" +
+    "              <a href=\"#apply\" class=\"btn btn-sm btn-primary\">Apply Online</a>\n" +
+    "            </p>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div ng-show=\"!results.length\" class=\"no-results\">\n" +
+    "        <p class=\"lead\">No results found!</p>\n" +
+    "      </div>\n" +
+    "\n" +
+    "    </div>\n" +
+    "  </section>\n" +
+    "\n" +
+    "\n" +
+    "  <section ng-if=\"query.view=='map'\" class=\"main\">\n" +
+    "    <div results-map results=\"results\" query=\"query\"></div>\n" +
+    "  </section>\n" +
+    "\n" +
+    "</article>");
+}]);
+
+angular.module("search/widgets/search.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("search/widgets/search.tpl.html",
+    "<div class=\"content-box widget-search\">\n" +
+    "  <header class=\"clearfix\">\n" +
+    "    <h3 class=\"pull-left\">Search</h3>\n" +
+    "    <div class=\"pull-right\" results-view-toggle query=\"$parent.query\"></div>\n" +
+    "  </header>\n" +
     "\n" +
     "  <form role=\"form\" ng-submit=\"search()\">\n" +
-    "    <div class=\"row\">\n" +
+    "    <div class=\"row-sm\">\n" +
     "      <div class=\"col-sm-6\">\n" +
     "        <div class=\"form-group\">\n" +
     "          <input type=\"text\" ng-model=\"query.query\" class=\"form-control\" placeholder=\"Search for...\">\n" +
@@ -34254,9 +34407,7 @@ angular.module("search/search-widget.tpl.html", []).run(["$templateCache", funct
     "        <button type=\"submit\" class=\"btn btn-primary btn-icon-right\">Search <i class=\"fa fa-search\"></i></button>\n" +
     "      </div>\n" +
     "\n" +
-    "      <div class=\"col-sm-2 pull-right\">\n" +
-    "        <button type=\"button\" ng-click=\"toggleAdvanced()\" class=\"btn btn-link\">Advanced Search <i ng-class=\"{'fa fa-chevron-up':showAdvanced,'fa fa-chevron-down':!showAdvanced}\"></i></button>\n" +
-    "      </div>\n" +
+    "      <button type=\"button\" ng-click=\"toggleAdvanced()\" class=\"btn-advanced pull-right btn btn-link btn-icon-left\">Advanced Search <i ng-class=\"{'fa fa-chevron-up':showAdvanced,'fa fa-chevron-down':!showAdvanced}\"></i></button>\n" +
     "    </div>\n" +
     "\n" +
     "    <div class=\"row advanced\" ng-show=\"showAdvanced\">\n" +
@@ -34276,54 +34427,6 @@ angular.module("search/search-widget.tpl.html", []).run(["$templateCache", funct
     "  </form>\n" +
     "\n" +
     "</div>");
-}]);
-
-angular.module("search/search.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("search/search.tpl.html",
-    "<article class=\"content-page\">\n" +
-    "  <header>\n" +
-    "    <div class=\"container\">\n" +
-    "      <h1 class=\"page-title\">Search</h1>\n" +
-    "    </div>\n" +
-    "  </header>\n" +
-    "\n" +
-    "  <!-- List View -->\n" +
-    "  <section ng-show=\"query.view == 'list'\" class=\"main\">\n" +
-    "    <div class=\"container\">\n" +
-    "\n" +
-    "      <div search-widget query=\"query\" options=\"options\"></div>\n" +
-    "\n" +
-    "      <h2>\n" +
-    "        Results <span ng-if=\"query.query\">for \"{{ query.query }}\"</span> \n" +
-    "        <span ng-if=\"meta.totalResults\" class=\"muted pull-right\">{{ meta.totalResults }} results</span>\n" +
-    "        <div class=\"pull-right\" results-view-toggle query=\"query\"></div>\n" +
-    "      </h2>\n" +
-    "\n" +
-    "      <hr />\n" +
-    "\n" +
-    "      <div class=\"search-results deckgrid\" deckgrid source=\"results\">\n" +
-    "        <div class=\"search-result\">\n" +
-    "          <div class=\"box\">\n" +
-    "            <a ng-show=\"card.logoUrl\" href=\"{{ card.url }}\"><img ng-src=\"{{ card.logoUrl }}\" alt=\"{{ card.name }}\"></a>\n" +
-    "            <h4 class=\"text-center\"><a href=\"{{ card.url }}\">{{ card.name }}</a></h4>\n" +
-    "            <hr />\n" +
-    "            <p class=\"text-center\">\n" +
-    "              <a href=\"{{ card.url }}\" class=\"btn btn-default btn-sm\">More Info</a>\n" +
-    "              <a href=\"#apply\" class=\"btn btn-sm btn-primary\">Apply Online</a>\n" +
-    "            </p>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "\n" +
-    "    </div>\n" +
-    "  </section>\n" +
-    "\n" +
-    "\n" +
-    "  <section ng-if=\"query.view=='map'\" class=\"main\">\n" +
-    "    <div results-map results=\"results\" query=\"query\"></div>\n" +
-    "  </section>\n" +
-    "\n" +
-    "</article>");
 }]);
 
 angular.module('InternLabs', [
@@ -34461,6 +34564,9 @@ angular.module('InternLabs', [
       if (current.$$route.className) {
         // $('body').addClass(current.$$route.className);
       }
+
+      // Remove alt style from nav
+      $rootScope.altNav = false;
     });
     
     $scope.isLoading = function() {
@@ -34594,6 +34700,51 @@ angular.module('InternLabs.common.directives', [])
     }
   })
 
+
+  /**
+   * Dropdown menu
+   */
+  .directive('dropdownMenu', function() {
+    return {
+      restrict: 'A',
+      scope: true,
+      link: function(scope, elem, attrs) {
+        elem.addClass('dropdown');
+        var $menu = elem.find('ul').first(),
+            $toggle = elem.find('a').first();
+        $menu.addClass('dropdown-menu');
+        var uniqId = _.uniqueId('menu-');
+        var isOpen = false;
+        
+        scope.toggle = function(close) {
+          if ( isOpen ) {
+            $menu.hide();
+            $toggle.removeClass('active');
+            isOpen = false;
+          } else if ( ! close ) {
+            $menu.show();
+            $toggle.addClass('active');
+            isOpen = true;
+          }
+        };
+
+        elem.find('li > a').on('click', function() {
+          scope.toggle(true);
+        });
+
+        $(window).on('click.' + uniqId, function(e) {
+          if ($(e.target).parents('.dropdown')[0] === elem[0]) {
+            return;
+          }
+          scope.toggle(true);
+        });
+
+        elem.on('$destroy', function() {
+          $(window).off('click.' + uniqId);
+        });
+      }
+    }
+  })
 
 
   /**
@@ -35794,11 +35945,13 @@ angular.module('InternLabs.home', [])
   })
 
 
-  .controller('HomeCtrl', function($scope, $location, Auth) {
+  .controller('HomeCtrl', function($rootScope, $scope, $location, Auth) {
 
     if ( Auth.check() ) {
-      $location.path('/dashboard');
+      return $location.path('/dashboard');
     }
+
+    // $rootScope.altNav = true;
     
   })
 
@@ -36246,8 +36399,9 @@ angular.module('InternLabs.login', [])
   })
 
 
-  .controller('LoginCtrl', function($scope, $location, Auth) {
+  .controller('LoginCtrl', function($rootScope, $scope, $location, Auth) {
     $scope.credentials = {};
+    $rootScope.altNav = true;
 
     $scope.submit = function() {
       Auth.login($scope.credentials).then(function(data) {
@@ -36260,15 +36414,14 @@ angular.module('InternLabs.login', [])
 
 
   .controller('ActivateCtrl', function($rootScope, $scope, $location, Auth) {
-    $rootScope.loading = true;
     $scope.activated = false;
     var params = $location.search();
+    $rootScope.altNav = true;
 
     Auth.activate({
       activationToken: params.token,
       userId: params.user
     }).then(function(response) {
-      $rootScope.loading = false;
       $scope.activated = true;
     });
   })
@@ -36278,6 +36431,7 @@ angular.module('InternLabs.login', [])
     
     var params = $location.search();
     $scope.action = (_.isEmpty(params)) ? 'send' : 'reset';
+    $rootScope.altNav = true;
     
     $scope.reset = {};
     $scope.sendSuccess = false;
@@ -36287,12 +36441,9 @@ angular.module('InternLabs.login', [])
      * Send password reset email
      */
     $scope.send = function() {
-      $rootScope.loading = true;
-      
       Auth.sendPasswordReset({
         email: $scope.reset.email
       }).then(function(response) {
-        $rootScope.loading = false;
         $scope.sendSuccess = true;
       });
     };
@@ -36301,14 +36452,11 @@ angular.module('InternLabs.login', [])
      * Reset the user's password using the provided token and credentials
      */
     $scope.reset = function() {
-      $rootScope.loading = true;
-      
       Auth.passwordReset({
         userId: params.user,
         password: $scope.reset.password,
         resetToken: params.token
       }).then(function(response) {
-        $rootScope.loading = false;
         $scope.resetSuccess = true;
       });
     };
@@ -36318,18 +36466,15 @@ angular.module('InternLabs.login', [])
   .controller('ResendActivationCtrl', function($rootScope, $scope, Auth) {
     $scope.resend = {};
     $scope.success = false;
+    $rootScope.altNav = true;
 
     /**
      * Send password reset email
      */
     $scope.send = function() {
-      $rootScope.loading = true;
-      
       Auth.resendActivation({
         email: $scope.resend.email
       }).then(function(response) {
-        $rootScope.loading = false;
-
         if ( ! response.data.success ) {
           return $scope.errors = response.data.error;
         }
@@ -36380,6 +36525,8 @@ angular.module('InternLabs.register', [])
     if ( _.indexOf(['employer', 'student', 'supervisor'], $routeParams.type) === -1 ) {
       $location.path('/signup/student');
     }
+
+    $rootScope.altNav = true;
 
     $scope.user = {
       type: $routeParams.type
@@ -36482,12 +36629,13 @@ angular.module('InternLabs.search', [])
   .controller('SearchCtrl', function($scope, $routeParams, $location, Search, SearchQuery, results, options) {
     var initial = true;
     
-    $scope.results = results.data.results;
+    $scope.results = (results.data) ? results.data.results : [];
     $scope.query = SearchQuery.parse($routeParams);
     $scope.query.view = 'list';
     $scope.options = options;
 
     $scope.search = function() {
+      console.log($scope.query);
       if ( initial ) {
         return initial = false;
       }
@@ -36496,7 +36644,7 @@ angular.module('InternLabs.search', [])
 
       Search.query(SearchQuery.serialize($scope.query)).then(function(data) {
         $scope.results = [];
-        $scope.results = data.data.results;
+        $scope.results = (data.data) ? data.data.results : [];
       })
     };
 
@@ -36520,7 +36668,7 @@ angular.module('InternLabs.search', [])
   .directive('searchWidget', function() {
     return {
       restrict: 'A',
-      templateUrl: 'search/search-widget.tpl.html',
+      templateUrl: 'search/widgets/search.tpl.html',
       scope: {
         _query: '=query',
         options: '=?'
@@ -36555,8 +36703,8 @@ angular.module('InternLabs.search', [])
     return {
       restrict: 'A',
       template: '<div class="btn-group results-view-toggle">' +
-                  '<button type="button" ng-class="{\'btn btn-default\': query.view!=\'list\', \'btn btn-primary\': query.view == \'list\'}" ng-click="set(\'list\')"><i class="fa fa-list"></i> List View</button>' +
-                  '<button type="button" ng-class="{\'btn btn-default\': query.view!=\'map\', \'btn btn-primary\': query.view == \'map\'}" ng-click="set(\'map\')"><i class="fa fa-map-marker"></i> Map View</button>' +
+                  '<button type="button" ng-class="{\'btn\': query.view!=\'list\', \'btn active\': query.view == \'list\'}" ng-click="set(\'list\')"><i class="fa fa-list"></i> List View</button>' +
+                  '<button type="button" ng-class="{\'btn\': query.view!=\'map\', \'btn active\': query.view == \'map\'}" ng-click="set(\'map\')"><i class="fa fa-map-marker"></i> Map View</button>' +
                 '</div>',
       scope: {
         query: '='

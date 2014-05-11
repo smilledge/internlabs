@@ -1,4 +1,17 @@
-<div class="widget-interview">
+<div class="content-box widget-interview">
+  <header>
+    <h3>Interview</h3>
+
+    <div dropdown-menu>
+      <a ng-click="toggle()"><i class="fa fa-bars"></i></a>
+      <ul>
+        <li ng-show="!internship.interview"><a ng-click="edit()">Schedule Interview</a></li>
+        <li ng-show="internship.interview"><a ng-click="edit()">Edit Interview</a></li>
+        <li ng-show="internship.interview"><a ng-click="remove()">Cancel Interview</a></li>
+      </ul>
+    </div>
+  </header>
+
   <div ng-show="internship.interview" class="list-group list-interview">
     <div class="list-group-item">
       <strong><i class="fa fa-calendar"></i> Date</strong>
@@ -12,9 +25,6 @@
 
   <div ng-show="!internship.interview" class="no-results">
     <p class="lead">No interview has been scheduled</p>
-    <a ng-click="edit()" class="btn btn-default btn-sm"><i class="fa fa-group"></i> Schedule an Interview</a>
+    <a ng-click="edit()" class="btn btn-link btn-sm"><i class="fa fa-group"></i> Schedule an Interview</a>
   </div>
-
-  <a ng-show="internship.interview" ng-click="edit()"><i class="fa fa-pencil"></i> Edit Interview</a> &nbsp; 
-  <a ng-show="internship.interview" ng-click="remove()" class="text-danger"><i class="fa fa-trash-o"></i> Cancel Interview</a>
 </div>

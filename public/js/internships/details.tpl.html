@@ -2,32 +2,28 @@
   
   <header>
     <div class="container clearfix">
-      <h1 class="page-title pull-left">{{ internship.role.title }} - {{ profile.name }}</h1>
+      <h1 class="page-title pull-left">Internship Dashboard</h1>
     </div>
   </header>
+
+  <section class="sub-header">
+    <div class="container clearfix">
+      <h2>{{ internship.role.title }} - {{ profile.name }}</h2>
+    </div>
+  </section>
 
   <section class="main">
     <div class="container">
       <div class="row">
         <div class="col-sm-4">
-          <h3>Schedule</h3>
           <div schedule-widget internship="internship"></div>
-
-          <h3>Supervisors</h3>
           <div supervisors-widget internship="internship"></div>
-
-          <h3>Interview</h3>
           <div interview-widget internship="internship"></div>
-
-          <h3>Availability</h3>
           <div availability-widget internship="internship"></div>
         </div>
 
         <div class="col-sm-8">
-          <h3>Post a message</h3>
           <div message-widget internship="internship"></div>
-
-          <h3>Recent Activity</h3>
           <div activity-widget internship="internship"></div>
         </div>
       </div>

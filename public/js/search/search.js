@@ -30,12 +30,13 @@ angular.module('InternLabs.search', [])
   .controller('SearchCtrl', function($scope, $routeParams, $location, Search, SearchQuery, results, options) {
     var initial = true;
     
-    $scope.results = results.data.results;
+    $scope.results = (results.data) ? results.data.results : [];
     $scope.query = SearchQuery.parse($routeParams);
     $scope.query.view = 'list';
     $scope.options = options;
 
     $scope.search = function() {
+      console.log($scope.query);
       if ( initial ) {
         return initial = false;
       }
@@ -44,7 +45,7 @@ angular.module('InternLabs.search', [])
 
       Search.query(SearchQuery.serialize($scope.query)).then(function(data) {
         $scope.results = [];
-        $scope.results = data.data.results;
+        $scope.results = (data.data) ? data.data.results : [];
       })
     };
 
@@ -68,7 +69,7 @@ angular.module('InternLabs.search', [])
   .directive('searchWidget', function() {
     return {
       restrict: 'A',
-      templateUrl: 'search/search-widget.tpl.html',
+      templateUrl: 'search/widgets/search.tpl.html',
       scope: {
         _query: '=query',
         options: '=?'
@@ -103,8 +104,8 @@ angular.module('InternLabs.search', [])
     return {
       restrict: 'A',
       template: '<div class="btn-group results-view-toggle">' +
-                  '<button type="button" ng-class="{\'btn btn-default\': query.view!=\'list\', \'btn btn-primary\': query.view == \'list\'}" ng-click="set(\'list\')"><i class="fa fa-list"></i> List View</button>' +
-                  '<button type="button" ng-class="{\'btn btn-default\': query.view!=\'map\', \'btn btn-primary\': query.view == \'map\'}" ng-click="set(\'map\')"><i class="fa fa-map-marker"></i> Map View</button>' +
+                  '<button type="button" ng-class="{\'btn\': query.view!=\'list\', \'btn active\': query.view == \'list\'}" ng-click="set(\'list\')"><i class="fa fa-list"></i> List View</button>' +
+                  '<button type="button" ng-class="{\'btn\': query.view!=\'map\', \'btn active\': query.view == \'map\'}" ng-click="set(\'map\')"><i class="fa fa-map-marker"></i> Map View</button>' +
                 '</div>',
       scope: {
         query: '='

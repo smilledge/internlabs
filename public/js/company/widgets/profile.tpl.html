@@ -1,0 +1,26 @@
+<div ng-if="company.introduction" class="content-box">
+  <header>
+    <h3>Company profile</h3>
+  </header>
+
+  <div class="list-group">
+    <div class="list-group-item">
+      {{ company.introduction }}
+    </div>
+  </div>
+</div>
+
+
+<div ng-if="company.skills" class="content-box">
+  <header>
+    <h3>{{ company.name }} is looking for interns with the following skills</h3>
+  </header>
+
+  <div class="list-group">
+    <div class="list-group-item">
+      <ul class="skills">
+        <li ng-repeat="skill in company.skills">{{ skill }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

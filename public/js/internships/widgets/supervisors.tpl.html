@@ -1,4 +1,15 @@
-<div class="widget-supervisors">
+<div class="content-box widget-supervisors">
+  <header>
+    <h3>Supervisors</h3>
+
+    <div dropdown-menu>
+      <a ng-click="toggle()"><i class="fa fa-bars"></i></a>
+      <ul>
+        <li><a ng-click="add()">Add Supervisor</a></li>
+      </ul>
+    </div>
+  </header>
+
   <div class="list-group list-supervisors">
     <div ng-repeat="item in _supervisors" class="list-group-item">
       <strong class="email"><i class="fa fa-eye"></i> {{ item.email }}</strong>
@@ -8,8 +19,7 @@
 
   <div ng-show="!_supervisors.length" class="no-results">
     <p class="lead">Looks like you have not added any supervisors yet!</p>
-    <a ng-click="add()" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Add one now</a>
+    <a ng-click="add()" class="btn btn-link btn-sm"><i class="fa fa-plus"></i> Add one now</a>
   </div>
-
-  <a ng-click="add()"><i class="fa fa-plus"></i> Add Supervisor</a>
+ 
 </div>

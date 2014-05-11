@@ -133,6 +133,9 @@ angular.module('InternLabs', [
       if (current.$$route.className) {
         // $('body').addClass(current.$$route.className);
       }
+
+      // Remove alt style from nav
+      $rootScope.altNav = false;
     });
     
     $scope.isLoading = function() {

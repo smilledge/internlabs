@@ -4,10 +4,9 @@
 @import "vendor/selecter.less";
 @import "vendor/datepicker.less";
 
-html {
+html, body {
   height: 100%;
 }
-
 
 body {
   overflow-x: hidden;
@@ -25,6 +24,21 @@ img {
 a {
   cursor: pointer;
 }
+
+.page-wrap {
+  min-height: 100%;
+  margin-bottom: -100px; 
+}
+
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+
+#footer, .page-wrap:after {
+  height: 100px; 
+}
+
 
 /*
 
@@ -96,17 +110,14 @@ a {
   -webkit-pointer-events: none;
   pointer-events: none;
   .user-select(none);
-}
-
-.pace-inactive {
-  display: none;
+  .transition(height 0.3s);
 }
 
 .pace-active {
-  background-color: #eee;
+  background-color: darken(@brand-primary, 5%);
   position: fixed;
   z-index: 1900;
-  top: 0;
+  top: @navbar-height;
   left: 0;
   height: 6px;
   width: 100%;
@@ -114,11 +125,11 @@ a {
 
 .pace .pace-progress {
   background-color: @brand-primary;
-  position: fixed;
+  position: absolute;
   z-index: 2000;
   top: 0;
   left: 0;
-  height: 5px;
+  height: 6px;
   overflow: hidden;
   .transition(width 0.35s);
 }
@@ -129,15 +140,20 @@ a {
   left: 0;
   right: -32px;
   bottom: 0;
+  background: lighten(@brand-primary, 12%);
 
-  background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.2)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.2)), color-stop(0.75, rgba(255, 255, 255, 0.2)), color-stop(0.75, transparent), to(transparent));
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
-  background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
-  background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+  // background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.2)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.2)), color-stop(0.75, rgba(255, 255, 255, 0.2)), color-stop(0.75, transparent), to(transparent));
+  // background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+  // background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+  // background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+  // background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
 
-  background-size: 32px 32px;  
-  .animation(pace-stripe-animation 500ms linear infinite);
+  // background-size: 32px 32px;  
+  // .animation(pace-stripe-animation 500ms linear infinite);
+}
+
+.pace-inactive, .pace-inactive .pace-progress {
+  display: none;
 }
 
 @-webkit-keyframes pace-stripe-animation {
@@ -163,14 +179,14 @@ a {
 
 
 .reveal-animation {
-  background: #fff;
+  // background: #fff;
 }
 
 
 .no-results {
-  .well;
   padding: 20px;
   text-align: center;
+
   p {
     color: #666;
     font-size: 16px;
@@ -192,10 +208,15 @@ body {
   display: block;
   height: @navbar-height;
   padding: 10px 16px;
-  border-left: 1px solid #f4f4f4;
+  border-left: 1px solid darken(@brand-primary, 3%);
+  display: none;
+  
+  &.logo-alt {
+    display: block;
+  }
 
   &:hover {
-    background: darken(#fff, 0.75%);
+    background: darken(@brand-primary, 2%);
   }
   
   img {
@@ -210,18 +231,19 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  margin-top: 6px;
+  // margin-top: 6px;
   border: none;
+  border-bottom: 4px solid darken(@brand-primary, 5%);
   .transition(margin-top 0.3s);
 
   .navbar-nav {
-    border-left: 1px solid #f4f4f4;
+    border-left: 1px solid darken(@brand-primary, 3%);
   }
 
   .link-icon, .link-label {
     margin: 0;
     font-size: 20px;
-    border-right: 1px solid #f4f4f4;
+    border-right: 1px solid darken(@brand-primary, 3%);
 
     a {
       display: block;
@@ -229,12 +251,12 @@ body {
       width: @navbar-height;
       height: @navbar-height;
       line-height: @navbar-height;
-      color: #999;
+      color: #fff;
       text-align: center;
     }
 
     &:hover {
-      background: darken(#fff, 0.75%);
+      background: darken(@brand-primary, 2%);
     }
   }
 
@@ -243,9 +265,13 @@ body {
     padding: 0 20px;
     font-size: @font-size-small;
     line-height: @navbar-height;
-    color: #999;
-    border-left: 1px solid #fff;
+    color: #fff;
+    border-left: 1px solid darken(@brand-primary, 3%);
     margin-left: -1px;
+
+    &:hover {
+      background-color: transparent;
+    }
   }
 
   .link-search {
@@ -259,10 +285,6 @@ body {
       }
     }
   }
-}
-
-body.pace-done #primary-nav, body.pace-inactive #primary-nav {
-  margin-top: 0;
 }
 
 // Popovers
@@ -292,14 +314,63 @@ body.pace-done #primary-nav, body.pace-inactive #primary-nav {
     width: 0;
     border: none;
     height: @navbar-height;
-    line-height: @navbar-height - 20px;
-    padding: 10px 0;
+    line-height: @navbar-height - 40px;
+    padding: 20px 0;
     font-size: @font-size-base;
     background-color: transparent;
     .transition(width 0.4s ease-out);
+    color: #fff;
+    .placeholder(rgba(0,0,0,0.4));
   }
 }
 
+// White navbar
+#primary-nav.alt {
+  background: #fff;
+  color: #777;
+  border-bottom: none;
+
+  .navbar-logo {
+    display: block;
+    border-left: 1px solid #f4f4f4;
+
+    &:hover {
+      background: darken(#fff, 0.75%);
+    }
+  }
+
+  .logo-alt {
+    display: none;
+  }
+
+  .navbar-nav {
+    border-left: 1px solid #f4f4f4;
+  }
+
+  .link-icon, .link-label {
+    border-right: 1px solid #f4f4f4;
+
+    a {
+      color: #999;
+    }
+
+    &:hover {
+      background: darken(#fff, 0.75%);
+    }
+  }
+
+  .link-label {
+    color: #999;
+    border-left: 1px solid #fff;
+  }
+
+  .navbar-form {
+    input {
+      color: #333;
+      .placeholder(#777);
+    }
+  }
+}
 
 
 /*
@@ -359,17 +430,30 @@ body.pace-done #primary-nav, body.pace-inactive #primary-nav {
 
 .content-page {
   > header {
-    padding: 40px 0;
-    margin: 0 0 50px 0;
-    background: @gray-lighter;
+    padding: 35px 0;
+    background: #1e1e1e;
+    color: #fff;
 
     h1 {
       margin: 0;
+      font-size: 36px;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+
+  .sub-header {
+    padding: 25px;
+    background: #ffffff;
+    border-bottom: 1px solid #e6e6e6;
+
+    h2, h3 {
+      margin: 0;
+      font-size: 24px;
     }
   }
 
   .main {
-    margin-bottom: 80px;
+    margin: 40px 0 80px;
 
     .section-header {
       .clearfix;
@@ -399,8 +483,87 @@ body.pace-done #primary-nav, body.pace-inactive #primary-nav {
 .box {
   padding: 40px 30px;
   background: #fff;
-  .box-shadow(0 1px 3px rgba(0,0,0,0.2));
-  border-radius: @border-radius-base;
+  .box-shadow(0 1px 1px 1px rgba(0,0,0,0.05));
+}
+
+
+/*
+
+  Content box styles
+
+ */
+
+.content-box {
+  .box;
+  padding: 0;
+  margin-bottom: 25px;
+
+  header {
+    position: relative;
+    padding: 20px 15px;
+    border-left: 2px solid @brand-primary;
+  }
+
+  h2, h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  .list-group {
+    margin: 0;
+
+    .list-group-item {
+      border: none;
+      border-radius: none;
+      border-top: 1px solid #e6e6e6;
+    }
+  }
+
+  .no-results {
+    border-top: 1px solid #e6e6e6;
+  }
+
+  > form {
+    padding: 15px;
+    border-top: 1px solid #e6e6e6;
+  }
+
+  .nav {
+    border-top: 1px solid #e6e6e6;
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    > a {
+      display: block;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      border-radius: 0px;
+      color: @text-color;
+      background: #f9f9f9;
+
+      &:hover {
+        background: #e6e6e6;
+      }
+
+      &.active {
+        background: @brand-primary;
+        color: #fff;
+      }
+    }
+
+    > ul {
+      left: auto;
+      right: 0;
+    }
+  }
+
 }
 
 
@@ -484,21 +647,12 @@ label.floating-label {
 
  */
 
-.profile-sidebar {
-
-}
-
-.profile-body {
-  section {
-    margin-bottom: 30px;
-  }
-}
-
 .profile-logo {
   img {
     display: block;
     max-width: 85%;
-    margin: 30px auto 50px;
+    max-height: 140px;
+    margin: 40px auto 40px;
   }
 }
 
@@ -515,43 +669,6 @@ label.floating-label {
     border: 1px solid #CCC;
     border-radius: 5px;
     background: #FCFCFC;
-  }
-}
-
-.profile-meta {
-  list-style: none;
-  padding: 0;
-  margin: 1px 0;
-
-  a {
-    color: @text-color;
-  }
-
-  li {
-    height: 40px;
-    line-height: 40px;
-    padding: 0 16px;
-    margin-bottom: 1px;
-    background: @gray-lighter;
-    white-space: nowrap;
-  }
-
-  li.icon-left {
-    position: relative;
-    padding-left: 52px;
-  }
-
-  li > i {
-    display: block;
-    position: absolute;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    display: block;
-    font-size: 18px;
-    border-right: 1px solid #fff;
   }
 }
 
@@ -597,8 +714,10 @@ label.floating-label {
  */
 
 #footer {
+  /* heigth set with the page-wrap */
   padding: 30px;
-  background: @gray-lighter;
+  background: #fff;
+  border-top: 1px solid #e6e6e6;
 
   a {
     display: block;

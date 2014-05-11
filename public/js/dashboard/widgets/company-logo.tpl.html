@@ -1,0 +1,21 @@
+<div class="content-box">
+  <header>
+    <h3>Company Logo</h3>
+
+    <div dropdown-menu>
+      <a ng-click="toggle()"><i class="fa fa-bars"></i></a>
+      <ul>
+        <li><a ng-click="uploadLogo()">Upload Logo</a></li>
+        <li><a ng-click="deleteLogo()">Remove Logo</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="list-group">
+    <div class="list-group-item">
+      <div class="profile-logo">
+        <img ng-if="company.logoUrl" ng-src="{{ company.logoUrl }}" alt="{{ company.name }}">
+      </div>
+    </div>
+  </div>
+</div>
