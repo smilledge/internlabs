@@ -494,7 +494,7 @@ module.exports.deleteActivity = function(internship, user, activityId, done) {
      * Check the user has delete access to the internship
      */
     function(internship, user, callback) {
-      if ( ! internship.hasAccess(user, 'write', 'delete') ) {
+      if ( ! internship.hasAccess(user, ['write', 'delete']) ) {
         return callback(new Error('You are not authorized to delete messages in this internship.'));
       }
       callback(null, internship, user);
