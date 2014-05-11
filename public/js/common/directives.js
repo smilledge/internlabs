@@ -101,6 +101,8 @@ angular.module('InternLabs.common.directives', [])
     return {
       restrict: 'A',
       link: function(scope, elem, attrs) {
+        var isOpen = false,
+            $mobileMenu = elem.find('.nav-mobile');
 
         scope.search = {
           query: ""
@@ -118,6 +120,20 @@ angular.module('InternLabs.common.directives', [])
           $location.url('/search?query=' + (scope.search.query || ""));
           scope.search.query = "";
         };
+
+        scope.toggle = function(close) {
+          if ( isOpen ) {
+            $mobileMenu.removeClass('active');
+            isOpen = false;
+          } else if ( ! close ) {
+            $mobileMenu.addClass('active');
+            isOpen = true;
+          }
+        };
+
+        $mobileMenu.find('a').on('click', function() {
+          scope.toggle(true);
+        });
       }
     }
   })

@@ -33409,8 +33409,8 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "      <p class=\"lead call-to-action\">Ready to get started?</p>\n" +
     "\n" +
     "      <div class=\"actions\">\n" +
-    "        <a href=\"/signup/employer\" class=\"btn btn-primary btn-lg\">I'm an Employer</a>\n" +
-    "        <a href=\"/signup/student\" class=\"btn btn-primary btn-lg\">I'm a Student</a>\n" +
+    "        <a href=\"/signup/employer\" class=\"btn btn-primary btn-icon-right\"><i class=\"fa fa-arrow-right\"></i>I'm an Employer</a>\n" +
+    "        <a href=\"/signup/student\" class=\"btn btn-primary btn-icon-right\"><i class=\"fa fa-arrow-right\"></i>I'm a Student</a>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "  </div>  \n" +
@@ -34679,6 +34679,8 @@ angular.module('InternLabs.common.directives', [])
     return {
       restrict: 'A',
       link: function(scope, elem, attrs) {
+        var isOpen = false,
+            $mobileMenu = elem.find('.nav-mobile');
 
         scope.search = {
           query: ""
@@ -34696,6 +34698,20 @@ angular.module('InternLabs.common.directives', [])
           $location.url('/search?query=' + (scope.search.query || ""));
           scope.search.query = "";
         };
+
+        scope.toggle = function(close) {
+          if ( isOpen ) {
+            $mobileMenu.removeClass('active');
+            isOpen = false;
+          } else if ( ! close ) {
+            $mobileMenu.addClass('active');
+            isOpen = true;
+          }
+        };
+
+        $mobileMenu.find('a').on('click', function() {
+          scope.toggle(true);
+        });
       }
     }
   })
@@ -36635,7 +36651,6 @@ angular.module('InternLabs.search', [])
     $scope.options = options;
 
     $scope.search = function() {
-      console.log($scope.query);
       if ( initial ) {
         return initial = false;
       }

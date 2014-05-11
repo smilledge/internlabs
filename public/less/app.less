@@ -205,11 +205,13 @@ body {
 }
 
 .navbar-logo {
-  display: block;
-  height: @navbar-height;
-  padding: 10px 16px;
-  border-left: 1px solid darken(@brand-primary, 3%);
   display: none;
+  position: relative;
+  height: @navbar-height;
+  padding: 12px 6px;
+  margin: 0;
+  border: none;
+  float: left;
   
   &.logo-alt {
     display: block;
@@ -221,9 +223,29 @@ body {
   
   img {
     display: block;
-    height: 42px;
+    height: 38px;
     margin: 0;
+
+    @media (min-width: @screen-sm-min) {
+      margin: 0;
+      height: 42px;
+    }
   }
+
+  @media (min-width: @screen-sm-min) {
+    border-left: 1px solid darken(@brand-primary, 3%);
+    padding: 10px 16px;
+  }
+
+  // &:after {
+  //   position: absolute;
+  //   content: "BETA";
+  //   bottom: 7px;
+  //   right: 15px;
+  //   color: lighten(@brand-primary, 30%);
+  //   font-size: 8px;
+  //   letter-spacing: 3px;
+  // }
 }
 
 #primary-nav {
@@ -369,6 +391,42 @@ body {
       color: #333;
       .placeholder(#777);
     }
+  }
+}
+
+
+
+.nav-mobile {
+  position: fixed;
+  top: @navbar-height + 4;
+  left: -100%;
+  bottom: 0;
+  width: 100%;
+  background: #f2f2f2;
+  .transition(left 0.35s cubic-bezier(0.23, 1, 0.32, 1));
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  li {
+    border-bottom: 1px solid #e6e6e6;
+  }
+
+  a {
+    display: block;
+    padding: 20px 20px;
+    font-size: 18px;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &.active {
+    left: 0;
   }
 }
 
