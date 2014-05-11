@@ -125,9 +125,13 @@ angular.module('InternLabs.common.directives', [])
           if ( isOpen ) {
             $mobileMenu.removeClass('active');
             isOpen = false;
+            $('body').removeAttr('style');
           } else if ( ! close ) {
             $mobileMenu.addClass('active');
             isOpen = true;
+            $('body').css({
+              overflow: 'hidden'
+            })
           }
         };
 
