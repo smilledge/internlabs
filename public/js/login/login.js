@@ -36,12 +36,8 @@ angular.module('InternLabs.login', [])
       .when('/logout', {
         pageTitle: 'Logout',
         resolve: {
-          response: function(Auth, $q, $location) {
-            var deferred = $q.defer();
-            Auth.logout().then(function(data) {
-              $location.path('/');
-            });
-            return deferred.promise;
+          response: function(Auth) {
+            Auth.logout();
           }
         }
       })
