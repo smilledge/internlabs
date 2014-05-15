@@ -71,7 +71,7 @@ angular.module('InternLabs.internships', [])
             message: scope.message
           }).then(function(response) {
             scope.message = "";
-            scope.internship.activity.unshift(response);
+            scope.internship.activity.unshift(response.activity.shift());
           });
         };
       }
@@ -109,6 +109,57 @@ angular.module('InternLabs.internships', [])
             getAvailability();
           }
         }, true);
+      }
+    }
+  })
+
+
+  /**
+   * Internship status
+   */
+  .directive('statusWidget', function(ModalFactory) {
+    return {
+      replace: true,
+      templateUrl: 'internships/widgets/status.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+
+        scope.changeStatus = function(status) {
+          scope.internship.status = status;
+
+          var verb = (status == 'active') ? 'approve' : 
+                     (status == 'rejected') ? 'reject' : 
+                     (status == 'pending') ? 'unapprove' : 
+                     'complete';
+
+          scope.internship.customPOST({
+            message: null
+          }, verb).then(function(response) {
+            if ( ! response.$$success ) {
+              ModalFactory.create({
+                scope: { title: "An error occured" },
+                template: response.$$error.join(' ')
+              });
+            }
+          });
+        };
+
+        scope.change = function(status) {
+          ModalFactory.create({
+            scope: {
+              title: "Change internship status",
+              internship: scope.internship,
+              status: status,
+              save: function() {
+                scope.changeStatus(status);
+                this.close();
+              }
+            },
+            templateUrl: "internships/forms/internship-status.tpl.html"
+          });
+        };
       }
     }
   })

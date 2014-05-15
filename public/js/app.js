@@ -22,7 +22,18 @@ angular.module('InternLabs', [
     RestangularProvider.setBaseUrl('/api');
     
     RestangularProvider.setResponseExtractor(function(response, operation) {
-      return response.data;
+      var extractedData;
+
+      if (operation === "getList") {
+        extractedData = response.data || [];
+      } else {
+        extractedData = response.data || {};
+      }
+      extractedData.$$success = response.success;
+      extractedData.$$message = response.message;
+      extractedData.$$error = response.error;
+      
+      return extractedData;
     });
 
     RestangularProvider.setRestangularFields({
