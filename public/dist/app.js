@@ -33063,7 +33063,7 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/supervisors.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
+angular.module('templates-app', ['company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
 
 angular.module("company/details.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("company/details.tpl.html",
@@ -33430,7 +33430,10 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
     "\n" +
     "  <section class=\"sub-header\">\n" +
     "    <div class=\"container clearfix\">\n" +
-    "      <h2>{{ internship.role.title }} - {{ profile.name }}</h2>\n" +
+    "      <h2 class=\"pull-left\">{{ internship.role.title }} - {{ profile.name }}</h2>\n" +
+    "      <div class=\"pull-right\">\n" +
+    "        <div status-widget internship=\"internship\"></div>\n" +
+    "      </div>\n" +
     "    </div>\n" +
     "  </section>\n" +
     "\n" +
@@ -33559,6 +33562,17 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "  </div>\n" +
     "\n" +
     "</form>");
+}]);
+
+angular.module("internships/forms/internship-status.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/forms/internship-status.tpl.html",
+    "<div class=\"text-center\">\n" +
+    "  <p class=\"lead\">Are you sure you want to change this internship's status to \"{{ status | titlecase }}\"?</p>\n" +
+    "  <p class=\"actions\">\n" +
+    "    <button ng-click=\"save()\" type=\"submit\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-check\"></i> Update</button>\n" +
+    "    <button ng-click=\"close()\" type=\"submit\" class=\"btn btn-default btn-icon-left\"><i class=\"fa fa-times\"></i> Cancel</button>\n" +
+    "  </p>\n" +
+    "</div>");
 }]);
 
 angular.module("internships/forms/interview-delete.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -33693,7 +33707,7 @@ angular.module("internships/widgets/activity.tpl.html", []).run(["$templateCache
     "      <div class=\"meta\">\n" +
     "        <span ng-show=\"item.author\" class=\"user\"><i class=\"fa fa-user\"></i> {{ item.author.profile.name }}</span>\n" +
     "        <span class=\"timestamp\"><i class=\"fa fa-calendar\"></i> {{ item.createdAt | date }} <span class=\"text-muted\">at</span> {{ item.createdAt | date:'shortTime' }}</span>\n" +
-    "        <a ng-click=\"remove(item)\" class=\"if-editable text-danger\"><i class=\"fa fa-times\"></i> Delete</a>\n" +
+    "        <a ng-click=\"remove(item)\" class=\"if-editable btn btn-danger btn-icon fa fa-times\"></a>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -33807,6 +33821,22 @@ angular.module("internships/widgets/schedule.tpl.html", []).run(["$templateCache
     "  <div ng-show=\"!internship.schedule.length\" class=\"no-results\">\n" +
     "    <p class=\"lead\">Looks like you have not created a schedule yet!</p>\n" +
     "    <a ng-click=\"edit()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-plus\"></i> Create one now</a>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
+angular.module("internships/widgets/status.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/widgets/status.tpl.html",
+    "<div class=\"widget-status\">\n" +
+    "  <div dropdown-menu class=\"dropdown-lg\">\n" +
+    "    <a ng-click=\"toggle()\"><span>{{ internship.status | titlecase }}</span> <i class=\"fa fa-bars\"></i></a>\n" +
+    "    <ul>\n" +
+    "      <li ng-show=\"internship.status == 'pending'\"><a ng-click=\"change('active')\">Approve Internship</a></li>\n" +
+    "      <li ng-show=\"internship.status == 'pending'\"><a ng-click=\"change('rejected')\">Reject Internship</a></li>\n" +
+    "      <li ng-show=\"internship.status == 'active'\"><a ng-click=\"change('complete')\">Mark internship as completed</a></li>\n" +
+    "      <li ng-show=\"internship.status == 'complete'\"><a ng-click=\"change('active')\">Mark internship as active</a></li>\n" +
+    "      <li ng-show=\"internship.status == 'active' || internship.status == 'rejected'\"><a ng-click=\"change('pending')\">Mark internship as pending</a></li>\n" +
+    "    </ul>\n" +
     "  </div>\n" +
     "</div>");
 }]);
@@ -34453,7 +34483,18 @@ angular.module('InternLabs', [
     RestangularProvider.setBaseUrl('/api');
     
     RestangularProvider.setResponseExtractor(function(response, operation) {
-      return response.data;
+      var extractedData;
+
+      if (operation === "getList") {
+        extractedData = response.data || [];
+      } else {
+        extractedData = response.data || {};
+      }
+      extractedData.$$success = response.success;
+      extractedData.$$message = response.message;
+      extractedData.$$error = response.error;
+      
+      return extractedData;
     });
 
     RestangularProvider.setRestangularFields({
@@ -35380,6 +35421,16 @@ angular.module('InternLabs.services', [])
     };
 
   })
+
+
+  .filter('titlecase', function() {
+    return function(s) {
+      s = ( s === undefined || s === null ) ? '' : s;
+      return s.toString().toLowerCase().replace( /\b([a-z])/g, function(ch) {
+        return ch.toUpperCase();
+      });
+    };
+  });
   
 
   ;
@@ -36118,7 +36169,7 @@ angular.module('InternLabs.internships', [])
             message: scope.message
           }).then(function(response) {
             scope.message = "";
-            scope.internship.activity.unshift(response);
+            scope.internship.activity.unshift(response.activity.shift());
           });
         };
       }
@@ -36156,6 +36207,57 @@ angular.module('InternLabs.internships', [])
             getAvailability();
           }
         }, true);
+      }
+    }
+  })
+
+
+  /**
+   * Internship status
+   */
+  .directive('statusWidget', function(ModalFactory) {
+    return {
+      replace: true,
+      templateUrl: 'internships/widgets/status.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+
+        scope.changeStatus = function(status) {
+          scope.internship.status = status;
+
+          var verb = (status == 'active') ? 'approve' : 
+                     (status == 'rejected') ? 'reject' : 
+                     (status == 'pending') ? 'unapprove' : 
+                     'complete';
+
+          scope.internship.customPOST({
+            message: null
+          }, verb).then(function(response) {
+            if ( ! response.$$success ) {
+              ModalFactory.create({
+                scope: { title: "An error occured" },
+                template: response.$$error.join(' ')
+              });
+            }
+          });
+        };
+
+        scope.change = function(status) {
+          ModalFactory.create({
+            scope: {
+              title: "Change internship status",
+              internship: scope.internship,
+              status: status,
+              save: function() {
+                scope.changeStatus(status);
+                this.close();
+              }
+            },
+            templateUrl: "internships/forms/internship-status.tpl.html"
+          });
+        };
       }
     }
   })

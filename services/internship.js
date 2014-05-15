@@ -386,6 +386,86 @@ module.exports.createSchedule = function(internship, user, data, done) {
 
 
 /**
+ * Change the internship's status (pending, active, active, completed)
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {string}   status
+ * @param  {func}     callback
+ * @return {void}
+ */
+module.exports.changeStatus = function(internship, user, status, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while updating the internship. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has access to the internship
+     * Check the user is the company owner
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'write') ) {
+        return callback(new Error('You are not authorized to manage this internship.'));
+      }
+
+      if ( internship.id != user.id ) {
+        return callback(new Error('Only the internship adminstrator can change the status of the internship.'));
+      }
+
+      callback(null, internship, user);
+    },
+
+    /**
+     * Set the status
+     */
+    function(internship, user, callback) {
+      internship.status = status;
+
+      internship.save(function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("An error occured while updating the internship. Please try again later."));
+        }
+
+        internship.addActivity({
+          description: internship.company.name + " changed the status of the internship to " + status,
+          type: 'update',
+          priority: 2
+        }, function(err, internship) {
+          callback(null, internship);
+        });
+      });
+    }
+
+
+  ], done);
+
+};
+
+
+/**
  * Add a message to the internship
  *
  * @param  {string}   internship ID

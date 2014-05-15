@@ -18,6 +18,43 @@
 // The dropdown wrapper (div)
 .dropdown {
   position: relative;
+
+  > a {
+    display: block;
+    // width: 30px;
+    padding: 0 9px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 0px;
+    color: @text-color;
+    background: #f9f9f9;
+
+    span {
+      margin-right: 9px;
+    }
+
+    &:hover {
+      background: #e6e6e6;
+      text-decoration: none;
+    }
+
+    &.active {
+      background: @brand-primary;
+      color: #fff;
+    }
+  }
+
+  > ul {
+    left: auto;
+    right: 0;
+  }
+
+  &.dropdown-lg a {
+    padding: 0 18px;
+    height: 40px;
+    line-height: 40px;
+  }
 }
 
 // Prevent the focus on the dropdown toggle when closing dropdowns
@@ -189,7 +226,6 @@
     margin-bottom: 1px;
   }
 }
-
 
 // Component alignment
 //

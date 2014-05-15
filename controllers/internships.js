@@ -23,7 +23,7 @@ module.exports = function(app) {
 
 
   /**
-   * Create an internships
+   * Get an internship by ID
    */
   app.get('/api/internships/:internshipId', auth.check(), function(req, res) {
     InternshipService.findById(req.params.internshipId, function(err, internship) {
@@ -36,7 +36,7 @@ module.exports = function(app) {
 
 
   /**
-   * Create an internships
+   * Create an internship
    */
   app.post('/api/internships', auth.check(), function(req, res) {
     var data = _.extend({}, req.body, {
@@ -52,6 +52,43 @@ module.exports = function(app) {
       return res.apiSuccess("You have successfully applied for this internship.", internship);
     });
   });
+
+
+  /**
+   * Change an internship's status
+   */
+  var changeStatus = function(req, res) {
+    var status = req.url.split('/').pop();
+
+    // Change status verb to an adjective(?)
+    switch (status) {
+      case ('approve') : 
+        status = 'active';
+        break;
+      case ('reject') : 
+        status = 'rejected';
+        break;
+      case ('complete') : 
+        status = 'completed';
+        break;
+      case ('unapprove') :
+        status = 'pending';
+        break;
+    }
+
+    InternshipService.changeStatus(req.params.internshipId, req.user._id, status,  function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      return res.apiSuccess("The internships status has been changed successfully.");
+    });
+  };
+
+  app.post('/api/internships/:internshipId/approve', auth.check(), changeStatus);
+  app.post('/api/internships/:internshipId/unapprove', auth.check(), changeStatus);
+  app.post('/api/internships/:internshipId/reject', auth.check(), changeStatus);
+  app.post('/api/internships/:internshipId/complete', auth.check(), changeStatus);
 
 
   /**
@@ -77,7 +114,9 @@ module.exports = function(app) {
         return res.apiError(err);
       }
 
-      return res.apiSuccess("Your message has been saved successfully.", internship);
+      InternshipService.findById(internship._id, function(err, internship) {
+        return res.apiSuccess("Your message has been saved successfully.", internship);
+      });
     });
   });
 

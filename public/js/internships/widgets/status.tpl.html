@@ -1,0 +1,12 @@
+<div class="widget-status">
+  <div dropdown-menu class="dropdown-lg">
+    <a ng-click="toggle()"><span>{{ internship.status | titlecase }}</span> <i class="fa fa-bars"></i></a>
+    <ul>
+      <li ng-show="internship.status == 'pending'"><a ng-click="change('active')">Approve Internship</a></li>
+      <li ng-show="internship.status == 'pending'"><a ng-click="change('rejected')">Reject Internship</a></li>
+      <li ng-show="internship.status == 'active'"><a ng-click="change('complete')">Mark internship as completed</a></li>
+      <li ng-show="internship.status == 'complete'"><a ng-click="change('active')">Mark internship as active</a></li>
+      <li ng-show="internship.status == 'active' || internship.status == 'rejected'"><a ng-click="change('pending')">Mark internship as pending</a></li>
+    </ul>
+  </div>
+</div>
