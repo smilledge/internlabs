@@ -36,6 +36,22 @@ module.exports = function(app) {
 
 
   /**
+   * Get a comapnies internships
+   */
+  app.get('/api/companies/:companyId/internships', auth.check(), function(req, res) {
+
+    var company = req.params.companyId;
+
+    InternshipService.findByCompany(company, req.params, function(err, internships) {
+      if ( err || ! internships ) {
+        return res.apiError(new Error('Could not find any matching internships.'));
+      }
+      return res.apiSuccess(internships);
+    });
+  });
+
+
+  /**
    * Create an internship
    */
   app.post('/api/internships', auth.check(), function(req, res) {
