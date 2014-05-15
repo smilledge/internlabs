@@ -64,6 +64,44 @@ module.exports.findByUser = function(user, done) {
 
 
 /**
+ * Get all internships for a company
+ * 
+ * @param  {string}   company _id 
+ * @param  {function} done
+ * @return {void}
+ */
+module.exports.findByCompany = function(company, params, done) {
+  async.waterfall([
+
+    /**
+     * Get the internships
+     */
+    function(callback) {
+      Internship.find(_.extend(params, {
+        company: company
+      })).populate('company student').exec(function(err, internships) {
+        if ( err || ! internships ) {
+          return callback(new Error("Could not find any matching internships."));
+        }
+
+        callback(null, internships);
+      });
+    },
+
+    /**
+     * Populate the students profile
+     */
+    function(internships, callback) {
+      Profile.populate(internships, {
+        path: 'student.profile'
+      }, callback);
+    }
+
+  ], done);
+};
+
+
+/**
  * Git an internship by id
  * 
  * @param  {string}   internshipId 
@@ -402,7 +440,7 @@ module.exports.changeStatus = function(internship, user, status, done) {
      * Get the internship
      */
     function(callback) {
-      Internship.findById(internship._id || internship, function(err, internship) {
+      Internship.findById(internship._id || internship).populate('company').exec(function(err, internship) {
         if ( err || ! internship ) {
           return callback(new Error("Internship could not be found."));
         }
@@ -411,10 +449,10 @@ module.exports.changeStatus = function(internship, user, status, done) {
     },
 
     /**
-     * Get the user
+     * Get the company
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user).populate('company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while updating the internship. Please try again later."));
         }
@@ -431,7 +469,7 @@ module.exports.changeStatus = function(internship, user, status, done) {
         return callback(new Error('You are not authorized to manage this internship.'));
       }
 
-      if ( internship.id != user.id ) {
+      if ( ! user.company || internship.company._id.toString() != user.company._id.toString() ) {
         return callback(new Error('Only the internship adminstrator can change the status of the internship.'));
       }
 
@@ -450,7 +488,7 @@ module.exports.changeStatus = function(internship, user, status, done) {
         }
 
         internship.addActivity({
-          description: internship.company.name + " changed the status of the internship to " + status,
+          description: user.company.name + " changed the status of the internship to " + status,
           type: 'update',
           priority: 2
         }, function(err, internship) {

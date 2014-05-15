@@ -33275,7 +33275,7 @@ angular.module("dashboard/internships.tpl.html", []).run(["$templateCache", func
   $templateCache.put("dashboard/internships.tpl.html",
     "<div class=\"content-box\">\n" +
     "  <header>\n" +
-    "    <h3>My Internships</h3>\n" +
+    "    <h3>{{ title || \"My Internships\" }}</h3>\n" +
     "  </header>\n" +
     "\n" +
     "  <div class=\"list-group\">\n" +
@@ -35812,7 +35812,14 @@ angular.module('InternLabs.dashboard', [])
         pageTitle: 'Pending Applications',
         auth: true,
         state: {
-          main: 'dashboard/applications.tpl.html'
+          main: 'dashboard/internships.tpl.html'
+        },
+        resolve: {
+          internships: function(Restangular) {
+            return Restangular.one('companies', window.internlabs.user.company).getList('internships', {
+              status: 'pending'
+            });
+          }
         }
       })
 
@@ -35854,23 +35861,21 @@ angular.module('InternLabs.dashboard', [])
   .controller('DashboardCtrl', function($route, $scope) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'dashboard';
-
   })
 
 
   .controller('InternshipsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'internships';
-
     $scope.internships = internships;
-
   })
 
 
-  .controller('ApplicationsCtrl', function($route, $scope) {
+  .controller('ApplicationsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'applications';
-
+    $scope.title = "Pending Applications";
+    $scope.internships = internships;
   })
 
 
