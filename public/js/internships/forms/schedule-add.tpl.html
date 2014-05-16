@@ -1,0 +1,24 @@
+<form ng-submit="save()" role="form" class="schedule-add">
+  <div class="form-group">
+      <div class="row-sm">
+        <div class="col-sm-4">
+          <label>Date</label>
+          <input date-picker="newSchedule.date" type="text" class="form-control">
+        </div>
+        <div class="col-sm-4">
+          <label>Start Time</label>
+          <select selecter ng-model="newSchedule.startTime" ng-options="o as o for o in timeOptions" class="form-control"></select>
+        </div>
+        <div class="col-sm-4">
+          <label>End Time</label>
+          <select selecter ng-model="newSchedule.endTime" ng-options="o as o for o in timeOptions" class="form-control"></select>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="modal-footer text-center">
+    <button type="submit" class="btn btn-primary btn-icon-left"><i class="fa fa-check"></i> Add to Schedule</button>
+    <button ng-click="close()" type="button" class="btn btn-default btn-icon-left"><i class="fa fa-times"></i> Cancel</button>
+  </div>
+</form>

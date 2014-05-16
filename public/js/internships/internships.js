@@ -318,43 +318,43 @@ angular.module('InternLabs.internships', [])
       },
       link: function(scope, elem, attrs) {
 
-        scope.edit = function() {
+        var save = function() {
+
+        }
+
+        scope.add = function() {
           ModalFactory.create({
             scope: {
-              title: "Edit Internship Schedule",
+              title: "Add to Schedule",
               internship: scope.internship,
-              schedule: scope.internship.schedule,
-              _schedule: angular.copy(scope.internship.schedule),
               newSchedule: {
                 date: new Date(),
                 startTime: '9:00 AM',
                 endTime: '5:00 PM',
               },
               timeOptions: Options.timeOptions,
-              showForm: false,
-              add: function(schedule) {
-                if (!schedule.date) {
-                  return;
-                }
-
-                var newSchedule = _.union(this.scope._schedule, angular.copy(schedule));
-
-                // Sort the dates                
-                this.scope._schedule = _.sortBy(newSchedule, function(item) {
-                  return new Date(item.date).getTime();
-                });
-
-                this.scope.showForm = false;
-              },
-              remove: function(item) {
-                this.scope._schedule = _.without(this.scope._schedule, item)
-              },
               save: function() {
                 var self = this;
-                this.scope.internship.post('schedule', this.scope._schedule).then(function() {
-                  scope.internship.schedule = angular.copy(self.scope._schedule);
+                scope.internship.post('schedule', this.newSchedule).then(function(internship) {
+                  scope.internship.schedule = internship.schedule;
                   self.close();
                 });
+              }
+            },
+            templateUrl: "internships/forms/schedule-add.tpl.html"
+          });
+        };
+
+        scope.edit = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Edit Internship Schedule",
+              schedule: scope.internship.schedule,
+              remove: function(item) {
+                var self = this;
+                scope.internship.one('schedule', item._id).remove().then(function(internship) {
+                  scope.internship.schedule = self.scope.schedule = internship.schedule;
+                })
               }
             },
             templateUrl: "internships/forms/schedule.tpl.html"

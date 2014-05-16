@@ -108,7 +108,7 @@ module.exports = function(app) {
 
 
   /**
-   * Update the users schedule
+   * Add to schedule
    */
   app.post('/api/internships/:internshipId/schedule', auth.check(), function(req, res) {
     InternshipService.createSchedule(req.params.internshipId, req.user._id, req.body, function(err, schedule) {
@@ -116,7 +116,21 @@ module.exports = function(app) {
         return res.apiError(err);
       }
 
-      return res.apiSuccess("Your schedule has been saved successfully.", schedule);
+      return res.apiSuccess("Your schedule has been updated successfully.", schedule);
+    });
+  });
+
+
+  /**
+   * Delete schedule
+   */
+  app.delete('/api/internships/:internshipId/schedule/:scheduleId', auth.check(), function(req, res) {
+    InternshipService.deleteSchedule(req.params.internshipId, req.user._id, req.params.scheduleId, function(err, schedule) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      return res.apiSuccess("Your schedule has been updated successfully.", schedule);
     });
   });
 

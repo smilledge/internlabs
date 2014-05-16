@@ -73,6 +73,11 @@ var InternshipModel = function() {
      * Add item to the activity stream
      */
     InternshipSchema.methods.addActivity = function(activity, callback) {
+        // Prevent duplicate messages
+        if ( activity.description === this.activity[0].description ) {
+            return callback(null, this);
+        }
+
         this.activity.unshift(activity);
         this.save(callback);
     };

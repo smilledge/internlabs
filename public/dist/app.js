@@ -33246,7 +33246,7 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
+angular.module('templates-app', ['company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
 
 angular.module("company/details.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("company/details.tpl.html",
@@ -33802,13 +33802,40 @@ angular.module("internships/forms/interview.tpl.html", []).run(["$templateCache"
     "</form>");
 }]);
 
+angular.module("internships/forms/schedule-add.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/forms/schedule-add.tpl.html",
+    "<form ng-submit=\"save()\" role=\"form\" class=\"schedule-add\">\n" +
+    "  <div class=\"form-group\">\n" +
+    "      <div class=\"row-sm\">\n" +
+    "        <div class=\"col-sm-4\">\n" +
+    "          <label>Date</label>\n" +
+    "          <input date-picker=\"newSchedule.date\" type=\"text\" class=\"form-control\">\n" +
+    "        </div>\n" +
+    "        <div class=\"col-sm-4\">\n" +
+    "          <label>Start Time</label>\n" +
+    "          <select selecter ng-model=\"newSchedule.startTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-sm-4\">\n" +
+    "          <label>End Time</label>\n" +
+    "          <select selecter ng-model=\"newSchedule.endTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "\n" +
+    "  <div class=\"modal-footer text-center\">\n" +
+    "    <button type=\"submit\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-check\"></i> Add to Schedule</button>\n" +
+    "    <button ng-click=\"close()\" type=\"button\" class=\"btn btn-default btn-icon-left\"><i class=\"fa fa-times\"></i> Cancel</button>\n" +
+    "  </div>\n" +
+    "</form>\n" +
+    "");
+}]);
+
 angular.module("internships/forms/schedule.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/forms/schedule.tpl.html",
     "<div>\n" +
-    "  \n" +
-    "  <!-- List existing -->\n" +
     "  <div class=\"list-group list-schedule\">\n" +
-    "    <div ng-repeat=\"item in _schedule\" class=\"list-group-item\">\n" +
+    "    <div ng-repeat=\"item in schedule\" class=\"list-group-item\">\n" +
     "      <strong class=\"date pull-left\"><i class=\"fa fa-calendar\"></i> {{ item.date | date:short }}</strong>\n" +
     "      <span class=\"pull-right\">\n" +
     "        <span class=\"time\"><i class=\"fa fa-clock-o\"></i> {{ item.startTime }} <span class=\"text-muted\">to</span> {{ item.endTime }}</span>\n" +
@@ -33816,38 +33843,10 @@ angular.module("internships/forms/schedule.tpl.html", []).run(["$templateCache",
     "      </span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  \n" +
-    "  <button ng-click=\"showForm=true\" ng-show=\"!showForm\" type=\"button\" class=\"btn btn-default btn-icon-left btn-block\"><i class=\"fa fa-plus\"></i> Add a work period</button>\n" +
-    "\n" +
-    "  <!-- Add to schedule -->\n" +
-    "  <form ng-show=\"showForm\" ng-submit=\"add(newSchedule)\" role=\"form\" class=\"schedule-add well\">\n" +
-    "    <div class=\"form-group\">\n" +
-    "        <div class=\"row-sm\">\n" +
-    "          <div class=\"col-sm-3\">\n" +
-    "            <label>Date</label>\n" +
-    "            <input date-picker=\"newSchedule.date\" type=\"text\" class=\"form-control\">\n" +
-    "          </div>\n" +
-    "          <div class=\"col-sm-3\">\n" +
-    "            <label>Start Time</label>\n" +
-    "            <select selecter ng-model=\"newSchedule.startTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
-    "          </div>\n" +
-    "          <div class=\"col-sm-3\">\n" +
-    "            <label>End Time</label>\n" +
-    "            <select selecter ng-model=\"newSchedule.endTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
-    "          </div>\n" +
-    "          <div class=\"col-sm-3\">\n" +
-    "            <label style=\"display:block\">&nbsp;</label>\n" +
-    "            <button type=\"submit\" class=\"btn btn-block btn-link\"><i class=\"fa fa-plus\"></i> Add to schedule</button>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "  </form>\n" +
     "\n" +
     "  <div class=\"modal-footer text-center\">\n" +
-    "    <button ng-click=\"save()\" type=\"button\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-check\"></i> Save Schedule</button>\n" +
-    "    <button ng-click=\"close()\" type=\"button\" class=\"btn btn-default btn-icon-left\"><i class=\"fa fa-times\"></i> Cancel</button>\n" +
+    "    <button ng-click=\"close()\" type=\"button\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-check\"></i> Done</button>\n" +
     "  </div>\n" +
-    "  \n" +
     "</div>");
 }]);
 
@@ -36631,43 +36630,43 @@ angular.module('InternLabs.internships', [])
       },
       link: function(scope, elem, attrs) {
 
-        scope.edit = function() {
+        var save = function() {
+
+        }
+
+        scope.add = function() {
           ModalFactory.create({
             scope: {
-              title: "Edit Internship Schedule",
+              title: "Add to Schedule",
               internship: scope.internship,
-              schedule: scope.internship.schedule,
-              _schedule: angular.copy(scope.internship.schedule),
               newSchedule: {
                 date: new Date(),
                 startTime: '9:00 AM',
                 endTime: '5:00 PM',
               },
               timeOptions: Options.timeOptions,
-              showForm: false,
-              add: function(schedule) {
-                if (!schedule.date) {
-                  return;
-                }
-
-                var newSchedule = _.union(this.scope._schedule, angular.copy(schedule));
-
-                // Sort the dates                
-                this.scope._schedule = _.sortBy(newSchedule, function(item) {
-                  return new Date(item.date).getTime();
-                });
-
-                this.scope.showForm = false;
-              },
-              remove: function(item) {
-                this.scope._schedule = _.without(this.scope._schedule, item)
-              },
               save: function() {
                 var self = this;
-                this.scope.internship.post('schedule', this.scope._schedule).then(function() {
-                  scope.internship.schedule = angular.copy(self.scope._schedule);
+                scope.internship.post('schedule', this.newSchedule).then(function(internship) {
+                  scope.internship.schedule = internship.schedule;
                   self.close();
                 });
+              }
+            },
+            templateUrl: "internships/forms/schedule-add.tpl.html"
+          });
+        };
+
+        scope.edit = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Edit Internship Schedule",
+              schedule: scope.internship.schedule,
+              remove: function(item) {
+                var self = this;
+                scope.internship.one('schedule', item._id).remove().then(function(internship) {
+                  scope.internship.schedule = self.scope.schedule = internship.schedule;
+                })
               }
             },
             templateUrl: "internships/forms/schedule.tpl.html"

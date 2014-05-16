@@ -327,26 +327,6 @@ module.exports.create = function(data, done) {
 /**
  * Add an interview to an internship
  *
- * @param  {object}   data
- * @param  {func}     callback
- * @return {void}
- */
-module.exports.saveInterview = function(data, done) {
-
-  async.waterfall([
-
-    // Get the internship
-
-    // Geocode the location
-
-  ], done);
-
-};
-
-
-/**
- * Add an interview to an internship
- *
  * @param  {string}   internship ID
  * @param  {string}   user ID
  * @param  {object}   data
@@ -395,7 +375,23 @@ module.exports.createSchedule = function(internship, user, data, done) {
      * Update the internship schedule
      */
     function(internship, user, callback) {
-      internship.schedule = data;
+
+      if ( ! data.date ) {
+        return callback(new Error('Error creating schedule. The date provided was invalid.'));
+      }
+
+      data.date = new Date(data.date);
+
+      // Merge with existing schedule
+      var current = internship.schedule || [];
+      var newSchedule = _.union(current, [data]);
+
+      // Sort for date             
+      newSchedule = _.sortBy(newSchedule, function(item) {
+        return new Date(item.date).getTime();
+      });
+
+      internship.schedule = newSchedule;
       internship.save(function(err, internship) {
         if ( err || ! internship ) {
           return callback(new Error("An error occured while updating your schedule. Please try again later."));
@@ -413,7 +409,92 @@ module.exports.createSchedule = function(internship, user, data, done) {
       internship.addActivity({
         description: msg
       }, function(err, activity) {
-        callback(null, internship.schedule);
+        callback(null, internship);
+      });
+    }
+
+
+  ], done);
+
+};
+
+
+
+/**
+ * Delete a schedule
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {object}   schedule id
+ * @param  {func}     callback
+ * @return {void}
+ */
+module.exports.deleteSchedule = function(internship, user, scheduleId, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while updating your schedule. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'delete') ) {
+        return callback(new Error('You are not authorized to edit this schedule.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Delete the internship schedule
+     */
+    function(internship, user, callback) {
+      var toRemove = _.find(internship.schedule, function(item) {
+        return item._id.toString() === scheduleId;
+      });
+
+      internship.schedule = _.without(internship.schedule, toRemove);
+
+      internship.save(function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("An error occured while updating your schedule. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Add an activity to the internships feed
+     */
+    function(internship, user, callback) {
+      var msg = user.profile.name + ' updated the internship\'s schedule.';
+
+      internship.addActivity({
+        description: msg
+      }, function(err, activity) {
+        callback(null, internship);
       });
     }
 
