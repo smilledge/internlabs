@@ -1,0 +1,22 @@
+.growl {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 400px;
+}
+
+.growl-item.ng-enter,
+.growl-item.ng-leave {
+    .transition(0.3s ease-out);
+}
+
+.growl-item.ng-enter,
+.growl-item.ng-leave.ng-leave-active {
+    opacity:0;
+    margin-bottom: -20px;
+}
+.growl-item.ng-leave,
+.growl-item.ng-enter.ng-enter-active {
+    opacity:1;
+    margin-bottom: 0;
+}

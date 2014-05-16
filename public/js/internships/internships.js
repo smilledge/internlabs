@@ -129,21 +129,14 @@ angular.module('InternLabs.internships', [])
         scope.changeStatus = function(status) {
           scope.internship.status = status;
 
-          var verb = (status == 'active') ? 'approve' : 
-                     (status == 'rejected') ? 'reject' : 
-                     (status == 'pending') ? 'unapprove' : 
+          var verb = (status == 'active') ? 'approve' :
+                     (status == 'rejected') ? 'reject' :
+                     (status == 'pending') ? 'unapprove' :
                      'complete';
 
           scope.internship.customPOST({
             message: null
-          }, verb).then(function(response) {
-            if ( ! response.$$success ) {
-              ModalFactory.create({
-                scope: { title: "An error occured" },
-                template: response.$$error.join(' ')
-              });
-            }
-          });
+          }, verb);
         };
 
         scope.change = function(status) {
