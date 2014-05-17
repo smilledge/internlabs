@@ -21,11 +21,13 @@ angular.module('InternLabs.internships', [])
   })
 
 
-  .controller('InternshipDetails', function($scope, $sce, internship, ModalFactory) {
+  .controller('InternshipDetails', function($scope, $sce, internship, ModalFactory, Auth) {
     $scope.internship = internship;
     $scope.company = internship.company;
     $scope.student = internship.student;
     $scope.profile = internship.student.profile;
+
+    $scope.isCompany = Auth.hasAccess('employer');
   })
 
 
@@ -71,6 +73,24 @@ angular.module('InternLabs.internships', [])
             scope.internship.activity.unshift(response.activity.shift());
           });
         };
+      }
+    }
+  })
+
+
+  /**
+   * Applicant profile widget
+   */
+  .directive('profileWidget', function() {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/profile.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.profile = scope.internship.student.profile;
       }
     }
   })

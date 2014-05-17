@@ -1,0 +1,41 @@
+<div class="content-box widget-profile">
+  <header>
+    <h3>Applicant's Profile</h3>
+  </header>
+
+  <div class="list-group">
+    <div class="list-group-item">
+      <strong>Name</strong>
+      <span class="pull-right">{{ profile.name }}</span>
+    </div>
+
+    <div ng-show="profile.introduction" class="list-group-item">
+      {{ profile.introduction }}
+    </div>
+
+    <div ng-show="profile.university" class="list-group-item">
+      <strong>University</strong>
+      <span class="pull-right">{{ profile.university }}</span>
+    </div>
+
+    <div ng-show="profile.courseName" class="list-group-item">
+      <strong>Course</strong>
+      <span class="pull-right">{{ profile.courseName }}</span>
+    </div>
+
+    <div ng-show="profile.skills" class="list-group-item">
+      <div><strong>Key Skills</strong></div>
+      <div>{{ profile.skills.join(', ') }}</div>
+    </div>
+
+    <div ng-show="profile.resume" class="list-group-item">
+      <strong>Resume</strong>
+      <span class="pull-right"><a href="{{ profile.resume }}" target="_blank"><i class="fa fa-download"></i> Download</a></span>
+    </div>
+
+    <div ng-show="profile.linkedIn" class="list-group-item">
+      <strong>LinkedIn</strong>
+      <span class="pull-right"><a href="{{ profile.linkedIn }}" target="_blank"><i class="fa fa-linkedin-square"></i> View Profile</a></span>
+    </div>
+  </div>
+</div>
