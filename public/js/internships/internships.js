@@ -21,11 +21,13 @@ angular.module('InternLabs.internships', [])
   })
 
 
-  .controller('InternshipDetails', function($scope, $sce, internship, ModalFactory) {
+  .controller('InternshipDetails', function($scope, $sce, internship, ModalFactory, Auth) {
     $scope.internship = internship;
     $scope.company = internship.company;
     $scope.student = internship.student;
     $scope.profile = internship.student.profile;
+
+    $scope.isCompany = Auth.hasAccess('employer');
   })
 
 
