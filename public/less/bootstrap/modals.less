@@ -48,9 +48,6 @@
 .modal-content {
   position: relative;
   background-color: @modal-content-bg;
-  border: 1px solid @modal-content-fallback-border-color; //old browsers fallback (ie8 etc)
-  border: 1px solid @modal-content-border-color;
-  border-radius: @border-radius-base;
   background-clip: padding-box;
   // Remove focus outline from opened modal
   outline: 0;
@@ -73,19 +70,25 @@
 // Modal header
 // Top section of the modal w/ title and dismiss
 .modal-header {
+  // padding: @modal-title-padding;
+  // border-bottom: 1px solid @modal-header-border-color;
+  // min-height: (@modal-title-padding + @modal-title-line-height);
+
+  position: relative;
   padding: @modal-title-padding;
-  border-bottom: 1px solid @modal-header-border-color;
-  min-height: (@modal-title-padding + @modal-title-line-height);
+  // border-left: 2px solid @brand-primary;
 }
 // Close icon
 .modal-header .close {
-  margin-top: -2px;
+  margin-top: -10px;
+  padding: 10px;
 }
 
 // Title text within header
 .modal-title {
   margin: 0;
-  line-height: @modal-title-line-height;
+  font-size: 18px;
+  font-weight: 400;
 }
 
 // Modal body
@@ -93,13 +96,15 @@
 .modal-body {
   position: relative;
   padding: @modal-inner-padding;
+  border-top: 1px solid #e6e6e6;
 }
 
 // Footer (for actions)
 .modal-footer {
+  margin: 40px -15px -20px -15px;
   padding: @modal-inner-padding;
-  border-top: 1px solid @modal-footer-border-color;
-  margin-top: 20px;
+  border-top: 1px solid #e6e6e6;
+  background: #f6f6f6;
   &:extend(.clearfix all); // clear it in case folks use .pull-* classes on buttons
 
   // Properly space out buttons
