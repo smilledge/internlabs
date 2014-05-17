@@ -33246,7 +33246,7 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
+angular.module('templates-app', ['company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
 
 angular.module("company/details.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("company/details.tpl.html",
@@ -33365,14 +33365,6 @@ angular.module("company/widgets/sidebar.tpl.html", []).run(["$templateCache", fu
     "</div>");
 }]);
 
-angular.module("dashboard/applications.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("dashboard/applications.tpl.html",
-    "<header class=\"section-header\">\n" +
-    "  <h2>Pending Applications</h2>\n" +
-    "</header>\n" +
-    "");
-}]);
-
 angular.module("dashboard/company-profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/company-profile.tpl.html",
     "<article class=\"edit-company-profile\">\n" +
@@ -33461,19 +33453,9 @@ angular.module("dashboard/internships.tpl.html", []).run(["$templateCache", func
     "    <h3>{{ title || \"My Internships\" }}</h3>\n" +
     "  </header>\n" +
     "\n" +
-    "  <div class=\"list-group\">\n" +
-    "    <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item\">\n" +
-    "      <h4 class=\"list-group-item-heading\">\n" +
-    "        {{ internship.role.title || \"Internship\" }} \n" +
-    "        <span class=\"text-muted\">at</span> \n" +
-    "        {{ internship.company.name }}\n" +
-    "        <span class=\"label label-primary pull-right\">{{ internship.status }}</span>\n" +
-    "      </h4>\n" +
-    "\n" +
-    "      <p class=\"list-group-item-text\">\n" +
-    "        {{ internship.startDate | date:short }}\n" +
-    "        <span ng-show=\"internship.startDate && internship.endDate\" class=\"text-muted\">to</span>\n" +
-    "        {{ internship.endDate | date:short }}</p>\n" +
+    "  <div class=\"list-group list-internships\">\n" +
+    "    <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item clearfix\">\n" +
+    "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
     "    </a>\n" +
     "  </div>\n" +
     "</div>");
@@ -33613,24 +33595,8 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
     "\n" +
     "  <section class=\"sub-header\">\n" +
     "    <div class=\"container clearfix\">\n" +
-    "      <div class=\"internship-title pull-left\">\n" +
-    "        <h2 ng-show=\"!isCompany\">{{ internship.role.title }} <span class=\"text-muted\">at</span> <a href=\"{{ company.url }}\">{{ company.name }}</a></h2>\n" +
-    "        <h2 ng-show=\"isCompany\">{{ profile.name }} <span class=\"text-muted\">({{ internship.role.title }})</h2>\n" +
-    "        <div class=\"meta\">\n" +
-    "          <span class=\"status\">\n" +
-    "            <i ng-class=\"{\n" +
-    "              'fa fa-cogs': internship.status == 'pending',\n" +
-    "              'fa fa-heck-square': internship.status == 'active',\n" +
-    "              'fa fa-minus-circle': internship.status == 'rejected',\n" +
-    "              'fa fa-trophy': internship.status == 'completed',\n" +
-    "            }\"></i> {{ internship.status | titlecase }}\n" +
-    "          </span>\n" +
-    "          <span class=\"date\">\n" +
-    "            <i class=\"fa fa-calendar\"></i> From {{ internship.startDate | date }} to {{ internship.endDate | date }}\n" +
-    "          </span>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "      \n" +
+    "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
+    "\n" +
     "      <div class=\"pull-right\">\n" +
     "        <div status-widget internship=\"internship\"></div>\n" +
     "      </div>\n" +
@@ -34112,6 +34078,33 @@ angular.module("internships/widgets/supervisors.tpl.html", []).run(["$templateCa
     "    <a ng-click=\"add()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-plus\"></i> Add one now</a>\n" +
     "  </div>\n" +
     " \n" +
+    "</div>");
+}]);
+
+angular.module("internships/widgets/title.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/widgets/title.tpl.html",
+    "<div class=\"internship-title\">\n" +
+    "  <div ng-show=\"!isCompany || company.logoUrl\" class=\"company-logo\">\n" +
+    "    <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"title-body pull-left\">\n" +
+    "    <h2 ng-show=\"!isCompany\">{{ internship.role.title || \"Internship\" }} <span class=\"text-muted\">at</span> <a href=\"{{ company.url }}\">{{ company.name }}</a></h2>\n" +
+    "    <h2 ng-show=\"isCompany\">{{ profile.name }} <span class=\"text-muted\">({{ internship.role.title || \"Internship\" }})</h2>\n" +
+    "    <div class=\"meta\">\n" +
+    "      <span class=\"status\">\n" +
+    "        <i ng-class=\"{\n" +
+    "          'fa fa-cogs': internship.status == 'pending',\n" +
+    "          'fa fa-heck-square': internship.status == 'active',\n" +
+    "          'fa fa-minus-circle': internship.status == 'rejected',\n" +
+    "          'fa fa-trophy': internship.status == 'completed',\n" +
+    "        }\"></i> {{ internship.status | titlecase }}\n" +
+    "      </span>\n" +
+    "      <span class=\"date\">\n" +
+    "        <i class=\"fa fa-calendar\"></i> From {{ internship.startDate | date }} to {{ internship.endDate | date }}\n" +
+    "      </span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "</div>");
 }]);
 
@@ -36396,13 +36389,11 @@ angular.module('InternLabs.internships', [])
   })
 
 
-  .controller('InternshipDetails', function($scope, $sce, internship, ModalFactory, Auth) {
+  .controller('InternshipDetails', function($scope, $sce, internship, ModalFactory) {
     $scope.internship = internship;
     $scope.company = internship.company;
     $scope.student = internship.student;
     $scope.profile = internship.student.profile;
-
-    $scope.isCompany = Auth.hasAccess('employer');
   })
 
 
@@ -36423,6 +36414,25 @@ angular.module('InternLabs.internships', [])
 
       }
     };
+  })
+
+
+  /**
+   * Internship title
+   */
+  .directive('internshipTitle', function(Auth) {
+    return {
+      templateUrl: 'internships/widgets/title.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.company = scope.internship.company;
+        scope.student = scope.internship.student;
+        scope.profile = scope.internship.student.profile;
+        scope.isCompany = Auth.hasAccess('employer');
+      }
+    }
   })
 
 

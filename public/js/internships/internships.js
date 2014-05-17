@@ -21,13 +21,11 @@ angular.module('InternLabs.internships', [])
   })
 
 
-  .controller('InternshipDetails', function($scope, $sce, internship, ModalFactory, Auth) {
+  .controller('InternshipDetails', function($scope, $sce, internship, ModalFactory) {
     $scope.internship = internship;
     $scope.company = internship.company;
     $scope.student = internship.student;
     $scope.profile = internship.student.profile;
-
-    $scope.isCompany = Auth.hasAccess('employer');
   })
 
 
@@ -48,6 +46,25 @@ angular.module('InternLabs.internships', [])
 
       }
     };
+  })
+
+
+  /**
+   * Internship title
+   */
+  .directive('internshipTitle', function(Auth) {
+    return {
+      templateUrl: 'internships/widgets/title.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.company = scope.internship.company;
+        scope.student = scope.internship.student;
+        scope.profile = scope.internship.student.profile;
+        scope.isCompany = Auth.hasAccess('employer');
+      }
+    }
   })
 
 

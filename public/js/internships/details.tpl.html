@@ -8,24 +8,8 @@
 
   <section class="sub-header">
     <div class="container clearfix">
-      <div class="internship-title pull-left">
-        <h2 ng-show="!isCompany">{{ internship.role.title }} <span class="text-muted">at</span> <a href="{{ company.url }}">{{ company.name }}</a></h2>
-        <h2 ng-show="isCompany">{{ profile.name }} <span class="text-muted">({{ internship.role.title }})</h2>
-        <div class="meta">
-          <span class="status">
-            <i ng-class="{
-              'fa fa-cogs': internship.status == 'pending',
-              'fa fa-heck-square': internship.status == 'active',
-              'fa fa-minus-circle': internship.status == 'rejected',
-              'fa fa-trophy': internship.status == 'completed',
-            }"></i> {{ internship.status | titlecase }}
-          </span>
-          <span class="date">
-            <i class="fa fa-calendar"></i> From {{ internship.startDate | date }} to {{ internship.endDate | date }}
-          </span>
-        </div>
-      </div>
-      
+      <div class="pull-left" internship-title internship="internship"></div>
+
       <div class="pull-right">
         <div status-widget internship="internship"></div>
       </div>
