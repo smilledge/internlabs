@@ -26,9 +26,6 @@ angular.module('InternLabs.internships', [])
     $scope.company = internship.company;
     $scope.student = internship.student;
     $scope.profile = internship.student.profile;
-
-
-
   })
 
 
@@ -104,7 +101,6 @@ angular.module('InternLabs.internships', [])
         };
 
         scope.$watch('internship.availability', function(newVal, oldVal) {
-
           if (newVal) {
             getAvailability();
           }
@@ -136,7 +132,11 @@ angular.module('InternLabs.internships', [])
 
           scope.internship.customPOST({
             message: null
-          }, verb);
+          }, verb).then(function(internship) {
+            if ( internship.$$success) {
+              scope.internship.activity = internship.activity;
+            }
+          });
         };
 
         scope.change = function(status) {
@@ -187,7 +187,10 @@ angular.module('InternLabs.internships', [])
                     data = this.scope._interview;
 
                 this.scope.internship.post('interview', data).then(function(internship) {
-                  scope.internship.interview = internship.interview;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.interview = internship.interview;
+                  }
                   self.close();
                 });
               }
@@ -203,6 +206,9 @@ angular.module('InternLabs.internships', [])
               delete: function() {
                 var self = this;
                 scope.internship.customDELETE('interview/').then(function(internship) {
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                  }
                   scope.internship.interview = null;
                   self.close();
                 });
@@ -270,8 +276,11 @@ angular.module('InternLabs.internships', [])
               save: function() {
                 var self = this;
                 this.scope.internship.post('supervisors', { email: this.scope.newSupervisor }).then(function(internship) {
-                  scope.internship.supervisors = internship.supervisors;
-                  scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.supervisors = internship.supervisors;
+                    scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  }
                   self.close();
                 });
               }
@@ -287,8 +296,11 @@ angular.module('InternLabs.internships', [])
               delete: function() {
                 var self = this;
                 scope.internship.customDELETE('supervisors/' + email).then(function(internship) {
-                  scope.internship.supervisors = internship.supervisors;
-                  scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.supervisors = internship.supervisors;
+                    scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  }
                   self.close();
                 });
               }
@@ -336,7 +348,10 @@ angular.module('InternLabs.internships', [])
               save: function() {
                 var self = this;
                 scope.internship.post('schedule', this.newSchedule).then(function(internship) {
-                  scope.internship.schedule = internship.schedule;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.schedule = internship.schedule;
+                  }
                   self.close();
                 });
               }
@@ -353,7 +368,11 @@ angular.module('InternLabs.internships', [])
               remove: function(item) {
                 var self = this;
                 scope.internship.one('schedule', item._id).remove().then(function(internship) {
-                  scope.internship.schedule = self.scope.schedule = internship.schedule;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.schedule = internship.schedule;
+                    self.scope.schedule = internship.schedule;
+                  }
                 })
               }
             },

@@ -33884,7 +33884,7 @@ angular.module("internships/widgets/activity.tpl.html", []).run(["$templateCache
     "  </header>\n" +
     "\n" +
     "  <div class=\"list-group list-activity\">\n" +
-    "    <div ng-repeat=\"item in internship.activity\" class=\"list-group-item item-activity type-{{ item.type || 'update' }} priority-{{ item.priority || '1' }}\" ng-class=\"{'editable': canEdit(item)}\">\n" +
+    "    <div ng-repeat=\"item in internship.activity track by item._id\" class=\"list-group-item item-activity type-{{ item.type || 'update' }} priority-{{ item.priority || '1' }}\" ng-class=\"{'editable': canEdit(item)}\">\n" +
     "      <p class=\"description\">{{ item.description }}</p>\n" +
     "      <div class=\"meta\">\n" +
     "        <span ng-show=\"item.author\" class=\"user\"><i class=\"fa fa-user\"></i> {{ item.author.profile.name }}</span>\n" +
@@ -36338,9 +36338,6 @@ angular.module('InternLabs.internships', [])
     $scope.company = internship.company;
     $scope.student = internship.student;
     $scope.profile = internship.student.profile;
-
-
-
   })
 
 
@@ -36416,7 +36413,6 @@ angular.module('InternLabs.internships', [])
         };
 
         scope.$watch('internship.availability', function(newVal, oldVal) {
-
           if (newVal) {
             getAvailability();
           }
@@ -36448,7 +36444,11 @@ angular.module('InternLabs.internships', [])
 
           scope.internship.customPOST({
             message: null
-          }, verb);
+          }, verb).then(function(internship) {
+            if ( internship.$$success) {
+              scope.internship.activity = internship.activity;
+            }
+          });
         };
 
         scope.change = function(status) {
@@ -36499,7 +36499,10 @@ angular.module('InternLabs.internships', [])
                     data = this.scope._interview;
 
                 this.scope.internship.post('interview', data).then(function(internship) {
-                  scope.internship.interview = internship.interview;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.interview = internship.interview;
+                  }
                   self.close();
                 });
               }
@@ -36515,6 +36518,9 @@ angular.module('InternLabs.internships', [])
               delete: function() {
                 var self = this;
                 scope.internship.customDELETE('interview/').then(function(internship) {
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                  }
                   scope.internship.interview = null;
                   self.close();
                 });
@@ -36582,8 +36588,11 @@ angular.module('InternLabs.internships', [])
               save: function() {
                 var self = this;
                 this.scope.internship.post('supervisors', { email: this.scope.newSupervisor }).then(function(internship) {
-                  scope.internship.supervisors = internship.supervisors;
-                  scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.supervisors = internship.supervisors;
+                    scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  }
                   self.close();
                 });
               }
@@ -36599,8 +36608,11 @@ angular.module('InternLabs.internships', [])
               delete: function() {
                 var self = this;
                 scope.internship.customDELETE('supervisors/' + email).then(function(internship) {
-                  scope.internship.supervisors = internship.supervisors;
-                  scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.supervisors = internship.supervisors;
+                    scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  }
                   self.close();
                 });
               }
@@ -36648,7 +36660,10 @@ angular.module('InternLabs.internships', [])
               save: function() {
                 var self = this;
                 scope.internship.post('schedule', this.newSchedule).then(function(internship) {
-                  scope.internship.schedule = internship.schedule;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.schedule = internship.schedule;
+                  }
                   self.close();
                 });
               }
@@ -36665,7 +36680,11 @@ angular.module('InternLabs.internships', [])
               remove: function(item) {
                 var self = this;
                 scope.internship.one('schedule', item._id).remove().then(function(internship) {
-                  scope.internship.schedule = self.scope.schedule = internship.schedule;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.schedule = internship.schedule;
+                    self.scope.schedule = internship.schedule;
+                  }
                 })
               }
             },

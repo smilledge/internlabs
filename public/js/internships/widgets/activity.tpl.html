@@ -4,7 +4,7 @@
   </header>
 
   <div class="list-group list-activity">
-    <div ng-repeat="item in internship.activity" class="list-group-item item-activity type-{{ item.type || 'update' }} priority-{{ item.priority || '1' }}" ng-class="{'editable': canEdit(item)}">
+    <div ng-repeat="item in internship.activity track by item._id" class="list-group-item item-activity type-{{ item.type || 'update' }} priority-{{ item.priority || '1' }}" ng-class="{'editable': canEdit(item)}">
       <p class="description">{{ item.description }}</p>
       <div class="meta">
         <span ng-show="item.author" class="user"><i class="fa fa-user"></i> {{ item.author.profile.name }}</span>
