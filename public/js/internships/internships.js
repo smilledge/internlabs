@@ -366,11 +366,6 @@ angular.module('InternLabs.internships', [])
         internship: '='
       },
       link: function(scope, elem, attrs) {
-
-        var save = function() {
-
-        }
-
         scope.add = function() {
           ModalFactory.create({
             scope: {
@@ -417,6 +412,33 @@ angular.module('InternLabs.internships', [])
           });
         };
 
+      }
+    };
+  })
+
+
+  /**
+   * Internship documents
+   */
+  .directive('documentsWidget', function(ModalFactory, Options) {
+    return {
+      replace: true,
+      templateUrl: 'internships/widgets/documents.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.upload = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Upload Documents",
+              internship: scope.internship,
+              url: Options.apiUrl('internships/' + scope.internship._id + '/documents')
+            },
+            className: 'modal-lg',
+            templateUrl: "internships/forms/documents-upload.tpl.html"
+          });
+        };
       }
     };
   })

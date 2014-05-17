@@ -1,0 +1,25 @@
+<div class="content-box widget-documents">
+  <header>
+    <h3>Documents</h3>
+
+    <div dropdown-menu>
+      <a ng-click="toggle()"><i class="fa fa-bars"></i></a>
+      <ul>
+        <li><a ng-click="upload()">Upload Documents</a></li>
+        <li><a ng-click="edit()">Edit Documents</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div ng-show="internship.documents.length" class="list-group list-documents">
+    <div ng-repeat="doc in internship.documents" class="list-group-item">
+      <strong>{{ doc.name }}</strong>
+      <a href="{{ doc.fileUrl }}" class="pull-right" target="_blank"><i class="fa fa-download"></i> Download</a>
+    </div>
+  </div>
+
+  <div ng-show="!internship.documents.length" class="no-results">
+    <p class="lead">No documents have been uploaded</p>
+    <a ng-click="upload()" class="btn btn-link btn-sm"><i class="fa fa-cloud-upload"></i> Upload a document</a>
+  </div>
+</div>
