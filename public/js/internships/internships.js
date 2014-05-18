@@ -32,18 +32,39 @@ angular.module('InternLabs.internships', [])
   /**
    * Internship Application form
    */
-  .directive('applyForm', function() {
+  .directive('applyForm', function(Restangular, $location, Options, growl) {
     return {
       restrict: 'A',
       link: function(scope, elem, attrs) {
-
         scope.application.role = {};
+        scope.uploader = {};
 
         if (scope.role) {
           scope.application.role = scope.role;
           scope.existingRole = true;
         }
 
+        scope.save = function() {
+          Restangular.all("internships").post(scope.application).then(function(response) {
+
+            // Upload the files
+            if ( scope.uploader && scope.uploader.queue.length ) {
+              scope.uploader.setUrl(Options.apiUrl('internships/' + response._id + '/documents'));
+              scope.uploader.uploadAll();
+              scope.uploader.bind('completeall', function() {
+                growl.addSuccessMessage("Your attachments have been uploaded successfully.", {
+                  ttl: 5000
+                });
+                scope.$apply(function() {
+                  $location.path(response.url);
+                });
+                scope.close();
+              });
+            } else {
+              $location.path(response.url);
+            }
+          });
+        };
       }
     };
   })

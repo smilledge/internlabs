@@ -33251,7 +33251,7 @@ angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/d
 angular.module("common/forms/file-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/forms/file-upload.tpl.html",
     "<div>\n" +
-    "  <div ng-show=\"uploader.isHTML5\">\n" +
+    "  <div ng-show=\"_uploader.isHTML5\">\n" +
     "    <div class=\"dropzone\" ng-file-drop ng-file-over=\"over\">\n" +
     "      <p>Drag and drop files here to upload</p>\n" +
     "      <button type=\"button\" class=\"btn btn-link\" ng-click=\"selectFiles()\"><i class=\"fa fa-file\"></i> Select files</button>\n" +
@@ -33260,7 +33260,7 @@ angular.module("common/forms/file-upload.tpl.html", []).run(["$templateCache", f
     "  </div>\n" +
     "\n" +
     "  <div class=\"list-group list-uploads\">\n" +
-    "    <div ng-repeat=\"item in uploader.queue\" class=\"list-group-item clearfix\">\n" +
+    "    <div ng-repeat=\"item in _uploader.queue\" class=\"list-group-item clearfix\">\n" +
     "      <div class=\"pull-left\">\n" +
     "        <span ng-show=\"item.isSuccess\"><i class=\"fa text-success fa-check\"></i></span>\n" +
     "        <span ng-show=\"item.isCancel\"><i class=\"fa text-warning fa-ban\"></i></span>\n" +
@@ -33272,10 +33272,10 @@ angular.module("common/forms/file-upload.tpl.html", []).run(["$templateCache", f
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"text-center\">\n" +
-    "      <button type=\"button\" class=\"btn btn-success btn-icon-left\" ng-click=\"uploader.uploadAll()\" ng-show=\"uploader.getNotUploadedItems().length\"><i class=\"fa fa-arrow-up\"></i> Start Upload</button>\n" +
-    "      <button type=\"button\" class=\"btn btn-danger btn-icon-left\" ng-click=\"uploader.cancelAll()\" ng-show=\"uploader.isUploading\"><i class=\"fa fa-times\"></i> Cancel Upload</button>\n" +
-    "      <button type=\"button\" class=\"btn btn-default btn-icon-left\" ng-click=\"uploader.clearQueue()\" ng-show=\"uploader.queue.length\"><i class=\"fa fa-trash-o\"></i> Clear Queue</button>\n" +
+    "  <div ng-hide=\"hideButtons\" class=\"text-center\">\n" +
+    "      <button type=\"button\" class=\"btn btn-success btn-icon-left\" ng-click=\"_uploader.uploadAll()\" ng-show=\"_uploader.getNotUploadedItems().length\"><i class=\"fa fa-arrow-up\"></i> Start Upload</button>\n" +
+    "      <button type=\"button\" class=\"btn btn-danger btn-icon-left\" ng-click=\"_uploader.cancelAll()\" ng-show=\"_uploader.isUploading\"><i class=\"fa fa-times\"></i> Cancel Upload</button>\n" +
+    "      <button type=\"button\" class=\"btn btn-default btn-icon-left\" ng-click=\"_uploader.clearQueue()\" ng-show=\"_uploader.queue.length\"><i class=\"fa fa-trash-o\"></i> Clear Queue</button>\n" +
     "  </div>\n" +
     "</div>");
 }]);
@@ -33660,7 +33660,7 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
 
 angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/forms/apply.tpl.html",
-    "<form apply-form role=\"form\" ng-submit=\"save()\">\n" +
+    "<form apply-form role=\"form\">\n" +
     "\n" +
     "  <div class=\"form-group\">\n" +
     "    <p>Your internship proposal contains everything your employer will need to know. This includes the internship length, your availability, required documentation and anything else that will be required of the employer.</p>\n" +
@@ -33685,8 +33685,8 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "        </div>\n" +
     "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "      <div class=\"modal-footer\">\n" +
+    "        <a class=\"next btn btn-primary pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
     "      </div>\n" +
     "\n" +
     "    </fieldset>\n" +
@@ -33724,9 +33724,9 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "        <textarea ng-model=\"application.comment\" id=\"field-comment\" rows=\"6\" class=\"form-control\"></textarea>\n" +
     "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
-    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "      <div class=\"modal-footer\">\n" +
+    "        <a class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
+    "        <a class=\"next btn btn-primary pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
     "      </div>\n" +
     "\n" +
     "    </fieldset>\n" +
@@ -33736,11 +33736,11 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "\n" +
     "      <legend>Attached Documents</legend>\n" +
     "\n" +
-    "      <p class=\"lead\">TODO!</p>\n" +
+    "      <div upload-form uploader=\"uploader\" allow=\"all\" url=\"/testing/123\" hide-buttons=\"true\"></div>\n" +
     "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
-    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "      <div class=\"modal-footer\">\n" +
+    "        <a class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
+    "        <a class=\"next btn btn-primary pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
     "      </div>\n" +
     "\n" +
     "    </fieldset>\n" +
@@ -33750,11 +33750,58 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "\n" +
     "      <legend>Confirm Application</legend>\n" +
     "\n" +
-    "      <p class=\"lead\">TODO!</p>\n" +
+    "      <div class=\"list-group\">\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Role Title</strong>\n" +
+    "          <span class=\"pull-right\">{{ application.role.title }}</span>\n" +
+    "        </div>\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Role Description</strong>\n" +
+    "          <div>{{ application.role.description }}</div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
-    "        <button type=\"submit\" class=\"btn btn-primary btn-icon-right pull-right\">Apply <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "      <div class=\"list-group\">\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Start Date</strong>\n" +
+    "          <span class=\"pull-right\">{{ application.startDate | date }}</span>\n" +
+    "        </div>\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>End Date</strong>\n" +
+    "          <span class=\"pull-right\">{{ application.endDate | date }}</span>\n" +
+    "        </div>\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Total Hours</strong>\n" +
+    "          <span class=\"pull-right\">{{ application.totalHours || \"0\" }} hours</span>\n" +
+    "        </div>\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Availability</strong>\n" +
+    "          <span class=\"pull-right\">{{ application.availability.join(', ') }}</span>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"list-group\">\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Comments</strong>\n" +
+    "          <div>{{ application.comment }}</div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"modal-footer\">\n" +
+    "        <a class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
+    "        <a ng-click=\"save()\" class=\"next btn btn-primary pull-right btn-icon-right\">Submit Application <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "      </div>\n" +
+    "\n" +
+    "    </fieldset>\n" +
+    "\n" +
+    "\n" +
+    "    <fieldset class=\"form-step\">\n" +
+    "\n" +
+    "      <legend>Submitting Application</legend>\n" +
+    "\n" +
+    "      <div class=\"text-center\" style=\"padding:60px 0;\">\n" +
+    "        <p class=\"lead\">Please wait while your application is submitted...</p>\n" +
+    "        <i class=\"fa fa-spinner fa-spin\" style=\"font-size:40px\"></i>\n" +
     "      </div>\n" +
     "\n" +
     "    </fieldset>\n" +
@@ -34015,9 +34062,12 @@ angular.module("internships/widgets/documents.tpl.html", []).run(["$templateCach
     "  </header>\n" +
     "\n" +
     "  <div ng-show=\"internship.documents.length\" class=\"list-group list-documents\">\n" +
-    "    <div ng-repeat=\"doc in internship.documents\" class=\"list-group-item\">\n" +
+    "    <div ng-repeat-start=\"doc in internship.documents\" class=\"list-group-item\">\n" +
     "      <strong>{{ doc.name }}</strong>\n" +
     "      <a href=\"{{ doc.fileUrl }}\" class=\"pull-right\" target=\"_blank\"><i class=\"fa fa-download\"></i> Download</a>\n" +
+    "    </div>\n" +
+    "    <div ng-repeat-end ng-show=\"doc.description\" class=\"list-group-item item-muted text-muted\">\n" +
+    "      {{ doc.description }}\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -35200,15 +35250,37 @@ angular.module('InternLabs.common.directives', [])
     return {
       restrict: 'A',
       scope: {
+        uploader: '=?',
         allow: '@?',
         url: '@'
       },
       templateUrl: 'common/forms/file-upload.tpl.html',
       link: function(scope, elem, attrs) {
-        var uploader = scope.uploader = $fileUploader.create({
-            scope: scope,
-            url: scope.url
+
+        if (elem.attr('hide-buttons') !== "undefined") {
+          scope.hideButtons = scope.$eval(elem.attr('hide-buttons'));
+        }
+
+        var uploader = scope._uploader = $fileUploader.create({
+          scope: scope,
+          url: scope.url
         });
+
+        // Public uploader facade
+        // DO NOT $WATCH THIS OBJECT
+        // Bind to the events instead
+        scope.uploader = {
+          queue: uploader.queue,
+          uploadAll: _.bind(uploader.uploadAll, uploader),
+          cancelAll: _.bind(uploader.cancelAll, uploader),
+          clearQueue: _.bind(uploader.clearQueue, uploader),
+          bind: _.bind(uploader.bind, uploader),
+          setUrl: function(url) {
+            _.each(uploader.queue, function(file) {
+              file.url = url;
+            });
+          }
+        };
 
         scope.selectFiles = function() {
           elem.find('.input-file').trigger('click');
@@ -35495,7 +35567,9 @@ angular.module('InternLabs.common.directives', [])
           });
 
           // Set first fieldset as active and hide others
-          $fieldsets.first().addClass('active');
+          $fieldsets.first().addClass('active').css({
+            position: 'relative'
+          });
           TweenLite.set($fieldsets.not(':first'), {
             autoAlpha: 0
           });
@@ -35525,7 +35599,7 @@ angular.module('InternLabs.common.directives', [])
           }
 
           TweenLite.to(elem, 0.3, {
-            'min-height': height 
+            'min-height': height
           });
         };
 
@@ -35542,11 +35616,17 @@ angular.module('InternLabs.common.directives', [])
           var deferred = $q.defer();
 
           var timeline = new TimelineLite({ onComplete: function() {
+            nextElem.css({
+              position: 'relative',
+              minHeight: 0
+            });
+
             deferred.resolve();
           }}).pause()
 
             // Animation initial state for elems
             .set(currentElem, {
+              position: 'absolute',
               left: 0
             })
             .set(nextElem, {
@@ -36162,13 +36242,7 @@ angular.module('InternLabs.company', [])
         scope: {
           title: "Apply for internship",
           application: $scope.application,
-          role: role,
-          save: function() {
-            Restangular.all("internships").post(this.application).then(function(response) {
-              console.log(response);
-              this.close();
-            }.bind(this));
-          }
+          role: role
         },
         templateUrl: "internships/forms/apply.tpl.html",
         className: "modal-lg modal-create-application"
@@ -36549,18 +36623,39 @@ angular.module('InternLabs.internships', [])
   /**
    * Internship Application form
    */
-  .directive('applyForm', function() {
+  .directive('applyForm', function(Restangular, $location, Options, growl) {
     return {
       restrict: 'A',
       link: function(scope, elem, attrs) {
-
         scope.application.role = {};
+        scope.uploader = {};
 
         if (scope.role) {
           scope.application.role = scope.role;
           scope.existingRole = true;
         }
 
+        scope.save = function() {
+          Restangular.all("internships").post(scope.application).then(function(response) {
+
+            // Upload the files
+            if ( scope.uploader && scope.uploader.queue.length ) {
+              scope.uploader.setUrl(Options.apiUrl('internships/' + response._id + '/documents'));
+              scope.uploader.uploadAll();
+              scope.uploader.bind('completeall', function() {
+                growl.addSuccessMessage("Your attachments have been uploaded successfully.", {
+                  ttl: 5000
+                });
+                scope.$apply(function() {
+                  $location.path(response.url);
+                });
+                scope.close();
+              });
+            } else {
+              $location.path(response.url);
+            }
+          });
+        };
       }
     };
   })

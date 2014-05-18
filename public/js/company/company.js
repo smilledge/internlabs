@@ -34,13 +34,7 @@ angular.module('InternLabs.company', [])
         scope: {
           title: "Apply for internship",
           application: $scope.application,
-          role: role,
-          save: function() {
-            Restangular.all("internships").post(this.application).then(function(response) {
-              console.log(response);
-              this.close();
-            }.bind(this));
-          }
+          role: role
         },
         templateUrl: "internships/forms/apply.tpl.html",
         className: "modal-lg modal-create-application"

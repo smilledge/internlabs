@@ -12,9 +12,12 @@
   </header>
 
   <div ng-show="internship.documents.length" class="list-group list-documents">
-    <div ng-repeat="doc in internship.documents" class="list-group-item">
+    <div ng-repeat-start="doc in internship.documents" class="list-group-item">
       <strong>{{ doc.name }}</strong>
       <a href="{{ doc.fileUrl }}" class="pull-right" target="_blank"><i class="fa fa-download"></i> Download</a>
+    </div>
+    <div ng-repeat-end ng-show="doc.description" class="list-group-item item-muted text-muted">
+      {{ doc.description }}
     </div>
   </div>
 

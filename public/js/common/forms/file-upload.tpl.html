@@ -1,5 +1,5 @@
 <div>
-  <div ng-show="uploader.isHTML5">
+  <div ng-show="_uploader.isHTML5">
     <div class="dropzone" ng-file-drop ng-file-over="over">
       <p>Drag and drop files here to upload</p>
       <button type="button" class="btn btn-link" ng-click="selectFiles()"><i class="fa fa-file"></i> Select files</button>
@@ -8,7 +8,7 @@
   </div>
 
   <div class="list-group list-uploads">
-    <div ng-repeat="item in uploader.queue" class="list-group-item clearfix">
+    <div ng-repeat="item in _uploader.queue" class="list-group-item clearfix">
       <div class="pull-left">
         <span ng-show="item.isSuccess"><i class="fa text-success fa-check"></i></span>
         <span ng-show="item.isCancel"><i class="fa text-warning fa-ban"></i></span>
@@ -20,9 +20,9 @@
     </div>
   </div>
 
-  <div class="text-center">
-      <button type="button" class="btn btn-success btn-icon-left" ng-click="uploader.uploadAll()" ng-show="uploader.getNotUploadedItems().length"><i class="fa fa-arrow-up"></i> Start Upload</button>
-      <button type="button" class="btn btn-danger btn-icon-left" ng-click="uploader.cancelAll()" ng-show="uploader.isUploading"><i class="fa fa-times"></i> Cancel Upload</button>
-      <button type="button" class="btn btn-default btn-icon-left" ng-click="uploader.clearQueue()" ng-show="uploader.queue.length"><i class="fa fa-trash-o"></i> Clear Queue</button>
+  <div ng-hide="hideButtons" class="text-center">
+      <button type="button" class="btn btn-success btn-icon-left" ng-click="_uploader.uploadAll()" ng-show="_uploader.getNotUploadedItems().length"><i class="fa fa-arrow-up"></i> Start Upload</button>
+      <button type="button" class="btn btn-danger btn-icon-left" ng-click="_uploader.cancelAll()" ng-show="_uploader.isUploading"><i class="fa fa-times"></i> Cancel Upload</button>
+      <button type="button" class="btn btn-default btn-icon-left" ng-click="_uploader.clearQueue()" ng-show="_uploader.queue.length"><i class="fa fa-trash-o"></i> Clear Queue</button>
   </div>
 </div>

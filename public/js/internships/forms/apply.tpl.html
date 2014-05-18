@@ -1,4 +1,4 @@
-<form apply-form role="form" ng-submit="save()">
+<form apply-form role="form">
 
   <div class="form-group">
     <p>Your internship proposal contains everything your employer will need to know. This includes the internship length, your availability, required documentation and anything else that will be required of the employer.</p>
@@ -23,8 +23,8 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <a href="#" class="next btn btn-default pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
+      <div class="modal-footer">
+        <a class="next btn btn-primary pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
       </div>
 
     </fieldset>
@@ -62,9 +62,9 @@
         <textarea ng-model="application.comment" id="field-comment" rows="6" class="form-control"></textarea>
       </div>
 
-      <div class="form-group">
-        <a href="#" class="previous btn btn-default pull-left btn-icon-left">Back <i class="fa fa-arrow-left"></i></a>
-        <a href="#" class="next btn btn-default pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
+      <div class="modal-footer">
+        <a class="previous btn btn-default pull-left btn-icon-left">Back <i class="fa fa-arrow-left"></i></a>
+        <a class="next btn btn-primary pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
       </div>
 
     </fieldset>
@@ -74,11 +74,11 @@
 
       <legend>Attached Documents</legend>
 
-      <p class="lead">TODO!</p>
+      <div upload-form uploader="uploader" allow="all" url="/testing/123" hide-buttons="true"></div>
 
-      <div class="form-group">
-        <a href="#" class="previous btn btn-default pull-left btn-icon-left">Back <i class="fa fa-arrow-left"></i></a>
-        <a href="#" class="next btn btn-default pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
+      <div class="modal-footer">
+        <a class="previous btn btn-default pull-left btn-icon-left">Back <i class="fa fa-arrow-left"></i></a>
+        <a class="next btn btn-primary pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
       </div>
 
     </fieldset>
@@ -88,11 +88,58 @@
 
       <legend>Confirm Application</legend>
 
-      <p class="lead">TODO!</p>
+      <div class="list-group">
+        <div class="list-group-item">
+          <strong>Role Title</strong>
+          <span class="pull-right">{{ application.role.title }}</span>
+        </div>
+        <div class="list-group-item">
+          <strong>Role Description</strong>
+          <div>{{ application.role.description }}</div>
+        </div>
+      </div>
 
-      <div class="form-group">
-        <a href="#" class="previous btn btn-default pull-left btn-icon-left">Back <i class="fa fa-arrow-left"></i></a>
-        <button type="submit" class="btn btn-primary btn-icon-right pull-right">Apply <i class="fa fa-arrow-right"></i></button>
+      <div class="list-group">
+        <div class="list-group-item">
+          <strong>Start Date</strong>
+          <span class="pull-right">{{ application.startDate | date }}</span>
+        </div>
+        <div class="list-group-item">
+          <strong>End Date</strong>
+          <span class="pull-right">{{ application.endDate | date }}</span>
+        </div>
+        <div class="list-group-item">
+          <strong>Total Hours</strong>
+          <span class="pull-right">{{ application.totalHours || "0" }} hours</span>
+        </div>
+        <div class="list-group-item">
+          <strong>Availability</strong>
+          <span class="pull-right">{{ application.availability.join(', ') }}</span>
+        </div>
+      </div>
+
+      <div class="list-group">
+        <div class="list-group-item">
+          <strong>Comments</strong>
+          <div>{{ application.comment }}</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <a class="previous btn btn-default pull-left btn-icon-left">Back <i class="fa fa-arrow-left"></i></a>
+        <a ng-click="save()" class="next btn btn-primary pull-right btn-icon-right">Submit Application <i class="fa fa-arrow-right"></i></a>
+      </div>
+
+    </fieldset>
+
+
+    <fieldset class="form-step">
+
+      <legend>Submitting Application</legend>
+
+      <div class="text-center" style="padding:60px 0;">
+        <p class="lead">Please wait while your application is submitted...</p>
+        <i class="fa fa-spinner fa-spin" style="font-size:40px"></i>
       </div>
 
     </fieldset>

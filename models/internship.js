@@ -92,7 +92,7 @@ var InternshipModel = function() {
      */
     InternshipSchema.methods.addActivity = function(activity, callback) {
         // Prevent duplicate messages
-        if ( activity.description === this.activity[0].description ) {
+        if ( this.activity.length && activity.description === this.activity[0].description ) {
             return callback(null, this);
         }
 
