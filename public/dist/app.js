@@ -37063,7 +37063,7 @@ angular.module('InternLabs.internships', [])
                   item.$edit = false;
                   item.$delete = false;
                 });
-                this.$new = {};
+                this.$newDocument = {};
               },
               close: function() {
                 this.closeAll();
