@@ -366,11 +366,6 @@ angular.module('InternLabs.internships', [])
         internship: '='
       },
       link: function(scope, elem, attrs) {
-
-        var save = function() {
-
-        }
-
         scope.add = function() {
           ModalFactory.create({
             scope: {
@@ -417,6 +412,74 @@ angular.module('InternLabs.internships', [])
           });
         };
 
+      }
+    };
+  })
+
+
+  /**
+   * Internship documents
+   */
+  .directive('documentsWidget', function(ModalFactory, Options) {
+    return {
+      replace: true,
+      templateUrl: 'internships/widgets/documents.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.upload = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Upload Documents",
+              internship: scope.internship,
+              url: Options.apiUrl('internships/' + scope.internship._id + '/documents')
+            },
+            className: 'modal-lg',
+            templateUrl: "internships/forms/documents-upload.tpl.html"
+          });
+        };
+
+        scope.edit = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Edit Documents",
+              internship: scope.internship,
+              $newDocument: {},
+              closeAll: function() {
+                _.each(scope.internship.documents, function(item) {
+                  item.$edit = false;
+                  item.$delete = false;
+                });
+                this.$new = {};
+              },
+              close: function() {
+                this.closeAll();
+              },
+              toggle: function(item, mode) {
+                if (item['$' + mode]) {
+                  return this.closeAll();
+                }
+                this.closeAll();
+                item['$' + mode] = true;
+                this.$newDocument = _.clone(item);
+              },
+              delete: function(item) {
+                scope.internship.one('documents', item._id).remove().then(function(response) {
+                  scope.internship.documents = response.documents;
+                  scope.internship.activity = response.activity;
+                });
+              },
+              save: function(item) {
+                scope.internship.all('documents').customPUT(this.$newDocument, item._id).then(function(response) {
+                  scope.internship.documents = response.documents;
+                });
+              }
+            },
+            className: 'modal-lg',
+            templateUrl: "internships/forms/documents-edit.tpl.html"
+          });
+        };
       }
     };
   })

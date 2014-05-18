@@ -189,6 +189,36 @@ angular.module('InternLabs.common.directives', [])
   })
 
 
+
+  /**
+   * Upload Form
+   */
+  .directive('uploadForm', function($fileUploader) {
+    return {
+      restrict: 'A',
+      scope: {
+        allow: '@?',
+        url: '@'
+      },
+      templateUrl: 'common/forms/file-upload.tpl.html',
+      link: function(scope, elem, attrs) {
+        var uploader = scope.uploader = $fileUploader.create({
+            scope: scope,
+            url: scope.url
+        });
+
+        scope.selectFiles = function() {
+          elem.find('.input-file').trigger('click');
+        };
+
+        uploader.bind('completeall', function (event, items) {
+          // console.info('Complete all', items);
+        });
+      }
+    }
+  })
+
+
   /**
    * Datepicker input field
    */

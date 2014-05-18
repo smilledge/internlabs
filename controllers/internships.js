@@ -195,6 +195,44 @@ module.exports = function(app) {
     });
   });
 
+  /**
+   * Upload a document
+   */
+  app.post('/api/internships/:internshipId/documents', auth.check(), function(req, res) {
+    InternshipService.uploadDocument(req.params.internshipId, req.user._id, req.files.file, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      return res.apiSuccess("Document has been uploaded sucessfully.", internship);
+    });
+  });
+
+  /**
+   * Edit a document
+   */
+  app.put('/api/internships/:internshipId/documents/:documentId', auth.check(), function(req, res) {
+    InternshipService.editDocument(req.params.internshipId, req.user._id, req.body, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      return res.apiSuccess("Document has been saved sucessfully.", internship);
+    });
+  });
+
+  /**
+   * Delete a document
+   */
+  app.delete('/api/internships/:internshipId/documents/:documentId', auth.check(), function(req, res) {
+    InternshipService.deleteDocument(req.params.internshipId, req.user._id, req.params.documentId, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      return res.apiSuccess("Document has been deleted sucessfully.", internship);
+    });
+  });
 
   /**
    * Set a the interview
