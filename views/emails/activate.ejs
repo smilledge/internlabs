@@ -1,38 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>InternLabs</title>
-</head>
-  <body>
-    <table class="body">
-      <tr>
-        <td class="center" align="center" valign="top">
-          <center>
-            <table class="outline">
-              <tr>
-                <td align="center"  colspan="3">
-                  <center>
-                      <h1>InternLabs</h1>
-                  </center>
-                </td>
-              </tr>
-              <tr>
-                <td width="20"></td>
-                <td align="center">
-                  <p>Thanks for joining InternLabs!</p>
-                </td>
-                <td width="20"></td>
-              </tr>
-              <tr>
-                <td height="100" colspan="3">
-                  <a href="<%=activationUrl%>" target="_blank">Click here to activate your account</a>
-                </td>
-              </tr>
-            </table>
-          </center>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>
+<% include header %>
+<p>Thanks for signing up to InternLabs!</p>
+<p>Please click the link below to activate your account: <br /> <a style="color:#39b549;" href="<%=activationUrl%>" target="_blank">Activate your account</a></p>
+<% include footer %>
