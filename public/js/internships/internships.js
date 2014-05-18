@@ -26,29 +26,66 @@ angular.module('InternLabs.internships', [])
     $scope.company = internship.company;
     $scope.student = internship.student;
     $scope.profile = internship.student.profile;
-
-
-
   })
 
 
   /**
    * Internship Application form
    */
-  .directive('applyForm', function() {
+  .directive('applyForm', function(Restangular, $location, Options, growl) {
     return {
       restrict: 'A',
       link: function(scope, elem, attrs) {
-
         scope.application.role = {};
+        scope.uploader = {};
 
         if (scope.role) {
           scope.application.role = scope.role;
           scope.existingRole = true;
         }
 
+        scope.save = function() {
+          Restangular.all("internships").post(scope.application).then(function(response) {
+
+            // Upload the files
+            if ( scope.uploader && scope.uploader.queue.length ) {
+              scope.uploader.setUrl(Options.apiUrl('internships/' + response._id + '/documents'));
+              scope.uploader.uploadAll();
+              scope.uploader.bind('completeall', function() {
+                growl.addSuccessMessage("Your attachments have been uploaded successfully.", {
+                  ttl: 5000
+                });
+                scope.$apply(function() {
+                  $location.path(response.url);
+                });
+                scope.close();
+              });
+            } else {
+              $location.path(response.url);
+            }
+          });
+        };
       }
     };
+  })
+
+
+  /**
+   * Internship title
+   */
+  .directive('internshipTitle', function(Auth) {
+    return {
+      templateUrl: 'internships/widgets/title.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.company = scope.internship.company;
+        scope.student = scope.internship.student;
+        scope.profile = scope.internship.student.profile;
+        scope.isCompany = Auth.hasAccess('employer');
+      }
+    }
   })
 
 
@@ -80,6 +117,24 @@ angular.module('InternLabs.internships', [])
 
 
   /**
+   * Applicant profile widget
+   */
+  .directive('profileWidget', function() {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/profile.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.profile = scope.internship.student.profile;
+      }
+    }
+  })
+
+
+  /**
    * Availability
    */
   .directive('availabilityWidget', function(Options) {
@@ -104,7 +159,6 @@ angular.module('InternLabs.internships', [])
         };
 
         scope.$watch('internship.availability', function(newVal, oldVal) {
-
           if (newVal) {
             getAvailability();
           }
@@ -129,19 +183,16 @@ angular.module('InternLabs.internships', [])
         scope.changeStatus = function(status) {
           scope.internship.status = status;
 
-          var verb = (status == 'active') ? 'approve' : 
-                     (status == 'rejected') ? 'reject' : 
-                     (status == 'pending') ? 'unapprove' : 
+          var verb = (status == 'active') ? 'approve' :
+                     (status == 'rejected') ? 'reject' :
+                     (status == 'pending') ? 'unapprove' :
                      'complete';
 
           scope.internship.customPOST({
             message: null
-          }, verb).then(function(response) {
-            if ( ! response.$$success ) {
-              ModalFactory.create({
-                scope: { title: "An error occured" },
-                template: response.$$error.join(' ')
-              });
+          }, verb).then(function(internship) {
+            if ( internship.$$success) {
+              scope.internship.activity = internship.activity;
             }
           });
         };
@@ -194,7 +245,10 @@ angular.module('InternLabs.internships', [])
                     data = this.scope._interview;
 
                 this.scope.internship.post('interview', data).then(function(internship) {
-                  scope.internship.interview = internship.interview;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.interview = internship.interview;
+                  }
                   self.close();
                 });
               }
@@ -210,6 +264,9 @@ angular.module('InternLabs.internships', [])
               delete: function() {
                 var self = this;
                 scope.internship.customDELETE('interview/').then(function(internship) {
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                  }
                   scope.internship.interview = null;
                   self.close();
                 });
@@ -277,8 +334,11 @@ angular.module('InternLabs.internships', [])
               save: function() {
                 var self = this;
                 this.scope.internship.post('supervisors', { email: this.scope.newSupervisor }).then(function(internship) {
-                  scope.internship.supervisors = internship.supervisors;
-                  scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.supervisors = internship.supervisors;
+                    scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  }
                   self.close();
                 });
               }
@@ -294,8 +354,11 @@ angular.module('InternLabs.internships', [])
               delete: function() {
                 var self = this;
                 scope.internship.customDELETE('supervisors/' + email).then(function(internship) {
-                  scope.internship.supervisors = internship.supervisors;
-                  scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.supervisors = internship.supervisors;
+                    scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  }
                   self.close();
                 });
               }
@@ -324,50 +387,120 @@ angular.module('InternLabs.internships', [])
         internship: '='
       },
       link: function(scope, elem, attrs) {
-
-        scope.edit = function() {
+        scope.add = function() {
           ModalFactory.create({
             scope: {
-              title: "Edit Internship Schedule",
+              title: "Add to Schedule",
               internship: scope.internship,
-              schedule: scope.internship.schedule,
-              _schedule: angular.copy(scope.internship.schedule),
               newSchedule: {
                 date: new Date(),
                 startTime: '9:00 AM',
                 endTime: '5:00 PM',
               },
               timeOptions: Options.timeOptions,
-              showForm: false,
-              add: function(schedule) {
-                if (!schedule.date) {
-                  return;
-                }
-
-                var newSchedule = _.union(this.scope._schedule, angular.copy(schedule));
-
-                // Sort the dates                
-                this.scope._schedule = _.sortBy(newSchedule, function(item) {
-                  return new Date(item.date).getTime();
-                });
-
-                this.scope.showForm = false;
-              },
-              remove: function(item) {
-                this.scope._schedule = _.without(this.scope._schedule, item)
-              },
               save: function() {
                 var self = this;
-                this.scope.internship.post('schedule', this.scope._schedule).then(function() {
-                  scope.internship.schedule = angular.copy(self.scope._schedule);
+                scope.internship.post('schedule', this.newSchedule).then(function(internship) {
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.schedule = internship.schedule;
+                  }
                   self.close();
                 });
+              }
+            },
+            templateUrl: "internships/forms/schedule-add.tpl.html"
+          });
+        };
+
+        scope.edit = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Edit Internship Schedule",
+              schedule: scope.internship.schedule,
+              remove: function(item) {
+                var self = this;
+                scope.internship.one('schedule', item._id).remove().then(function(internship) {
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.schedule = internship.schedule;
+                    self.scope.schedule = internship.schedule;
+                  }
+                })
               }
             },
             templateUrl: "internships/forms/schedule.tpl.html"
           });
         };
 
+      }
+    };
+  })
+
+
+  /**
+   * Internship documents
+   */
+  .directive('documentsWidget', function(ModalFactory, Options) {
+    return {
+      replace: true,
+      templateUrl: 'internships/widgets/documents.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.upload = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Upload Documents",
+              internship: scope.internship,
+              url: Options.apiUrl('internships/' + scope.internship._id + '/documents')
+            },
+            className: 'modal-lg',
+            templateUrl: "internships/forms/documents-upload.tpl.html"
+          });
+        };
+
+        scope.edit = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Edit Documents",
+              internship: scope.internship,
+              $newDocument: {},
+              closeAll: function() {
+                _.each(scope.internship.documents, function(item) {
+                  item.$edit = false;
+                  item.$delete = false;
+                });
+                this.$new = {};
+              },
+              close: function() {
+                this.closeAll();
+              },
+              toggle: function(item, mode) {
+                if (item['$' + mode]) {
+                  return this.closeAll();
+                }
+                this.closeAll();
+                item['$' + mode] = true;
+                this.$newDocument = _.clone(item);
+              },
+              delete: function(item) {
+                scope.internship.one('documents', item._id).remove().then(function(response) {
+                  scope.internship.documents = response.documents;
+                  scope.internship.activity = response.activity;
+                });
+              },
+              save: function(item) {
+                scope.internship.all('documents').customPUT(this.$newDocument, item._id).then(function(response) {
+                  scope.internship.documents = response.documents;
+                });
+              }
+            },
+            className: 'modal-lg',
+            templateUrl: "internships/forms/documents-edit.tpl.html"
+          });
+        };
       }
     };
   })

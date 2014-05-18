@@ -3,6 +3,7 @@
 @import "vendor/picker.less";
 @import "vendor/selecter.less";
 @import "vendor/datepicker.less";
+@import "vendor/growl.less";
 
 html, body {
   height: 100%;
@@ -602,6 +603,44 @@ body {
     right: 15px;
   }
 
+}
+
+
+.list-uploads {
+  
+  .list-group-item {
+    position: relative;
+    border-bottom-width: 3px;
+    border-bottom-color: #E6E6E6;
+  }
+
+  .item-progress {
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    height: 4px;
+    background: @brand-primary;
+    .transition(0.2s);
+    z-index: 2;
+  }
+}
+
+.dropzone {
+  margin: 0 0 20px 0;
+  background: #F2F2F2;
+  padding: 30px 0 20px 0;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+
+  &.over {
+    background: @brand-primary;
+    color: #fff !important;
+
+    .btn {
+      color: #fff;
+    }
+  }
 }
 
 

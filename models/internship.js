@@ -8,7 +8,8 @@ var mongoose = require('mongoose'),
     nconf = require('nconf'),
     acl = require('mongoose-acl'),
     aclAuth = require('../lib/aclAuth'),
-    slug = require('slug');
+    slug = require('slug'),
+    _ = require('lodash');
 
 
 var InternshipModel = function() {
@@ -50,6 +51,7 @@ var InternshipModel = function() {
         }],
         documents: [{
             name: { type: String },
+            description: { type: String },
             file: { type: String },
             type: { type: String },
             author: { type: ObjectId, ref: 'User' },
@@ -69,10 +71,31 @@ var InternshipModel = function() {
     InternshipSchema.plugin(aclAuth);
 
 
+    InternshipSchema.methods.toJSON = function() {
+        var obj = this.toObject();
+
+        if ( ! obj ) {
+            return obj;
+        }
+
+        // Add the file urls
+        _.each(obj.documents, function(doc) {
+            doc.fileUrl = nconf.get('uploadsPath') + '/' + doc.file;
+        });
+
+        return obj
+    }
+
+
     /**
      * Add item to the activity stream
      */
     InternshipSchema.methods.addActivity = function(activity, callback) {
+        // Prevent duplicate messages
+        if ( this.activity.length && activity.description === this.activity[0].description ) {
+            return callback(null, this);
+        }
+
         this.activity.unshift(activity);
         this.save(callback);
     };

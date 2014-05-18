@@ -3,19 +3,9 @@
     <h3>{{ title || "My Internships" }}</h3>
   </header>
 
-  <div class="list-group">
-    <a ng-repeat="internship in internships" href="{{ internship.url }}" class="list-group-item">
-      <h4 class="list-group-item-heading">
-        {{ internship.role.title || "Internship" }} 
-        <span class="text-muted">at</span> 
-        {{ internship.company.name }}
-        <span class="label label-primary pull-right">{{ internship.status }}</span>
-      </h4>
-
-      <p class="list-group-item-text">
-        {{ internship.startDate | date:short }}
-        <span ng-show="internship.startDate && internship.endDate" class="text-muted">to</span>
-        {{ internship.endDate | date:short }}</p>
+  <div class="list-group list-internships">
+    <a ng-repeat="internship in internships" href="{{ internship.url }}" class="list-group-item clearfix">
+      <div class="pull-left" internship-title internship="internship"></div>
     </a>
   </div>
 </div>

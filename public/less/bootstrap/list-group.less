@@ -20,6 +20,7 @@
 // Use on `li`s or `div`s within the `.list-group` parent.
 
 .list-group-item {
+  .clearfix;
   position: relative;
   display: block;
   padding: 10px 15px;
@@ -30,11 +31,11 @@
 
   // Round the first and last items
   &:first-child {
-    .border-top-radius(@list-group-border-radius);
+    // .border-top-radius(@list-group-border-radius);
   }
   &:last-child {
     margin-bottom: 0;
-    .border-bottom-radius(@list-group-border-radius);
+    // .border-bottom-radius(@list-group-border-radius);
   }
 
   // Align badges within list items
@@ -47,6 +48,10 @@
 
   > i.fa, > strong i.fa {
     margin-right: 6px;
+  }
+
+  &.item-muted {
+    background: #FAFAFA;
   }
 }
 

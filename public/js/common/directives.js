@@ -189,6 +189,58 @@ angular.module('InternLabs.common.directives', [])
   })
 
 
+
+  /**
+   * Upload Form
+   */
+  .directive('uploadForm', function($fileUploader) {
+    return {
+      restrict: 'A',
+      scope: {
+        uploader: '=?',
+        allow: '@?',
+        url: '@'
+      },
+      templateUrl: 'common/forms/file-upload.tpl.html',
+      link: function(scope, elem, attrs) {
+
+        if (elem.attr('hide-buttons') !== "undefined") {
+          scope.hideButtons = scope.$eval(elem.attr('hide-buttons'));
+        }
+
+        var uploader = scope._uploader = $fileUploader.create({
+          scope: scope,
+          url: scope.url
+        });
+
+        // Public uploader facade
+        // DO NOT $WATCH THIS OBJECT
+        // Bind to the events instead
+        scope.uploader = {
+          queue: uploader.queue,
+          uploadAll: _.bind(uploader.uploadAll, uploader),
+          cancelAll: _.bind(uploader.cancelAll, uploader),
+          clearQueue: _.bind(uploader.clearQueue, uploader),
+          bind: _.bind(uploader.bind, uploader),
+          setUrl: function(url) {
+            _.each(uploader.queue, function(file) {
+              file.url = url;
+            });
+          }
+        };
+
+        scope.selectFiles = function() {
+          elem.find('.input-file').trigger('click');
+        };
+
+        uploader.bind('completeall', function (event, items) {
+          // console.info('Complete all', items);
+        });
+      }
+    }
+  })
+
+
   /**
    * Datepicker input field
    */
@@ -462,7 +514,9 @@ angular.module('InternLabs.common.directives', [])
           });
 
           // Set first fieldset as active and hide others
-          $fieldsets.first().addClass('active');
+          $fieldsets.first().addClass('active').css({
+            position: 'relative'
+          });
           TweenLite.set($fieldsets.not(':first'), {
             autoAlpha: 0
           });
@@ -492,7 +546,7 @@ angular.module('InternLabs.common.directives', [])
           }
 
           TweenLite.to(elem, 0.3, {
-            'min-height': height 
+            'min-height': height
           });
         };
 
@@ -509,11 +563,17 @@ angular.module('InternLabs.common.directives', [])
           var deferred = $q.defer();
 
           var timeline = new TimelineLite({ onComplete: function() {
+            nextElem.css({
+              position: 'relative',
+              minHeight: 0
+            });
+
             deferred.resolve();
           }}).pause()
 
             // Animation initial state for elems
             .set(currentElem, {
+              position: 'absolute',
               left: 0
             })
             .set(nextElem, {

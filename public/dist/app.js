@@ -31826,6 +31826,189 @@ angular.module('akoenig.deckgrid').factory('Deckgrid', [
     }
 ]);
 /**
+ * angular-growl - v0.4.0 - 2013-11-19
+ * https://github.com/marcorinck/angular-growl
+ * Copyright (c) 2013 Marco Rinck; Licensed MIT
+ */
+angular.module('angular-growl', []);
+angular.module('angular-growl').directive('growl', [
+  '$rootScope',
+  function ($rootScope) {
+    'use strict';
+    return {
+      restrict: 'A',
+      template: '<div class="growl">' + '\t<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '\t\t<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' + '       <div ng-switch="message.enableHtml">' + '           <div ng-switch-when="true" ng-bind-html="message.text"></div>' + '           <div ng-switch-default ng-bind="message.text"></div>' + '       </div>' + '\t</div>' + '</div>',
+      replace: false,
+      scope: true,
+      controller: [
+        '$scope',
+        '$timeout',
+        'growl',
+        function ($scope, $timeout, growl) {
+          var onlyUnique = growl.onlyUnique();
+          $scope.messages = [];
+          function addMessage(message) {
+            $scope.messages.push(message);
+            if (message.ttl && message.ttl !== -1) {
+              $timeout(function () {
+                $scope.deleteMessage(message);
+              }, message.ttl);
+            }
+          }
+          $rootScope.$on('growlMessage', function (event, message) {
+            var found;
+            if (onlyUnique) {
+              angular.forEach($scope.messages, function (msg) {
+                if (message.text === msg.text && message.severity === msg.severity) {
+                  found = true;
+                }
+              });
+              if (!found) {
+                addMessage(message);
+              }
+            } else {
+              addMessage(message);
+            }
+          });
+          $scope.deleteMessage = function (message) {
+            var index = $scope.messages.indexOf(message);
+            if (index > -1) {
+              $scope.messages.splice(index, 1);
+            }
+          };
+          $scope.computeClasses = function (message) {
+            return {
+              'alert-success': message.severity === 'success',
+              'alert-error': message.severity === 'error',
+              'alert-danger': message.severity === 'error',
+              'alert-info': message.severity === 'info',
+              'alert-warning': message.severity === 'warn'
+            };
+          };
+        }
+      ]
+    };
+  }
+]);
+angular.module('angular-growl').provider('growl', function () {
+  'use strict';
+  var _ttl = null, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true;
+  this.globalTimeToLive = function (ttl) {
+    _ttl = ttl;
+  };
+  this.globalEnableHtml = function (enableHtml) {
+    _enableHtml = enableHtml;
+  };
+  this.messagesKey = function (messagesKey) {
+    _messagesKey = messagesKey;
+  };
+  this.messageTextKey = function (messageTextKey) {
+    _messageTextKey = messageTextKey;
+  };
+  this.messageSeverityKey = function (messageSeverityKey) {
+    _messageSeverityKey = messageSeverityKey;
+  };
+  this.onlyUniqueMessages = function (onlyUniqueMessages) {
+    _onlyUniqueMessages = onlyUniqueMessages;
+  };
+  this.serverMessagesInterceptor = [
+    '$q',
+    'growl',
+    function ($q, growl) {
+      function checkResponse(response) {
+        if (response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
+          growl.addServerMessages(response.data[_messagesKey]);
+        }
+      }
+      function success(response) {
+        checkResponse(response);
+        return response;
+      }
+      function error(response) {
+        checkResponse(response);
+        return $q.reject(response);
+      }
+      return function (promise) {
+        return promise.then(success, error);
+      };
+    }
+  ];
+  this.$get = [
+    '$rootScope',
+    '$filter',
+    function ($rootScope, $filter) {
+      var translate;
+      try {
+        translate = $filter('translate');
+      } catch (e) {
+      }
+      function broadcastMessage(message) {
+        if (translate) {
+          message.text = translate(message.text);
+        }
+        $rootScope.$broadcast('growlMessage', message);
+      }
+      function sendMessage(text, config, severity) {
+        var _config = config || {}, message;
+        message = {
+          text: text,
+          severity: severity,
+          ttl: _config.ttl || _ttl,
+          enableHtml: _config.enableHtml || _enableHtml
+        };
+        broadcastMessage(message);
+      }
+      function addWarnMessage(text, config) {
+        sendMessage(text, config, 'warn');
+      }
+      function addErrorMessage(text, config) {
+        sendMessage(text, config, 'error');
+      }
+      function addInfoMessage(text, config) {
+        sendMessage(text, config, 'info');
+      }
+      function addSuccessMessage(text, config) {
+        sendMessage(text, config, 'success');
+      }
+      function addServerMessages(messages) {
+        var i, message, severity, length;
+        length = messages.length;
+        for (i = 0; i < length; i++) {
+          message = messages[i];
+          if (message[_messageTextKey] && message[_messageSeverityKey]) {
+            switch (message[_messageSeverityKey]) {
+            case 'warn':
+              severity = 'warn';
+              break;
+            case 'success':
+              severity = 'success';
+              break;
+            case 'info':
+              severity = 'info';
+              break;
+            case 'error':
+              severity = 'error';
+              break;
+            }
+            sendMessage(message[_messageTextKey], undefined, severity);
+          }
+        }
+      }
+      function onlyUnique() {
+        return _onlyUniqueMessages;
+      }
+      return {
+        addWarnMessage: addWarnMessage,
+        addErrorMessage: addErrorMessage,
+        addInfoMessage: addInfoMessage,
+        addSuccessMessage: addSuccessMessage,
+        addServerMessages: addServerMessages,
+        onlyUnique: onlyUnique
+      };
+    }
+  ];
+});
+/**
  * @name InfoBox
  * @version 1.1.5 [March 1, 2011]
  * @author Gary Little (inspired by proof-of-concept code from Pamela Fox of Google)
@@ -33063,7 +33246,39 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/applications.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
+angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-edit.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
+
+angular.module("common/forms/file-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("common/forms/file-upload.tpl.html",
+    "<div>\n" +
+    "  <div ng-show=\"_uploader.isHTML5\">\n" +
+    "    <div class=\"dropzone\" ng-file-drop ng-file-over=\"over\">\n" +
+    "      <p>Drag and drop files here to upload</p>\n" +
+    "      <button type=\"button\" class=\"btn btn-link\" ng-click=\"selectFiles()\"><i class=\"fa fa-file\"></i> Select files</button>\n" +
+    "      <input class=\"input-file hide\" ng-file-select type=\"file\" multiple />\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"list-group list-uploads\">\n" +
+    "    <div ng-repeat=\"item in _uploader.queue\" class=\"list-group-item clearfix\">\n" +
+    "      <div class=\"pull-left\">\n" +
+    "        <span ng-show=\"item.isSuccess\"><i class=\"fa text-success fa-check\"></i></span>\n" +
+    "        <span ng-show=\"item.isCancel\"><i class=\"fa text-warning fa-ban\"></i></span>\n" +
+    "        <span ng-show=\"item.isError\"><i class=\"fa text-danger fa-warning\"></i></span>\n" +
+    "        <strong>{{ item.file.name }}</strong> <span class=\"text-muted\">({{ item.file.size/1024/1024|number:2 }} MB)</span>\n" +
+    "      </div>\n" +
+    "      <a ng-click=\"item.remove()\" class=\"if-editable btn btn-danger btn-icon fa fa-times pull-right\"></a>\n" +
+    "      <div class=\"item-progress\" ng-style=\"{ 'width': item.progress + '%' }\"></div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div ng-hide=\"hideButtons\" class=\"text-center\">\n" +
+    "      <button type=\"button\" class=\"btn btn-success btn-icon-left\" ng-click=\"_uploader.uploadAll()\" ng-show=\"_uploader.getNotUploadedItems().length\"><i class=\"fa fa-arrow-up\"></i> Start Upload</button>\n" +
+    "      <button type=\"button\" class=\"btn btn-danger btn-icon-left\" ng-click=\"_uploader.cancelAll()\" ng-show=\"_uploader.isUploading\"><i class=\"fa fa-times\"></i> Cancel Upload</button>\n" +
+    "      <button type=\"button\" class=\"btn btn-default btn-icon-left\" ng-click=\"_uploader.clearQueue()\" ng-show=\"_uploader.queue.length\"><i class=\"fa fa-trash-o\"></i> Clear Queue</button>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
 
 angular.module("company/details.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("company/details.tpl.html",
@@ -33182,14 +33397,6 @@ angular.module("company/widgets/sidebar.tpl.html", []).run(["$templateCache", fu
     "</div>");
 }]);
 
-angular.module("dashboard/applications.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("dashboard/applications.tpl.html",
-    "<header class=\"section-header\">\n" +
-    "  <h2>Pending Applications</h2>\n" +
-    "</header>\n" +
-    "");
-}]);
-
 angular.module("dashboard/company-profile.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/company-profile.tpl.html",
     "<article class=\"edit-company-profile\">\n" +
@@ -33278,19 +33485,9 @@ angular.module("dashboard/internships.tpl.html", []).run(["$templateCache", func
     "    <h3>{{ title || \"My Internships\" }}</h3>\n" +
     "  </header>\n" +
     "\n" +
-    "  <div class=\"list-group\">\n" +
-    "    <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item\">\n" +
-    "      <h4 class=\"list-group-item-heading\">\n" +
-    "        {{ internship.role.title || \"Internship\" }} \n" +
-    "        <span class=\"text-muted\">at</span> \n" +
-    "        {{ internship.company.name }}\n" +
-    "        <span class=\"label label-primary pull-right\">{{ internship.status }}</span>\n" +
-    "      </h4>\n" +
-    "\n" +
-    "      <p class=\"list-group-item-text\">\n" +
-    "        {{ internship.startDate | date:short }}\n" +
-    "        <span ng-show=\"internship.startDate && internship.endDate\" class=\"text-muted\">to</span>\n" +
-    "        {{ internship.endDate | date:short }}</p>\n" +
+    "  <div class=\"list-group list-internships\">\n" +
+    "    <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item clearfix\">\n" +
+    "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
     "    </a>\n" +
     "  </div>\n" +
     "</div>");
@@ -33430,7 +33627,8 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
     "\n" +
     "  <section class=\"sub-header\">\n" +
     "    <div class=\"container clearfix\">\n" +
-    "      <h2 class=\"pull-left\">{{ internship.role.title }} - {{ profile.name }}</h2>\n" +
+    "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
+    "\n" +
     "      <div class=\"pull-right\">\n" +
     "        <div status-widget internship=\"internship\"></div>\n" +
     "      </div>\n" +
@@ -33441,10 +33639,12 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
     "    <div class=\"container\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-sm-4\">\n" +
+    "          <div profile-widget internship=\"internship\"></div>\n" +
     "          <div schedule-widget internship=\"internship\"></div>\n" +
     "          <div supervisors-widget internship=\"internship\"></div>\n" +
     "          <div interview-widget internship=\"internship\"></div>\n" +
     "          <div availability-widget internship=\"internship\"></div>\n" +
+    "          <div documents-widget internship=\"internship\"></div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-sm-8\">\n" +
@@ -33460,7 +33660,7 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
 
 angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/forms/apply.tpl.html",
-    "<form apply-form role=\"form\" ng-submit=\"save()\">\n" +
+    "<form apply-form role=\"form\">\n" +
     "\n" +
     "  <div class=\"form-group\">\n" +
     "    <p>Your internship proposal contains everything your employer will need to know. This includes the internship length, your availability, required documentation and anything else that will be required of the employer.</p>\n" +
@@ -33485,8 +33685,8 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "        </div>\n" +
     "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "      <div class=\"modal-footer\">\n" +
+    "        <a class=\"next btn btn-primary pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
     "      </div>\n" +
     "\n" +
     "    </fieldset>\n" +
@@ -33524,9 +33724,9 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "        <textarea ng-model=\"application.comment\" id=\"field-comment\" rows=\"6\" class=\"form-control\"></textarea>\n" +
     "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
-    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "      <div class=\"modal-footer\">\n" +
+    "        <a class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
+    "        <a class=\"next btn btn-primary pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
     "      </div>\n" +
     "\n" +
     "    </fieldset>\n" +
@@ -33536,11 +33736,11 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "\n" +
     "      <legend>Attached Documents</legend>\n" +
     "\n" +
-    "      <p class=\"lead\">TODO!</p>\n" +
+    "      <div upload-form uploader=\"uploader\" allow=\"all\" url=\"/testing/123\" hide-buttons=\"true\"></div>\n" +
     "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
-    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "      <div class=\"modal-footer\">\n" +
+    "        <a class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
+    "        <a class=\"next btn btn-primary pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
     "      </div>\n" +
     "\n" +
     "    </fieldset>\n" +
@@ -33550,11 +33750,58 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "\n" +
     "      <legend>Confirm Application</legend>\n" +
     "\n" +
-    "      <p class=\"lead\">TODO!</p>\n" +
+    "      <div class=\"list-group\">\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Role Title</strong>\n" +
+    "          <span class=\"pull-right\">{{ application.role.title }}</span>\n" +
+    "        </div>\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Role Description</strong>\n" +
+    "          <div>{{ application.role.description }}</div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
-    "        <button type=\"submit\" class=\"btn btn-primary btn-icon-right pull-right\">Apply <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "      <div class=\"list-group\">\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Start Date</strong>\n" +
+    "          <span class=\"pull-right\">{{ application.startDate | date }}</span>\n" +
+    "        </div>\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>End Date</strong>\n" +
+    "          <span class=\"pull-right\">{{ application.endDate | date }}</span>\n" +
+    "        </div>\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Total Hours</strong>\n" +
+    "          <span class=\"pull-right\">{{ application.totalHours || \"0\" }} hours</span>\n" +
+    "        </div>\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Availability</strong>\n" +
+    "          <span class=\"pull-right\">{{ application.availability.join(', ') }}</span>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"list-group\">\n" +
+    "        <div class=\"list-group-item\">\n" +
+    "          <strong>Comments</strong>\n" +
+    "          <div>{{ application.comment }}</div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"modal-footer\">\n" +
+    "        <a class=\"previous btn btn-default pull-left btn-icon-left\">Back <i class=\"fa fa-arrow-left\"></i></a>\n" +
+    "        <a ng-click=\"save()\" class=\"next btn btn-primary pull-right btn-icon-right\">Submit Application <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "      </div>\n" +
+    "\n" +
+    "    </fieldset>\n" +
+    "\n" +
+    "\n" +
+    "    <fieldset class=\"form-step\">\n" +
+    "\n" +
+    "      <legend>Submitting Application</legend>\n" +
+    "\n" +
+    "      <div class=\"text-center\" style=\"padding:60px 0;\">\n" +
+    "        <p class=\"lead\">Please wait while your application is submitted...</p>\n" +
+    "        <i class=\"fa fa-spinner fa-spin\" style=\"font-size:40px\"></i>\n" +
     "      </div>\n" +
     "\n" +
     "    </fieldset>\n" +
@@ -33562,6 +33809,63 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "  </div>\n" +
     "\n" +
     "</form>");
+}]);
+
+angular.module("internships/forms/documents-edit.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/forms/documents-edit.tpl.html",
+    "<div>\n" +
+    "  <div class=\"list-group list-files\">\n" +
+    "    <div ng-repeat-start=\"item in internship.documents track by item._id\" class=\"list-group-item\">\n" +
+    "      <strong class=\"pull-left\"><i class=\"fa fa-file\"></i> {{ item.name || item.file }}</strong>\n" +
+    "      <div class=\"pull-right\">\n" +
+    "        <a href=\"{{ item.fileUrl }}\" target=\"_blank\" class=\"btn btn-success btn-icon fa fa-download\"></a>\n" +
+    "        <a ng-click=\"toggle(item, 'edit')\" class=\"btn btn-success btn-icon fa fa-pencil\"></a>\n" +
+    "        <a ng-click=\"toggle(item, 'delete')\" class=\"btn btn-danger btn-icon fa fa-times\"></a>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "\n" +
+    "    <div ng-show=\"item.$delete\" class=\"list-group-item list-form item-muted text-center\">\n" +
+    "      <p class=\"lead\">Are you sure you want to delete this document?</p>\n" +
+    "      <button ng-click=\"delete(item)\" type=\"button\" class=\"btn btn-danger btn-icon-left\"><i class=\"fa fa-trash-o\"></i> Delete</button>\n" +
+    "      <button ng-click=\"cancel()\" type=\"button\" class=\"btn btn-default btn-icon-left\"><i class=\"fa fa-times\"></i> Cancel</button>\n" +
+    "    </div>\n" +
+    "\n" +
+    "\n" +
+    "    <div ng-repeat-end ng-show=\"item.$edit\" class=\"list-group-item list-form item-muted\">\n" +
+    "      <form ng-submit=\"save(item)\" class=\"form-horizontal\">\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-2 control-label\">Name</label>\n" +
+    "          <div class=\"col-sm-9\">\n" +
+    "            <input type=\"text\" class=\"form-control\" ng-model=\"$newDocument.name\" placeholder=\"Name\">\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-2 control-label\">Description</label>\n" +
+    "          <div class=\"col-sm-9\">\n" +
+    "            <textarea class=\"form-control\" rows=\"3\" ng-model=\"$newDocument.description\" placeholder=\"Description\"></textarea>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <div class=\"col-sm-9 col-sm-offset-2\">\n" +
+    "            <button type=\"submit\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-save\"></i> Save</button>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </form>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"modal-footer text-center\">\n" +
+    "    <button ng-click=\"close()\" type=\"button\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-check\"></i> Done</button>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
+angular.module("internships/forms/documents-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/forms/documents-upload.tpl.html",
+    "<div upload-form allow=\"all\" url=\"{{ url }}\"></div>");
 }]);
 
 angular.module("internships/forms/internship-status.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -33619,13 +33923,40 @@ angular.module("internships/forms/interview.tpl.html", []).run(["$templateCache"
     "</form>");
 }]);
 
+angular.module("internships/forms/schedule-add.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/forms/schedule-add.tpl.html",
+    "<form ng-submit=\"save()\" role=\"form\" class=\"schedule-add\">\n" +
+    "  <div class=\"form-group\">\n" +
+    "      <div class=\"row-sm\">\n" +
+    "        <div class=\"col-sm-4\">\n" +
+    "          <label>Date</label>\n" +
+    "          <input date-picker=\"newSchedule.date\" type=\"text\" class=\"form-control\">\n" +
+    "        </div>\n" +
+    "        <div class=\"col-sm-4\">\n" +
+    "          <label>Start Time</label>\n" +
+    "          <select selecter ng-model=\"newSchedule.startTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
+    "        </div>\n" +
+    "        <div class=\"col-sm-4\">\n" +
+    "          <label>End Time</label>\n" +
+    "          <select selecter ng-model=\"newSchedule.endTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "\n" +
+    "  <div class=\"modal-footer text-center\">\n" +
+    "    <button type=\"submit\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-check\"></i> Add to Schedule</button>\n" +
+    "    <button ng-click=\"close()\" type=\"button\" class=\"btn btn-default btn-icon-left\"><i class=\"fa fa-times\"></i> Cancel</button>\n" +
+    "  </div>\n" +
+    "</form>\n" +
+    "");
+}]);
+
 angular.module("internships/forms/schedule.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/forms/schedule.tpl.html",
     "<div>\n" +
-    "  \n" +
-    "  <!-- List existing -->\n" +
     "  <div class=\"list-group list-schedule\">\n" +
-    "    <div ng-repeat=\"item in _schedule\" class=\"list-group-item\">\n" +
+    "    <div ng-repeat=\"item in schedule\" class=\"list-group-item\">\n" +
     "      <strong class=\"date pull-left\"><i class=\"fa fa-calendar\"></i> {{ item.date | date:short }}</strong>\n" +
     "      <span class=\"pull-right\">\n" +
     "        <span class=\"time\"><i class=\"fa fa-clock-o\"></i> {{ item.startTime }} <span class=\"text-muted\">to</span> {{ item.endTime }}</span>\n" +
@@ -33633,38 +33964,10 @@ angular.module("internships/forms/schedule.tpl.html", []).run(["$templateCache",
     "      </span>\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "  \n" +
-    "  <button ng-click=\"showForm=true\" ng-show=\"!showForm\" type=\"button\" class=\"btn btn-default btn-icon-left btn-block\"><i class=\"fa fa-plus\"></i> Add a work period</button>\n" +
-    "\n" +
-    "  <!-- Add to schedule -->\n" +
-    "  <form ng-show=\"showForm\" ng-submit=\"add(newSchedule)\" role=\"form\" class=\"schedule-add well\">\n" +
-    "    <div class=\"form-group\">\n" +
-    "        <div class=\"row-sm\">\n" +
-    "          <div class=\"col-sm-3\">\n" +
-    "            <label>Date</label>\n" +
-    "            <input date-picker=\"newSchedule.date\" type=\"text\" class=\"form-control\">\n" +
-    "          </div>\n" +
-    "          <div class=\"col-sm-3\">\n" +
-    "            <label>Start Time</label>\n" +
-    "            <select selecter ng-model=\"newSchedule.startTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
-    "          </div>\n" +
-    "          <div class=\"col-sm-3\">\n" +
-    "            <label>End Time</label>\n" +
-    "            <select selecter ng-model=\"newSchedule.endTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
-    "          </div>\n" +
-    "          <div class=\"col-sm-3\">\n" +
-    "            <label style=\"display:block\">&nbsp;</label>\n" +
-    "            <button type=\"submit\" class=\"btn btn-block btn-link\"><i class=\"fa fa-plus\"></i> Add to schedule</button>\n" +
-    "          </div>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "  </form>\n" +
     "\n" +
     "  <div class=\"modal-footer text-center\">\n" +
-    "    <button ng-click=\"save()\" type=\"button\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-check\"></i> Save Schedule</button>\n" +
-    "    <button ng-click=\"close()\" type=\"button\" class=\"btn btn-default btn-icon-left\"><i class=\"fa fa-times\"></i> Cancel</button>\n" +
+    "    <button ng-click=\"close()\" type=\"button\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-check\"></i> Done</button>\n" +
     "  </div>\n" +
-    "  \n" +
     "</div>");
 }]);
 
@@ -33702,7 +34005,7 @@ angular.module("internships/widgets/activity.tpl.html", []).run(["$templateCache
     "  </header>\n" +
     "\n" +
     "  <div class=\"list-group list-activity\">\n" +
-    "    <div ng-repeat=\"item in internship.activity\" class=\"list-group-item item-activity type-{{ item.type || 'update' }} priority-{{ item.priority || '1' }}\" ng-class=\"{'editable': canEdit(item)}\">\n" +
+    "    <div ng-repeat=\"item in internship.activity track by item._id\" class=\"list-group-item item-activity type-{{ item.type || 'update' }} priority-{{ item.priority || '1' }}\" ng-class=\"{'editable': canEdit(item)}\">\n" +
     "      <p class=\"description\">{{ item.description }}</p>\n" +
     "      <div class=\"meta\">\n" +
     "        <span ng-show=\"item.author\" class=\"user\"><i class=\"fa fa-user\"></i> {{ item.author.profile.name }}</span>\n" +
@@ -33739,6 +34042,38 @@ angular.module("internships/widgets/availability.tpl.html", []).run(["$templateC
     "      <i ng-show=\"day.available\" class=\"fa fa-check text-success pull-right\"></i>\n" +
     "      <i ng-show=\"!day.available\" class=\"fa fa-times text-muted pull-right\"></i>\n" +
     "    </div>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
+angular.module("internships/widgets/documents.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/widgets/documents.tpl.html",
+    "<div class=\"content-box widget-documents\">\n" +
+    "  <header>\n" +
+    "    <h3>Documents</h3>\n" +
+    "\n" +
+    "    <div dropdown-menu>\n" +
+    "      <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "      <ul>\n" +
+    "        <li><a ng-click=\"upload()\">Upload Documents</a></li>\n" +
+    "        <li><a ng-click=\"edit()\">Edit Documents</a></li>\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <div ng-show=\"internship.documents.length\" class=\"list-group list-documents\">\n" +
+    "    <div ng-repeat-start=\"doc in internship.documents\" class=\"list-group-item\">\n" +
+    "      <strong>{{ doc.name }}</strong>\n" +
+    "      <a href=\"{{ doc.fileUrl }}\" class=\"pull-right\" target=\"_blank\"><i class=\"fa fa-download\"></i> Download</a>\n" +
+    "    </div>\n" +
+    "    <div ng-repeat-end ng-show=\"doc.description\" class=\"list-group-item item-muted text-muted\">\n" +
+    "      {{ doc.description }}\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div ng-show=\"!internship.documents.length\" class=\"no-results\">\n" +
+    "    <p class=\"lead\">No documents have been uploaded</p>\n" +
+    "    <a ng-click=\"upload()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-cloud-upload\"></i> Upload a document</a>\n" +
     "  </div>\n" +
     "</div>");
 }]);
@@ -33796,6 +34131,51 @@ angular.module("internships/widgets/message.tpl.html", []).run(["$templateCache"
     "</div>");
 }]);
 
+angular.module("internships/widgets/profile.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/widgets/profile.tpl.html",
+    "<div class=\"content-box widget-profile\">\n" +
+    "  <header>\n" +
+    "    <h3>Applicant's Profile</h3>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <div class=\"list-group\">\n" +
+    "    <div class=\"list-group-item\">\n" +
+    "      <strong>Name</strong>\n" +
+    "      <span class=\"pull-right\">{{ profile.name }}</span>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"profile.introduction\" class=\"list-group-item\">\n" +
+    "      {{ profile.introduction }}\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"profile.university\" class=\"list-group-item\">\n" +
+    "      <strong>University</strong>\n" +
+    "      <span class=\"pull-right\">{{ profile.university }}</span>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"profile.courseName\" class=\"list-group-item\">\n" +
+    "      <strong>Course</strong>\n" +
+    "      <span class=\"pull-right\">{{ profile.courseName }}</span>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"profile.skills\" class=\"list-group-item\">\n" +
+    "      <div><strong>Key Skills</strong></div>\n" +
+    "      <div>{{ profile.skills.join(', ') }}</div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"profile.resume\" class=\"list-group-item\">\n" +
+    "      <strong>Resume</strong>\n" +
+    "      <span class=\"pull-right\"><a href=\"{{ profile.resume }}\" target=\"_blank\"><i class=\"fa fa-download\"></i> Download</a></span>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"profile.linkedIn\" class=\"list-group-item\">\n" +
+    "      <strong>LinkedIn</strong>\n" +
+    "      <span class=\"pull-right\"><a href=\"{{ profile.linkedIn }}\" target=\"_blank\"><i class=\"fa fa-linkedin-square\"></i> View Profile</a></span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>");
+}]);
+
 angular.module("internships/widgets/schedule.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/widgets/schedule.tpl.html",
     "<div class=\"content-box widget-schedule\">\n" +
@@ -33833,8 +34213,8 @@ angular.module("internships/widgets/status.tpl.html", []).run(["$templateCache",
     "    <ul>\n" +
     "      <li ng-show=\"internship.status == 'pending'\"><a ng-click=\"change('active')\">Approve Internship</a></li>\n" +
     "      <li ng-show=\"internship.status == 'pending'\"><a ng-click=\"change('rejected')\">Reject Internship</a></li>\n" +
-    "      <li ng-show=\"internship.status == 'active'\"><a ng-click=\"change('complete')\">Mark internship as completed</a></li>\n" +
-    "      <li ng-show=\"internship.status == 'complete'\"><a ng-click=\"change('active')\">Mark internship as active</a></li>\n" +
+    "      <li ng-show=\"internship.status == 'active'\"><a ng-click=\"change('completed')\">Mark internship as completed</a></li>\n" +
+    "      <li ng-show=\"internship.status == 'completed'\"><a ng-click=\"change('active')\">Mark internship as active</a></li>\n" +
     "      <li ng-show=\"internship.status == 'active' || internship.status == 'rejected'\"><a ng-click=\"change('pending')\">Mark internship as pending</a></li>\n" +
     "    </ul>\n" +
     "  </div>\n" +
@@ -33867,6 +34247,33 @@ angular.module("internships/widgets/supervisors.tpl.html", []).run(["$templateCa
     "    <a ng-click=\"add()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-plus\"></i> Add one now</a>\n" +
     "  </div>\n" +
     " \n" +
+    "</div>");
+}]);
+
+angular.module("internships/widgets/title.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/widgets/title.tpl.html",
+    "<div class=\"internship-title\">\n" +
+    "  <div ng-show=\"!isCompany || company.logoUrl\" class=\"company-logo\">\n" +
+    "    <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"title-body pull-left\">\n" +
+    "    <h2 ng-show=\"!isCompany\">{{ internship.role.title || \"Internship\" }} <span class=\"text-muted\">at</span> <a href=\"{{ company.url }}\">{{ company.name }}</a></h2>\n" +
+    "    <h2 ng-show=\"isCompany\">{{ profile.name }} <span class=\"text-muted\">({{ internship.role.title || \"Internship\" }})</h2>\n" +
+    "    <div class=\"meta\">\n" +
+    "      <span class=\"status\">\n" +
+    "        <i ng-class=\"{\n" +
+    "          'fa fa-cogs': internship.status == 'pending',\n" +
+    "          'fa fa-heck-square': internship.status == 'active',\n" +
+    "          'fa fa-minus-circle': internship.status == 'rejected',\n" +
+    "          'fa fa-trophy': internship.status == 'completed',\n" +
+    "        }\"></i> {{ internship.status | titlecase }}\n" +
+    "      </span>\n" +
+    "      <span class=\"date\">\n" +
+    "        <i class=\"fa fa-calendar\"></i> From {{ internship.startDate | date }} to {{ internship.endDate | date }}\n" +
+    "      </span>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
     "</div>");
 }]);
 
@@ -34465,6 +34872,7 @@ angular.module('InternLabs', [
   'angularFileUpload',
   'restangular',
   'akoenig.deckgrid',
+  'angular-growl',
   'templates-app',
   'InternLabs.services',
   'InternLabs.common.directives',
@@ -34482,6 +34890,9 @@ angular.module('InternLabs', [
 
     RestangularProvider.setBaseUrl('/api');
     
+    /**
+     * Extract the response data
+     */
     RestangularProvider.setResponseExtractor(function(response, operation) {
       var extractedData;
 
@@ -34501,9 +34912,11 @@ angular.module('InternLabs', [
       id: "_id"
     });
 
+    
+
   })
 
-  .run(function() {
+  .run(function(Restangular, growl) {
     
     // Underscore mixins
     _.mixin({
@@ -34536,6 +34949,27 @@ angular.module('InternLabs', [
      
         return str;
       }
+    });
+
+
+
+    /**
+     * Intercept responses and check for messages or errors
+     */
+    Restangular.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
+      if ( data.$$error ) {
+        growl.addErrorMessage(data.$$error, {
+          ttl: 10000
+        });
+      }
+
+      if ( data.$$message ) {
+        growl.addSuccessMessage(data.$$message, {
+          ttl: 5000
+        });
+      }
+
+      return data;
     });
 
   })
@@ -34802,6 +35236,58 @@ angular.module('InternLabs.common.directives', [])
 
         elem.on('$destroy', function() {
           $(window).off('click.' + uniqId);
+        });
+      }
+    }
+  })
+
+
+
+  /**
+   * Upload Form
+   */
+  .directive('uploadForm', function($fileUploader) {
+    return {
+      restrict: 'A',
+      scope: {
+        uploader: '=?',
+        allow: '@?',
+        url: '@'
+      },
+      templateUrl: 'common/forms/file-upload.tpl.html',
+      link: function(scope, elem, attrs) {
+
+        if (elem.attr('hide-buttons') !== "undefined") {
+          scope.hideButtons = scope.$eval(elem.attr('hide-buttons'));
+        }
+
+        var uploader = scope._uploader = $fileUploader.create({
+          scope: scope,
+          url: scope.url
+        });
+
+        // Public uploader facade
+        // DO NOT $WATCH THIS OBJECT
+        // Bind to the events instead
+        scope.uploader = {
+          queue: uploader.queue,
+          uploadAll: _.bind(uploader.uploadAll, uploader),
+          cancelAll: _.bind(uploader.cancelAll, uploader),
+          clearQueue: _.bind(uploader.clearQueue, uploader),
+          bind: _.bind(uploader.bind, uploader),
+          setUrl: function(url) {
+            _.each(uploader.queue, function(file) {
+              file.url = url;
+            });
+          }
+        };
+
+        scope.selectFiles = function() {
+          elem.find('.input-file').trigger('click');
+        };
+
+        uploader.bind('completeall', function (event, items) {
+          // console.info('Complete all', items);
         });
       }
     }
@@ -35081,7 +35567,9 @@ angular.module('InternLabs.common.directives', [])
           });
 
           // Set first fieldset as active and hide others
-          $fieldsets.first().addClass('active');
+          $fieldsets.first().addClass('active').css({
+            position: 'relative'
+          });
           TweenLite.set($fieldsets.not(':first'), {
             autoAlpha: 0
           });
@@ -35111,7 +35599,7 @@ angular.module('InternLabs.common.directives', [])
           }
 
           TweenLite.to(elem, 0.3, {
-            'min-height': height 
+            'min-height': height
           });
         };
 
@@ -35128,11 +35616,17 @@ angular.module('InternLabs.common.directives', [])
           var deferred = $q.defer();
 
           var timeline = new TimelineLite({ onComplete: function() {
+            nextElem.css({
+              position: 'relative',
+              minHeight: 0
+            });
+
             deferred.resolve();
           }}).pause()
 
             // Animation initial state for elems
             .set(currentElem, {
+              position: 'absolute',
               left: 0
             })
             .set(nextElem, {
@@ -35748,13 +36242,7 @@ angular.module('InternLabs.company', [])
         scope: {
           title: "Apply for internship",
           application: $scope.application,
-          role: role,
-          save: function() {
-            Restangular.all("internships").post(this.application).then(function(response) {
-              console.log(response);
-              this.close();
-            }.bind(this));
-          }
+          role: role
         },
         templateUrl: "internships/forms/apply.tpl.html",
         className: "modal-lg modal-create-application"
@@ -36129,29 +36617,66 @@ angular.module('InternLabs.internships', [])
     $scope.company = internship.company;
     $scope.student = internship.student;
     $scope.profile = internship.student.profile;
-
-
-
   })
 
 
   /**
    * Internship Application form
    */
-  .directive('applyForm', function() {
+  .directive('applyForm', function(Restangular, $location, Options, growl) {
     return {
       restrict: 'A',
       link: function(scope, elem, attrs) {
-
         scope.application.role = {};
+        scope.uploader = {};
 
         if (scope.role) {
           scope.application.role = scope.role;
           scope.existingRole = true;
         }
 
+        scope.save = function() {
+          Restangular.all("internships").post(scope.application).then(function(response) {
+
+            // Upload the files
+            if ( scope.uploader && scope.uploader.queue.length ) {
+              scope.uploader.setUrl(Options.apiUrl('internships/' + response._id + '/documents'));
+              scope.uploader.uploadAll();
+              scope.uploader.bind('completeall', function() {
+                growl.addSuccessMessage("Your attachments have been uploaded successfully.", {
+                  ttl: 5000
+                });
+                scope.$apply(function() {
+                  $location.path(response.url);
+                });
+                scope.close();
+              });
+            } else {
+              $location.path(response.url);
+            }
+          });
+        };
       }
     };
+  })
+
+
+  /**
+   * Internship title
+   */
+  .directive('internshipTitle', function(Auth) {
+    return {
+      templateUrl: 'internships/widgets/title.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.company = scope.internship.company;
+        scope.student = scope.internship.student;
+        scope.profile = scope.internship.student.profile;
+        scope.isCompany = Auth.hasAccess('employer');
+      }
+    }
   })
 
 
@@ -36183,6 +36708,24 @@ angular.module('InternLabs.internships', [])
 
 
   /**
+   * Applicant profile widget
+   */
+  .directive('profileWidget', function() {
+    return {
+      restrict: 'A',
+      replace: true,
+      templateUrl: 'internships/widgets/profile.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.profile = scope.internship.student.profile;
+      }
+    }
+  })
+
+
+  /**
    * Availability
    */
   .directive('availabilityWidget', function(Options) {
@@ -36207,7 +36750,6 @@ angular.module('InternLabs.internships', [])
         };
 
         scope.$watch('internship.availability', function(newVal, oldVal) {
-
           if (newVal) {
             getAvailability();
           }
@@ -36232,19 +36774,16 @@ angular.module('InternLabs.internships', [])
         scope.changeStatus = function(status) {
           scope.internship.status = status;
 
-          var verb = (status == 'active') ? 'approve' : 
-                     (status == 'rejected') ? 'reject' : 
-                     (status == 'pending') ? 'unapprove' : 
+          var verb = (status == 'active') ? 'approve' :
+                     (status == 'rejected') ? 'reject' :
+                     (status == 'pending') ? 'unapprove' :
                      'complete';
 
           scope.internship.customPOST({
             message: null
-          }, verb).then(function(response) {
-            if ( ! response.$$success ) {
-              ModalFactory.create({
-                scope: { title: "An error occured" },
-                template: response.$$error.join(' ')
-              });
+          }, verb).then(function(internship) {
+            if ( internship.$$success) {
+              scope.internship.activity = internship.activity;
             }
           });
         };
@@ -36297,7 +36836,10 @@ angular.module('InternLabs.internships', [])
                     data = this.scope._interview;
 
                 this.scope.internship.post('interview', data).then(function(internship) {
-                  scope.internship.interview = internship.interview;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.interview = internship.interview;
+                  }
                   self.close();
                 });
               }
@@ -36313,6 +36855,9 @@ angular.module('InternLabs.internships', [])
               delete: function() {
                 var self = this;
                 scope.internship.customDELETE('interview/').then(function(internship) {
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                  }
                   scope.internship.interview = null;
                   self.close();
                 });
@@ -36380,8 +36925,11 @@ angular.module('InternLabs.internships', [])
               save: function() {
                 var self = this;
                 this.scope.internship.post('supervisors', { email: this.scope.newSupervisor }).then(function(internship) {
-                  scope.internship.supervisors = internship.supervisors;
-                  scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.supervisors = internship.supervisors;
+                    scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  }
                   self.close();
                 });
               }
@@ -36397,8 +36945,11 @@ angular.module('InternLabs.internships', [])
               delete: function() {
                 var self = this;
                 scope.internship.customDELETE('supervisors/' + email).then(function(internship) {
-                  scope.internship.supervisors = internship.supervisors;
-                  scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.supervisors = internship.supervisors;
+                    scope.internship.invitedSupervisors = internship.invitedSupervisors;
+                  }
                   self.close();
                 });
               }
@@ -36427,50 +36978,120 @@ angular.module('InternLabs.internships', [])
         internship: '='
       },
       link: function(scope, elem, attrs) {
-
-        scope.edit = function() {
+        scope.add = function() {
           ModalFactory.create({
             scope: {
-              title: "Edit Internship Schedule",
+              title: "Add to Schedule",
               internship: scope.internship,
-              schedule: scope.internship.schedule,
-              _schedule: angular.copy(scope.internship.schedule),
               newSchedule: {
                 date: new Date(),
                 startTime: '9:00 AM',
                 endTime: '5:00 PM',
               },
               timeOptions: Options.timeOptions,
-              showForm: false,
-              add: function(schedule) {
-                if (!schedule.date) {
-                  return;
-                }
-
-                var newSchedule = _.union(this.scope._schedule, angular.copy(schedule));
-
-                // Sort the dates                
-                this.scope._schedule = _.sortBy(newSchedule, function(item) {
-                  return new Date(item.date).getTime();
-                });
-
-                this.scope.showForm = false;
-              },
-              remove: function(item) {
-                this.scope._schedule = _.without(this.scope._schedule, item)
-              },
               save: function() {
                 var self = this;
-                this.scope.internship.post('schedule', this.scope._schedule).then(function() {
-                  scope.internship.schedule = angular.copy(self.scope._schedule);
+                scope.internship.post('schedule', this.newSchedule).then(function(internship) {
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.schedule = internship.schedule;
+                  }
                   self.close();
                 });
+              }
+            },
+            templateUrl: "internships/forms/schedule-add.tpl.html"
+          });
+        };
+
+        scope.edit = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Edit Internship Schedule",
+              schedule: scope.internship.schedule,
+              remove: function(item) {
+                var self = this;
+                scope.internship.one('schedule', item._id).remove().then(function(internship) {
+                  if ( internship.$$success) {
+                    scope.internship.activity = internship.activity;
+                    scope.internship.schedule = internship.schedule;
+                    self.scope.schedule = internship.schedule;
+                  }
+                })
               }
             },
             templateUrl: "internships/forms/schedule.tpl.html"
           });
         };
 
+      }
+    };
+  })
+
+
+  /**
+   * Internship documents
+   */
+  .directive('documentsWidget', function(ModalFactory, Options) {
+    return {
+      replace: true,
+      templateUrl: 'internships/widgets/documents.tpl.html',
+      scope: {
+        internship: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.upload = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Upload Documents",
+              internship: scope.internship,
+              url: Options.apiUrl('internships/' + scope.internship._id + '/documents')
+            },
+            className: 'modal-lg',
+            templateUrl: "internships/forms/documents-upload.tpl.html"
+          });
+        };
+
+        scope.edit = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Edit Documents",
+              internship: scope.internship,
+              $newDocument: {},
+              closeAll: function() {
+                _.each(scope.internship.documents, function(item) {
+                  item.$edit = false;
+                  item.$delete = false;
+                });
+                this.$new = {};
+              },
+              close: function() {
+                this.closeAll();
+              },
+              toggle: function(item, mode) {
+                if (item['$' + mode]) {
+                  return this.closeAll();
+                }
+                this.closeAll();
+                item['$' + mode] = true;
+                this.$newDocument = _.clone(item);
+              },
+              delete: function(item) {
+                scope.internship.one('documents', item._id).remove().then(function(response) {
+                  scope.internship.documents = response.documents;
+                  scope.internship.activity = response.activity;
+                });
+              },
+              save: function(item) {
+                scope.internship.all('documents').customPUT(this.$newDocument, item._id).then(function(response) {
+                  scope.internship.documents = response.documents;
+                });
+              }
+            },
+            className: 'modal-lg',
+            templateUrl: "internships/forms/documents-edit.tpl.html"
+          });
+        };
       }
     };
   })

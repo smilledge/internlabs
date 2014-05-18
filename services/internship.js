@@ -5,7 +5,17 @@ var Internship = require('../models/internship'),
     async = require('async'),
     _ = require('lodash'),
     Helpers = require('../helpers'),
-    moment = require('moment');
+    moment = require('moment'),
+    fs = require('fs'),
+    path = require('path');
+
+
+/**
+ * Get the uploads directory
+ */
+var getUploadsDir = function() {
+  return __dirname + '/../public/uploads/';
+}
 
 
 /**
@@ -327,26 +337,6 @@ module.exports.create = function(data, done) {
 /**
  * Add an interview to an internship
  *
- * @param  {object}   data
- * @param  {func}     callback
- * @return {void}
- */
-module.exports.saveInterview = function(data, done) {
-
-  async.waterfall([
-
-    // Get the internship
-
-    // Geocode the location
-
-  ], done);
-
-};
-
-
-/**
- * Add an interview to an internship
- *
  * @param  {string}   internship ID
  * @param  {string}   user ID
  * @param  {object}   data
@@ -395,7 +385,23 @@ module.exports.createSchedule = function(internship, user, data, done) {
      * Update the internship schedule
      */
     function(internship, user, callback) {
-      internship.schedule = data;
+
+      if ( ! data.date ) {
+        return callback(new Error('Error creating schedule. The date provided was invalid.'));
+      }
+
+      data.date = new Date(data.date);
+
+      // Merge with existing schedule
+      var current = internship.schedule || [];
+      var newSchedule = _.union(current, [data]);
+
+      // Sort for date             
+      newSchedule = _.sortBy(newSchedule, function(item) {
+        return new Date(item.date).getTime();
+      });
+
+      internship.schedule = newSchedule;
       internship.save(function(err, internship) {
         if ( err || ! internship ) {
           return callback(new Error("An error occured while updating your schedule. Please try again later."));
@@ -413,7 +419,92 @@ module.exports.createSchedule = function(internship, user, data, done) {
       internship.addActivity({
         description: msg
       }, function(err, activity) {
-        callback(null, internship.schedule);
+        callback(null, internship);
+      });
+    }
+
+
+  ], done);
+
+};
+
+
+
+/**
+ * Delete a schedule
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {object}   schedule id
+ * @param  {func}     callback
+ * @return {void}
+ */
+module.exports.deleteSchedule = function(internship, user, scheduleId, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while updating your schedule. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'delete') ) {
+        return callback(new Error('You are not authorized to edit this schedule.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Delete the internship schedule
+     */
+    function(internship, user, callback) {
+      var toRemove = _.find(internship.schedule, function(item) {
+        return item._id.toString() === scheduleId;
+      });
+
+      internship.schedule = _.without(internship.schedule, toRemove);
+
+      internship.save(function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("An error occured while updating your schedule. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Add an activity to the internships feed
+     */
+    function(internship, user, callback) {
+      var msg = user.profile.name + ' updated the internship\'s schedule.';
+
+      internship.addActivity({
+        description: msg
+      }, function(err, activity) {
+        callback(null, internship);
       });
     }
 
@@ -1062,6 +1153,273 @@ module.exports.deleteInterview = function(internship, user, done) {
         callback(null, internship);
       });
     }
+
+  ], done);
+
+};
+
+
+
+/**
+ * Upload a document
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {string}   file
+ * @return {void}
+ */
+module.exports.uploadDocument = function(internship, user, file, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while uploading the file. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has write access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'write') ) {
+        return callback(new Error('You are not authorized to upload documents on this internship.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Upload the file
+     */
+    function(internship, user, callback) {
+
+      if ( _.isObject(file) ) {
+        var ext = path.extname(file.name),
+            originalFile = file.name.split('.')[0];
+        file = file.path;
+      }
+
+      fs.readFile(file, function (err, data) {
+        if ( err ) {
+          return callback(err, null);
+        }
+
+        var fileName = 'attachment-' + internship._id + '-' + new Date().getTime() + (ext || path.extname(file));
+        var newUri = getUploadsDir() + fileName;
+
+        fs.writeFile(newUri, data, function(err) {
+          internship.documents.push({
+            name: originalFile,
+            file: fileName,
+            author: user._id
+          });
+          internship.save(function(err, internship) {
+            callback(err, internship, user);
+          });
+        });
+      });
+    },
+
+
+    /**
+     * Add to the activty feed
+     */
+    function(internship, user, callback) {
+      var msg = user.profile.name + " uploaded a file.";
+
+      internship.addActivity({
+        description: msg,
+        priority: 1,
+        author: user._id,
+        type: 'update'
+      }, function(err, activity) {
+        callback(null, internship);
+      });
+    }
+
+  ], done);
+
+};
+
+
+
+
+/**
+ * Update a document
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {object}   document data
+ * @return {void}
+ */
+module.exports.editDocument = function(internship, user, data, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while saving the document. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has write access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'write') ) {
+        return callback(new Error('You are not authorized to edit documents on this internship.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Edit the document
+     */
+    function(internship, user, callback) {
+      console.log(internship.documents);
+      
+      _.each(internship.documents, function(item) {
+        console.log(item);
+        if (item._id == data._id) {
+          _.extend(item, data);
+        }
+      });
+
+      internship.save(function(err, internship) {
+        callback(err, internship);
+      });
+    }
+
+  ], done);
+
+};
+
+
+
+/**
+ * Delete a document
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {object}   document id
+ * @param  {func}     callback
+ * @return {void}
+ */
+module.exports.deleteDocument = function(internship, user, documentId, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while deleting the attachement. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'delete') ) {
+        return callback(new Error('You are not authorized to edit this internship.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Delete the internship document
+     */
+    function(internship, user, callback) {
+      var toRemove = _.find(internship.documents, function(item) {
+        return item._id.toString() === documentId;
+      });
+
+      // Delete the file
+      var removePath = getUploadsDir() + toRemove.file;
+      console.log(removePath);
+      fs.unlink(removePath, function(err) {
+        if (err) console.log(err);
+      })
+
+      internship.documents = _.without(internship.documents, toRemove);
+
+      internship.save(function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("An error occured while updating your internship. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Add an activity to the internships feed
+     */
+    function(internship, user, callback) {
+      var msg = user.profile.name + ' removed a document from the internship.';
+
+      internship.addActivity({
+        description: msg,
+        author: user._id,
+        priority: 1,
+        type: 'update'
+      }, function(err, activity) {
+        callback(null, internship);
+      });
+    }
+
 
   ], done);
 

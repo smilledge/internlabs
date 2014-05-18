@@ -4,6 +4,7 @@ angular.module('InternLabs', [
   'angularFileUpload',
   'restangular',
   'akoenig.deckgrid',
+  'angular-growl',
   'templates-app',
   'InternLabs.services',
   'InternLabs.common.directives',
@@ -21,6 +22,9 @@ angular.module('InternLabs', [
 
     RestangularProvider.setBaseUrl('/api');
     
+    /**
+     * Extract the response data
+     */
     RestangularProvider.setResponseExtractor(function(response, operation) {
       var extractedData;
 
@@ -40,9 +44,11 @@ angular.module('InternLabs', [
       id: "_id"
     });
 
+    
+
   })
 
-  .run(function() {
+  .run(function(Restangular, growl) {
     
     // Underscore mixins
     _.mixin({
@@ -75,6 +81,27 @@ angular.module('InternLabs', [
      
         return str;
       }
+    });
+
+
+
+    /**
+     * Intercept responses and check for messages or errors
+     */
+    Restangular.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
+      if ( data.$$error ) {
+        growl.addErrorMessage(data.$$error, {
+          ttl: 10000
+        });
+      }
+
+      if ( data.$$message ) {
+        growl.addSuccessMessage(data.$$message, {
+          ttl: 5000
+        });
+      }
+
+      return data;
     });
 
   })

@@ -8,7 +8,8 @@
 
   <section class="sub-header">
     <div class="container clearfix">
-      <h2 class="pull-left">{{ internship.role.title }} - {{ profile.name }}</h2>
+      <div class="pull-left" internship-title internship="internship"></div>
+
       <div class="pull-right">
         <div status-widget internship="internship"></div>
       </div>
@@ -19,10 +20,12 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-4">
+          <div profile-widget internship="internship"></div>
           <div schedule-widget internship="internship"></div>
           <div supervisors-widget internship="internship"></div>
           <div interview-widget internship="internship"></div>
           <div availability-widget internship="internship"></div>
+          <div documents-widget internship="internship"></div>
         </div>
 
         <div class="col-sm-8">

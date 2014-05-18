@@ -14,7 +14,7 @@
 @gray-lighter:           lighten(#000, 93.5%); // #eee
 
 @brand-primary:         #39B54A;
-@brand-success:         #5cb85c;
+@brand-success:         #39B54A;
 @brand-info:            #5bc0de;
 @brand-warning:         #f0ad4e;
 @brand-danger:          #d9534f;
@@ -562,10 +562,10 @@
 //##
 
 //** Padding applied to the modal body
-@modal-inner-padding:         15px;
+@modal-inner-padding:         20px 15px;
 
 //** Padding applied to the modal title
-@modal-title-padding:         15px;
+@modal-title-padding:         20px 15px;
 //** Modal title line-height
 @modal-title-line-height:     @line-height-base;
 
@@ -598,9 +598,9 @@
 @alert-border-radius:         @border-radius-base;
 @alert-link-font-weight:      bold;
 
-@alert-success-bg:            @state-success-bg;
-@alert-success-text:          @state-success-text;
-@alert-success-border:        @state-success-border;
+@alert-success-bg:            @brand-success;
+@alert-success-text:          #fff;
+@alert-success-border:        darken(@brand-success, 5%);
 
 @alert-info-bg:               @state-info-bg;
 @alert-info-text:             @state-info-text;
@@ -610,9 +610,9 @@
 @alert-warning-text:          @state-warning-text;
 @alert-warning-border:        @state-warning-border;
 
-@alert-danger-bg:             @state-danger-bg;
-@alert-danger-text:           @state-danger-text;
-@alert-danger-border:         @state-danger-border;
+@alert-danger-bg:             @brand-danger;
+@alert-danger-text:           #fff;
+@alert-danger-border:         darken(@brand-danger, 5%);
 
 
 //== Progress bars
