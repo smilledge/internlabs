@@ -209,6 +209,32 @@ module.exports = function(app) {
   });
 
   /**
+   * Edit a document
+   */
+  app.put('/api/internships/:internshipId/documents/:documentId', auth.check(), function(req, res) {
+    InternshipService.editDocument(req.params.internshipId, req.user._id, req.body, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      return res.apiSuccess("Document has been saved sucessfully.", internship);
+    });
+  });
+
+  /**
+   * Delete a document
+   */
+  app.delete('/api/internships/:internshipId/documents/:documentId', auth.check(), function(req, res) {
+    InternshipService.deleteDocument(req.params.internshipId, req.user._id, req.params.documentId, function(err, internship) {
+      if ( err ) {
+        return res.apiError(err);
+      }
+
+      return res.apiSuccess("Document has been deleted sucessfully.", internship);
+    });
+  });
+
+  /**
    * Set a the interview
    */
   app.post('/api/internships/:internshipId/interview', auth.check(), function(req, res) {

@@ -33246,7 +33246,7 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
+angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-edit.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
 
 angular.module("common/forms/file-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/forms/file-upload.tpl.html",
@@ -33762,6 +33762,58 @@ angular.module("internships/forms/apply.tpl.html", []).run(["$templateCache", fu
     "  </div>\n" +
     "\n" +
     "</form>");
+}]);
+
+angular.module("internships/forms/documents-edit.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("internships/forms/documents-edit.tpl.html",
+    "<div>\n" +
+    "  <div class=\"list-group list-files\">\n" +
+    "    <div ng-repeat-start=\"item in internship.documents track by item._id\" class=\"list-group-item\">\n" +
+    "      <strong class=\"pull-left\"><i class=\"fa fa-file\"></i> {{ item.name || item.file }}</strong>\n" +
+    "      <div class=\"pull-right\">\n" +
+    "        <a href=\"{{ item.fileUrl }}\" target=\"_blank\" class=\"btn btn-success btn-icon fa fa-download\"></a>\n" +
+    "        <a ng-click=\"toggle(item, 'edit')\" class=\"btn btn-success btn-icon fa fa-pencil\"></a>\n" +
+    "        <a ng-click=\"toggle(item, 'delete')\" class=\"btn btn-danger btn-icon fa fa-times\"></a>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "\n" +
+    "    <div ng-show=\"item.$delete\" class=\"list-group-item list-form item-muted text-center\">\n" +
+    "      <p class=\"lead\">Are you sure you want to delete this document?</p>\n" +
+    "      <button ng-click=\"delete(item)\" type=\"button\" class=\"btn btn-danger btn-icon-left\"><i class=\"fa fa-trash-o\"></i> Delete</button>\n" +
+    "      <button ng-click=\"cancel()\" type=\"button\" class=\"btn btn-default btn-icon-left\"><i class=\"fa fa-times\"></i> Cancel</button>\n" +
+    "    </div>\n" +
+    "\n" +
+    "\n" +
+    "    <div ng-repeat-end ng-show=\"item.$edit\" class=\"list-group-item list-form item-muted\">\n" +
+    "      <form ng-submit=\"save(item)\" class=\"form-horizontal\">\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-2 control-label\">Name</label>\n" +
+    "          <div class=\"col-sm-9\">\n" +
+    "            <input type=\"text\" class=\"form-control\" ng-model=\"item.name\" placeholder=\"Name\">\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label class=\"col-sm-2 control-label\">Description</label>\n" +
+    "          <div class=\"col-sm-9\">\n" +
+    "            <textarea class=\"form-control\" rows=\"3\" ng-model=\"item.description\" placeholder=\"Description\"></textarea>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <div class=\"col-sm-9 col-sm-offset-2\">\n" +
+    "            <button type=\"submit\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-save\"></i> Save</button>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </form>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div class=\"modal-footer text-center\">\n" +
+    "    <button ng-click=\"close()\" type=\"button\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-check\"></i> Done</button>\n" +
+    "  </div>\n" +
+    "</div>");
 }]);
 
 angular.module("internships/forms/documents-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -36902,6 +36954,45 @@ angular.module('InternLabs.internships', [])
             },
             className: 'modal-lg',
             templateUrl: "internships/forms/documents-upload.tpl.html"
+          });
+        };
+
+        scope.edit = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Edit Documents",
+              internship: scope.internship,
+              closeAll: function() {
+                _.each(scope.internship.documents, function(item) {
+                  item.$edit = false;
+                  item.$delete = false;
+                });
+              },
+              close: function() {
+                this.closeAll();
+              },
+              toggle: function(item, mode) {
+                if (item['$' + mode]) {
+                  return this.closeAll();
+                }
+                this.closeAll();
+                item['$' + mode] = true;
+              },
+              delete: function(item) {
+                scope.internship.one('documents', item._id).remove().then(function(response) {
+                  scope.internship.documents = response.documents;
+                  scope.internship.activity = response.activity;
+                });
+              },
+              save: function(item) {
+                scope.internship.all('documents').customPUT(item, item._id).then(function(response) {
+                  scope.internship.documents = response.documents;
+                  scope.internship.activity = response.activity;
+                });
+              }
+            },
+            className: 'modal-lg',
+            templateUrl: "internships/forms/documents-edit.tpl.html"
           });
         };
       }

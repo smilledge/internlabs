@@ -20,6 +20,7 @@
 // Use on `li`s or `div`s within the `.list-group` parent.
 
 .list-group-item {
+  .clearfix;
   position: relative;
   display: block;
   padding: 10px 15px;
@@ -47,6 +48,10 @@
 
   > i.fa, > strong i.fa {
     margin-right: 6px;
+  }
+
+  &.item-muted {
+    background: #f2f2f2;
   }
 }
 

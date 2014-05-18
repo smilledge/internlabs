@@ -1,0 +1,48 @@
+<div>
+  <div class="list-group list-files">
+    <div ng-repeat-start="item in internship.documents track by item._id" class="list-group-item">
+      <strong class="pull-left"><i class="fa fa-file"></i> {{ item.name || item.file }}</strong>
+      <div class="pull-right">
+        <a href="{{ item.fileUrl }}" target="_blank" class="btn btn-success btn-icon fa fa-download"></a>
+        <a ng-click="toggle(item, 'edit')" class="btn btn-success btn-icon fa fa-pencil"></a>
+        <a ng-click="toggle(item, 'delete')" class="btn btn-danger btn-icon fa fa-times"></a>
+      </div>
+    </div>
+
+
+    <div ng-show="item.$delete" class="list-group-item list-form item-muted text-center">
+      <p class="lead">Are you sure you want to delete this document?</p>
+      <button ng-click="delete(item)" type="button" class="btn btn-danger btn-icon-left"><i class="fa fa-trash-o"></i> Delete</button>
+      <button ng-click="cancel()" type="button" class="btn btn-default btn-icon-left"><i class="fa fa-times"></i> Cancel</button>
+    </div>
+
+
+    <div ng-repeat-end ng-show="item.$edit" class="list-group-item list-form item-muted">
+      <form ng-submit="save(item)" class="form-horizontal">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Name</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="item.name" placeholder="Name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Description</label>
+          <div class="col-sm-9">
+            <textarea class="form-control" rows="3" ng-model="item.description" placeholder="Description"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-9 col-sm-offset-2">
+            <button type="submit" class="btn btn-primary btn-icon-left"><i class="fa fa-save"></i> Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer text-center">
+    <button ng-click="close()" type="button" class="btn btn-primary btn-icon-left"><i class="fa fa-check"></i> Done</button>
+  </div>
+</div>

@@ -1258,3 +1258,98 @@ module.exports.uploadDocument = function(internship, user, file, done) {
   ], done);
 
 };
+
+
+
+/**
+ * Delete a document
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {object}   document id
+ * @param  {func}     callback
+ * @return {void}
+ */
+module.exports.deleteDocument = function(internship, user, documentId, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while deleting the attachement. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'delete') ) {
+        return callback(new Error('You are not authorized to edit this internship.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Delete the internship document
+     */
+    function(internship, user, callback) {
+      var toRemove = _.find(internship.documents, function(item) {
+        return item._id.toString() === documentId;
+      });
+
+      // Delete the file
+      var removePath = getUploadsDir() + toRemove.file;
+      console.log(removePath);
+      fs.unlink(removePath, function(err) {
+        if (err) console.log(err);
+      })
+
+      internship.documents = _.without(internship.documents, toRemove);
+
+      internship.save(function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("An error occured while updating your internship. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Add an activity to the internships feed
+     */
+    function(internship, user, callback) {
+      var msg = user.profile.name + ' removed a document from the internship.';
+
+      internship.addActivity({
+        description: msg,
+        author: user._id,
+        priority: 1,
+        type: 'update'
+      }, function(err, activity) {
+        callback(null, internship);
+      });
+    }
+
+
+  ], done);
+
+};

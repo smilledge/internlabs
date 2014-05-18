@@ -439,6 +439,45 @@ angular.module('InternLabs.internships', [])
             templateUrl: "internships/forms/documents-upload.tpl.html"
           });
         };
+
+        scope.edit = function() {
+          ModalFactory.create({
+            scope: {
+              title: "Edit Documents",
+              internship: scope.internship,
+              closeAll: function() {
+                _.each(scope.internship.documents, function(item) {
+                  item.$edit = false;
+                  item.$delete = false;
+                });
+              },
+              close: function() {
+                this.closeAll();
+              },
+              toggle: function(item, mode) {
+                if (item['$' + mode]) {
+                  return this.closeAll();
+                }
+                this.closeAll();
+                item['$' + mode] = true;
+              },
+              delete: function(item) {
+                scope.internship.one('documents', item._id).remove().then(function(response) {
+                  scope.internship.documents = response.documents;
+                  scope.internship.activity = response.activity;
+                });
+              },
+              save: function(item) {
+                scope.internship.all('documents').customPUT(item, item._id).then(function(response) {
+                  scope.internship.documents = response.documents;
+                  scope.internship.activity = response.activity;
+                });
+              }
+            },
+            className: 'modal-lg',
+            templateUrl: "internships/forms/documents-edit.tpl.html"
+          });
+        };
       }
     };
   })
