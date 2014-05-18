@@ -1213,7 +1213,7 @@ module.exports.uploadDocument = function(internship, user, file, done) {
 
       if ( _.isObject(file) ) {
         var ext = path.extname(file.name),
-            originalFile = file.name;
+            originalFile = file.name.split('.')[0];
         file = file.path;
       }
 
@@ -1252,6 +1252,77 @@ module.exports.uploadDocument = function(internship, user, file, done) {
         type: 'update'
       }, function(err, activity) {
         callback(null, internship);
+      });
+    }
+
+  ], done);
+
+};
+
+
+
+
+/**
+ * Update a document
+ *
+ * @param  {string}   internship ID
+ * @param  {string}   user ID
+ * @param  {object}   document data
+ * @return {void}
+ */
+module.exports.editDocument = function(internship, user, data, done) {
+
+  async.waterfall([
+
+    /**
+     * Get the internship
+     */
+    function(callback) {
+      Internship.findById(internship._id || internship, function(err, internship) {
+        if ( err || ! internship ) {
+          return callback(new Error("Internship could not be found."));
+        }
+        callback(null, internship);
+      });
+    },
+
+    /**
+     * Get the user
+     */
+    function(internship, callback) {
+      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+        if ( err || ! user ) {
+          return callback(new Error("An error occured while saving the document. Please try again later."));
+        }
+        callback(null, internship, user);
+      });
+    },
+
+    /**
+     * Check the user has write access to the internship
+     */
+    function(internship, user, callback) {
+      if ( ! internship.hasAccess(user, 'write') ) {
+        return callback(new Error('You are not authorized to edit documents on this internship.'));
+      }
+      callback(null, internship, user);
+    },
+
+    /**
+     * Edit the document
+     */
+    function(internship, user, callback) {
+      console.log(internship.documents);
+      
+      _.each(internship.documents, function(item) {
+        console.log(item);
+        if (item._id == data._id) {
+          _.extend(item, data);
+        }
+      });
+
+      internship.save(function(err, internship) {
+        callback(err, internship);
       });
     }
 

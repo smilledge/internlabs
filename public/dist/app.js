@@ -33790,14 +33790,14 @@ angular.module("internships/forms/documents-edit.tpl.html", []).run(["$templateC
     "        <div class=\"form-group\">\n" +
     "          <label class=\"col-sm-2 control-label\">Name</label>\n" +
     "          <div class=\"col-sm-9\">\n" +
-    "            <input type=\"text\" class=\"form-control\" ng-model=\"item.name\" placeholder=\"Name\">\n" +
+    "            <input type=\"text\" class=\"form-control\" ng-model=\"$newDocument.name\" placeholder=\"Name\">\n" +
     "          </div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"form-group\">\n" +
     "          <label class=\"col-sm-2 control-label\">Description</label>\n" +
     "          <div class=\"col-sm-9\">\n" +
-    "            <textarea class=\"form-control\" rows=\"3\" ng-model=\"item.description\" placeholder=\"Description\"></textarea>\n" +
+    "            <textarea class=\"form-control\" rows=\"3\" ng-model=\"$newDocument.description\" placeholder=\"Description\"></textarea>\n" +
     "          </div>\n" +
     "        </div>\n" +
     "\n" +
@@ -36962,11 +36962,13 @@ angular.module('InternLabs.internships', [])
             scope: {
               title: "Edit Documents",
               internship: scope.internship,
+              $newDocument: {},
               closeAll: function() {
                 _.each(scope.internship.documents, function(item) {
                   item.$edit = false;
                   item.$delete = false;
                 });
+                this.$new = {};
               },
               close: function() {
                 this.closeAll();
@@ -36977,6 +36979,7 @@ angular.module('InternLabs.internships', [])
                 }
                 this.closeAll();
                 item['$' + mode] = true;
+                this.$newDocument = _.clone(item);
               },
               delete: function(item) {
                 scope.internship.one('documents', item._id).remove().then(function(response) {
@@ -36985,9 +36988,8 @@ angular.module('InternLabs.internships', [])
                 });
               },
               save: function(item) {
-                scope.internship.all('documents').customPUT(item, item._id).then(function(response) {
+                scope.internship.all('documents').customPUT(this.$newDocument, item._id).then(function(response) {
                   scope.internship.documents = response.documents;
-                  scope.internship.activity = response.activity;
                 });
               }
             },

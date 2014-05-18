@@ -445,11 +445,13 @@ angular.module('InternLabs.internships', [])
             scope: {
               title: "Edit Documents",
               internship: scope.internship,
+              $newDocument: {},
               closeAll: function() {
                 _.each(scope.internship.documents, function(item) {
                   item.$edit = false;
                   item.$delete = false;
                 });
+                this.$new = {};
               },
               close: function() {
                 this.closeAll();
@@ -460,6 +462,7 @@ angular.module('InternLabs.internships', [])
                 }
                 this.closeAll();
                 item['$' + mode] = true;
+                this.$newDocument = _.clone(item);
               },
               delete: function(item) {
                 scope.internship.one('documents', item._id).remove().then(function(response) {
@@ -468,9 +471,8 @@ angular.module('InternLabs.internships', [])
                 });
               },
               save: function(item) {
-                scope.internship.all('documents').customPUT(item, item._id).then(function(response) {
+                scope.internship.all('documents').customPUT(this.$newDocument, item._id).then(function(response) {
                   scope.internship.documents = response.documents;
-                  scope.internship.activity = response.activity;
                 });
               }
             },

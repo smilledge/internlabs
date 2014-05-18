@@ -74,9 +74,12 @@ var InternshipModel = function() {
     InternshipSchema.methods.toJSON = function() {
         var obj = this.toObject();
 
+        if ( ! obj ) {
+            return obj;
+        }
+
         // Add the file urls
         _.each(obj.documents, function(doc) {
-            console.log(doc);
             doc.fileUrl = nconf.get('uploadsPath') + '/' + doc.file;
         });
 
