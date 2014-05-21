@@ -8,6 +8,7 @@ var _ = require('lodash'),
     async = require('async'),
     UserService = require('../../services/user'),
     CompanyService = require('../../services/company'),
+    SearchService = require('../../services/search'),
     Company = require('../../models/company'),
     request = require('request');
 
@@ -29,11 +30,18 @@ var seed = function(callback) {
   tasks.push(function(callback) {
     console.log("  | ---> Deleting ElasticSearch Index: ");
     request({
-      uri: 'http://127.0.0.1:9200/companies',
+      uri: 'http://127.0.0.1:9200/internlabs',
       method: 'DELETE'
     }, function(err, response, body) {
       console.log("    | ---> Deleted existing documents : " + body);
-      callback();
+
+
+      // Recreate the index
+      console.log("  | ---> Creating New ElasticSearch Index: ");
+      SearchService.company.create(function(err, res) {
+        console.log("    | ---> Index created : " + res);
+        callback();
+      });
     });
   });
 
@@ -64,6 +72,7 @@ var seed = function(callback) {
                     console.log("    | ---> ERROR uploading logo: " + err.message);
                     return done();
                   }
+                  
                   console.log("  | ---> Imported user: " + user.email);
                   console.log("    | ---> Uploaded logo: " + company.logo);
                   done();
@@ -78,34 +87,6 @@ var seed = function(callback) {
       });
     });
   });
-
-
-  // // Add the reindexer task
-  // tasks.push(function(callback) {
-  //   console.log("  | ---> Building ElasticSearch Index: ");
-
-  //   request({
-  //     uri: 'http://127.0.0.1:9200/companies',
-  //     method: 'DELETE'
-  //   }, function(err, response, body) {
-
-  //     console.log("    | ---> Deleted existing documents : " + body);
-
-  //     var stream = Company.synchronize(), count = 0;
-
-  //     stream.on('data', function(err, doc) {
-  //       count++;
-  //     });
-  //     stream.on('close', function() {
-  //       console.log("    | ---> Done! Total indexed: " + count);
-  //       callback();
-  //     });
-  //     stream.on('error', function(err) {
-  //       console.log("    | ---> ERROR Indexing: " + err.message);
-  //     });
-  //   });
-  // });
-
 
 
   // Run each of the tasks

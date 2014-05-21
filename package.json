@@ -31,7 +31,6 @@
     "lodash": "~2.4.1",
     "node-geocoder": "~2.1.0",
     "slug": "~0.4.2",
-    "mongoosastic": "~0.2.6",
     "request": "~2.34.0",
     "mongoose-acl": "~0.2.1",
     "connect-redis": "~1.4.7"
