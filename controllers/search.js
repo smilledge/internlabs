@@ -23,9 +23,9 @@ module.exports = function(app) {
     var input = req.query,
         query = SearchQuery.make(req.query);
 
-    Company.search(query, { hydrate: true, hydrateOptions: {
+    Company.search(query, {
       populate: 'address'
-    }}, function(err, results) {
+    }, function(err, results) {
       if ( err || ! results ) {
         return res.apiError("Sorry, no results were found.");
       }

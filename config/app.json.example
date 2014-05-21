@@ -33,6 +33,22 @@
       "user": "root"
   },
 
+  "redis": {
+      "host": "127.0.0.1",
+      "port": 6379,
+      "ttl": 86400
+  },
+
+  "elasticsearch": {
+    "host": "127.0.0.1",
+    "port": 9200,
+    "index": "internlabs"
+  },
+
+  "session": {
+    "secret": "..."
+  },
+
   "mail": {
       "noReplyAddress": "InternLabs <no-reply@internlabs.com.au>",
       "templatesDir": "views/emails",
