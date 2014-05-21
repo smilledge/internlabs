@@ -2,14 +2,14 @@
 
 var mongoose = require('mongoose'),
     ObjectId = mongoose.Schema.ObjectId,
-    mongoosastic = require('mongoosastic'),
     Role = require('./role'),
     User = require('./user'),
     Address = require('./address'),
     nconf = require('nconf'),
     slug = require('slug'),
     acl = require('mongoose-acl'),
-    aclAuth = require('../lib/aclAuth');
+    aclAuth = require('../lib/aclAuth'),
+    SearchService = require('../services/search');
 
 
 var CompanyModel = function() {
@@ -39,12 +39,8 @@ var CompanyModel = function() {
     CompanySchema.plugin(acl.object);
     CompanySchema.plugin(aclAuth);
 
-    // Index using elastic search
-    CompanySchema.plugin(mongoosastic, {
-        index: 'companies',
-        type:'company'
-    });
-
+    // Plugin the company indexer
+    CompanySchema.plugin(SearchService.company.plugin, {});
 
     CompanySchema.pre('save', function(next){
         var now = new Date();

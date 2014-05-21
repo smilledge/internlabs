@@ -4,14 +4,28 @@ var Company = require('../models/company'),
     path = require('path'),
     _ = require('lodash');
 
-
-
 /**
  * Get the uploads directory
  */
 var getUploadsDir = function() {
   return __dirname + '/../public/uploads/';
 }
+
+
+/**
+ * Find a company by id
+ * @param  {string}  Company ID
+ * @param  {func}    callback
+ * @return {void}
+ */
+module.exports.findById = function(companyId, done) {
+  Company.findById(companyId).populate('address roles').exec(function(err, company) {
+    if ( err || ! company ) {
+      return done(new Error("Company could not be found."));
+    }
+    done(null, company);
+  });
+};
 
 
 /**

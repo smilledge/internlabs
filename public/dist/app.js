@@ -37392,23 +37392,15 @@ angular.module('InternLabs.search', [])
 
       $location.search(SearchQuery.serialize($scope.query));
 
-      Search.query(SearchQuery.serialize($scope.query)).then(function(data) {
+      Search.query($scope.query).then(function(data) {
         $scope.results = [];
         $scope.results = (data.data) ? data.data.results : [];
       })
     };
 
     $scope.$watch('query', $scope.search, true);
-
-    $scope.$on('$locationChangeSuccess', function() {
-      // Make sure we're in the same route
-      var path = $location.path().split('/')[1];
-      if ( path !== 'search' ) {
-        return;
-      }
-
-      $scope.query = $location.search();  
-    });
+  
+    $scope.query = $location.search();
   })
 
 
