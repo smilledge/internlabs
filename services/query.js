@@ -24,6 +24,9 @@ var buildSearchQuery = function(input) {
       new Builder.TermQuery('skills', Helpers.parseList(input.skills))
     ));
 
+
+    console.log(JSON.stringify(query.toJSON(), true, '    '));
+
   return query.toJSON();
 };
 

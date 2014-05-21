@@ -11,6 +11,12 @@ var client = new elastical.Client(config.elasticsearch.host, {
     companyType = 'company';
 
 
+
+client.getMapping(defaultIndex, companyType, function(err, res) {
+console.log(err);
+console.log(JSON.stringify(res, true, '    '));
+});
+
 /**
  * Mongoose plugin for automatically indexing
  * (also adds search method)
@@ -36,8 +42,7 @@ module.exports.plugin = function(schema, options) {
   });
 
   _.extend(schema.statics, {
-    search: module.exports.search,
-    createMapping: module.exports.createMapping
+    search: module.exports.search
   });
 };
 
@@ -135,13 +140,65 @@ module.exports.search = function(query, options, done) {
 
 
 /**
- * Create mapping for the company index
+ * Create a company index with mapping
  * 
  * @param  {func}   callback
  * @return {void}
  */
-module.exports.createMapping = function(done) {
-
+module.exports.create = function(done) {
+  client.createIndex(defaultIndex, function() {
+    client.putMapping(defaultIndex, companyType, {
+      "properties": {
+        "name": {
+          "type": "string",
+          "boost": 1.5
+        },
+        "introduction": {
+          "type": "string",
+          "boost": 0.5
+        },
+        "roles": {
+          "properties": {
+            "title": {
+              "type": "string",
+              "boost": 1.5
+            }
+          }
+        },
+        "address": {
+          "properties": {
+            "city": {
+              "type": "multi_field",
+              "fields": {
+                "city": { "type" : "string", "index" : "not_analyzed" },
+                "city_analyzed": { "type" : "string", "index" : "analyzed" }
+              },
+              "boost": 1.5
+            },
+            "state": {
+              "type": "multi_field",
+              "fields": {
+                "state": { "type" : "string", "index" : "not_analyzed" },
+                "state_analyzed": { "type" : "string", "index" : "analyzed" }
+              },
+              "boost": 1.5
+            }
+          }
+        },
+        "skills": {
+          "type": "multi_field",
+          "fields": {
+            "skills": { "type" : "string", "index" : "not_analyzed" },
+            "skills_analyzed": { "type" : "string", "index" : "analyzed" }
+          },
+          "boost": 1.5
+        },
+        "location" : {
+          "type" : "geo_point"
+        }
+      }
+    }, done);
+  });
 };
 
 
@@ -215,7 +272,3 @@ module.exports.index = function(companyId, done) {
 module.exports.delete = function(companyId, done) {
   client.delete(defaultIndex, companyType, companyId, {}, done);
 };
-
-
-
-

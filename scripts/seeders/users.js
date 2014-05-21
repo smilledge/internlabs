@@ -8,6 +8,7 @@ var _ = require('lodash'),
     async = require('async'),
     UserService = require('../../services/user'),
     CompanyService = require('../../services/company'),
+    SearchService = require('../../services/search'),
     Company = require('../../models/company'),
     request = require('request');
 
@@ -33,7 +34,14 @@ var seed = function(callback) {
       method: 'DELETE'
     }, function(err, response, body) {
       console.log("    | ---> Deleted existing documents : " + body);
-      callback();
+
+
+      // Recreate the index
+      console.log("  | ---> Creating New ElasticSearch Index: ");
+      SearchService.company.create(function(err, res) {
+        console.log("    | ---> Index created : " + res);
+        callback();
+      });
     });
   });
 

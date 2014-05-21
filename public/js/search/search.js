@@ -49,8 +49,7 @@ angular.module('InternLabs.search', [])
     };
 
     $scope.$watch('query', $scope.search, true);
-  
-    $scope.query = $location.search();
+    $scope.query = _.extend($scope.query, $location.search());
   })
 
 

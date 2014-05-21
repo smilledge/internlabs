@@ -25,12 +25,10 @@ StringQuery.prototype.toJSON = function() {
  */
 var TermQuery = function(field, value, min) {
   this.field = field;
+  this.value = value;
 
   if (_.isArray(value)) {
     this.multi = true;
-    this.value = value.join('|||').toLowerCase().split('|||');
-  } else {
-    this.value = value.toLowerCase();
   }
 }
 
@@ -46,7 +44,7 @@ TermQuery.prototype.toJSON = function() {
     object.terms[this.field] = this.value
   } else {
     object.term = {};
-    object.term[this.field] = this.value.toLowerCase();
+    object.term[this.field] = this.value;
   }
 
   return object;
