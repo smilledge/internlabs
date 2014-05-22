@@ -32919,30 +32919,32 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
 angular.module("company/list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("company/list.tpl.html",
     "<div class=\"list-group list-companies\">\n" +
-    "  <a href=\"{{ company.url }}\" class=\"list-group-item\" ng-repeat-start=\"company in companies track by company._id\">\n" +
-    "    <div class=\"company-logo\">\n" +
-    "      <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"overview\">\n" +
-    "      <h2>{{ company.name }}</h2>\n" +
-    "      <p class=\"introduction\">{{ company.introduction | limitTo:120 }}...</p>\n" +
-    "      <div class=\"meta\">\n" +
-    "        <span class=\"location\"><i class=\"fa fa-map-marker\"></i> {{ [company.address.city, company.address.country].join(', ') }}</span>\n" +
-    "        <span class=\"skills\"><i class=\"fa fa-tag\"></i> {{ company.getSkillsString() }}</span>\n" +
+    "  <div ng-repeat=\"company in companies track by company._id\" ng-class=\"{'company-hover':company.$hover}\" ng-mouseover=\"company.$hover=true\" ng-mouseleave=\"company.$hover=false\">\n" +
+    "    <a href=\"{{ company.url }}\" class=\"list-group-item item-company\">\n" +
+    "      <div class=\"company-logo\">\n" +
+    "        <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
     "      </div>\n" +
-    "    </div>\n" +
-    "  </a>\n" +
-    "  <div ng-repeat-end ng-repeat=\"role in company.roles\" class=\"list-group-item item-role item-muted text-muted\">\n" +
-    "    <strong>{{ role.title }}</strong>\n" +
-    "    <p>{{ role.description | limitTo:80 }}...</p>\n" +
     "\n" +
-    "    <div dropdown-menu>\n" +
-    "      <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
-    "      <ul>\n" +
-    "        <li><a ng-click=\"showRoleDetails(role)\">More Info</a></li>\n" +
-    "        <li><a auth-group=\"student\" ng-click=\"apply(company, role)\">Apply</a></li>\n" +
-    "      </ul>\n" +
+    "      <div class=\"overview\">\n" +
+    "        <h2>{{ company.name }}</h2>\n" +
+    "        <p class=\"introduction\">{{ company.introduction | limitTo:120 }}...</p>\n" +
+    "        <div class=\"meta\">\n" +
+    "          <span class=\"location\"><i class=\"fa fa-map-marker\"></i> {{ [company.address.city, company.address.country].join(', ') }}</span>\n" +
+    "          <span class=\"skills\"><i class=\"fa fa-tag\"></i> {{ company.getSkillsString() }}</span>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </a>\n" +
+    "    <div ng-repeat=\"role in company.roles\" class=\"list-group-item item-role item-muted text-muted\">\n" +
+    "      <strong>{{ role.title }}</strong>\n" +
+    "      <p>{{ role.description | limitTo:80 }}...</p>\n" +
+    "\n" +
+    "      <div dropdown-menu>\n" +
+    "        <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "        <ul>\n" +
+    "          <li><a ng-click=\"showRoleDetails(role)\">More Info</a></li>\n" +
+    "          <li><a auth-group=\"student\" ng-click=\"apply(company, role)\">Apply</a></li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</div>");
@@ -33030,7 +33032,7 @@ angular.module("dashboard/company-profile.tpl.html", []).run(["$templateCache", 
 
 angular.module("dashboard/dashboard.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/dashboard.tpl.html",
-    "<div class=\"content-box\">\n" +
+    "<div class=\"content-box\" auth-group=\"student\">\n" +
     "  <header>\n" +
     "    <h3>Recommended Internships <span class=\"small text-muted text-small\">(based on your location and skills)</span></h3>\n" +
     "  </header>\n" +
@@ -33038,7 +33040,7 @@ angular.module("dashboard/dashboard.tpl.html", []).run(["$templateCache", functi
     "    <p class=\"lead\">Sorry but we could not find any appropriate internships for you. Try adding some skills to your profile.</p>\n" +
     "  </div>\n" +
     "  <div ng-show=\"searching\" class=\"searching text-center\">\n" +
-    "    <p class=\"lead\">Please click \"Allow\" when you are asked to share your location.</p>\n" +
+    "    <p class=\"lead\">Please click \"Allow\" if you are asked to share your location.</p>\n" +
     "    <p class=\"text-muted\">(Your location will be used to help find internships in your area)</p>\n" +
     "    <i class=\"fa fa-spinner fa-spin\" style=\"font-size:40px\"></i>\n" +
     "  </div>\n" +
@@ -33115,13 +33117,20 @@ angular.module("dashboard/internships.tpl.html", []).run(["$templateCache", func
   $templateCache.put("dashboard/internships.tpl.html",
     "<div class=\"content-box\">\n" +
     "  <header>\n" +
-    "    <h3>{{ title || \"My Internships\" }}</h3>\n" +
+    "    <h3>{{ title || \"Internships\" }}</h3>\n" +
     "  </header>\n" +
     "\n" +
-    "  <div class=\"list-group list-internships\">\n" +
+    "  <div ng-show=\"internships.length\" class=\"list-group list-internships\">\n" +
     "    <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item clearfix\">\n" +
     "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
     "    </a>\n" +
+    "  </div>\n" +
+    "  <div auth-group=\"student\" ng-show=\"!internships.length\" class=\"no-results\">\n" +
+    "    <p class=\"lead\">Looks like you haven't applied for any internships yet!</p>\n" +
+    "    <a href=\"/search\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-search\"></i> Find one now</a>\n" +
+    "  </div>\n" +
+    "  <div auth-group=\"employer\" ng-show=\"!internships.length\" class=\"no-results\">\n" +
+    "    <p class=\"lead\">No results found</p>\n" +
     "  </div>\n" +
     "</div>");
 }]);
@@ -33147,8 +33156,11 @@ angular.module("dashboard/layout.tpl.html", []).run(["$templateCache", function(
     "\n" +
     "            <ul class=\"nav nav-pills nav-stacked\">\n" +
     "              <li ng-class=\"{active:active=='dashboard'}\"><a href=\"/dashboard\">Dashboard</a></li>\n" +
-    "              <li auth-group=\"student\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">Internships</a></li>\n" +
-    "              <li auth-group=\"employer\" ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">My Internships</a></li>\n" +
+    "              <li ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
+    "              <li ng-class=\"{active:active=='declined'}\"><a href=\"/dashboard/applications/declined\">Declined Applications</a></li>\n" +
+    "              <li auth-group=\"employers\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">Active Internships</a></li>\n" +
+    "              <li ng-class=\"{active:active=='archived'}\"><a href=\"/dashboard/internships/archived\">Archived Internships</a></li>\n" +
     "              <li auth-group=\"employer\" ng-class=\"{active:active=='roles'}\"><a href=\"/dashboard/roles\">Available Roles</a></li>\n" +
     "              <li auth-group=\"employer\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/company-profile\">Company Profile</a></li>\n" +
     "              <li auth-group=\"student\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">Edit Profile</a></li>\n" +
@@ -33243,7 +33255,7 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
     "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
     "\n" +
     "      <div class=\"pull-right\">\n" +
-    "        <div status-widget internship=\"internship\"></div>\n" +
+    "        <div auth-group=\"employer\" status-widget internship=\"internship\"></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "  </section>\n" +
@@ -33252,16 +33264,16 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
     "    <div class=\"container\">\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"col-sm-4\">\n" +
-    "          <div profile-widget internship=\"internship\"></div>\n" +
-    "          <div schedule-widget internship=\"internship\"></div>\n" +
+    "          <div auth-group=\"employer\" ng-show=\"internship.status=='pending'\" profile-widget internship=\"internship\"></div>\n" +
+    "          <div ng-show=\"internship.status=='pending'\" interview-widget internship=\"internship\"></div>\n" +
+    "          <div ng-show=\"internship.status=='active'\" schedule-widget internship=\"internship\"></div>\n" +
+    "          <div ng-show=\"internship.status=='pending'\" auth-group=\"employer\" availability-widget internship=\"internship\"></div>\n" +
     "          <div supervisors-widget internship=\"internship\"></div>\n" +
-    "          <div interview-widget internship=\"internship\"></div>\n" +
-    "          <div availability-widget internship=\"internship\"></div>\n" +
     "          <div documents-widget internship=\"internship\"></div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"col-sm-8\">\n" +
-    "          <div message-widget internship=\"internship\"></div>\n" +
+    "          <div ng-hide=\"internship.status=='rejected'\" message-widget internship=\"internship\"></div>\n" +
     "          <div activity-widget internship=\"internship\"></div>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -33697,7 +33709,7 @@ angular.module("internships/widgets/interview.tpl.html", []).run(["$templateCach
     "  <header>\n" +
     "    <h3>Interview</h3>\n" +
     "\n" +
-    "    <div dropdown-menu>\n" +
+    "    <div dropdown-menu auth-group=\"employer\">\n" +
     "      <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
     "      <ul>\n" +
     "        <li ng-show=\"!internship.interview\"><a ng-click=\"edit()\">Schedule Interview</a></li>\n" +
@@ -33720,7 +33732,7 @@ angular.module("internships/widgets/interview.tpl.html", []).run(["$templateCach
     "\n" +
     "  <div ng-show=\"!internship.interview\" class=\"no-results\">\n" +
     "    <p class=\"lead\">No interview has been scheduled</p>\n" +
-    "    <a ng-click=\"edit()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-group\"></i> Schedule an Interview</a>\n" +
+    "    <a auth-group=\"employer\" ng-click=\"edit()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-group\"></i> Schedule an Interview</a>\n" +
     "  </div>\n" +
     "</div>");
 }]);
@@ -33866,7 +33878,7 @@ angular.module("internships/widgets/supervisors.tpl.html", []).run(["$templateCa
 angular.module("internships/widgets/title.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/widgets/title.tpl.html",
     "<div class=\"internship-title\">\n" +
-    "  <div ng-show=\"!isCompany || company.logoUrl\" class=\"company-logo\">\n" +
+    "  <div ng-show=\"!isCompany && company.logoUrl\" class=\"company-logo\">\n" +
     "    <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
     "  </div>\n" +
     "\n" +
@@ -33877,7 +33889,7 @@ angular.module("internships/widgets/title.tpl.html", []).run(["$templateCache", 
     "      <span class=\"status\">\n" +
     "        <i ng-class=\"{\n" +
     "          'fa fa-cogs': internship.status == 'pending',\n" +
-    "          'fa fa-heck-square': internship.status == 'active',\n" +
+    "          'fa fa-check-square': internship.status == 'active',\n" +
     "          'fa fa-minus-circle': internship.status == 'rejected',\n" +
     "          'fa fa-trophy': internship.status == 'completed',\n" +
     "        }\"></i> {{ internship.status | titlecase }}\n" +
@@ -34526,6 +34538,12 @@ angular.module('InternLabs', [
   })
 
   .run(function(Restangular, growl) {
+
+    if (internlabs.user) {
+      internlabs.isStudent = internlabs.user.type === "student";
+      internlabs.isEmployer = internlabs.user.type === "employer";
+      internlabs.isSupervisor = internlabs.user.type === "supervisor";
+    }
 
     // Underscore mixins
     _.mixin({
@@ -35927,6 +35945,24 @@ angular.module('InternLabs.dashboard', [])
 
   .config(function($routeProvider) {
 
+
+    var resolveInternships = function(Restangular, status) {
+      if (internlabs.isStudent) {
+        return Restangular.one('me').all('internships').getList({
+          status: status
+        });
+      } else if (internlabs.isEmployer) {
+        return Restangular.one('companies', internlabs.user.company).getList('internships', {
+          status: status
+        });
+      } else if (internlabs.isSupervisor) {
+        return Restangular.one('suporvisors', internlabs.user._id).getList('internships', {
+          status: status
+        });
+      }
+    };
+
+
     $routeProvider
 
       .when('/dashboard', {
@@ -35942,14 +35978,29 @@ angular.module('InternLabs.dashboard', [])
       .when('/dashboard/internships', {
         templateUrl: 'dashboard/layout.tpl.html',
         controller: 'InternshipsCtrl',
-        pageTitle: 'My Internships',
+        pageTitle: 'Active Internships',
         auth: true,
         state: {
           main: 'dashboard/internships.tpl.html'
         },
         resolve: {
           internships: function(Restangular) {
-            return Restangular.one('me').all('internships').getList();
+            return resolveInternships(Restangular, 'active')
+          }
+        }
+      })
+
+      .when('/dashboard/internships/archived', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'ArchivedInternshipsCtrl',
+        pageTitle: 'Archived Internships',
+        auth: true,
+        state: {
+          main: 'dashboard/internships.tpl.html'
+        },
+        resolve: {
+          internships: function(Restangular) {
+            return resolveInternships(Restangular, 'completed')
           }
         }
       })
@@ -35964,9 +36015,22 @@ angular.module('InternLabs.dashboard', [])
         },
         resolve: {
           internships: function(Restangular) {
-            return Restangular.one('companies', window.internlabs.user.company).getList('internships', {
-              status: 'pending'
-            });
+            return resolveInternships(Restangular, 'pending')
+          }
+        }
+      })
+
+      .when('/dashboard/applications/declined', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'DeclinedApplicationsCtrl',
+        pageTitle: 'Declined Applications',
+        auth: true,
+        state: {
+          main: 'dashboard/internships.tpl.html'
+        },
+        resolve: {
+          internships: function(Restangular) {
+            return resolveInternships(Restangular, 'rejected')
           }
         }
       })
@@ -36011,28 +36075,41 @@ angular.module('InternLabs.dashboard', [])
     $scope.active = 'dashboard';
     $scope.searching = true;
 
-    navigator.geolocation.getCurrentPosition(function(geo) {
-      $http({
-        method: "GET",
-        url: Options.apiUrl('recommendations'),
-        params: {
-          lat: geo.coords.latitude,
-          lng: geo.coords.longitude
-        }
-      }).success(function(response) {
-        $scope.searching = false;
-        if (!response.data.results.length) {
-          $scope.noResults = true;
-        }
-        $scope.recommendations = Restangular.restangularizeCollection(false, response.data.results, 'companies');
-      }); 
-    });
+    if (internlabs.isStudent) {
+      $scope.searching = true;
+
+      navigator.geolocation.getCurrentPosition(function(geo) {
+        $http({
+          method: "GET",
+          url: Options.apiUrl('recommendations'),
+          params: {
+            lat: geo.coords.latitude,
+            lng: geo.coords.longitude
+          }
+        }).success(function(response) {
+          $scope.searching = false;
+          if (!response.data.results.length) {
+            $scope.noResults = true;
+          }
+          $scope.recommendations = Restangular.restangularizeCollection(false, response.data.results, 'companies');
+        }); 
+      });
+    }
   })
 
 
   .controller('InternshipsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'internships';
+    $scope.title = "Active Internships";
+    $scope.internships = internships;
+  })
+
+
+  .controller('ArchivedInternshipsCtrl', function($route, $scope, internships) {
+    $scope.state = $route.current.$$route.state;
+    $scope.active = 'archived';
+    $scope.title = "Archived Internships";
     $scope.internships = internships;
   })
 
@@ -36041,6 +36118,14 @@ angular.module('InternLabs.dashboard', [])
     $scope.state = $route.current.$$route.state;
     $scope.active = 'applications';
     $scope.title = "Pending Applications";
+    $scope.internships = internships;
+  })
+
+
+  .controller('DeclinedApplicationsCtrl', function($route, $scope, internships) {
+    $scope.state = $route.current.$$route.state;
+    $scope.active = 'declined';
+    $scope.title = "Declined Applications";
     $scope.internships = internships;
   })
 
@@ -37083,6 +37168,10 @@ angular.module('InternLabs.search', [])
          */
         var addMarkers = function() {
           _.each(scope.results, function(result, key) {
+
+            if (!result.address || !result.address.lat || !result.address.lng) {
+              return;
+            }
 
             // Marker Options
             var markerOptions = {

@@ -2,7 +2,7 @@
   <header>
     <h3>Interview</h3>
 
-    <div dropdown-menu>
+    <div dropdown-menu auth-group="employer">
       <a ng-click="toggle()"><i class="fa fa-bars"></i></a>
       <ul>
         <li ng-show="!internship.interview"><a ng-click="edit()">Schedule Interview</a></li>
@@ -25,6 +25,6 @@
 
   <div ng-show="!internship.interview" class="no-results">
     <p class="lead">No interview has been scheduled</p>
-    <a ng-click="edit()" class="btn btn-link btn-sm"><i class="fa fa-group"></i> Schedule an Interview</a>
+    <a auth-group="employer" ng-click="edit()" class="btn btn-link btn-sm"><i class="fa fa-group"></i> Schedule an Interview</a>
   </div>
 </div>

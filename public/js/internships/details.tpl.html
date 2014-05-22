@@ -11,7 +11,7 @@
       <div class="pull-left" internship-title internship="internship"></div>
 
       <div class="pull-right">
-        <div status-widget internship="internship"></div>
+        <div auth-group="employer" status-widget internship="internship"></div>
       </div>
     </div>
   </section>
@@ -20,16 +20,16 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-4">
-          <div profile-widget internship="internship"></div>
-          <div schedule-widget internship="internship"></div>
+          <div auth-group="employer" ng-show="internship.status=='pending'" profile-widget internship="internship"></div>
+          <div ng-show="internship.status=='pending'" interview-widget internship="internship"></div>
+          <div ng-show="internship.status=='active'" schedule-widget internship="internship"></div>
+          <div ng-show="internship.status=='pending'" auth-group="employer" availability-widget internship="internship"></div>
           <div supervisors-widget internship="internship"></div>
-          <div interview-widget internship="internship"></div>
-          <div availability-widget internship="internship"></div>
           <div documents-widget internship="internship"></div>
         </div>
 
         <div class="col-sm-8">
-          <div message-widget internship="internship"></div>
+          <div ng-hide="internship.status=='rejected'" message-widget internship="internship"></div>
           <div activity-widget internship="internship"></div>
         </div>
       </div>

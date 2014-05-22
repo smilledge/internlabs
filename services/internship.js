@@ -25,7 +25,12 @@ var getUploadsDir = function() {
  * @param  {function} done
  * @return {void}
  */
-module.exports.findByUser = function(user, done) {
+module.exports.findByUser = function(user, query, done) {
+
+  if (_.isFunction(query)) {
+    done = query;
+    query = {};
+  }
 
   if (user._id) {
     user = user._id;
@@ -49,9 +54,9 @@ module.exports.findByUser = function(user, done) {
      * Get the internship
      */
     function(student, callback) {
-      Internship.find({
+      Internship.find(_.extend(query, {
         student: student._id
-      }).populate('company student').exec(function(err, internships) {
+      })).populate('company student').exec(function(err, internships) {
         if ( err || ! internships ) {
           return callback(new Error("Could not find any matching internships."));
         }
@@ -80,14 +85,14 @@ module.exports.findByUser = function(user, done) {
  * @param  {function} done
  * @return {void}
  */
-module.exports.findByCompany = function(company, params, done) {
+module.exports.findByCompany = function(company, query, done) {
   async.waterfall([
 
     /**
      * Get the internships
      */
     function(callback) {
-      Internship.find(_.extend(params, {
+      Internship.find(_.extend(query, {
         company: company
       })).populate('company student').exec(function(err, internships) {
         if ( err || ! internships ) {

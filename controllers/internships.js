@@ -13,7 +13,7 @@ module.exports = function(app) {
    * Get the current user's internships
    */
   app.get('/api/me/internships', auth.check(), function(req, res) {
-    InternshipService.findByUser(req.user._id, function(err, internships) {
+    InternshipService.findByUser(req.user._id, req.query, function(err, internships) {
       if ( err || ! internships ) {
         return res.apiError(new Error('Could not find any matching internships.'));
       }
@@ -42,7 +42,7 @@ module.exports = function(app) {
 
     var company = req.params.companyId;
 
-    InternshipService.findByCompany(company, req.params, function(err, internships) {
+    InternshipService.findByCompany(company, req.query, function(err, internships) {
       if ( err || ! internships ) {
         return res.apiError(new Error('Could not find any matching internships.'));
       }

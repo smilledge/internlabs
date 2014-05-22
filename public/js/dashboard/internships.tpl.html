@@ -1,11 +1,18 @@
 <div class="content-box">
   <header>
-    <h3>{{ title || "My Internships" }}</h3>
+    <h3>{{ title || "Internships" }}</h3>
   </header>
 
-  <div class="list-group list-internships">
+  <div ng-show="internships.length" class="list-group list-internships">
     <a ng-repeat="internship in internships" href="{{ internship.url }}" class="list-group-item clearfix">
       <div class="pull-left" internship-title internship="internship"></div>
     </a>
+  </div>
+  <div auth-group="student" ng-show="!internships.length" class="no-results">
+    <p class="lead">Looks like you haven't applied for any internships yet!</p>
+    <a href="/search" class="btn btn-link btn-sm"><i class="fa fa-search"></i> Find one now</a>
+  </div>
+  <div auth-group="employer" ng-show="!internships.length" class="no-results">
+    <p class="lead">No results found</p>
   </div>
 </div>
