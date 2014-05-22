@@ -14,7 +14,7 @@
 
   "express": {
       "x-powered-by": false,
-      "trust proxy": false,
+      "trust proxy": true,
       "jsonp callback name": null,
       "json replacer": null,
       "json spaces": 0,

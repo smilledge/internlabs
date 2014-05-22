@@ -36329,9 +36329,24 @@ angular.module('InternLabs.dashboard', [])
   })
 
 
-  .controller('DashboardCtrl', function($route, $scope) {
+  .controller('DashboardCtrl', function($route, $scope, $http, Options) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'dashboard';
+
+    navigator.geolocation.getCurrentPosition(function(geo) {
+
+      $http({
+        method: "GET",
+        url: Options.apiUrl('recommendations'),
+        params: {
+          lat: geo.coords.latitude,
+          lng: geo.coords.longitude
+        }
+      }).success(function(response) {
+        console.log(response);
+      });
+      
+    });
   })
 
 
