@@ -33246,7 +33246,7 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-edit.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
+angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/list.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-edit.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
 
 angular.module("common/forms/file-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/forms/file-upload.tpl.html",
@@ -33323,6 +33323,38 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
     "  </section>\n" +
     "\n" +
     "</article>");
+}]);
+
+angular.module("company/list.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("company/list.tpl.html",
+    "<div class=\"list-group list-companies\">\n" +
+    "  <a href=\"{{ company.url }}\" class=\"list-group-item\" ng-repeat-start=\"company in companies track by company._id\">\n" +
+    "    <div class=\"company-logo\">\n" +
+    "      <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"overview\">\n" +
+    "      <h2>{{ company.name }}</h2>\n" +
+    "      <p class=\"introduction\">{{ company.introduction | limitTo:120 }}...</p>\n" +
+    "      <div class=\"meta\">\n" +
+    "        <span class=\"location\"><i class=\"fa fa-map-marker\"></i> {{ [company.address.city, company.address.country].join(', ') }}</span>\n" +
+    "        <span class=\"skills\"><i class=\"fa fa-tag\"></i> {{ company.getSkillsString() }}</span>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </a>\n" +
+    "  <div ng-repeat-end ng-repeat=\"role in company.roles\" class=\"list-group-item item-role item-muted text-muted\">\n" +
+    "    <strong>{{ role.title }}</strong>\n" +
+    "    <p>{{ role.description | limitTo:80 }}...</p>\n" +
+    "\n" +
+    "    <div dropdown-menu>\n" +
+    "      <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "      <ul>\n" +
+    "        <li><a ng-click=\"showRoleDetails(role)\">More Info</a></li>\n" +
+    "        <li><a auth-group=\"student\" ng-click=\"apply(company, role)\">Apply</a></li>\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>");
 }]);
 
 angular.module("company/widgets/profile.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -33407,10 +33439,18 @@ angular.module("dashboard/company-profile.tpl.html", []).run(["$templateCache", 
 
 angular.module("dashboard/dashboard.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/dashboard.tpl.html",
-    "<header class=\"section-header\">\n" +
-    "  <h2>Dashboard</h2>\n" +
-    "</header>\n" +
-    "");
+    "<div class=\"content-box\">\n" +
+    "  <header>\n" +
+    "    <h3>Recommended Internships <span class=\"small text-muted text-small\">(based on your location and skills)</span></h3>\n" +
+    "  </header>\n" +
+    "  <div ng-show=\"noResults\" class=\"no-results\">\n" +
+    "    <p class=\"lead\">Sorry but we could not find any appropriate internships for you. Try adding some skills to your profile.</p>\n" +
+    "  </div>\n" +
+    "  <div ng-show=\"searching\" class=\"no-results\">\n" +
+    "    <i class=\"fa fa-spinner fa-spin\" style=\"font-size:40px\"></i>\n" +
+    "  </div>\n" +
+    "  <div company-list companies=\"recommendations\"></div>\n" +
+    "</div>");
 }]);
 
 angular.module("dashboard/forms/logo-delete.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -34774,25 +34814,27 @@ angular.module("search/search.tpl.html", []).run(["$templateCache", function($te
     "  <!-- List View -->\n" +
     "  <section ng-show=\"query.view == 'list'\" class=\"main\">\n" +
     "    <div class=\"container\">\n" +
-    "      <div search-widget query=\"query\" options=\"options\"></div>\n" +
+    "      <div class=\"row\">\n" +
+    "        <div class=\"col-sm-4\">\n" +
+    "          <div search-widget query=\"query\" options=\"options\"></div>\n" +
+    "        </div>\n" +
     "\n" +
-    "      <div class=\"search-results deckgrid\" deckgrid source=\"results\">\n" +
-    "        <div class=\"search-result\">\n" +
-    "          <div class=\"box\">\n" +
-    "            <a ng-show=\"card.logoUrl\" href=\"{{ card.url }}\"><img ng-src=\"{{ card.logoUrl }}\" alt=\"{{ card.name }}\"></a>\n" +
-    "            <h4 class=\"text-center\"><a href=\"{{ card.url }}\">{{ card.name }}</a></h4>\n" +
-    "            <p class=\"text-center\">\n" +
-    "              <a href=\"{{ card.url }}\" class=\"btn btn-default btn-sm\">More Info</a>\n" +
-    "              <a href=\"#apply\" class=\"btn btn-sm btn-primary\">Apply Online</a>\n" +
-    "            </p>\n" +
+    "        <div class=\"col-sm-8\">\n" +
+    "\n" +
+    "          <div class=\"content-box widget-search\">\n" +
+    "            <header class=\"clearfix\">\n" +
+    "              <h3 class=\"pull-left\">Results</h3>\n" +
+    "              <div class=\"pull-right\" results-view-toggle query=\"query\"></div>\n" +
+    "            </header>\n" +
+    "\n" +
+    "            <div company-list companies=\"results\"></div>\n" +
+    "\n" +
+    "            <div ng-show=\"!results.length\" class=\"no-results\">\n" +
+    "              <p class=\"lead\">No results found!</p>\n" +
+    "            </div>\n" +
     "          </div>\n" +
     "        </div>\n" +
     "      </div>\n" +
-    "\n" +
-    "      <div ng-show=\"!results.length\" class=\"no-results\">\n" +
-    "        <p class=\"lead\">No results found!</p>\n" +
-    "      </div>\n" +
-    "\n" +
     "    </div>\n" +
     "  </section>\n" +
     "\n" +
@@ -34806,43 +34848,35 @@ angular.module("search/search.tpl.html", []).run(["$templateCache", function($te
 
 angular.module("search/widgets/search.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("search/widgets/search.tpl.html",
-    "<div class=\"content-box widget-search\">\n" +
-    "  <header class=\"clearfix\">\n" +
-    "    <h3 class=\"pull-left\">Search</h3>\n" +
-    "    <div class=\"pull-right\" results-view-toggle query=\"$parent.query\"></div>\n" +
-    "  </header>\n" +
+    "<div>\n" +
+    "  <div class=\"content-box widget-search\">\n" +
+    "    <header class=\"clearfix\">\n" +
+    "      <h3 class=\"pull-left\">Search</h3>\n" +
+    "    </header>\n" +
     "\n" +
-    "  <form role=\"form\" ng-submit=\"search()\">\n" +
-    "    <div class=\"row-sm\">\n" +
-    "      <div class=\"col-sm-6\">\n" +
-    "        <div class=\"form-group\">\n" +
-    "          <input type=\"text\" ng-model=\"query.query\" class=\"form-control\" placeholder=\"Search for...\">\n" +
-    "        </div>\n" +
+    "    <form role=\"form\" ng-submit=\"search()\">\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <input type=\"text\" ng-model=\"query.query\" class=\"form-control\" placeholder=\"Search for...\">\n" +
     "      </div>\n" +
-    "\n" +
-    "      <div class=\"col-sm-2\">\n" +
-    "        <button type=\"submit\" class=\"btn btn-primary btn-icon-right\">Search <i class=\"fa fa-search\"></i></button>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <button type=\"submit\" class=\"btn btn-primary btn-icon-left btn-block\">Search <i class=\"fa fa-search\"></i></button>\n" +
     "      </div>\n" +
+    "    </form>\n" +
+    "  </div>\n" +
     "\n" +
-    "      <button type=\"button\" ng-click=\"toggleAdvanced()\" class=\"btn-advanced pull-right btn btn-link btn-icon-left\">Advanced Search <i ng-class=\"{'fa fa-chevron-up':showAdvanced,'fa fa-chevron-down':!showAdvanced}\"></i></button>\n" +
-    "    </div>\n" +
+    "  <div class=\"content-box widget-filter hidden-xs\">\n" +
+    "    <header class=\"clearfix\">\n" +
+    "      <h3 class=\"pull-left\">Search in Locations</h3>\n" +
+    "    </header>\n" +
+    "    <div checkbox-list selected=\"query.locations\" options=\"options.locations\" filterable=\"true\"></div>\n" +
+    "  </div>\n" +
     "\n" +
-    "    <div class=\"row advanced\" ng-show=\"showAdvanced\">\n" +
-    "\n" +
-    "      <div class=\"col-sm-6\">\n" +
-    "        <h4>Locations</h4>\n" +
-    "        <div checkbox-list selected=\"query.locations\" options=\"options.locations\" filterable=\"true\"></div>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"col-sm-6\">\n" +
-    "        <h4>Skills</h4>\n" +
-    "        <div checkbox-list selected=\"query.skills\" options=\"options.skills\" filterable=\"true\"></div>\n" +
-    "      </div>\n" +
-    "\n" +
-    "    </div>\n" +
-    "\n" +
-    "  </form>\n" +
-    "\n" +
+    "  <div class=\"content-box widget-filter hidden-xs\">\n" +
+    "    <header class=\"clearfix\">\n" +
+    "      <h3 class=\"pull-left\">Search by Skills</h3>\n" +
+    "    </header>\n" +
+    "    <div checkbox-list selected=\"query.skills\" options=\"options.skills\" filterable=\"true\"></div>\n" +
+    "  </div>\n" +
     "</div>");
 }]);
 
@@ -36053,14 +36087,12 @@ angular.module('InternLabs.services')
        */
       model.getDisplayAddress = function() {
         var html = "", address = this.address;
-
         html += address.line1 + '<br />';
         if ( address.line2 ) html += address.line2 + '<br />';
         html += address.city + ', ';
         html += address.state + ', ';
         html += address.postcode + '<br />';
         html += address.country;
-
         return html;
       };
 
@@ -36070,13 +36102,24 @@ angular.module('InternLabs.services')
        */
       model.getGoogleMapsLink = function() {
         var address = this.address, url = "";
-
         url += "http://maps.google.com/?ie=UTF8&hq=&ll=";
         url += address.lat + "," + address.lng;
         url += "&q=" + address.lat + "," + address.lng;;
         url += "&z=18";
-
         return url;
+      };
+
+
+      model.getSkillsString = function() {
+        var string;
+        if ( ! _.isArray(this.skills) ) {
+          return null;
+        }
+        var string = this.skills.slice(0, 3).join(', ');
+        if ( this.skills.length > 3) {
+          string += ' (+' + (this.skills.length - 3) + ' more)';
+        }
+        return string;
       };
 
 
@@ -36176,13 +36219,13 @@ angular.module('InternLabs.services')
   /**
    * Search Service
    */
-  .service('Search', function($http, Options) {
+  .service('Search', function($http, Options, Restangular) {
 
     this.query = function(query) {
       return $http.get(Options.apiUrl('search'), {
         params: query
       }).then(function(data) {
-        return data.data;
+        return Restangular.restangularizeCollection(false, data.data.data.results, 'companies');
       });
     };
 
@@ -36239,8 +36282,46 @@ angular.module('InternLabs.company', [])
         },
         template: role.description
       });
-    }
+    };
 
+  })
+
+
+
+  /**
+   * Company List
+   */
+  .directive('companyList', function(ModalFactory) {
+    return {
+      templateUrl: 'company/list.tpl.html',
+      scope: {
+        companies: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.apply = function(company, role) {
+          ModalFactory.create({
+            scope: {
+              title: "Apply for internship",
+              application: {
+                company: company._id
+              },
+              role: role
+            },
+            templateUrl: "internships/forms/apply.tpl.html",
+            className: "modal-lg modal-create-application"
+          });
+        };
+
+        scope.showRoleDetails = function(role) {
+          ModalFactory.create({
+            scope: {
+              title: role.title
+            },
+            template: role.description
+          });
+        };
+      }
+    };
   })
 
 
@@ -36329,12 +36410,12 @@ angular.module('InternLabs.dashboard', [])
   })
 
 
-  .controller('DashboardCtrl', function($route, $scope, $http, Options) {
+  .controller('DashboardCtrl', function($route, $scope, $http, Options, Restangular) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'dashboard';
+    $scope.searching = true;
 
     navigator.geolocation.getCurrentPosition(function(geo) {
-
       $http({
         method: "GET",
         url: Options.apiUrl('recommendations'),
@@ -36343,9 +36424,12 @@ angular.module('InternLabs.dashboard', [])
           lng: geo.coords.longitude
         }
       }).success(function(response) {
-        console.log(response);
-      });
-      
+        $scope.searching = false;
+        if (!response.data.results.length) {
+          $scope.noResults = true;
+        }
+        $scope.recommendations = Restangular.restangularizeCollection(false, response.data.results, 'companies');
+      }); 
     });
   })
 
@@ -37280,7 +37364,7 @@ angular.module('InternLabs.search', [])
   .controller('SearchCtrl', function($scope, $routeParams, $location, Search, SearchQuery, results, options) {
     var initial = true;
     
-    $scope.results = (results.data) ? results.data.results : [];
+    $scope.results = results || [];
     $scope.query = SearchQuery.parse($routeParams);
     $scope.query.view = 'list';
     $scope.options = options;
@@ -37292,9 +37376,8 @@ angular.module('InternLabs.search', [])
 
       $location.search(SearchQuery.serialize($scope.query));
 
-      Search.query($scope.query).then(function(data) {
-        $scope.results = [];
-        $scope.results = (data.data) ? data.data.results : [];
+      Search.query($scope.query).then(function(results) {
+        $scope.results = results || [];
       })
     };
 
@@ -37315,12 +37398,6 @@ angular.module('InternLabs.search', [])
         options: '=?'
       },
       link: function(scope, elem, attrs) {
-        scope.showAdvanced = false;
-
-        scope.toggleAdvanced = function() {
-          scope.showAdvanced = !scope.showAdvanced;
-        };
-
         scope.search = function() {
           scope._query = angular.copy(scope.query);
         }
@@ -37493,8 +37570,11 @@ angular.module('InternLabs.search', [])
 
         $(window).on('resize', fitBounds);
 
-        initMap();
+        scope.$on('$destroy', function () {
+          $(window).off('resize');
+        });
 
+        initMap();
       }
     };
   })

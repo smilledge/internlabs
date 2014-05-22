@@ -46,13 +46,13 @@ angular.module('InternLabs.services')
   /**
    * Search Service
    */
-  .service('Search', function($http, Options) {
+  .service('Search', function($http, Options, Restangular) {
 
     this.query = function(query) {
       return $http.get(Options.apiUrl('search'), {
         params: query
       }).then(function(data) {
-        return data.data;
+        return Restangular.restangularizeCollection(false, data.data.data.results, 'companies');
       });
     };
 

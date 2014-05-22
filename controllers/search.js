@@ -24,10 +24,10 @@ module.exports = function(app) {
   app.get('/api/search', function(req, res) {
 
     var input = req.query,
-        query = SearchQuery.make(req.query);
+        query = SearchQuery.search(req.query);
 
     Company.search(query, {
-      populate: 'address'
+      populate: 'address roles'
     }, function(err, results) {
       if ( err || ! results ) {
         return res.apiError("Sorry, no results were found.");
@@ -56,7 +56,7 @@ module.exports = function(app) {
       });
 
       Company.search(query, {
-        populate: 'address'
+        populate: 'address roles'
       }, function(err, results) {
         if ( err || ! results ) {
           return res.apiError("Sorry, we could not reccomend any internships.");
