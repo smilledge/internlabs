@@ -33037,7 +33037,9 @@ angular.module("dashboard/dashboard.tpl.html", []).run(["$templateCache", functi
     "  <div ng-show=\"noResults\" class=\"no-results\">\n" +
     "    <p class=\"lead\">Sorry but we could not find any appropriate internships for you. Try adding some skills to your profile.</p>\n" +
     "  </div>\n" +
-    "  <div ng-show=\"searching\" class=\"no-results\">\n" +
+    "  <div ng-show=\"searching\" class=\"no-results text-center\">\n" +
+    "    <p class=\"lead\">Please click \"Allow\" when you are asked to share your location.</p>\n" +
+    "    <p class=\"test-muted\">(Your location will be used to help find internships in your area)</p>\n" +
     "    <i class=\"fa fa-spinner fa-spin\" style=\"font-size:40px\"></i>\n" +
     "  </div>\n" +
     "  <div company-list companies=\"recommendations\"></div>\n" +
