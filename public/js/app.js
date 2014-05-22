@@ -48,6 +48,12 @@ angular.module('InternLabs', [
 
   .run(function(Restangular, growl) {
 
+    if (internlabs.user) {
+      internlabs.isStudent = internlabs.user.type === "student";
+      internlabs.isEmployer = internlabs.user.type === "employer";
+      internlabs.isSupervisor = internlabs.user.type === "supervisor";
+    }
+
     // Underscore mixins
     _.mixin({
       capitalize: function(string) {

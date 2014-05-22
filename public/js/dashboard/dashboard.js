@@ -3,6 +3,24 @@ angular.module('InternLabs.dashboard', [])
 
   .config(function($routeProvider) {
 
+
+    var resolveInternships = function(Restangular, status) {
+      if (internlabs.isStudent) {
+        return Restangular.one('me').all('internships').getList({
+          status: status
+        });
+      } else if (internlabs.isEmployer) {
+        return Restangular.one('companies', internlabs.user.company).getList('internships', {
+          status: status
+        });
+      } else if (internlabs.isSupervisor) {
+        return Restangular.one('suporvisors', internlabs.user._id).getList('internships', {
+          status: status
+        });
+      }
+    };
+
+
     $routeProvider
 
       .when('/dashboard', {
@@ -18,14 +36,29 @@ angular.module('InternLabs.dashboard', [])
       .when('/dashboard/internships', {
         templateUrl: 'dashboard/layout.tpl.html',
         controller: 'InternshipsCtrl',
-        pageTitle: 'My Internships',
+        pageTitle: 'Active Internships',
         auth: true,
         state: {
           main: 'dashboard/internships.tpl.html'
         },
         resolve: {
           internships: function(Restangular) {
-            return Restangular.one('me').all('internships').getList();
+            return resolveInternships(Restangular, 'active')
+          }
+        }
+      })
+
+      .when('/dashboard/internships/archived', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'ArchivedInternshipsCtrl',
+        pageTitle: 'Archived Internships',
+        auth: true,
+        state: {
+          main: 'dashboard/internships.tpl.html'
+        },
+        resolve: {
+          internships: function(Restangular) {
+            return resolveInternships(Restangular, 'completed')
           }
         }
       })
@@ -40,9 +73,22 @@ angular.module('InternLabs.dashboard', [])
         },
         resolve: {
           internships: function(Restangular) {
-            return Restangular.one('companies', window.internlabs.user.company).getList('internships', {
-              status: 'pending'
-            });
+            return resolveInternships(Restangular, 'pending')
+          }
+        }
+      })
+
+      .when('/dashboard/applications/declined', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'DeclinedApplicationsCtrl',
+        pageTitle: 'Declined Applications',
+        auth: true,
+        state: {
+          main: 'dashboard/internships.tpl.html'
+        },
+        resolve: {
+          internships: function(Restangular) {
+            return resolveInternships(Restangular, 'rejected')
           }
         }
       })
@@ -87,28 +133,41 @@ angular.module('InternLabs.dashboard', [])
     $scope.active = 'dashboard';
     $scope.searching = true;
 
-    navigator.geolocation.getCurrentPosition(function(geo) {
-      $http({
-        method: "GET",
-        url: Options.apiUrl('recommendations'),
-        params: {
-          lat: geo.coords.latitude,
-          lng: geo.coords.longitude
-        }
-      }).success(function(response) {
-        $scope.searching = false;
-        if (!response.data.results.length) {
-          $scope.noResults = true;
-        }
-        $scope.recommendations = Restangular.restangularizeCollection(false, response.data.results, 'companies');
-      }); 
-    });
+    if (internlabs.isStudent) {
+      $scope.searching = true;
+
+      navigator.geolocation.getCurrentPosition(function(geo) {
+        $http({
+          method: "GET",
+          url: Options.apiUrl('recommendations'),
+          params: {
+            lat: geo.coords.latitude,
+            lng: geo.coords.longitude
+          }
+        }).success(function(response) {
+          $scope.searching = false;
+          if (!response.data.results.length) {
+            $scope.noResults = true;
+          }
+          $scope.recommendations = Restangular.restangularizeCollection(false, response.data.results, 'companies');
+        }); 
+      });
+    }
   })
 
 
   .controller('InternshipsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'internships';
+    $scope.title = "Active Internships";
+    $scope.internships = internships;
+  })
+
+
+  .controller('ArchivedInternshipsCtrl', function($route, $scope, internships) {
+    $scope.state = $route.current.$$route.state;
+    $scope.active = 'archived';
+    $scope.title = "Archived Internships";
     $scope.internships = internships;
   })
 
@@ -117,6 +176,14 @@ angular.module('InternLabs.dashboard', [])
     $scope.state = $route.current.$$route.state;
     $scope.active = 'applications';
     $scope.title = "Pending Applications";
+    $scope.internships = internships;
+  })
+
+
+  .controller('DeclinedApplicationsCtrl', function($route, $scope, internships) {
+    $scope.state = $route.current.$$route.state;
+    $scope.active = 'declined';
+    $scope.title = "Declined Applications";
     $scope.internships = internships;
   })
 

@@ -1,5 +1,5 @@
 <div class="internship-title">
-  <div ng-show="!isCompany || company.logoUrl" class="company-logo">
+  <div ng-show="!isCompany && company.logoUrl" class="company-logo">
     <img ng-src="{{ company.logoUrl }}" alt="{{ company.name }}">
   </div>
 
@@ -10,7 +10,7 @@
       <span class="status">
         <i ng-class="{
           'fa fa-cogs': internship.status == 'pending',
-          'fa fa-heck-square': internship.status == 'active',
+          'fa fa-check-square': internship.status == 'active',
           'fa fa-minus-circle': internship.status == 'rejected',
           'fa fa-trophy': internship.status == 'completed',
         }"></i> {{ internship.status | titlecase }}
