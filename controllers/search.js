@@ -8,7 +8,6 @@ var auth = require('../lib/auth'),
     fs = require('fs'),
     _ = require('lodash'),
     Helpers = require('../helpers'),
-    geoip = require('geoip-lite'),
     SearchQuery = require('../services/query');
 
 

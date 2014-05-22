@@ -25,7 +25,7 @@ var buildSearchQuery = function(input) {
     ));
 
 
-    console.log(JSON.stringify(query.toJSON(), true, '    '));
+    // console.log(JSON.stringify(query.toJSON(), true, '    '));
 
   return query.toJSON();
 };
