@@ -37355,7 +37355,7 @@ angular.module('InternLabs.search', [])
 
     $routeProvider
 
-      .when('/search/', {
+      .when('/search', {
         templateUrl: 'search/search.tpl.html',
         controller: 'SearchCtrl',
         pageTitle: 'Search',
