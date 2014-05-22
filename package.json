@@ -34,8 +34,7 @@
     "request": "~2.34.0",
     "mongoose-acl": "~0.2.1",
     "connect-redis": "~1.4.7",
-    "elastical": "0.0.13",
-    "geoip-lite": "~1.1.3"
+    "elastical": "0.0.13"
   },
   "devDependencies": {
     "mocha": "~1.17.0",
