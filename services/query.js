@@ -38,9 +38,9 @@ var buildRecommendationQuery = function(input) {
     .from(0)
     .fields('_id')
     .query(new Builder.StringQuery(input.query))
-    .filter(new Builder.GeoQuery('location', input.lat, input.lng, "10km"));
+    .filter(new Builder.GeoQuery('location', input.lat, input.lng, "25km"));
     
-    console.log(JSON.stringify(query.toJSON(), true, '    '));
+    // console.log(JSON.stringify(query.toJSON(), true, '    '));
 
   return query.toJSON();
 };
