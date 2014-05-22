@@ -32919,30 +32919,32 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
 angular.module("company/list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("company/list.tpl.html",
     "<div class=\"list-group list-companies\">\n" +
-    "  <a href=\"{{ company.url }}\" class=\"list-group-item\" ng-repeat-start=\"company in companies track by company._id\">\n" +
-    "    <div class=\"company-logo\">\n" +
-    "      <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <div class=\"overview\">\n" +
-    "      <h2>{{ company.name }}</h2>\n" +
-    "      <p class=\"introduction\">{{ company.introduction | limitTo:120 }}...</p>\n" +
-    "      <div class=\"meta\">\n" +
-    "        <span class=\"location\"><i class=\"fa fa-map-marker\"></i> {{ [company.address.city, company.address.country].join(', ') }}</span>\n" +
-    "        <span class=\"skills\"><i class=\"fa fa-tag\"></i> {{ company.getSkillsString() }}</span>\n" +
+    "  <div ng-repeat=\"company in companies track by company._id\" ng-class=\"{'company-hover':company.$hover}\" ng-mouseover=\"company.$hover=true\" ng-mouseleave=\"company.$hover=false\">\n" +
+    "    <a href=\"{{ company.url }}\" class=\"list-group-item item-company\">\n" +
+    "      <div class=\"company-logo\">\n" +
+    "        <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
     "      </div>\n" +
-    "    </div>\n" +
-    "  </a>\n" +
-    "  <div ng-repeat-end ng-repeat=\"role in company.roles\" class=\"list-group-item item-role item-muted text-muted\">\n" +
-    "    <strong>{{ role.title }}</strong>\n" +
-    "    <p>{{ role.description | limitTo:80 }}...</p>\n" +
     "\n" +
-    "    <div dropdown-menu>\n" +
-    "      <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
-    "      <ul>\n" +
-    "        <li><a ng-click=\"showRoleDetails(role)\">More Info</a></li>\n" +
-    "        <li><a auth-group=\"student\" ng-click=\"apply(company, role)\">Apply</a></li>\n" +
-    "      </ul>\n" +
+    "      <div class=\"overview\">\n" +
+    "        <h2>{{ company.name }}</h2>\n" +
+    "        <p class=\"introduction\">{{ company.introduction | limitTo:120 }}...</p>\n" +
+    "        <div class=\"meta\">\n" +
+    "          <span class=\"location\"><i class=\"fa fa-map-marker\"></i> {{ [company.address.city, company.address.country].join(', ') }}</span>\n" +
+    "          <span class=\"skills\"><i class=\"fa fa-tag\"></i> {{ company.getSkillsString() }}</span>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </a>\n" +
+    "    <div ng-repeat=\"role in company.roles\" class=\"list-group-item item-role item-muted text-muted\">\n" +
+    "      <strong>{{ role.title }}</strong>\n" +
+    "      <p>{{ role.description | limitTo:80 }}...</p>\n" +
+    "\n" +
+    "      <div dropdown-menu>\n" +
+    "        <a ng-click=\"toggle()\"><i class=\"fa fa-bars\"></i></a>\n" +
+    "        <ul>\n" +
+    "          <li><a ng-click=\"showRoleDetails(role)\">More Info</a></li>\n" +
+    "          <li><a auth-group=\"student\" ng-click=\"apply(company, role)\">Apply</a></li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</div>");
@@ -33038,7 +33040,7 @@ angular.module("dashboard/dashboard.tpl.html", []).run(["$templateCache", functi
     "    <p class=\"lead\">Sorry but we could not find any appropriate internships for you. Try adding some skills to your profile.</p>\n" +
     "  </div>\n" +
     "  <div ng-show=\"searching\" class=\"searching text-center\">\n" +
-    "    <p class=\"lead\">Please click \"Allow\" when you are asked to share your location.</p>\n" +
+    "    <p class=\"lead\">Please click \"Allow\" if you are asked to share your location.</p>\n" +
     "    <p class=\"text-muted\">(Your location will be used to help find internships in your area)</p>\n" +
     "    <i class=\"fa fa-spinner fa-spin\" style=\"font-size:40px\"></i>\n" +
     "  </div>\n" +
@@ -33118,10 +33120,14 @@ angular.module("dashboard/internships.tpl.html", []).run(["$templateCache", func
     "    <h3>{{ title || \"My Internships\" }}</h3>\n" +
     "  </header>\n" +
     "\n" +
-    "  <div class=\"list-group list-internships\">\n" +
+    "  <div ng-show=\"internships.length\" class=\"list-group list-internships\">\n" +
     "    <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item clearfix\">\n" +
     "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
     "    </a>\n" +
+    "  </div>\n" +
+    "  <div ng-show=\"!internships.length\" class=\"no-results\">\n" +
+    "    <p class=\"lead\">Looks like you haven't applied for any internships yet!</p>\n" +
+    "    <a href=\"/search\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-search\"></i> Find one now</a>\n" +
     "  </div>\n" +
     "</div>");
 }]);

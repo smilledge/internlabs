@@ -1,28 +1,30 @@
 <div class="list-group list-companies">
-  <a href="{{ company.url }}" class="list-group-item" ng-repeat-start="company in companies track by company._id">
-    <div class="company-logo">
-      <img ng-src="{{ company.logoUrl }}" alt="{{ company.name }}">
-    </div>
-
-    <div class="overview">
-      <h2>{{ company.name }}</h2>
-      <p class="introduction">{{ company.introduction | limitTo:120 }}...</p>
-      <div class="meta">
-        <span class="location"><i class="fa fa-map-marker"></i> {{ [company.address.city, company.address.country].join(', ') }}</span>
-        <span class="skills"><i class="fa fa-tag"></i> {{ company.getSkillsString() }}</span>
+  <div ng-repeat="company in companies track by company._id" ng-class="{'company-hover':company.$hover}" ng-mouseover="company.$hover=true" ng-mouseleave="company.$hover=false">
+    <a href="{{ company.url }}" class="list-group-item item-company">
+      <div class="company-logo">
+        <img ng-src="{{ company.logoUrl }}" alt="{{ company.name }}">
       </div>
-    </div>
-  </a>
-  <div ng-repeat-end ng-repeat="role in company.roles" class="list-group-item item-role item-muted text-muted">
-    <strong>{{ role.title }}</strong>
-    <p>{{ role.description | limitTo:80 }}...</p>
 
-    <div dropdown-menu>
-      <a ng-click="toggle()"><i class="fa fa-bars"></i></a>
-      <ul>
-        <li><a ng-click="showRoleDetails(role)">More Info</a></li>
-        <li><a auth-group="student" ng-click="apply(company, role)">Apply</a></li>
-      </ul>
+      <div class="overview">
+        <h2>{{ company.name }}</h2>
+        <p class="introduction">{{ company.introduction | limitTo:120 }}...</p>
+        <div class="meta">
+          <span class="location"><i class="fa fa-map-marker"></i> {{ [company.address.city, company.address.country].join(', ') }}</span>
+          <span class="skills"><i class="fa fa-tag"></i> {{ company.getSkillsString() }}</span>
+        </div>
+      </div>
+    </a>
+    <div ng-repeat="role in company.roles" class="list-group-item item-role item-muted text-muted">
+      <strong>{{ role.title }}</strong>
+      <p>{{ role.description | limitTo:80 }}...</p>
+
+      <div dropdown-menu>
+        <a ng-click="toggle()"><i class="fa fa-bars"></i></a>
+        <ul>
+          <li><a ng-click="showRoleDetails(role)">More Info</a></li>
+          <li><a auth-group="student" ng-click="apply(company, role)">Apply</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
