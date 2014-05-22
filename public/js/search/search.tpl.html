@@ -8,25 +8,27 @@
   <!-- List View -->
   <section ng-show="query.view == 'list'" class="main">
     <div class="container">
-      <div search-widget query="query" options="options"></div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div search-widget query="query" options="options"></div>
+        </div>
 
-      <div class="search-results deckgrid" deckgrid source="results">
-        <div class="search-result">
-          <div class="box">
-            <a ng-show="card.logoUrl" href="{{ card.url }}"><img ng-src="{{ card.logoUrl }}" alt="{{ card.name }}"></a>
-            <h4 class="text-center"><a href="{{ card.url }}">{{ card.name }}</a></h4>
-            <p class="text-center">
-              <a href="{{ card.url }}" class="btn btn-default btn-sm">More Info</a>
-              <a href="#apply" class="btn btn-sm btn-primary">Apply Online</a>
-            </p>
+        <div class="col-sm-8">
+
+          <div class="content-box widget-search">
+            <header class="clearfix">
+              <h3 class="pull-left">Results</h3>
+              <div class="pull-right" results-view-toggle query="query"></div>
+            </header>
+
+            <div company-list companies="results"></div>
+
+            <div ng-show="!results.length" class="no-results">
+              <p class="lead">No results found!</p>
+            </div>
           </div>
         </div>
       </div>
-
-      <div ng-show="!results.length" class="no-results">
-        <p class="lead">No results found!</p>
-      </div>
-
     </div>
   </section>
 

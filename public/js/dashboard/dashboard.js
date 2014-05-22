@@ -82,9 +82,27 @@ angular.module('InternLabs.dashboard', [])
   })
 
 
-  .controller('DashboardCtrl', function($route, $scope) {
+  .controller('DashboardCtrl', function($route, $scope, $http, Options, Restangular) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'dashboard';
+    $scope.searching = true;
+
+    navigator.geolocation.getCurrentPosition(function(geo) {
+      $http({
+        method: "GET",
+        url: Options.apiUrl('recommendations'),
+        params: {
+          lat: geo.coords.latitude,
+          lng: geo.coords.longitude
+        }
+      }).success(function(response) {
+        $scope.searching = false;
+        if (!response.data.results.length) {
+          $scope.noResults = true;
+        }
+        $scope.recommendations = Restangular.restangularizeCollection(false, response.data.results, 'companies');
+      }); 
+    });
   })
 
 

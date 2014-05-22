@@ -64,7 +64,6 @@ module.exports = {
       'public/vendor/parsley.js',
       'public/vendor/gmaps.js',
       'public/vendor/angular-file-upload.js',
-      'public/vendor/angular-deckgrid.js',
       'public/vendor/angular-growl.js',
       'public/vendor/infoBox.js',
       'public/vendor/pace.js',

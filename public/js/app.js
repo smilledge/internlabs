@@ -3,7 +3,6 @@ angular.module('InternLabs', [
   'ngAnimate',
   'angularFileUpload',
   'restangular',
-  'akoenig.deckgrid',
   'angular-growl',
   'templates-app',
   'InternLabs.services',

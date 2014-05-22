@@ -1,3 +1,12 @@
-<header class="section-header">
-  <h2>Dashboard</h2>
-</header>
+<div class="content-box">
+  <header>
+    <h3>Recommended Internships <span class="small text-muted text-small">(based on your location and skills)</span></h3>
+  </header>
+  <div ng-show="noResults" class="no-results">
+    <p class="lead">Sorry but we could not find any appropriate internships for you. Try adding some skills to your profile.</p>
+  </div>
+  <div ng-show="searching" class="no-results">
+    <i class="fa fa-spinner fa-spin" style="font-size:40px"></i>
+  </div>
+  <div company-list companies="recommendations"></div>
+</div>

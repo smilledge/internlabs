@@ -123,10 +123,35 @@ RangeQuery.prototype.toJSON = function() {
 
 
 
+/**
+ * Geo Distance query
+ */
+var GeoQuery = function(field, lat, lng, distance) {
+  this.field = field;
+  this.lat = lat;
+  this.lng = lng;
+  this.distance = distance || "10km";
+}
+
+GeoQuery.prototype.toJSON = function() {
+  var object = {};
+  object.geo_distance = {};
+  object.geo_distance.distance = this.distance;
+  object.geo_distance[this.field] = {
+    lat: this.lat,
+    lon: this.lng
+  };
+  return object;
+};
+
+
+
+
 module.exports = {
   StringQuery: StringQuery,
   TermQuery: TermQuery,
   AndQuery: AndQuery,
   OrQuery: OrQuery,
-  RangeQuery: RangeQuery
+  RangeQuery: RangeQuery,
+  GeoQuery: GeoQuery
 };

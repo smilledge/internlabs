@@ -48,8 +48,46 @@ angular.module('InternLabs.company', [])
         },
         template: role.description
       });
-    }
+    };
 
+  })
+
+
+
+  /**
+   * Company List
+   */
+  .directive('companyList', function(ModalFactory) {
+    return {
+      templateUrl: 'company/list.tpl.html',
+      scope: {
+        companies: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.apply = function(company, role) {
+          ModalFactory.create({
+            scope: {
+              title: "Apply for internship",
+              application: {
+                company: company._id
+              },
+              role: role
+            },
+            templateUrl: "internships/forms/apply.tpl.html",
+            className: "modal-lg modal-create-application"
+          });
+        };
+
+        scope.showRoleDetails = function(role) {
+          ModalFactory.create({
+            scope: {
+              title: role.title
+            },
+            template: role.description
+          });
+        };
+      }
+    };
   })
 
 

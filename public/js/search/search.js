@@ -30,7 +30,7 @@ angular.module('InternLabs.search', [])
   .controller('SearchCtrl', function($scope, $routeParams, $location, Search, SearchQuery, results, options) {
     var initial = true;
     
-    $scope.results = (results.data) ? results.data.results : [];
+    $scope.results = results || [];
     $scope.query = SearchQuery.parse($routeParams);
     $scope.query.view = 'list';
     $scope.options = options;
@@ -42,9 +42,8 @@ angular.module('InternLabs.search', [])
 
       $location.search(SearchQuery.serialize($scope.query));
 
-      Search.query($scope.query).then(function(data) {
-        $scope.results = [];
-        $scope.results = (data.data) ? data.data.results : [];
+      Search.query($scope.query).then(function(results) {
+        $scope.results = results || [];
       })
     };
 
@@ -65,12 +64,6 @@ angular.module('InternLabs.search', [])
         options: '=?'
       },
       link: function(scope, elem, attrs) {
-        scope.showAdvanced = false;
-
-        scope.toggleAdvanced = function() {
-          scope.showAdvanced = !scope.showAdvanced;
-        };
-
         scope.search = function() {
           scope._query = angular.copy(scope.query);
         }
@@ -243,8 +236,11 @@ angular.module('InternLabs.search', [])
 
         $(window).on('resize', fitBounds);
 
-        initMap();
+        scope.$on('$destroy', function () {
+          $(window).off('resize');
+        });
 
+        initMap();
       }
     };
   })

@@ -25,6 +25,21 @@ var buildSearchQuery = function(input) {
     ));
 
 
+    console.log(JSON.stringify(query.toJSON(), true, '    '));
+
+  return query.toJSON();
+};
+
+
+var buildRecommendationQuery = function(input) {
+
+  var query = new Builder.Search()
+    .size(5)
+    .from(0)
+    .fields('_id')
+    .query(new Builder.StringQuery(input.query))
+    .filter(new Builder.GeoQuery('location', input.lat, input.lng, "25km"));
+    
     // console.log(JSON.stringify(query.toJSON(), true, '    '));
 
   return query.toJSON();
@@ -32,5 +47,6 @@ var buildSearchQuery = function(input) {
 
 
 module.exports = {
-  make: buildSearchQuery
+  search: buildSearchQuery,
+  recommend: buildRecommendationQuery
 }
