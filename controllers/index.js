@@ -27,12 +27,16 @@ module.exports = function(app) {
     });
 
     // Auth
+    app.get('/signup/:type?', mainApp);
     app.get('/login', mainApp);
     app.get('/activate', mainApp);
     app.get('/resend-activation', mainApp);
     app.get('/password-reset', mainApp);
-    app.get('/logout', mainApp);
-    app.get('/signup/:type?', mainApp);
+    app.get('/logout', function(req, res) {
+      req.logout();
+      res.redirect('/');
+    });
+    
 
     // Search
     app.get('/search', mainApp);

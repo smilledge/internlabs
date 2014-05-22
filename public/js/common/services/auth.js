@@ -108,23 +108,6 @@ angular.module('InternLabs.services')
         return deferred.promise;
       };
 
-
-      /**
-       * Logout
-       */
-      this.logout = function() {
-        var httpPromise = $http({
-          method: 'DELETE',
-          url: Options.apiUrl('logout')
-        });
-        
-        httpPromise.success(function(data) {
-          // Do a page reload
-          // Make sure any temp data is cleared
-          window.location.href = "/";
-        });
-      };
-
   })
 
   ;

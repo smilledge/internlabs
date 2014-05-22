@@ -33,15 +33,6 @@ angular.module('InternLabs.login', [])
         className: 'background-primary'
       })
 
-      .when('/logout', {
-        pageTitle: 'Logout',
-        resolve: {
-          response: function(Auth) {
-            Auth.logout();
-          }
-        }
-      })
-
       ;
 
   })

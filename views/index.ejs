@@ -30,7 +30,7 @@
                         <li><a href="/search"><i class="fa fa-search"></i> Search</a></li>
                         <li logged-in="false"><a href="/login"><i class="fa fa-sign-in"></i> Login</a></li>
                         <li logged-in="false"><a href="/signup"><i class="fa fa-user"></i> Sign Up</a></li>
-                        <li logged-in="true"><a href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+                        <li logged-in="true"><a target="_self" href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
                     </ul>
                 </div>
 
@@ -53,7 +53,7 @@
 
                 <ul class="nav navbar-nav navbar-right hidden-xs">
                     <li logged-in="true" class="link-icon"><a href="" popover="Account Settings" popover-placement="bottom"><i class="fa fa-gear"></i></a></li>
-                    <li logged-in="true" class="link-icon"><a href="/logout" popover="Logout" popover-placement="bottom"><i class="fa fa-sign-out"></i></a></li>
+                    <li logged-in="true" class="link-icon"><a target="_self" href="/logout" popover="Logout" popover-placement="bottom"><i class="fa fa-sign-out"></i></a></li>
                     <li logged-in="false" class="link-label">Already a member?</li>
                     <li logged-in="false" class="link-icon"><a href="/login" popover="Login" popover-placement="bottom"><i class="fa fa-sign-in"></i></a></li>
                 </ul>
