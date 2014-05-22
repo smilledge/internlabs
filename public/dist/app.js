@@ -36545,6 +36545,7 @@ angular.module('InternLabs.internships', [])
                 scope.close();
               });
             } else {
+              scope.close();
               $location.path(response.url);
             }
           });
