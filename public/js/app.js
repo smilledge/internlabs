@@ -8,7 +8,6 @@ angular.module('InternLabs', [
   'templates-app',
   'InternLabs.services',
   'InternLabs.common.directives',
-  'InternLabs.home',
   'InternLabs.login',
   'InternLabs.register',
   'InternLabs.search',
@@ -49,7 +48,7 @@ angular.module('InternLabs', [
   })
 
   .run(function(Restangular, growl) {
-    
+
     // Underscore mixins
     _.mixin({
       capitalize: function(string) {

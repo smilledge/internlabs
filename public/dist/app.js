@@ -33246,7 +33246,7 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'home/home.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-edit.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
+angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-edit.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
 
 angular.module("common/forms/file-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/forms/file-upload.tpl.html",
@@ -33593,26 +33593,6 @@ angular.module("dashboard/widgets/company-logo.tpl.html", []).run(["$templateCac
     "  </div>\n" +
     "</div>\n" +
     "");
-}]);
-
-angular.module("home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("home/home.tpl.html",
-    "<section class=\"section-green section-home\" fill-screen homepage-hero>\n" +
-    "  \n" +
-    "  <div class=\"container text-center\">\n" +
-    "    <div class=\"content-box\">\n" +
-    "      <h2>InternLabs connects students with employers and helps create successful internships</h2>\n" +
-    "\n" +
-    "      <p class=\"lead call-to-action\">Ready to get started?</p>\n" +
-    "\n" +
-    "      <div class=\"actions\">\n" +
-    "        <a href=\"/signup/employer\" class=\"btn btn-primary btn-icon-right\"><i class=\"fa fa-arrow-right\"></i>I'm an Employer</a>\n" +
-    "        <a href=\"/signup/student\" class=\"btn btn-primary btn-icon-right\"><i class=\"fa fa-arrow-right\"></i>I'm a Student</a>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "  </div>  \n" +
-    "\n" +
-    "</section>");
 }]);
 
 angular.module("internships/details.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -34876,7 +34856,6 @@ angular.module('InternLabs', [
   'templates-app',
   'InternLabs.services',
   'InternLabs.common.directives',
-  'InternLabs.home',
   'InternLabs.login',
   'InternLabs.register',
   'InternLabs.search',
@@ -34917,7 +34896,7 @@ angular.module('InternLabs', [
   })
 
   .run(function(Restangular, growl) {
-    
+
     // Underscore mixins
     _.mixin({
       capitalize: function(string) {
@@ -35241,6 +35220,27 @@ angular.module('InternLabs.common.directives', [])
     }
   })
 
+
+  /**
+   * Change elements size to fill the screen
+   */
+  .directive('fillScreen', function () {
+    return {
+      restrict: 'A',
+      link: function(scope, elem, attrs) {
+        var headerHeight = angular.element('#primary-nav').height();
+
+        var resizeElem = function() {
+          var windowHeight = angular.element(window).height();
+          elem.css('min-height', 0).css('min-height', windowHeight - headerHeight);
+        };
+
+        angular.element(window).on('resize', resizeElem);
+
+        resizeElem();
+      }
+    };
+  })
 
 
   /**
@@ -36495,96 +36495,6 @@ angular.module('InternLabs.dashboard', [])
       });
     };
     
-  })
-
-
-  ;
-angular.module('InternLabs.home', [])
-
-
-  .config(function($routeProvider) {
-
-    $routeProvider
-
-      .when('/', {
-        templateUrl: 'home/home.tpl.html',
-        controller: 'HomeCtrl',
-        pageTitle: 'InternLabs',
-        className: 'background-primary'
-      });
-
-  })
-
-
-  .controller('HomeCtrl', function($rootScope, $scope, $location, Auth) {
-
-    if ( Auth.check() ) {
-      return $location.path('/dashboard');
-    }
-
-    // $rootScope.altNav = true;
-    
-  })
-
-
-  /**
-   * Change elements size to fill the screen
-   */
-  .directive('fillScreen', function () {
-    return {
-      restrict: 'A',
-      link: function(scope, elem, attrs) {
-        var headerHeight = angular.element('#primary-nav').height();
-
-        var resizeElem = function() {
-          var windowHeight = angular.element(window).height();
-          elem.css('min-height', 0).css('min-height', windowHeight - headerHeight);
-        };
-
-        angular.element(window).on('resize', resizeElem);
-
-        resizeElem();
-      }
-    };
-  })
-
-
-  /**
-   * Animations for the homepage hero
-   */
-  .directive('homepageHero', function () {
-    return {
-      restrict: 'A',
-      link: function(scope, elem, attrs) {
-
-        var $title = $(elem).find('.hero-title'),
-            $callToAction = $(elem).find('.call-to-action'),
-            $actions = $(elem).find('.actions');
-
-
-        new TimelineLite({ onComplete: function() {} })
-          .pause()
-          .set($title, {
-            autoAlpha: 0
-          })
-          .set([$callToAction, $actions], {
-            autoAlpha: 0,
-            position: 'relative',
-            bottom: -30
-          })
-          .to($title, 0.5, {
-            autoAlpha: 1,
-            ease: Quad.easeIn
-          }, '+0.1')
-          .staggerTo([$callToAction, $actions], 0.45, {
-            autoAlpha: 1,
-            bottom: 0,
-            force3D: true,
-            ease: Quad.easeOut
-          }, 0.45, '+0.75')
-          .resume();
-      }
-    };
   })
 
 
