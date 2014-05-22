@@ -37090,6 +37090,10 @@ angular.module('InternLabs.search', [])
         var addMarkers = function() {
           _.each(scope.results, function(result, key) {
 
+            if (!result.address || !result.address.lat || !result.address.lng) {
+              return;
+            }
+
             // Marker Options
             var markerOptions = {
               lat: result.address.lat,
