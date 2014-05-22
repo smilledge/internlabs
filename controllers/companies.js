@@ -90,7 +90,7 @@ module.exports = function(app) {
   /**
    * Update a role
    */
-  app.put(['/api/companies/:companyId/roles/:roleId', '/api/roles/:roleId'], auth.check(), function(req, res) {
+  var updateRole = function(req, res) {
     delete req.body._id;
     
     Role.findByIdAndUpdate(req.params.roleId, req.body, function(err, role) {
@@ -99,13 +99,15 @@ module.exports = function(app) {
       }
       return res.apiSuccess("Role has been updated successfully.", role);
     });
-  });
+  };
+  app.put('/api/roles/:roleId', auth.check(), updateRole);
+  app.put('/api/companies/:companyId/roles/:roleId', auth.check(), updateRole);
 
 
   /**
    * Delete a role
    */
-  app.delete(['/api/companies/:companyId/roles/:roleId', '/api/roles/:roleId'], auth.check(), function(req, res) {
+  var deleteRole = function(req, res) {
     async.parallel([
       // Delete the role
       function(callback) {
@@ -139,7 +141,9 @@ module.exports = function(app) {
       }
       return res.apiSuccess("Role has been deleted successfully.");
     });
-  });
+  };
+  app.delete('/api/companies/:companyId/roles/:roleId', auth.check(), deleteRole);
+  app.delete('/api/roles/:roleId', auth.check(), deleteRole);
 
 
   /**

@@ -12,11 +12,6 @@ var client = new elastical.Client(config.elasticsearch.host, {
 
 
 
-client.getMapping(defaultIndex, companyType, function(err, res) {
-console.log(err);
-console.log(JSON.stringify(res, true, '    '));
-});
-
 /**
  * Mongoose plugin for automatically indexing
  * (also adds search method)

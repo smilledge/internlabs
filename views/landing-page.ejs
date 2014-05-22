@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="landing-page">
+<head>
+    <meta charset="utf-8">
+    <title>InternLabs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700,600' rel='stylesheet' type='text/css'>
+
+    <% if(process.env.NODE_ENV == 'production') { %>
+        <link href="/dist/app.min.css" rel="stylesheet">
+    <% } else { %>
+        <link href="/dist/app.css" rel="stylesheet">
+    <% } %>
+</head>
+<body>
+
+    <div class="page-wrap">
+
+        <header class="banner">
+            <div class="container">
+
+                <div class="login-bar">
+                    <span>Already have an account? </span>
+                    <a href="/login" class="btn btn-link btn-sm"><i class="fa fa-sign-in"></i> Login</a>
+                </div>
+
+                <div class="section-content">
+                    <a href="/" class="logo"><img src="/images/logo-alt.svg" alt="InternLabs"></a>
+                    <p class="lead">InternLabs connects students <br /> with employers and helps create <br /> successful internships</p>
+                    <p class="lead sub">Ready to get started?</p>
+                    <p class="actions">
+                        <a href="/signup/student" class="btn btn-default btn-icon-right">I'm a student <i class="fa fa-arrow-right"></i></a>
+                        <a href="/signup/employer" class="btn btn-default btn-icon-right">I'm an employer <i class="fa fa-arrow-right"></i></a>
+                    </p>
+                </div>
+
+                <div class="preview">
+                    <img src="/images/landing-page/preview-1.png" alt="">
+                </div>
+            </div>
+        </header>
+
+        <section class="for-employers">
+            <div class="container">
+                <div class="section-content">
+                    <h2>Hosting an Intern should be easy</h2>
+                    <p>InternLabs streamlines the process of finding skilled interns, reviewing their application and schedule an interview.</p>
+                    <p>Once they’ve joined your team, InternLabs provides a centralized location to share schedules, worklogs, documents and keep everyone updated.</p>
+                </div>
+
+                <div class="preview">
+                    <img src="/images/landing-page/preview-2.png" alt="">
+                </div>
+            </div>
+        </section>
+
+        <section class="for-students">
+            <div class="container">
+                <div class="section-content">
+                    <h2>Finding an internship should be easy</h2>
+                    <p>Finding an internship that complements your existing skills and supports your career goals can be difficult. InternLabs intelligently matches you with local employers who have appropriate opportunities for interns like yourself.</p>
+                    <p>Meeting academic requirements from internships can be a nightmare for students and employers. InternLabs gives supervisors the ability to monitor the progress of internships, and reduce paperwork.</p>
+                </div>
+
+                <div class="preview">
+                    <img src="/images/landing-page/preview-3.png" alt="">
+                </div>
+            </div>
+        </section>
+
+
+        <section class="featured">
+            <div class="container">
+                
+            </div>
+        </section>
+
+        <section class="call-to-action text-center">
+            <div class="container">
+                <p class="lead">Signing up only takes a few minutes and it's totally free.</p>
+
+                <p class="actions">
+                    <a href="/signup/student" class="btn btn-default btn-icon-right">I'm a student <i class="fa fa-arrow-right"></i></a>
+                    <a href="/signup/employer" class="btn btn-default btn-icon-right">I'm an employer <i class="fa fa-arrow-right"></i></a>
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+
+    <footer id="footer">
+        <div class="container text-center">
+            <img src="/images/logo-steam-roller-footer.svg" alt="Steam Roller">
+        </div>
+    </footer>
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-51090593-1', 'internlabs.com.au');
+      ga('send', 'pageview');
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+.landing-page {
+  width: 100%;
+  overflow-x: hidden;
+
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .container {
+    position: relative;
+  }
+
+  h2 {
+    font-size: 36px;
+  }
+
+  .banner, .call-to-action {
+    margin-bottom: 200px;
+    padding: 40px 0;
+    background: @brand-primary url('../images/landing-page/banner-bg.png') no-repeat center;
+    -webkit-background-size: cover;
+    background-size: cover;
+    color: #fff;
+    border-bottom: 3px solid #fff;
+
+    .section-content {
+      max-width: 60%;
+    }
+
+    .preview {
+      position: absolute;
+      right: -30%;
+      top: 65px;
+    }
+
+    .lead {
+      margin: 0 0 40px;
+      font-size: 45px;
+      line-height: 1.2;
+    }
+
+    .sub {
+      font-size: 26px;
+    }
+
+    .actions .btn {
+      background: #fff;
+      font-size: 16px;
+    }
+  }
+
+  .logo {
+    display: block;
+    margin: 0 0 40px;
+
+    img {
+      width: 320px;
+    }
+  }
+
+  .login-bar {
+    z-index: 10;
+    position: absolute;
+    top: -5px;
+    right: 0;
+
+    a {
+      cursor: pointer;
+      color: #fff;
+      font-size: 14px;
+      margin-left: 10px;
+
+      &:hover {
+        text-decoration: none;
+        background: rgba(255,255,255,0.2);
+      }
+    }
+
+    i {
+      font-size: 18px;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+  }
+
+  section {
+    .clearfix;
+    background: #fff;
+    margin-bottom: 200px;
+
+    .section-content {
+      max-width: 52%;
+      min-height: 360px;
+      padding: 60px 0 80px;
+    }
+
+    p {
+      margin: 25px 0 0 0;
+      font-size: 16px;
+      line-height: 1.4;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+
+  .for-employers {
+    .section-content {
+      float: right; 
+    }
+
+    .preview {
+      position: absolute;
+      left: -25%;
+      top: -55px;
+    }
+  }
+
+  .for-students {
+    margin-bottom: 0;
+
+    .section-content {
+      float: left; 
+    }
+
+    h2 {
+      margin-top: 5px;
+    }
+
+    .preview {
+      position: absolute;
+      right: -25%;
+      top: -55px;
+    }
+  }
+
+  .call-to-action {
+    margin-bottom: 0;
+    padding: 100px 0;
+    border: none;
+
+    p.lead {
+      font-size: 26px;
+      margin-bottom: 60px;
+    }
+  }
+}
