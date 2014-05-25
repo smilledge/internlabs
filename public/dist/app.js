@@ -33159,7 +33159,7 @@ angular.module("dashboard/layout.tpl.html", []).run(["$templateCache", function(
     "              <li auth-group=\"student\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">My Internships</a></li>\n" +
     "              <li ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
     "              <li ng-class=\"{active:active=='declined'}\"><a href=\"/dashboard/applications/declined\">Declined Applications</a></li>\n" +
-    "              <li auth-group=\"employers\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">Active Internships</a></li>\n" +
+    "              <li auth-group=\"employer\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">Active Internships</a></li>\n" +
     "              <li ng-class=\"{active:active=='archived'}\"><a href=\"/dashboard/internships/archived\">Archived Internships</a></li>\n" +
     "              <li auth-group=\"employer\" ng-class=\"{active:active=='roles'}\"><a href=\"/dashboard/roles\">Available Roles</a></li>\n" +
     "              <li auth-group=\"employer\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/company-profile\">Company Profile</a></li>\n" +
