@@ -54,7 +54,10 @@ module.exports.findByUser = function(user, query, done) {
      * Get the internship
      */
     function(student, callback) {
-      Internship.find(_.extend(query, {
+
+      var find = _.pick(query, 'status');
+
+      Internship.find(_.extend(find, {
         student: student._id
       })).populate('company student').exec(function(err, internships) {
         if ( err || ! internships ) {
@@ -92,7 +95,10 @@ module.exports.findByCompany = function(company, query, done) {
      * Get the internships
      */
     function(callback) {
-      Internship.find(_.extend(query, {
+
+      var find = _.pick(query, 'status');
+      
+      Internship.find(_.extend(find, {
         company: company
       })).populate('company student').exec(function(err, internships) {
         if ( err || ! internships ) {
@@ -1317,10 +1323,8 @@ module.exports.editDocument = function(internship, user, data, done) {
      * Edit the document
      */
     function(internship, user, callback) {
-      console.log(internship.documents);
-      
+
       _.each(internship.documents, function(item) {
-        console.log(item);
         if (item._id == data._id) {
           _.extend(item, data);
         }
@@ -1394,7 +1398,6 @@ module.exports.deleteDocument = function(internship, user, documentId, done) {
 
       // Delete the file
       var removePath = getUploadsDir() + toRemove.file;
-      console.log(removePath);
       fs.unlink(removePath, function(err) {
         if (err) console.log(err);
       })

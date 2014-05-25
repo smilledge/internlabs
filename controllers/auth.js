@@ -24,6 +24,16 @@ module.exports = function(app) {
 
 
     /**
+     * Get the currently logged in user's profile
+     */
+    app.get('/api/me/profile', auth.check(), function(req, res) {
+      User.findById(req.user._id).populate('profile address').exec(function(err, user) {
+        return res.apiSuccess(user.profile);
+      });
+    });
+
+
+    /**
      * Register a new user
      */
     app.post('/api/register', function(req, res) {

@@ -32837,7 +32837,7 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/list.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-edit.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
+angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/list.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/profile.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'dashboard/widgets/edit-profile.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-edit.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
 
 angular.module("common/forms/file-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/forms/file-upload.tpl.html",
@@ -33178,6 +33178,11 @@ angular.module("dashboard/layout.tpl.html", []).run(["$templateCache", function(
     "</article>");
 }]);
 
+angular.module("dashboard/profile.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("dashboard/profile.tpl.html",
+    "<div edit-profile-widget profile=\"profile\"></div>");
+}]);
+
 angular.module("dashboard/roles.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/roles.tpl.html",
     "<div class=\"content-box\">\n" +
@@ -33236,6 +33241,70 @@ angular.module("dashboard/widgets/company-logo.tpl.html", []).run(["$templateCac
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("dashboard/widgets/edit-profile.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("dashboard/widgets/edit-profile.tpl.html",
+    "<div class=\"content-box\">\n" +
+    "  <header>\n" +
+    "    <h3>Edit Profile</h3>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <form role=\"form\" ng-submit=\"save()\">\n" +
+    "    <div class=\"form-group\">\n" +
+    "      <div class=\"row-sm\">\n" +
+    "        <div class=\"col-sm-6\">\n" +
+    "          <label>First Name</label>\n" +
+    "          <input type=\"text\" ng-model=\"profile.firstName\" class=\"form-control\">\n" +
+    "        </div>\n" +
+    "        <div class=\"col-sm-6\">\n" +
+    "          <label>Last Name</label>\n" +
+    "          <input type=\"text\" ng-model=\"profile.lastName\" class=\"form-control\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      \n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"form-group\">\n" +
+    "      <label>Introduction</label>\n" +
+    "      <textarea ng-model=\"profile.introduction\" rows=\"4\" class=\"form-control\"></textarea>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"form-group\">\n" +
+    "      <label>Skills</label>\n" +
+    "      <input type=\"text\" ng-model=\"profile._skills\" class=\"form-control\">\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"form-group\">\n" +
+    "      <div class=\"row-sm\">\n" +
+    "        <div class=\"col-sm-6\">\n" +
+    "          <label>University</label>\n" +
+    "          <select selecter name=\"profile.university\" ng-model=\"profile.university\">\n" +
+    "            <option value=\"\">Select a University</option>\n" +
+    "            <option ng-repeat=\"o in universityOptions\" ng-selected=\"{{ o === profile.university }}\" value=\"{{ o }}\">{{ o }}</option>\n" +
+    "          </select>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"col-sm-6\">\n" +
+    "          <label>Course Name</label>\n" +
+    "          <input type=\"text\" ng-model=\"profile.courseName\" class=\"form-control\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"form-group\">\n" +
+    "      <label>LinkedIn Profile URL</label>\n" +
+    "      <input type=\"text\" ng-model=\"profile.linkedIn\" class=\"form-control\">\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <!-- Resume upload -->\n" +
+    "\n" +
+    "    <div class=\"form-footer text-center\">\n" +
+    "      <button type=\"submit\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-save\"></i> Save</button>\n" +
+    "    </div>\n" +
+    "  </form>\n" +
     "</div>\n" +
     "");
 }]);
@@ -34174,47 +34243,9 @@ angular.module("register/register-form.tpl.html", []).run(["$templateCache", fun
     "\n" +
     "          <div class=\"col-sm-6\">\n" +
     "            <label class=\"sr-only\">University</label>\n" +
-    "            <select selecter name=\"user.profile.university\" ng-model=\"user.profile.university\" placeholder=\"University\" float-label>\n" +
+    "            <select selecter name=\"user.profile.university\" ng-model=\"user.profile.university\">\n" +
     "              <option value=\"\">Select a University</option>\n" +
-    "              <option>Australian Catholic University</option>\n" +
-    "              <option>Australian National University</option>\n" +
-    "              <option>Bond University</option>\n" +
-    "              <option>Central Queensland University</option>\n" +
-    "              <option>Charles Darwin University</option>\n" +
-    "              <option>Charles Sturt University</option>\n" +
-    "              <option>Curtin University</option>\n" +
-    "              <option>Deakin University</option>\n" +
-    "              <option>Edith Cowan University</option>\n" +
-    "              <option>Federation University</option>\n" +
-    "              <option>Flinders University</option>\n" +
-    "              <option>Griffith University</option>\n" +
-    "              <option>James Cook University</option>\n" +
-    "              <option>La Trobe University</option>\n" +
-    "              <option>Macquarie University</option>\n" +
-    "              <option>Monash University</option>\n" +
-    "              <option>Murdoch University</option>\n" +
-    "              <option>Queensland University of Technology</option>\n" +
-    "              <option>RMIT University</option>\n" +
-    "              <option>Southern Cross University</option>\n" +
-    "              <option>Swinburne University of Technology</option>\n" +
-    "              <option>University of Adelaide</option>\n" +
-    "              <option>University of Canberra</option>\n" +
-    "              <option>University of Melbourne</option>\n" +
-    "              <option>University of New England</option>\n" +
-    "              <option>University of New South Wales</option>\n" +
-    "              <option>University of Newcastle</option>\n" +
-    "              <option>University of Notre Dame</option>\n" +
-    "              <option>University of Queensland</option>\n" +
-    "              <option>University of South Australia</option>\n" +
-    "              <option>University of Southern Queensland</option>\n" +
-    "              <option>University of Sydney</option>\n" +
-    "              <option>University of Tasmania</option>\n" +
-    "              <option>University of Technology Sydney</option>\n" +
-    "              <option>University of the Sunshine Coast</option>\n" +
-    "              <option>University of Western Australia</option>\n" +
-    "              <option>University of Western Sydney</option>\n" +
-    "              <option>University of Wollongong</option>\n" +
-    "              <option>Victoria University</option>\n" +
+    "              <option ng-repeat=\"o in universityOptions\" value=\"{{ o }}\">{{ o }}</option>\n" +
     "            </select>\n" +
     "          </div>\n" +
     "        </div>\n" +
@@ -35536,6 +35567,19 @@ angular.module('InternLabs.services', [])
 
     this.dayOptions = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
+    this.universityOptions = [
+      'Australian Catholic University', 'Australian National University', 'Bond University', 'Central Queensland University', 
+      'Charles Darwin University', 'Charles Sturt University', 'Curtin University', 'Deakin University', 'Edith Cowan University', 
+      'Federation University', 'Flinders University', 'Griffith University', 'James Cook University', 'La Trobe University', 'Macquarie University', 
+      'Monash University', 'Murdoch University', 'Queensland University of Technology', 'RMIT University', 'Southern Cross University', 
+      'Swinburne University of Technology', 'University of Adelaide', 'University of Canberra', 'University of Melbourne', 
+      'University of New England', 'University of New South Wales', 'University of Newcastle', 'University of Notre Dame', 'University of Queensland', 
+      'University of South Australia', 'University of Southern Queensland', 'University of Sydney', 'University of Tasmania', 
+      'University of Technology Sydney', 'University of the Sunshine Coast', 'University of Western Australia', 'University of Western Sydney', 
+      'University of Wollongong', 'Victoria University', 
+      'Other'
+    ];
+
   })
 
 
@@ -36065,6 +36109,21 @@ angular.module('InternLabs.dashboard', [])
         }
       })
 
+      .when('/dashboard/profile', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'ProfileCtrl',
+        pageTitle: 'Edit Profile',
+        auth: true,
+        state: {
+          main: 'dashboard/profile.tpl.html'
+        },
+        resolve: {
+          profile: function(Restangular) {
+            return Restangular.one('me').customGET('profile');
+          }
+        }
+      })
+
       ;
 
   })
@@ -36260,6 +36319,38 @@ angular.module('InternLabs.dashboard', [])
     
   })
 
+
+  .controller('ProfileCtrl', function($route, $scope, profile) {
+    $scope.state = $route.current.$$route.state;
+    $scope.active = 'profile';
+    $scope.profile = profile;
+  })
+
+
+  .directive('editProfileWidget', function(Options, Restangular) {
+    return {
+      templateUrl: 'dashboard/widgets/edit-profile.tpl.html',
+      replace: true,
+      scope: {
+        profile: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.universityOptions = Options.universityOptions;
+
+        scope.save = function() {
+          Restangular.all('profiles').customPUT(_.extend({}, scope.profile, {
+            skills: scope.profile._skills
+          }), scope.profile._id).then(function(repsonse) {
+            scope.profile = repsonse;
+          });
+        };
+
+        scope.$watch('profile.skills', function() {
+          scope.profile._skills = scope.profile.skills.join(',');
+        });
+      }
+    };
+  })
 
   ;
 angular.module('InternLabs.internships', [])
@@ -36993,7 +37084,7 @@ angular.module('InternLabs.register', [])
   /**
    * Register form
    */
-  .directive('registerForm', function () {
+  .directive('registerForm', function(Options) {
     return {
       restrict: 'A',
       templateUrl: 'register/register-form.tpl.html',
@@ -37002,11 +37093,11 @@ angular.module('InternLabs.register', [])
         submit: '=?'
       },
       link: function(scope, elem, attrs) {
+        scope.universityOptions = Options.universityOptions;
 
         scope.type = function() {
           return _(scope.user.type).capitalize();
         };
-
       }
     };
   })

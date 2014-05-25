@@ -123,6 +123,21 @@ angular.module('InternLabs.dashboard', [])
         }
       })
 
+      .when('/dashboard/profile', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'ProfileCtrl',
+        pageTitle: 'Edit Profile',
+        auth: true,
+        state: {
+          main: 'dashboard/profile.tpl.html'
+        },
+        resolve: {
+          profile: function(Restangular) {
+            return Restangular.one('me').customGET('profile');
+          }
+        }
+      })
+
       ;
 
   })
@@ -318,5 +333,37 @@ angular.module('InternLabs.dashboard', [])
     
   })
 
+
+  .controller('ProfileCtrl', function($route, $scope, profile) {
+    $scope.state = $route.current.$$route.state;
+    $scope.active = 'profile';
+    $scope.profile = profile;
+  })
+
+
+  .directive('editProfileWidget', function(Options, Restangular) {
+    return {
+      templateUrl: 'dashboard/widgets/edit-profile.tpl.html',
+      replace: true,
+      scope: {
+        profile: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.universityOptions = Options.universityOptions;
+
+        scope.save = function() {
+          Restangular.all('profiles').customPUT(_.extend({}, scope.profile, {
+            skills: scope.profile._skills
+          }), scope.profile._id).then(function(repsonse) {
+            scope.profile = repsonse;
+          });
+        };
+
+        scope.$watch('profile.skills', function() {
+          scope.profile._skills = scope.profile.skills.join(',');
+        });
+      }
+    };
+  })
 
   ;

@@ -47,21 +47,14 @@ module.exports = function(app) {
     // Dashboard 
     app.get('/dashboard', mainApp);
     app.get('/dashboard/internships', mainApp);
+    app.get('/dashboard/internships/archived', mainApp);
     app.get('/dashboard/applications', mainApp);
+    app.get('/dashboard/applications/declined', mainApp);
     app.get('/dashboard/roles', mainApp);
     app.get('/dashboard/company-profile', mainApp);
+    app.get('/dashboard/profile', mainApp);
 
     // Internships
     app.get('/internship/:internshipId/:slug?', mainApp);
     
 };
-
-
-
-
-
-
-
-
-
-

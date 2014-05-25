@@ -1,0 +1,59 @@
+<div class="content-box">
+  <header>
+    <h3>Edit Profile</h3>
+  </header>
+
+  <form role="form" ng-submit="save()">
+    <div class="form-group">
+      <div class="row-sm">
+        <div class="col-sm-6">
+          <label>First Name</label>
+          <input type="text" ng-model="profile.firstName" class="form-control">
+        </div>
+        <div class="col-sm-6">
+          <label>Last Name</label>
+          <input type="text" ng-model="profile.lastName" class="form-control">
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="form-group">
+      <label>Introduction</label>
+      <textarea ng-model="profile.introduction" rows="4" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Skills</label>
+      <input type="text" ng-model="profile._skills" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <div class="row-sm">
+        <div class="col-sm-6">
+          <label>University</label>
+          <select selecter name="profile.university" ng-model="profile.university">
+            <option value="">Select a University</option>
+            <option ng-repeat="o in universityOptions" ng-selected="{{ o === profile.university }}" value="{{ o }}">{{ o }}</option>
+          </select>
+        </div>
+
+        <div class="col-sm-6">
+          <label>Course Name</label>
+          <input type="text" ng-model="profile.courseName" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>LinkedIn Profile URL</label>
+      <input type="text" ng-model="profile.linkedIn" class="form-control">
+    </div>
+
+    <!-- Resume upload -->
+
+    <div class="form-footer text-center">
+      <button type="submit" class="btn btn-primary btn-icon-left"><i class="fa fa-save"></i> Save</button>
+    </div>
+  </form>
+</div>

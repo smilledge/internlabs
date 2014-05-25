@@ -71,47 +71,9 @@
 
           <div class="col-sm-6">
             <label class="sr-only">University</label>
-            <select selecter name="user.profile.university" ng-model="user.profile.university" placeholder="University" float-label>
+            <select selecter name="user.profile.university" ng-model="user.profile.university">
               <option value="">Select a University</option>
-              <option>Australian Catholic University</option>
-              <option>Australian National University</option>
-              <option>Bond University</option>
-              <option>Central Queensland University</option>
-              <option>Charles Darwin University</option>
-              <option>Charles Sturt University</option>
-              <option>Curtin University</option>
-              <option>Deakin University</option>
-              <option>Edith Cowan University</option>
-              <option>Federation University</option>
-              <option>Flinders University</option>
-              <option>Griffith University</option>
-              <option>James Cook University</option>
-              <option>La Trobe University</option>
-              <option>Macquarie University</option>
-              <option>Monash University</option>
-              <option>Murdoch University</option>
-              <option>Queensland University of Technology</option>
-              <option>RMIT University</option>
-              <option>Southern Cross University</option>
-              <option>Swinburne University of Technology</option>
-              <option>University of Adelaide</option>
-              <option>University of Canberra</option>
-              <option>University of Melbourne</option>
-              <option>University of New England</option>
-              <option>University of New South Wales</option>
-              <option>University of Newcastle</option>
-              <option>University of Notre Dame</option>
-              <option>University of Queensland</option>
-              <option>University of South Australia</option>
-              <option>University of Southern Queensland</option>
-              <option>University of Sydney</option>
-              <option>University of Tasmania</option>
-              <option>University of Technology Sydney</option>
-              <option>University of the Sunshine Coast</option>
-              <option>University of Western Australia</option>
-              <option>University of Western Sydney</option>
-              <option>University of Wollongong</option>
-              <option>Victoria University</option>
+              <option ng-repeat="o in universityOptions" value="{{ o }}">{{ o }}</option>
             </select>
           </div>
         </div>

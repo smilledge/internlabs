@@ -74,7 +74,7 @@ angular.module('InternLabs.register', [])
   /**
    * Register form
    */
-  .directive('registerForm', function () {
+  .directive('registerForm', function(Options) {
     return {
       restrict: 'A',
       templateUrl: 'register/register-form.tpl.html',
@@ -83,11 +83,11 @@ angular.module('InternLabs.register', [])
         submit: '=?'
       },
       link: function(scope, elem, attrs) {
+        scope.universityOptions = Options.universityOptions;
 
         scope.type = function() {
           return _(scope.user.type).capitalize();
         };
-
       }
     };
   })
