@@ -826,7 +826,7 @@ module.exports.createSupervisor = function(internship, user, email, done) {
       if ( ! _.isObject(supervisor) ) {
         return callback(null, supervisor, internship, user);
       }
-      supervisor.setAccess(internship, ['read', 'write', 'delete']);
+      supervisor.setAccess(internship, ['read', 'write']);
       internship.save(function(err, internship) {
         callback(null, supervisor, internship, user);
       });
