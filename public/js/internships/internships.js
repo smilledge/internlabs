@@ -84,7 +84,9 @@ angular.module('InternLabs.internships', [])
         scope.company = scope.internship.company;
         scope.student = scope.internship.student;
         scope.profile = scope.internship.student.profile;
-        scope.isCompany = Auth.hasAccess('employer');
+        scope.isCompany = internlabs.isEmployer;
+        scope.isStudent = internlabs.isStudent;
+        scope.isSupervisor = internlabs.isSupervisor;
       }
     }
   })

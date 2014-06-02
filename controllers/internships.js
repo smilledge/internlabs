@@ -52,6 +52,19 @@ module.exports = function(app) {
 
 
   /**
+   * Get a supervisors internships
+   */
+  app.get('/api/supervisors/:supervisorId/internships', auth.check(), function(req, res) {
+    InternshipService.findBySupervisor(req.params.supervisorId, req.query, function(err, internships) {
+      if ( err || ! internships ) {
+        return res.apiError(new Error('Could not find any matching internships.'));
+      }
+      return res.apiSuccess(internships);
+    });
+  });
+
+
+  /**
    * Create an internship
    */
   app.post('/api/internships', auth.check(), function(req, res) {

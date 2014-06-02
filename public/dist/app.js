@@ -33155,15 +33155,23 @@ angular.module("dashboard/layout.tpl.html", []).run(["$templateCache", function(
     "            </header>\n" +
     "\n" +
     "            <ul class=\"nav nav-pills nav-stacked\">\n" +
-    "              <li ng-class=\"{active:active=='dashboard'}\"><a href=\"/dashboard\">Dashboard</a></li>\n" +
+    "              <!-- <li ng-class=\"{active:active=='dashboard'}\"><a href=\"/dashboard\">Dashboard</a></li> -->\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='recommendations'}\"><a href=\"/dashboard/recommendations\">Recommended Internships</a></li>\n" +
     "              <li auth-group=\"student\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">My Internships</a></li>\n" +
-    "              <li ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
-    "              <li ng-class=\"{active:active=='declined'}\"><a href=\"/dashboard/applications/declined\">Declined Applications</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='declined'}\"><a href=\"/dashboard/applications/declined\">Declined Applications</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='archived'}\"><a href=\"/dashboard/internships/archived\">Archived Internships</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">Edit Profile</a></li>\n" +
+    "\n" +
+    "              <li auth-group=\"supervisor\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">View Internships</a></li>\n" +
+    "              <li auth-group=\"supervisor\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">Edit Profile</a></li>\n" +
+    "\n" +
+    "              <li auth-group=\"employer\" ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
     "              <li auth-group=\"employer\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">Active Internships</a></li>\n" +
-    "              <li ng-class=\"{active:active=='archived'}\"><a href=\"/dashboard/internships/archived\">Archived Internships</a></li>\n" +
+    "              <li auth-group=\"employer\" ng-class=\"{active:active=='declined'}\"><a href=\"/dashboard/applications/declined\">Declined Applications</a></li>\n" +
+    "              <li auth-group=\"employer\" ng-class=\"{active:active=='archived'}\"><a href=\"/dashboard/internships/archived\">Archived Internships</a></li>\n" +
     "              <li auth-group=\"employer\" ng-class=\"{active:active=='roles'}\"><a href=\"/dashboard/roles\">Available Roles</a></li>\n" +
     "              <li auth-group=\"employer\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/company-profile\">Company Profile</a></li>\n" +
-    "              <li auth-group=\"student\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">Edit Profile</a></li>\n" +
     "            </ul>\n" +
     "          </div>\n" +
     "        </div>\n" +
@@ -33264,42 +33272,62 @@ angular.module("dashboard/widgets/edit-profile.tpl.html", []).run(["$templateCac
     "          <input type=\"text\" ng-model=\"profile.lastName\" class=\"form-control\">\n" +
     "        </div>\n" +
     "      </div>\n" +
-    "      \n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label>Introduction</label>\n" +
-    "      <textarea ng-model=\"profile.introduction\" rows=\"4\" class=\"form-control\"></textarea>\n" +
-    "    </div>\n" +
+    "    <div ng-show=\"isStudent\">\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Introduction</label>\n" +
+    "        <textarea ng-model=\"profile.introduction\" rows=\"4\" class=\"form-control\"></textarea>\n" +
+    "      </div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label>Skills</label>\n" +
-    "      <input type=\"text\" ng-model=\"profile._skills\" class=\"form-control\">\n" +
-    "    </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Skills</label>\n" +
+    "        <input type=\"text\" ng-model=\"profile._skills\" class=\"form-control\">\n" +
+    "      </div>\n" +
     "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <div class=\"row-sm\">\n" +
-    "        <div class=\"col-sm-6\">\n" +
-    "          <label>University</label>\n" +
-    "          <select selecter name=\"profile.university\" ng-model=\"profile.university\">\n" +
-    "            <option value=\"\">Select a University</option>\n" +
-    "            <option ng-repeat=\"o in universityOptions\" ng-selected=\"{{ o === profile.university }}\" value=\"{{ o }}\">{{ o }}</option>\n" +
-    "          </select>\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <div class=\"row-sm\">\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label>University</label>\n" +
+    "            <select selecter name=\"profile.university\" ng-model=\"profile.university\">\n" +
+    "              <option value=\"\">Select a University</option>\n" +
+    "              <option ng-repeat=\"o in universityOptions\" ng-selected=\"{{ o === profile.university }}\" value=\"{{ o }}\">{{ o }}</option>\n" +
+    "            </select>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label>Course Name</label>\n" +
+    "            <input type=\"text\" ng-model=\"profile.courseName\" class=\"form-control\">\n" +
+    "          </div>\n" +
     "        </div>\n" +
+    "      </div>\n" +
     "\n" +
-    "        <div class=\"col-sm-6\">\n" +
-    "          <label>Course Name</label>\n" +
-    "          <input type=\"text\" ng-model=\"profile.courseName\" class=\"form-control\">\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>LinkedIn Profile URL</label>\n" +
+    "        <input type=\"text\" ng-model=\"profile.linkedIn\" class=\"form-control\">\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <!-- Resume upload -->      \n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"isSupervisor\">\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <div class=\"row-sm\">\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label>Job Title</label>\n" +
+    "            <input type=\"test\" name=\"profile.role\" ng-model=\"profile.role\" class=\"form-control\" placeholder=\"Job Title / Role\">\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label>University</label>\n" +
+    "            <select selecter name=\"profile.university\" ng-model=\"profile.university\">\n" +
+    "              <option value=\"\">Select a University</option>\n" +
+    "              <option ng-repeat=\"o in universityOptions\" ng-selected=\"{{ o === profile.university }}\" value=\"{{ o }}\">{{ o }}</option>\n" +
+    "            </select>\n" +
+    "          </div>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
-    "\n" +
-    "    <div class=\"form-group\">\n" +
-    "      <label>LinkedIn Profile URL</label>\n" +
-    "      <input type=\"text\" ng-model=\"profile.linkedIn\" class=\"form-control\">\n" +
-    "    </div>\n" +
-    "\n" +
-    "    <!-- Resume upload -->\n" +
     "\n" +
     "    <div class=\"form-footer text-center\">\n" +
     "      <button type=\"submit\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-save\"></i> Save</button>\n" +
@@ -33931,7 +33959,7 @@ angular.module("internships/widgets/supervisors.tpl.html", []).run(["$templateCa
     "\n" +
     "  <div class=\"list-group list-supervisors\">\n" +
     "    <div ng-repeat=\"item in _supervisors\" class=\"list-group-item\">\n" +
-    "      <strong class=\"email\"><i class=\"fa fa-eye\"></i> {{ item.email }}</strong>\n" +
+    "      <strong class=\"email\"><i class=\"fa fa-eye\"></i> {{ item.profile.name || item.email }}</strong>\n" +
     "      <a ng-click=\"remove(item.email)\" class=\"btn btn-danger btn-icon fa fa-times pull-right\"></a>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -33952,8 +33980,8 @@ angular.module("internships/widgets/title.tpl.html", []).run(["$templateCache", 
     "  </div>\n" +
     "\n" +
     "  <div class=\"title-body\">\n" +
-    "    <h2 ng-show=\"!isCompany\">{{ internship.role.title || \"Internship\" }} <span class=\"text-muted\">at</span> <a href=\"{{ company.url }}\">{{ company.name }}</a></h2>\n" +
-    "    <h2 ng-show=\"isCompany\">{{ profile.name }} <span class=\"text-muted\">({{ internship.role.title || \"Internship\" }})</h2>\n" +
+    "    <h2 ng-show=\"isStudent\">{{ internship.role.title || \"Internship\" }} <span class=\"text-muted\">at</span> <a href=\"{{ company.url }}\">{{ company.name }}</a></h2>\n" +
+    "    <h2 ng-show=\"isCompany || isSupervisor\">{{ profile.name }} <span class=\"text-muted\">({{ internship.role.title || \"Internship\" }})</h2>\n" +
     "    <div class=\"meta\">\n" +
     "      <span class=\"status\">\n" +
     "        <i ng-class=\"{\n" +
@@ -35889,9 +35917,7 @@ angular.module('InternLabs.dashboard', [])
           status: status
         });
       } else if (internlabs.isSupervisor) {
-        return Restangular.one('suporvisors', internlabs.user._id).getList('internships', {
-          status: status
-        });
+        return Restangular.one('supervisors', internlabs.user._id).getList('internships');
       }
     };
 
@@ -35911,7 +35937,7 @@ angular.module('InternLabs.dashboard', [])
       .when('/dashboard/internships', {
         templateUrl: 'dashboard/layout.tpl.html',
         controller: 'InternshipsCtrl',
-        pageTitle: 'Active Internships',
+        pageTitle: 'Internships',
         auth: true,
         state: {
           main: 'dashboard/internships.tpl.html'
@@ -36049,7 +36075,7 @@ angular.module('InternLabs.dashboard', [])
   .controller('InternshipsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'internships';
-    $scope.title = "Active Internships";
+    $scope.title = "Internships";
     $scope.internships = internships;
   })
 
@@ -36225,6 +36251,8 @@ angular.module('InternLabs.dashboard', [])
       },
       link: function(scope, elem, attrs) {
         scope.universityOptions = Options.universityOptions;
+        scope.isStudent = internlabs.isStudent;
+        scope.isSupervisor = internlabs.isSupervisor;
 
         scope.save = function() {
           Restangular.all('profiles').customPUT(_.extend({}, scope.profile, {
@@ -36328,7 +36356,9 @@ angular.module('InternLabs.internships', [])
         scope.company = scope.internship.company;
         scope.student = scope.internship.student;
         scope.profile = scope.internship.student.profile;
-        scope.isCompany = Auth.hasAccess('employer');
+        scope.isCompany = internlabs.isEmployer;
+        scope.isStudent = internlabs.isStudent;
+        scope.isSupervisor = internlabs.isSupervisor;
       }
     }
   })

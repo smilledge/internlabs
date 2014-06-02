@@ -125,6 +125,47 @@ module.exports.findByCompany = function(company, query, done) {
 
 
 /**
+ * Get all internships by a supervisor
+ * 
+ * @param  {string}   supervisor _id 
+ * @param  {function} done
+ * @return {void}
+ */
+module.exports.findBySupervisor = function(supervisor, query, done) {
+  async.waterfall([
+
+    /**
+     * Get the internships
+     */
+    function(callback) {
+
+      var find = _.pick(query, 'status');
+      
+      Internship.find(_.extend(find, {
+        supervisors: supervisor._id || supervisor
+      })).populate('company student').exec(function(err, internships) {
+        if ( err || ! internships ) {
+          return callback(new Error("Could not find any matching internships."));
+        }
+
+        callback(null, internships);
+      });
+    },
+
+    /**
+     * Populate the students profile
+     */
+    function(internships, callback) {
+      Profile.populate(internships, {
+        path: 'student.profile'
+      }, callback);
+    }
+
+  ], done);
+};
+
+
+/**
  * Git an internship by id
  * 
  * @param  {string}   internshipId 
@@ -154,6 +195,21 @@ module.exports.findById = function(internshipId, done) {
     function(internship, callback) {
       Profile.populate(internship, {
         path: 'student.profile'
+      }, callback);
+    },
+
+    /**
+     * Populate the supervisors profile
+     */
+    function(internship, callback) {
+      Profile.populate(internship, {
+        path: 'supervisors.profile',
+        select: {
+          firstName: 1,
+          lastName: 1,
+          name: 1,
+          email: 1
+        }
       }, callback);
     },
 

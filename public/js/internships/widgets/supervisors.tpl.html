@@ -12,7 +12,7 @@
 
   <div class="list-group list-supervisors">
     <div ng-repeat="item in _supervisors" class="list-group-item">
-      <strong class="email"><i class="fa fa-eye"></i> {{ item.email }}</strong>
+      <strong class="email"><i class="fa fa-eye"></i> {{ item.profile.name || item.email }}</strong>
       <a ng-click="remove(item.email)" class="btn btn-danger btn-icon fa fa-times pull-right"></a>
     </div>
   </div>
