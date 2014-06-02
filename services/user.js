@@ -2,6 +2,7 @@ var User = require('../models/user'),
     Profile = require('../models/profile'),
     Company = require('../models/company'),
     Address = require('../models/address'),
+    Internship = require('../models/internship'),
     async = require('async'),
     _ = require('lodash'),
     Helpers = require('../helpers');
@@ -138,6 +139,57 @@ module.exports.create = function(data, done) {
         callback(null, user, profile, company);
       });
     },
+
+
+    /**
+     * If the user is a superviror;
+     *   - Find any internships that have an invite for their email
+     *   - Give then read / write permission to the itnernship
+     *   - Add the supervisors user id to the internships supervisors list
+     *   - Remove from the invited supervisors list
+     */
+    function(user, profile, company, callback) {
+      if (!user.type === 'supervisor') {
+        return callback(null, user, profile, company);
+      }
+
+      Internship.find({
+        'invitedSupervisors.email': user.email
+      }).exec(function(err, internships) {
+        if ( err || !internships ) {
+          return callback(null, user, profile, company);
+        }
+
+        // Array of save operations run
+        var ops = [];
+
+        _.each(internships, function(internship) {
+          internship.invitedSupervisors = _.compact(_.map(internship.invitedSupervisors, function(supervisor) {
+            if (supervisor.email !== user.email) {
+              return supervisor;
+            }
+          }));
+
+          internship.supervisors.push(user._id);
+
+          user.setAccess(internship, ['read', 'write']);
+
+          ops.push(function(callback) {
+            internship.save(callback);
+          });
+        });
+
+
+        if (!ops.length) {
+          return callback(null, user, profile, company);
+        }
+
+        async.parallel(ops, function(err, internships) {
+          callback(null, user, profile, company);
+        });
+      });
+    },
+
 
     /**
      * Set the access control perms on the company / profile

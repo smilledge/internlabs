@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 var RoleModel = function () {
 
     var RoleSchema = mongoose.Schema({
-        title: { type: String, required: true },
+        title: { type: String, required: true, default: "Intern" },
         description: { type: String }
     });
 

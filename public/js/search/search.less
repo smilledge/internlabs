@@ -28,10 +28,18 @@
 .results-map {
   .widget-search {
     position: absolute;
-    width: 360px;
-    top: @navbar-height + 20px;
-    right: 20px;
+    bottom: 0;
+    right: 0;
+    width: 100%;
     z-index: 100;
+    margin: 0;
+
+    @media (min-width: @screen-xs-min) {
+      width: 360px;
+      right: 20px;
+      top: @navbar-height + 20px;
+      bottom: auto;
+    }
 
     form {
       display: none;

@@ -34,7 +34,7 @@ var buildSearchQuery = function(input) {
 var buildRecommendationQuery = function(input) {
 
   var query = new Builder.Search()
-    .size(5)
+    .size(3)
     .from(0)
     .fields('_id')
     .query(new Builder.StringQuery(input.query))

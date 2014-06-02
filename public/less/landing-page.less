@@ -12,41 +12,84 @@
   }
 
   h2 {
-    font-size: 36px;
+    font-size: 28px;
+    @media (min-width: @screen-md-min) {
+      font-size: 36px;
+    }
   }
 
   .banner, .call-to-action {
-    margin-bottom: 200px;
-    padding: 40px 0;
+    margin-bottom: 150px;
+    padding: 20px 0;
     background: @brand-primary url('../images/landing-page/banner-bg.png') no-repeat center;
     -webkit-background-size: cover;
     background-size: cover;
     color: #fff;
     border-bottom: 3px solid #fff;
+    text-align: center;
+
+    @media (min-width: @screen-md-min) {
+      text-align: left;
+      padding: 40px 0;
+      margin-bottom: 200px;
+    }
 
     .section-content {
-      max-width: 60%;
+      @media (min-width: @screen-md-min) {
+        max-width: 60%;
+      }
     }
 
     .preview {
-      position: absolute;
-      right: -30%;
-      top: 65px;
+      margin: 30px 0 -130px;
+
+      @media (min-width: @screen-md-min) {
+        margin: 0;
+        position: absolute;
+        right: -30%;
+        top: 65px;
+      }
     }
 
     .lead {
       margin: 0 0 40px;
-      font-size: 45px;
+      font-size: 22px;
       line-height: 1.2;
+
+      @media (min-width: @screen-xs-min) {
+        font-size: 30px;
+      }
+
+      @media (min-width: @screen-sm-min) {
+        font-size: 40px;
+      }
+
+      @media (min-width: @screen-md-min) {
+        font-size: 32px;
+      }
+
+      @media (min-width: @screen-lg-min) {
+        font-size: 45px;
+      }
+      
     }
 
     .sub {
-      font-size: 26px;
+      font-size: 18px;
+
+      @media (min-width: @screen-xs-min) {
+        font-size: 22px;
+      }
+
+      @media (min-width: @screen-lg-min) {
+        font-size: 26px;
+      }
     }
 
     .actions .btn {
       background: #fff;
       font-size: 16px;
+      margin-bottom: 15px;
     }
   }
 
@@ -60,10 +103,16 @@
   }
 
   .login-bar {
-    z-index: 10;
-    position: absolute;
-    top: -5px;
-    right: 0;
+    text-align: center;
+    margin-bottom: 20px;
+
+    @media (min-width: @screen-md-min) {
+      text-align: left;
+      position: absolute;
+      z-index: 10;
+      top: -5px;
+      right: 0;
+    }
 
     a {
       cursor: pointer;
@@ -87,12 +136,24 @@
   section {
     .clearfix;
     background: #fff;
-    margin-bottom: 200px;
+    margin-bottom: 40px;
+    
+    @media (min-width: @screen-md-min) {
+      margin-bottom: 200px;
+    }
 
     .section-content {
-      max-width: 52%;
-      min-height: 360px;
-      padding: 60px 0 80px;
+      padding: 20px 0 40px;
+
+      @media (min-width: @screen-md-min) {
+        min-height: 360px;
+        max-width: 64%;
+        padding: 60px 0 80px;
+      }
+
+      @media (min-width: @screen-lg-min) {
+        max-width: 52%;
+      }
     }
 
     p {
@@ -100,6 +161,14 @@
       font-size: 16px;
       line-height: 1.4;
       -webkit-font-smoothing: antialiased;
+    }
+
+    .preview {
+      display: none;
+
+      @media (min-width: @screen-md-min) {
+        display: block;
+      }
     }
   }
 
@@ -110,8 +179,12 @@
 
     .preview {
       position: absolute;
-      left: -25%;
+      left: -46%;
       top: -55px;
+
+      @media (min-width: @screen-lg-min) {
+        left: -25%;
+      }
     }
   }
 
@@ -123,13 +196,19 @@
     }
 
     h2 {
-      margin-top: 5px;
+      @media (min-width: @screen-md-min) {
+        margin-top: 5px;
+      }
     }
 
     .preview {
       position: absolute;
-      right: -25%;
+      right: -46%;
       top: -55px;
+
+      @media (min-width: @screen-lg-min) {
+        right: -25%;
+      }
     }
   }
 
@@ -137,6 +216,10 @@
     margin-bottom: 0;
     padding: 100px 0;
     border: none;
+
+    @media (min-width: @screen-md-min) {
+      text-align: center;
+    }
 
     p.lead {
       font-size: 26px;

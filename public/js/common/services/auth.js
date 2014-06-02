@@ -1,6 +1,6 @@
 angular.module('InternLabs.services')
 
-  .service('Auth', function($rootScope, $http, $q, $location, Options) {
+  .service('Auth', function($rootScope, $http, $q, $location, Options, Restangular) {
 
     var _user = angular.fromJson(window.internlabs.user);
 
@@ -17,96 +17,22 @@ angular.module('InternLabs.services')
     };
 
     /**
-     * login
+     * Register
      */
-    this.login = function(credentials) {
+    this.register = function(user) {
       var deferred = $q.defer();
-      var httpPromise = $http.post(Options.apiUrl('login'), credentials);
+      var httpPromise = $http.post(Options.apiUrl('register'), user);
       
       httpPromise.success(function(data, status) {
-        if ( ! data.success ) {
+        if (!data.success) {
           return deferred.reject(data.error);
-        }
+        };
 
-        // Do a full page reload
-        // Allows us to attached the user to the page
-        window.location.href = "/";
+        deferred.resolve(data.data.user);
       });
 
       return deferred.promise;
     };
-
-
-      /**
-       * Register
-       */
-      this.register = function(user) {
-        var deferred = $q.defer();
-        var httpPromise = $http.post(Options.apiUrl('register'), user);
-        
-        httpPromise.success(function(data, status) {
-          if (!data.success) {
-            return deferred.reject(data.error);
-          };
-
-          deferred.resolve(data.data.user);
-        });
-
-        return deferred.promise;
-      };
-
-
-      /**
-       * Activate
-       */
-      this.activate = function(data) {
-        var deferred = $q.defer();
-
-        $http.put(Options.apiUrl('activate'), data)
-          .success(function(data, status) {
-            deferred.resolve(data);
-          });
-
-        return deferred.promise;
-      };
-
-
-      /**
-       * Activate
-       */
-      this.resendActivation = function(data) {
-        return $http.post(Options.apiUrl('resend-activation'), data);
-      };
-
-
-      /**
-       * Send password reset
-       */
-      this.sendPasswordReset = function(data) {
-        var deferred = $q.defer();
-
-        $http.post(Options.apiUrl('password-reset'), data)
-          .success(function(data, status) {
-            deferred.resolve(data);
-          });
-
-        return deferred.promise;
-      };
-
-
-      /**
-       * Reset password
-       */
-      this.passwordReset = function(data) {
-        var deferred = $q.defer();
-
-        $http.put(Options.apiUrl('password-reset'), data)
-          .success(function(data, status) {
-            deferred.resolve(data);
-          });
-
-        return deferred.promise;
-      };
 
   })
 

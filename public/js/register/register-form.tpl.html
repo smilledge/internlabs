@@ -1,265 +1,260 @@
-<form validate="true" ng-submit="submit()" role="form" class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 floating-labels" animated-form>
+<div class="content-box col-sm-offset-2 col-sm-8">
+  <header>
+    <h2>{{ type() }} Signup</h2>
+  </header>
 
-  <div class="form-group animation-group">
-    <h1 class="text-center">{{ type() }} Signup</h1>
-  </div>
+  <form validate="true" ng-submit="submit()" role="form">
 
-  <div stepped-form>
+    <div stepped-form>
+      <!-- Account Details -->
+      <fieldset class="form-step">
 
+        <div class="form-step-title">
+          <i class="number">1</i>
+          <h3 class="title">My Account</h3>
+          <p class="message">Your account details will be used to login.</p>
+        </div>
 
-    <!-- Account Details -->
-    <fieldset class="form-step">
-
-      <div class="animation-group form-step-title">
-        <i class="number">1</i>
-        <h3 class="title">My Account</h3>
-        <p class="message">Your account details will be used to login.</p>
-      </div>
-
-      <div class="form-group animation-group">
-        <div class="row-sm">
-          <div class="col-sm-6">
-            <label>Your Name</label>
-            <input type="text" name="user.profile.firstName" ng-model="user.profile.firstName" class="form-control" placeholder="First Name" float-label required>
-          </div>
-          <div class="col-sm-6">
-            <input type="text" name="user.profile.lastName" ng-model="user.profile.lastName" class="form-control" placeholder="Last Name" float-label required>
+        <div class="form-group">
+          <div class="row-sm">
+            <div class="col-sm-6">
+              <label>First Name</label>
+              <input type="text" name="user.profile.firstName" ng-model="user.profile.firstName" class="form-control" placeholder="First Name" required>
+            </div>
+            <div class="col-sm-6">
+              <label>Last Name</label>
+              <input type="text" name="user.profile.lastName" ng-model="user.profile.lastName" class="form-control" placeholder="Last Name" required>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="form-group animation-group">
-        <label for="">Email</label>
-        <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email" float-label required>
-      </div>
-
-      <div class="form-group animation-group">
-        <label for="">Password</label>
-        <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" float-label required data-parsley-minlength="6">
-      </div>
-
-      <div class="form-group animation-group">
-        <a href="#" class="next btn btn-default pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
-      </div>
-    </fieldset>
-
-
-
-    <!-- My Profile -->
-    <fieldset class="form-step" ng-if="user.type == 'student'">
-
-      <div class="form-step-title">
-        <i class="number">2</i>
-        <h3 class="title">My Profile</h3>
-        <p class="message">Your profile will help us match interships relative to your skills and interests. It will also be made available to employers.</p>
-      </div>
-
-      <div class="form-group">
-        <label>Introduction</label>
-        <textarea name="user.profile.introduction" ng-model="user.profile.introduction" class="form-control" placeholder="Introduction" float-label></textarea>
-        <div class="inline-help">
-          <i class="help-icon" popover="Your introduction is a great opportunity to introduce yourself to employers." popover-title="Introduction"></i>
+        <div class="form-group">
+          <label for="">Email Address</label>
+          <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email" required>
         </div>
-      </div>
 
-      <div class="form-group">
-        <div class="row-sm">
-          <div class="col-sm-6">
-            <label>Course Name</label>
-            <input type="test" name="user.profile.courseName" ng-model="user.profile.courseName" class="form-control" placeholder="Course Name" float-label>
-          </div>
-
-          <div class="col-sm-6">
-            <label class="sr-only">University</label>
-            <select selecter name="user.profile.university" ng-model="user.profile.university" placeholder="University" float-label>
-              <option value="">Select a University</option>
-              <option>Australian Catholic University</option>
-              <option>Australian National University</option>
-              <option>Bond University</option>
-              <option>Central Queensland University</option>
-              <option>Charles Darwin University</option>
-              <option>Charles Sturt University</option>
-              <option>Curtin University</option>
-              <option>Deakin University</option>
-              <option>Edith Cowan University</option>
-              <option>Federation University</option>
-              <option>Flinders University</option>
-              <option>Griffith University</option>
-              <option>James Cook University</option>
-              <option>La Trobe University</option>
-              <option>Macquarie University</option>
-              <option>Monash University</option>
-              <option>Murdoch University</option>
-              <option>Queensland University of Technology</option>
-              <option>RMIT University</option>
-              <option>Southern Cross University</option>
-              <option>Swinburne University of Technology</option>
-              <option>University of Adelaide</option>
-              <option>University of Canberra</option>
-              <option>University of Melbourne</option>
-              <option>University of New England</option>
-              <option>University of New South Wales</option>
-              <option>University of Newcastle</option>
-              <option>University of Notre Dame</option>
-              <option>University of Queensland</option>
-              <option>University of South Australia</option>
-              <option>University of Southern Queensland</option>
-              <option>University of Sydney</option>
-              <option>University of Tasmania</option>
-              <option>University of Technology Sydney</option>
-              <option>University of the Sunshine Coast</option>
-              <option>University of Western Australia</option>
-              <option>University of Western Sydney</option>
-              <option>University of Wollongong</option>
-              <option>Victoria University</option>
-            </select>
+        <div class="form-group">
+          <label for="">Password</label>
+          <div class="has-help">
+            <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" required data-parsley-minlength="6">
+            <div class="inline-help">
+              <i class="help-icon" popover="Make sure your password is at least 6 characters long!" popover-title="Account Password"></i>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label>LinkedIn Profile</label>
-        <input type="test" name="user.profile.linkedIn" ng-model="user.profile.linkedIn" class="form-control" placeholder="LinkedIn Profile URL" float-label>
-      </div>
-
-      <div class="form-group">
-        <label>Skills</label>
-        <input type="test" name="user.profile.skills" ng-model="user.profile.skills" class="form-control" placeholder="Comma seperated list of skills" float-label>
-        <div class="inline-help">
-          <i class="help-icon" popover="Enter a comma seperated list of your key skills. (For example; Graphic Design, Adobe Photoshop, etc.)" popover-title="Key Skills"></i>
+        <div class="form-footer">
+          <a href="#" class="next btn btn-primary pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
         </div>
-      </div>
-      
-      <div class="form-group ">
-        <a href="#" class="previous btn btn-link btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
-        <button type="submit" class="btn btn-default pull-right btn-icon-right">Signup <i class="fa fa-arrow-right"></i></button>
-      </div>
-    </fieldset>
+      </fieldset>
 
+      <!-- My Profile -->
+      <fieldset class="form-step" ng-if="user.type == 'student'">
 
-    
-    <!-- Company Profile -->
-    <fieldset class="form-step" ng-if="user.type == 'employer'">
-
-      <div class="form-step-title">
-        <i class="number">2</i>
-        <h3 class="title">Company Profile</h3>
-        <p class="message">Your company profile will be displayed to students interested in applying for internships with you.</p>
-      </div>
-
-      <div class="form-group">
-        <label>Company Name</label>
-        <input type="test" name="user.company.name" ng-model="user.company.name" class="form-control" placeholder="Company Name" float-label required>
-      </div>
-
-      <div class="form-group">
-        <label>Company Introduction</label>
-        <textarea name="user.company.introduction" ng-model="user.company.introduction" class="form-control" placeholder="Company Introduction" float-label></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>Website</label>
-        <input type="test" name="user.company.website" ng-model="user.company.website" class="form-control" placeholder="Website URL" float-label>
-      </div>
-
-      <div class="form-group">
-        <label>Skills</label>
-        <input type="test" name="user.company.skills" ng-model="user.company.skills" class="form-control" placeholder="Comma seperated list of skills" float-label>
-        <div class="inline-help">
-          <i class="help-icon" popover="Enter a comma seperated list of the skills your company looks for in interns. (For example; Graphic Design, Project Management, etc.)" popover-title="Key Skills"></i>
+        <div class="form-step-title">
+          <i class="number">2</i>
+          <h3 class="title">My Profile</h3>
+          <p class="message">Your profile will help us match interships relative to your skills and interests. It will also be made available to employers.</p>
         </div>
-      </div>
-      
-      <div class="form-group">
-        <a href="#" class="previous btn btn-link btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
-        <a href="#" class="next btn btn-default pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
-      </div>
-    </fieldset>
 
-
-
-    <!-- Company Logo -->
-    <fieldset class="form-step" ng-if="user.type == 'employer'">
-
-      <div class="form-step-title">
-        <i class="number">3</i>
-        <h3 class="title">Company Logo</h3>
-        <p class="message">Upload your company's logo to be displayed in you profile.</p>
-      </div>
-
-      <div class="form-group">
-        <label>Company Logo</label>
-        <input type="file" name="logo" ng-file-select class="form-control">
-      </div>
-      
-      <div class="form-group">
-        <a href="#" class="previous btn btn-link btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
-        <a href="#" class="next btn btn-default pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
-      </div>
-    </fieldset>
-
-
-
-    <!-- Company Address -->
-    <fieldset class="form-step" ng-if="user.type == 'employer'">
-
-      <div class="form-step-title">
-        <i class="number">4</i>
-        <h3 class="title">Company Address</h3>
-        <p class="message">Please provide your company's address to help your interns locate you.</p>
-      </div>
-
-      <div class="form-group vertical-input-stack">
-        <label>Street Address</label>
-        <input type="test" name="user.company.address.line1" ng-model="user.company.address.line1" class="form-control" placeholder="Street Address" float-label required>
-        <input type="test" name="user.company.address.line2" ng-model="user.company.address.line2" class="form-control">
-      </div>
-
-      <div class="form-group ">
-        <div class="row-sm">
-          <div class="col-sm-5">
-            <label>City / State / Postcode</label>
-            <input type="test" name="user.company.address.city" ng-model="user.company.address.city" class="form-control" placeholder="City" float-label required>
-          </div>
-
-          <div class="col-sm-5">
-            <label class="sr-only">State</label>
-            <select selecter name="user.company.address.state" ng-model="user.company.address.state" placeholder="State" required>
-              <option value="">Select a State</option>
-              <option>Australian Capital Territory</option>
-              <option>New South Wales</option>
-              <option>Northern Territory</option>
-              <option>Queensland</option>
-              <option>South Australia</option>
-              <option>Tasmania</option>
-              <option>Victoria</option>
-              <option>Western Australia</option>
-            </select>
-          </div>
-
-          <div class="col-sm-2">
-            <label class="sr-only">Postcode</label>
-            <input type="test" name="user.company.address.postcode" ng-model="user.company.address.postcode" class="form-control" placeholder="1234" required data-parsley-type="integer">
+        <div class="form-group">
+          <label>Introduction</label>
+          <div class="has-help">
+            <textarea name="user.profile.introduction" ng-model="user.profile.introduction" class="form-control" placeholder="Introduction"></textarea>
+            <div class="inline-help">
+              <i class="help-icon" popover="Your introduction is a great opportunity to introduce yourself to employers." popover-title="Introduction"></i>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="form-group ">
-        <label>Country</label>
-        <select selecter name="user.company.address.country" ng-model="user.company.address.country" placeholder="Country" float-label required>
-          <option value="">Select a Country</option>
-          <option selected="selected">Australia</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <a href="#" class="previous btn btn-link btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
-        <button type="submit" ng-disabled="loading" class="btn btn-default pull-right btn-icon-right">Signup <i class="fa fa-arrow-right"></i></button>
-      </div>
-    </fieldset>
+        <div class="form-group">
+          <div class="row-sm">
+            <div class="col-sm-6">
+              <label>Course Name</label>
+              <input type="test" name="user.profile.courseName" ng-model="user.profile.courseName" class="form-control" placeholder="Course Name">
+            </div>
 
+            <div class="col-sm-6">
+              <label>University</label>
+              <select selecter name="user.profile.university" ng-model="user.profile.university">
+                <option value="">Select a University</option>
+                <option ng-repeat="o in universityOptions" value="{{ o }}">{{ o }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
+        <div class="form-group">
+          <label>LinkedIn Profile</label>
+          <input type="test" name="user.profile.linkedIn" ng-model="user.profile.linkedIn" class="form-control" placeholder="LinkedIn Profile URL">
+        </div>
 
-  </div>
+        <div class="form-group">
+          <label>Skills</label>
+          <div class="has-help">
+            <input type="test" name="user.profile.skills" ng-model="user.profile.skills" class="form-control" placeholder="Comma seperated list of skills">
+            <div class="inline-help">
+              <i class="help-icon" popover="Enter a comma seperated list of your key skills. (For example; Graphic Design, Adobe Photoshop, etc.)" popover-title="Key Skills"></i>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div class="form-footer">
+          <a href="#" class="previous btn btn-default btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
+          <button type="submit" class="btn btn-primary pull-right btn-icon-right">Signup <i class="fa fa-arrow-right"></i></button>
+        </div>
+      </fieldset>
 
-</form>
+      <!-- Company Profile -->
+      <fieldset class="form-step" ng-if="user.type == 'employer'">
+
+        <div class="form-step-title">
+          <i class="number">2</i>
+          <h3 class="title">Company Profile</h3>
+          <p class="message">Your company profile will be displayed to students interested in applying for internships with you.</p>
+        </div>
+
+        <div class="form-group">
+          <label>Company Name</label>
+          <input type="test" name="user.company.name" ng-model="user.company.name" class="form-control" placeholder="Company Name" required>
+        </div>
+
+        <div class="form-group">
+          <label>Company Introduction</label>
+          <textarea name="user.company.introduction" ng-model="user.company.introduction" class="form-control" placeholder="Company Introduction"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Website</label>
+          <input type="test" name="user.company.website" ng-model="user.company.website" class="form-control" placeholder="Website URL">
+        </div>
+
+        <div class="form-group">
+          <label>Skills</label>
+          <div class="has-help">
+            <input type="test" name="user.company.skills" ng-model="user.company.skills" class="form-control" placeholder="Comma seperated list of skills">
+            <div class="inline-help">
+              <i class="help-icon" popover="Enter a comma seperated list of the skills your company looks for in interns. (For example; Graphic Design, Project Management, etc.)" popover-title="Key Skills"></i>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-footer">
+          <a href="#" class="previous btn btn-default btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
+          <a href="#" class="next btn btn-primary pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </fieldset>
+
+      <!-- Company Logo -->
+      <fieldset class="form-step" ng-if="user.type == 'employer'">
+
+        <div class="form-step-title">
+          <i class="number">3</i>
+          <h3 class="title">Company Logo</h3>
+          <p class="message">Upload your company's logo to be displayed in you profile.</p>
+        </div>
+
+        <div class="form-group">
+          <label>Company Logo</label>
+          <input type="file" name="logo" ng-file-select class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <a href="#" class="previous btn btn-default btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
+          <a href="#" class="next btn btn-primary pull-right btn-icon-right">Next <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </fieldset>
+
+      <!-- Company Address -->
+      <fieldset class="form-step" ng-if="user.type == 'employer'">
+
+        <div class="form-step-title">
+          <i class="number">4</i>
+          <h3 class="title">Company Address</h3>
+          <p class="message">Please provide your company's address to help your interns locate you.</p>
+        </div>
+
+        <div class="form-group vertical-input-stack">
+          <label>Street Address</label>
+          <input type="test" name="user.company.address.line1" ng-model="user.company.address.line1" class="form-control" placeholder="Street Address" required>
+          <input type="test" name="user.company.address.line2" ng-model="user.company.address.line2" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <div class="row-sm">
+            <div class="col-sm-5">
+              <label>City / State / Postcode</label>
+              <input type="test" name="user.company.address.city" ng-model="user.company.address.city" class="form-control" placeholder="City" required>
+            </div>
+
+            <div class="col-sm-5">
+              <label class="sr-only">State</label>
+              <select selecter name="user.company.address.state" ng-model="user.company.address.state" placeholder="State" required>
+                <option value="">Select a State</option>
+                <option>Australian Capital Territory</option>
+                <option>New South Wales</option>
+                <option>Northern Territory</option>
+                <option>Queensland</option>
+                <option>South Australia</option>
+                <option>Tasmania</option>
+                <option>Victoria</option>
+                <option>Western Australia</option>
+              </select>
+            </div>
+
+            <div class="col-sm-2">
+              <label class="sr-only">Postcode</label>
+              <input type="test" name="user.company.address.postcode" ng-model="user.company.address.postcode" class="form-control" placeholder="1234" required data-parsley-type="integer">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Country</label>
+          <select selecter name="user.company.address.country" ng-model="user.company.address.country" placeholder="Country" required>
+            <option value="">Select a Country</option>
+            <option selected="selected">Australia</option>
+          </select>
+        </div>
+        
+        <div class="form-footer">
+          <a href="#" class="previous btn btn-default btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
+          <button type="submit" ng-disabled="loading" class="btn btn-primary pull-right btn-icon-right">Signup <i class="fa fa-arrow-right"></i></button>
+        </div>
+      </fieldset>
+
+      <!-- Supervisor profile -->
+      <fieldset class="form-step" ng-if="user.type == 'supervisor'">
+
+        <div class="form-step-title">
+          <i class="number">2</i>
+          <h3 class="title">Educational Institution</h3>
+          <p class="message">If you are an employee of an educational institution, please provide the following information.</p>
+        </div>
+
+        <div class="form-group">
+          <div class="row-sm">
+            <div class="col-sm-6">
+              <label>Job Title</label>
+              <input type="test" name="user.profile.role" ng-model="user.profile.role" class="form-control" placeholder="Job Title / Role">
+            </div>
+
+            <div class="col-sm-6">
+              <label>University</label>
+              <select selecter name="user.profile.university" ng-model="user.profile.university">
+                <option value="">Select a University</option>
+                <option ng-repeat="o in universityOptions" value="{{ o }}">{{ o }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-footer">
+          <a href="#" class="previous btn btn-default btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
+          <button type="submit" ng-disabled="loading" class="btn btn-primary pull-right btn-icon-right">Signup <i class="fa fa-arrow-right"></i></button>
+        </div>
+      </fieldset>
+    </div>
+  </form>
+</div>

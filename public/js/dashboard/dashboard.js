@@ -14,9 +14,7 @@ angular.module('InternLabs.dashboard', [])
           status: status
         });
       } else if (internlabs.isSupervisor) {
-        return Restangular.one('suporvisors', internlabs.user._id).getList('internships', {
-          status: status
-        });
+        return Restangular.one('supervisors', internlabs.user._id).getList('internships');
       }
     };
 
@@ -24,9 +22,15 @@ angular.module('InternLabs.dashboard', [])
     $routeProvider
 
       .when('/dashboard', {
-        templateUrl: 'dashboard/layout.tpl.html',
+        template: '',
         controller: 'DashboardCtrl',
-        pageTitle: 'Dashboard',
+        auth: true
+      })
+
+      .when('/dashboard/recommendations', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'RecommendationsCtrl',
+        pageTitle: 'Internship Recommendations',
         auth: true,
         state: {
           main: 'dashboard/dashboard.tpl.html'
@@ -36,7 +40,7 @@ angular.module('InternLabs.dashboard', [])
       .when('/dashboard/internships', {
         templateUrl: 'dashboard/layout.tpl.html',
         controller: 'InternshipsCtrl',
-        pageTitle: 'Active Internships',
+        pageTitle: 'Internships',
         auth: true,
         state: {
           main: 'dashboard/internships.tpl.html'
@@ -123,14 +127,43 @@ angular.module('InternLabs.dashboard', [])
         }
       })
 
+      .when('/dashboard/profile', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'ProfileCtrl',
+        pageTitle: 'Edit Profile',
+        auth: true,
+        state: {
+          main: 'dashboard/profile.tpl.html'
+        },
+        resolve: {
+          profile: function(Restangular) {
+            return Restangular.one('me').customGET('profile');
+          }
+        }
+      })
+
       ;
 
   })
 
 
-  .controller('DashboardCtrl', function($route, $scope, $http, Options, Restangular) {
+  .controller('DashboardCtrl', function($location) {
+    if (internlabs.isStudent) {
+      return $location.path('/dashboard/recommendations');
+    }
+
+    if (internlabs.isEmployer) {
+      return $location.path('/dashboard/applications');
+    }
+
+    if (internlabs.isSupervisor) {
+      return $location.path('/dashboard/internships');
+    }
+  })
+
+  .controller('RecommendationsCtrl', function($route, $scope, $http, Options, Restangular) {
     $scope.state = $route.current.$$route.state;
-    $scope.active = 'dashboard';
+    $scope.active = 'recommendations';
     $scope.searching = true;
 
     if (internlabs.isStudent) {
@@ -159,7 +192,7 @@ angular.module('InternLabs.dashboard', [])
   .controller('InternshipsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'internships';
-    $scope.title = "Active Internships";
+    $scope.title = "Internships";
     $scope.internships = internships;
   })
 
@@ -318,5 +351,39 @@ angular.module('InternLabs.dashboard', [])
     
   })
 
+
+  .controller('ProfileCtrl', function($route, $scope, profile) {
+    $scope.state = $route.current.$$route.state;
+    $scope.active = 'profile';
+    $scope.profile = profile;
+  })
+
+
+  .directive('editProfileWidget', function(Options, Restangular) {
+    return {
+      templateUrl: 'dashboard/widgets/edit-profile.tpl.html',
+      replace: true,
+      scope: {
+        profile: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.universityOptions = Options.universityOptions;
+        scope.isStudent = internlabs.isStudent;
+        scope.isSupervisor = internlabs.isSupervisor;
+
+        scope.save = function() {
+          Restangular.all('profiles').customPUT(_.extend({}, scope.profile, {
+            skills: scope.profile._skills
+          }), scope.profile._id).then(function(repsonse) {
+            scope.profile = repsonse;
+          });
+        };
+
+        scope.$watch('profile.skills', function() {
+          scope.profile._skills = scope.profile.skills.join(',');
+        });
+      }
+    };
+  })
 
   ;

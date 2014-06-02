@@ -18,7 +18,7 @@
     <div class="page-wrap">
     
         <!-- Primary navigation -->
-        <nav primary-nav id="primary-nav" class="navbar navbar-default" ng-class="{'alt': altNav}" role="navigation">
+        <nav primary-nav id="primary-nav" class="navbar navbar-default" role="navigation">
             <div class="container">
 
                 <div class="navbar-toggle" ng-click="toggle()"><i class="fa fa-bars"></i></div>
@@ -29,7 +29,7 @@
                         <li logged-in="true"><a href="/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
                         <li><a href="/search"><i class="fa fa-search"></i> Search</a></li>
                         <li logged-in="false"><a href="/login"><i class="fa fa-sign-in"></i> Login</a></li>
-                        <li logged-in="false"><a href="/signup"><i class="fa fa-user"></i> Sign Up</a></li>
+                        <li logged-in="false"><a target="_self" href="/"><i class="fa fa-user"></i> Sign Up</a></li>
                         <li logged-in="true"><a target="_self" href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
                     </ul>
                 </div>

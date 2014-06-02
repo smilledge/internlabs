@@ -19,7 +19,17 @@ module.exports = function(app) {
      * Get the currently logged in user
      */
     app.get('/api/me', auth.check(), function(req, res) {
-      return res.apiSuccess({ user: req.user });
+      return res.apiSuccess(req.user);
+    });
+
+
+    /**
+     * Get the currently logged in user's profile
+     */
+    app.get('/api/me/profile', auth.check(), function(req, res) {
+      User.findById(req.user._id).populate('profile address').exec(function(err, user) {
+        return res.apiSuccess(user.profile);
+      });
     });
 
 
@@ -59,7 +69,7 @@ module.exports = function(app) {
         if ( err ) {
           return res.apiError(err);
         }
-        return res.apiSuccess("Your account has been created successfully", { user: user });
+        return res.apiSuccess("Your account has been created successfully", user);
       });
     });
 
@@ -104,7 +114,7 @@ module.exports = function(app) {
         if ( err ) {
           return res.apiError(err.message);
         }
-        return res.apiSuccess("Your account has been activated successfully.", { user: user });
+        return res.apiSuccess("Your account has been activated successfully.", user);
       });
 
     });
@@ -140,7 +150,7 @@ module.exports = function(app) {
         }
 
       ], function(user) {
-        return res.apiSuccess("An activation email has been sent to your address.", { user: user });
+        return res.apiSuccess("An activation email has been sent to your address.", user);
       });
     });
 
@@ -191,7 +201,7 @@ module.exports = function(app) {
         }
 
       ], function(user) {
-        return res.apiSuccess("A confirmation email has been sent to the address you provided.", { user: user });
+        return res.apiSuccess("A confirmation email has been sent to the address you provided.", user);
       });
 
     });
@@ -231,7 +241,7 @@ module.exports = function(app) {
         }
 
       ], function(user) {
-        return res.apiSuccess("Your password has been reset successfully.", { user: user });
+        return res.apiSuccess("Your password has been reset successfully.", user);
       });
 
     });
@@ -270,7 +280,7 @@ module.exports = function(app) {
             return res.apiError("Unknown error... Ooops");
           }
 
-          return res.apiSuccess("Your have been logged in successfully", { user: user });
+          return res.apiSuccess("Your have been logged in successfully", user);
         });
 
       })(req, res);

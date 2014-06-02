@@ -87,8 +87,6 @@ angular.module('InternLabs', [
       }
     });
 
-
-
     /**
      * Intercept responses and check for messages or errors
      */
@@ -110,36 +108,6 @@ angular.module('InternLabs', [
 
   })
 
-  // .animation('.reveal-animation', function() {
-  //   var $body = $('body');
-
-  //   return {
-  //     enter: function(element, done) {
-  //       TweenLite.set(element, {
-  //         autoAlpha: 0
-  //       });
-  //       TweenLite.to(element, 0.2, {
-  //         delay: 0.1,
-  //         autoAlpha: 1,
-  //         onComplete: function() {
-  //           $body.css({ minHeight: 0 });
-  //           done();
-  //         }
-  //       });
-  //     },
-  //     leave: function(element, done) {
-  //       $body.css({ minHeight: $body.height() });
-  //       TweenLite.to(element, 0.1, {
-  //         autoAlpha: 0,
-  //         onComplete: function() {
-  //           $(window).scrollTop(0);
-  //           done();
-  //         }
-  //       });
-  //     }
-  //   }
-  // })
-
   .controller('AppCtrl', function($rootScope, $scope, $location, Auth) {
 
     $scope.appTitle = 'InternLabs';
@@ -157,8 +125,6 @@ angular.module('InternLabs', [
 
     $scope.$on('$routeChangeSuccess', function(event, current, previous) {
       $rootScope.loading = false;
-
-      // $('body').removeClass();
       $(window).scrollTop(0);
 
       if ( ! angular.isDefined( current ) ) {
@@ -167,17 +133,9 @@ angular.module('InternLabs', [
 
       if ( angular.isDefined( current.$$route.pageTitle ) ) {
         $scope.pageTitle = current.$$route.pageTitle;
-        // $('body').addClass(_.slugify($scope.pageTitle));
       } else {
         $scope.pageTitle = $scope.appTitle;
       }
-
-      if (current.$$route.className) {
-        // $('body').addClass(current.$$route.className);
-      }
-
-      // Remove alt style from nav
-      $rootScope.altNav = false;
     });
     
     $scope.isLoading = function() {

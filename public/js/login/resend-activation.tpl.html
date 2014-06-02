@@ -1,30 +1,32 @@
-<section class="section-green section-resend-activation" fill-screen>
+<section class="section-login">
   <div class="container">
     <div class="row">
-      <div class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels text-center">
+      <div class="content-box col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4">
+        <header ng-if="!success">
+          <h2>Resend Activation Email</h2>
+        </header>
 
         <!-- Send form -->
-        <form validate="true" ng-submit="send()" role="form" animated-form ng-if="!success">
-          <h1 class="text-center animation-group">Resend Activation</h1>
-
-          <div form-errors="errors"></div>
-
-          <div class="form-group animation-group">
-            <label for="">Email</label>
-            <input type="email" name="email" ng-model="resend.email" class="form-control" placeholder="Your account's email address" float-label required>
+        <form ng-validated="send()" role="form" ng-show="!success">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" ng-model="resend.email" class="form-control" placeholder="Your account's email address" required>
           </div>
 
-          <div class="form-group animation-group">
-            <button type="submit" class="btn btn-default btn-icon-right">Resend Activation Email <i class="fa fa-arrow-right"></i></button>
+          <div class="form-footer text-center">
+            <button type="submit" class="btn btn-primary btn-icon-right">Resend Activation Email <i class="fa fa-arrow-right"></i></button>
           </div>
         </form>
 
         <!-- Send confirmation -->
-        <div ng-if="success">
-          <h1>Activation Email Send</h1>
-          <p>An activation email has been sent to the address you provided. Please click the link in this email to verify your account.</p>
+        <div ng-show="success">
+          <header>
+            <h2>Resend Activation</h2>
+          </header>
+          <div class="content-body">
+            <p>An activation email has been sent to the address you provided. Please click the link in this email to verify your account.</p>
+          </div>
         </div>
-        
       </div>
     </div>
   </div>

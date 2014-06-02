@@ -13,6 +13,7 @@ var profileModel = function () {
         introduction: { type: String },
         university: { type: String },
         courseName: { type: String },
+        role: { type: String },
         linkedIn: { type: String },
         skills: { type: Array },
         resume: { type: String }

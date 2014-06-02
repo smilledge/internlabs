@@ -3,9 +3,9 @@
     <img ng-src="{{ company.logoUrl }}" alt="{{ company.name }}">
   </div>
 
-  <div class="title-body pull-left">
-    <h2 ng-show="!isCompany">{{ internship.role.title || "Internship" }} <span class="text-muted">at</span> <a href="{{ company.url }}">{{ company.name }}</a></h2>
-    <h2 ng-show="isCompany">{{ profile.name }} <span class="text-muted">({{ internship.role.title || "Internship" }})</h2>
+  <div class="title-body">
+    <h2 ng-show="isStudent">{{ internship.role.title || "Internship" }} <span class="text-muted">at</span> <a href="{{ company.url }}">{{ company.name }}</a></h2>
+    <h2 ng-show="isCompany || isSupervisor">{{ profile.name }} <span class="text-muted">({{ internship.role.title || "Internship" }})</h2>
     <div class="meta">
       <span class="status">
         <i ng-class="{

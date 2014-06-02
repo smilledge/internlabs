@@ -32837,7 +32837,7 @@ InfoBox.prototype.close = function () {
 }( window.jQuery );
 (function ( window, angular, undefined ) {
 
-angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/list.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-edit.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
+angular.module('templates-app', ['common/forms/file-upload.tpl.html', 'company/details.tpl.html', 'company/list.tpl.html', 'company/widgets/profile.tpl.html', 'company/widgets/roles.tpl.html', 'company/widgets/sidebar.tpl.html', 'dashboard/company-profile.tpl.html', 'dashboard/dashboard.tpl.html', 'dashboard/forms/logo-delete.tpl.html', 'dashboard/forms/logo-upload.tpl.html', 'dashboard/forms/role-delete.tpl.html', 'dashboard/forms/role.tpl.html', 'dashboard/internships.tpl.html', 'dashboard/layout.tpl.html', 'dashboard/profile.tpl.html', 'dashboard/roles.tpl.html', 'dashboard/widgets/company-logo.tpl.html', 'dashboard/widgets/edit-profile.tpl.html', 'internships/details.tpl.html', 'internships/forms/apply.tpl.html', 'internships/forms/documents-edit.tpl.html', 'internships/forms/documents-upload.tpl.html', 'internships/forms/internship-status.tpl.html', 'internships/forms/interview-delete.tpl.html', 'internships/forms/interview.tpl.html', 'internships/forms/schedule-add.tpl.html', 'internships/forms/schedule.tpl.html', 'internships/forms/supervisor-add.tpl.html', 'internships/forms/supervisor-delete.tpl.html', 'internships/widgets/activity.tpl.html', 'internships/widgets/availability.tpl.html', 'internships/widgets/documents.tpl.html', 'internships/widgets/interview.tpl.html', 'internships/widgets/message.tpl.html', 'internships/widgets/profile.tpl.html', 'internships/widgets/schedule.tpl.html', 'internships/widgets/status.tpl.html', 'internships/widgets/supervisors.tpl.html', 'internships/widgets/title.tpl.html', 'login/activate.tpl.html', 'login/login.tpl.html', 'login/password-reset.tpl.html', 'login/resend-activation.tpl.html', 'register/modal-error.tpl.html', 'register/register-form.tpl.html', 'register/register.tpl.html', 'search/results-map.tpl.html', 'search/search.tpl.html', 'search/widgets/search.tpl.html']);
 
 angular.module("common/forms/file-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/forms/file-upload.tpl.html",
@@ -32879,7 +32879,7 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
     "    <div class=\"container clearfix\">\n" +
     "      <h1 class=\"page-title pull-left\">{{ company.name }}</h1>\n" +
     "\n" +
-    "      <div class=\"actions pull-right\">\n" +
+    "      <div class=\"actions\">\n" +
     "        <button type=\"button\" auth-group=\"student\" ng-click=\"apply()\" class=\"btn btn-primary btn-icon-right\">Apply for Internship <i class=\"fa fa-envelope\"></i></button>\n" +
     "      </div>\n" +
     "    </div>\n" +
@@ -33122,7 +33122,7 @@ angular.module("dashboard/internships.tpl.html", []).run(["$templateCache", func
     "\n" +
     "  <div ng-show=\"internships.length\" class=\"list-group list-internships\">\n" +
     "    <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item clearfix\">\n" +
-    "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
+    "      <div internship-title internship=\"internship\"></div>\n" +
     "    </a>\n" +
     "  </div>\n" +
     "  <div auth-group=\"student\" ng-show=\"!internships.length\" class=\"no-results\">\n" +
@@ -33155,15 +33155,23 @@ angular.module("dashboard/layout.tpl.html", []).run(["$templateCache", function(
     "            </header>\n" +
     "\n" +
     "            <ul class=\"nav nav-pills nav-stacked\">\n" +
-    "              <li ng-class=\"{active:active=='dashboard'}\"><a href=\"/dashboard\">Dashboard</a></li>\n" +
+    "              <!-- <li ng-class=\"{active:active=='dashboard'}\"><a href=\"/dashboard\">Dashboard</a></li> -->\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='recommendations'}\"><a href=\"/dashboard/recommendations\">Recommended Internships</a></li>\n" +
     "              <li auth-group=\"student\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">My Internships</a></li>\n" +
-    "              <li ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
-    "              <li ng-class=\"{active:active=='declined'}\"><a href=\"/dashboard/applications/declined\">Declined Applications</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='declined'}\"><a href=\"/dashboard/applications/declined\">Declined Applications</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='archived'}\"><a href=\"/dashboard/internships/archived\">Archived Internships</a></li>\n" +
+    "              <li auth-group=\"student\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">Edit Profile</a></li>\n" +
+    "\n" +
+    "              <li auth-group=\"supervisor\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">View Internships</a></li>\n" +
+    "              <li auth-group=\"supervisor\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">Edit Profile</a></li>\n" +
+    "\n" +
+    "              <li auth-group=\"employer\" ng-class=\"{active:active=='applications'}\"><a href=\"/dashboard/applications\">Pending Applications</a></li>\n" +
     "              <li auth-group=\"employer\" ng-class=\"{active:active=='internships'}\"><a href=\"/dashboard/internships\">Active Internships</a></li>\n" +
-    "              <li ng-class=\"{active:active=='archived'}\"><a href=\"/dashboard/internships/archived\">Archived Internships</a></li>\n" +
+    "              <li auth-group=\"employer\" ng-class=\"{active:active=='declined'}\"><a href=\"/dashboard/applications/declined\">Declined Applications</a></li>\n" +
+    "              <li auth-group=\"employer\" ng-class=\"{active:active=='archived'}\"><a href=\"/dashboard/internships/archived\">Archived Internships</a></li>\n" +
     "              <li auth-group=\"employer\" ng-class=\"{active:active=='roles'}\"><a href=\"/dashboard/roles\">Available Roles</a></li>\n" +
     "              <li auth-group=\"employer\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/company-profile\">Company Profile</a></li>\n" +
-    "              <li auth-group=\"student\" ng-class=\"{active:active=='profile'}\"><a href=\"/dashboard/profile\">Edit Profile</a></li>\n" +
     "            </ul>\n" +
     "          </div>\n" +
     "        </div>\n" +
@@ -33176,6 +33184,11 @@ angular.module("dashboard/layout.tpl.html", []).run(["$templateCache", function(
     "    </div>\n" +
     "  </section>\n" +
     "</article>");
+}]);
+
+angular.module("dashboard/profile.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("dashboard/profile.tpl.html",
+    "<div edit-profile-widget profile=\"profile\"></div>");
 }]);
 
 angular.module("dashboard/roles.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -33240,6 +33253,90 @@ angular.module("dashboard/widgets/company-logo.tpl.html", []).run(["$templateCac
     "");
 }]);
 
+angular.module("dashboard/widgets/edit-profile.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("dashboard/widgets/edit-profile.tpl.html",
+    "<div class=\"content-box\">\n" +
+    "  <header>\n" +
+    "    <h3>Edit Profile</h3>\n" +
+    "  </header>\n" +
+    "\n" +
+    "  <form role=\"form\" ng-submit=\"save()\">\n" +
+    "    <div class=\"form-group\">\n" +
+    "      <div class=\"row-sm\">\n" +
+    "        <div class=\"col-sm-6\">\n" +
+    "          <label>First Name</label>\n" +
+    "          <input type=\"text\" ng-model=\"profile.firstName\" class=\"form-control\">\n" +
+    "        </div>\n" +
+    "        <div class=\"col-sm-6\">\n" +
+    "          <label>Last Name</label>\n" +
+    "          <input type=\"text\" ng-model=\"profile.lastName\" class=\"form-control\">\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"isStudent\">\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Introduction</label>\n" +
+    "        <textarea ng-model=\"profile.introduction\" rows=\"4\" class=\"form-control\"></textarea>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>Skills</label>\n" +
+    "        <input type=\"text\" ng-model=\"profile._skills\" class=\"form-control\">\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <div class=\"row-sm\">\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label>University</label>\n" +
+    "            <select selecter name=\"profile.university\" ng-model=\"profile.university\">\n" +
+    "              <option value=\"\">Select a University</option>\n" +
+    "              <option ng-repeat=\"o in universityOptions\" ng-selected=\"{{ o === profile.university }}\" value=\"{{ o }}\">{{ o }}</option>\n" +
+    "            </select>\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label>Course Name</label>\n" +
+    "            <input type=\"text\" ng-model=\"profile.courseName\" class=\"form-control\">\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <label>LinkedIn Profile URL</label>\n" +
+    "        <input type=\"text\" ng-model=\"profile.linkedIn\" class=\"form-control\">\n" +
+    "      </div>\n" +
+    "\n" +
+    "      <!-- Resume upload -->      \n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div ng-show=\"isSupervisor\">\n" +
+    "      <div class=\"form-group\">\n" +
+    "        <div class=\"row-sm\">\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label>Job Title</label>\n" +
+    "            <input type=\"test\" name=\"profile.role\" ng-model=\"profile.role\" class=\"form-control\" placeholder=\"Job Title / Role\">\n" +
+    "          </div>\n" +
+    "\n" +
+    "          <div class=\"col-sm-6\">\n" +
+    "            <label>University</label>\n" +
+    "            <select selecter name=\"profile.university\" ng-model=\"profile.university\">\n" +
+    "              <option value=\"\">Select a University</option>\n" +
+    "              <option ng-repeat=\"o in universityOptions\" ng-selected=\"{{ o === profile.university }}\" value=\"{{ o }}\">{{ o }}</option>\n" +
+    "            </select>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"form-footer text-center\">\n" +
+    "      <button type=\"submit\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-save\"></i> Save</button>\n" +
+    "    </div>\n" +
+    "  </form>\n" +
+    "</div>\n" +
+    "");
+}]);
+
 angular.module("internships/details.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/details.tpl.html",
     "<article class=\"content-page internship-details\">\n" +
@@ -33252,9 +33349,9 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
     "\n" +
     "  <section class=\"sub-header\">\n" +
     "    <div class=\"container clearfix\">\n" +
-    "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
+    "      <div internship-title internship=\"internship\"></div>\n" +
     "\n" +
-    "      <div class=\"pull-right\">\n" +
+    "      <div class=\"internship-options\">\n" +
     "        <div auth-group=\"employer\" status-widget internship=\"internship\"></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
@@ -33834,7 +33931,7 @@ angular.module("internships/widgets/status.tpl.html", []).run(["$templateCache",
   $templateCache.put("internships/widgets/status.tpl.html",
     "<div class=\"widget-status\">\n" +
     "  <div dropdown-menu class=\"dropdown-lg\">\n" +
-    "    <a ng-click=\"toggle()\"><span>{{ internship.status | titlecase }}</span> <i class=\"fa fa-bars\"></i></a>\n" +
+    "    <a ng-click=\"toggle()\"><span>Internship Options</span> <i class=\"fa fa-bars\"></i></a>\n" +
     "    <ul>\n" +
     "      <li ng-show=\"internship.status == 'pending'\"><a ng-click=\"change('active')\">Approve Internship</a></li>\n" +
     "      <li ng-show=\"internship.status == 'pending'\"><a ng-click=\"change('rejected')\">Reject Internship</a></li>\n" +
@@ -33862,7 +33959,7 @@ angular.module("internships/widgets/supervisors.tpl.html", []).run(["$templateCa
     "\n" +
     "  <div class=\"list-group list-supervisors\">\n" +
     "    <div ng-repeat=\"item in _supervisors\" class=\"list-group-item\">\n" +
-    "      <strong class=\"email\"><i class=\"fa fa-eye\"></i> {{ item.email }}</strong>\n" +
+    "      <strong class=\"email\"><i class=\"fa fa-eye\"></i> {{ item.profile.name || item.email }}</strong>\n" +
     "      <a ng-click=\"remove(item.email)\" class=\"btn btn-danger btn-icon fa fa-times pull-right\"></a>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -33882,9 +33979,9 @@ angular.module("internships/widgets/title.tpl.html", []).run(["$templateCache", 
     "    <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"title-body pull-left\">\n" +
-    "    <h2 ng-show=\"!isCompany\">{{ internship.role.title || \"Internship\" }} <span class=\"text-muted\">at</span> <a href=\"{{ company.url }}\">{{ company.name }}</a></h2>\n" +
-    "    <h2 ng-show=\"isCompany\">{{ profile.name }} <span class=\"text-muted\">({{ internship.role.title || \"Internship\" }})</h2>\n" +
+    "  <div class=\"title-body\">\n" +
+    "    <h2 ng-show=\"isStudent\">{{ internship.role.title || \"Internship\" }} <span class=\"text-muted\">at</span> <a href=\"{{ company.url }}\">{{ company.name }}</a></h2>\n" +
+    "    <h2 ng-show=\"isCompany || isSupervisor\">{{ profile.name }} <span class=\"text-muted\">({{ internship.role.title || \"Internship\" }})</h2>\n" +
     "    <div class=\"meta\">\n" +
     "      <span class=\"status\">\n" +
     "        <i ng-class=\"{\n" +
@@ -33904,22 +34001,28 @@ angular.module("internships/widgets/title.tpl.html", []).run(["$templateCache", 
 
 angular.module("login/activate.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("login/activate.tpl.html",
-    "<section class=\"section-green section-activate\" fill-screen>\n" +
+    "<section class=\"section-login\">\n" +
     "  <div class=\"container\">\n" +
     "    <div class=\"row\">\n" +
-    "      <div class=\"col-sm-offset-3 col-sm-6 text-center\">\n" +
-    "\n" +
+    "      <div class=\"content-box col-sm-offset-3 col-sm-6\">\n" +
     "        <div ng-show=\"!activated\">\n" +
-    "          <h1>Activating Account</h1>\n" +
-    "          <p>Please wait while your account is being activated...</p>\n" +
+    "          <header>\n" +
+    "            <h2>Activating Account</h2>\n" +
+    "          </header>\n" +
+    "          <div class=\"content-body\">\n" +
+    "            <p>Please wait while your account is being activated...</p>\n" +
+    "          </div>\n" +
     "        </div>\n" +
     "\n" +
     "        <div ng-show=\"activated\">\n" +
-    "          <h1>Your account as been activated</h1>\n" +
-    "          <p>Your account has been activated successfully. You may now login.</p>\n" +
-    "          <a href=\"/login\" class=\"btn btn-default btn-icon-right\">Proceed to login <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "          <header>\n" +
+    "            <h2>Your account as been activated</h2>\n" +
+    "          </header>\n" +
+    "          <div class=\"content-body\">\n" +
+    "            <p>Your account has been activated successfully. You may now login.</p>\n" +
+    "            <a href=\"/login\" class=\"btn btn-primary btn-icon-right\">Proceed to login <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "          </div>\n" +
     "        </div>\n" +
-    "\n" +
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -33928,157 +34031,143 @@ angular.module("login/activate.tpl.html", []).run(["$templateCache", function($t
 
 angular.module("login/login.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("login/login.tpl.html",
-    "<section class=\"section-green section-login\" fill-screen>\n" +
-    "  \n" +
+    "<section class=\"section-login\" fill-screen>\n" +
     "  <div class=\"container\">\n" +
     "    <div class=\"row\">\n" +
     "\n" +
-    "      <form validate=\"true\" ng-submit=\"submit()\" role=\"form\" class=\"col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels\" login-form animated-form>\n" +
+    "      <div class=\"content-box col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6\">\n" +
+    "        <header>\n" +
+    "          <h2>Login</h2>\n" +
+    "        </header>\n" +
     "\n" +
-    "        <h1 class=\"text-center animation-group\">Login</h1>\n" +
+    "        <form ng-validated=\"submit()\" role=\"form\" login-form animated-form>\n" +
+    "          <div form-errors=\"errors\"></div>\n" +
     "\n" +
-    "        <div form-errors=\"errors\"></div>\n" +
+    "          <div class=\"form-group\">\n" +
+    "            <label for=\"email\">Email</label>\n" +
+    "            <input type=\"email\" name=\"email\" ng-model=\"credentials.email\" class=\"form-control\" placeholder=\"Email\" required>\n" +
+    "          </div>\n" +
     "\n" +
-    "        <div class=\"form-group animation-group\">\n" +
-    "          <label for=\"\">Email</label>\n" +
-    "          <input type=\"email\" name=\"email\" ng-model=\"credentials.email\" class=\"form-control\" placeholder=\"Email\" float-label required>\n" +
-    "        </div>\n" +
+    "          <div class=\"form-group\">\n" +
+    "            <label for=\"password\">Password</label>\n" +
+    "            <input type=\"password\" name=\"password\" ng-model=\"credentials.password\" class=\"form-control\" placeholder=\"Password\" required>\n" +
+    "          </div>\n" +
     "\n" +
-    "        <div class=\"form-group animation-group\">\n" +
-    "          <label for=\"\">Password</label>\n" +
-    "          <input type=\"password\" name=\"password\" ng-model=\"credentials.password\" class=\"form-control\" placeholder=\"Password\" float-label required>\n" +
-    "        </div>\n" +
-    "\n" +
-    "\n" +
-    "        <div class=\"form-group animation-group\">\n" +
-    "          <div class=\"row\">\n" +
-    "            <div class=\"col-xs-6\">\n" +
-    "              <div class=\"checkbox\">\n" +
-    "                <label>\n" +
-    "                  <input type=\"checkbox\" ng-model=\"credentials.remember\" name=\"credentials.remember\" ng-true-value=\"true\" fs-picker> Remember Me\n" +
-    "                </label>\n" +
+    "          <div class=\"form-footer\">\n" +
+    "            <div class=\"row\">\n" +
+    "              <div class=\"col-xs-6\">\n" +
+    "                <div class=\"checkbox\">\n" +
+    "                  <label>\n" +
+    "                    <input type=\"checkbox\" ng-model=\"credentials.remember\" name=\"credentials.remember\" ng-true-value=\"true\" fs-picker> Remember Me\n" +
+    "                  </label>\n" +
+    "                </div>\n" +
+    "              </div>\n" +
+    "              <div class=\"col-xs-6\">\n" +
+    "                <button type=\"submit\" class=\"btn btn-primary pull-right btn-icon-right\">Login <i class=\"fa fa-arrow-right\"></i></button>\n" +
     "              </div>\n" +
     "            </div>\n" +
-    "            <div class=\"col-xs-6\">\n" +
-    "              <button type=\"submit\" class=\"btn btn-default pull-right btn-icon-right\">Login <i class=\"fa fa-arrow-right\"></i></button>\n" +
-    "            </div>\n" +
     "          </div>\n" +
-    "        </div>\n" +
-    "\n" +
-    "        <p class=\"animation-group text-center link-lost-password\"><a href=\"/password-reset\">Lost your password?</a> | <a href=\"/resend-activation\">Resend Activation Email</a></p>\n" +
-    "\n" +
-    "      </form>\n" +
-    "\n" +
+    "        </form>\n" +
+    "      </div>\n" +
+    "      \n" +
     "    </div>\n" +
+    "    <p class=\"text-center link-lost-password\"><a href=\"/password-reset\">Lost your password?</a> | <a href=\"/resend-activation\">Resend Activation Email</a></p>\n" +
     "  </div>\n" +
-    "\n" +
     "</section>");
 }]);
 
 angular.module("login/password-reset.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("login/password-reset.tpl.html",
-    "<section class=\"section-green section-password-reset\" fill-screen>\n" +
-    "  \n" +
+    "<section class=\"section-login\">\n" +
     "  <div class=\"container\">\n" +
     "    <div class=\"row\">\n" +
-    "\n" +
-    "      <div class=\"col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels text-center\">\n" +
+    "      <div class=\"content-box col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4\">\n" +
     "        \n" +
     "        <!-- Send reset -->\n" +
-    "        <div ng-show=\"action == 'send'\">\n" +
-    "          \n" +
-    "          <!-- Send form -->\n" +
-    "          <form validate=\"true\" ng-submit=\"send()\" role=\"form\" animated-form ng-if=\"!sendSuccess\">\n" +
-    "            <h1 class=\"text-center animation-group\">Password Reset</h1>\n" +
+    "        <header ng-show=\"action=='send'&&!sendSuccess\">\n" +
+    "          <h2>Reset your Password</h2>\n" +
+    "        </header>\n" +
+    "        <form ng-validated=\"send()\" role=\"form\" ng-show=\"action=='send'&&!sendSuccess\">\n" +
+    "          <div class=\"form-group\">\n" +
+    "            <label for=\"email\">Email</label>\n" +
+    "            <input type=\"email\" name=\"email\" ng-model=\"reset.email\" class=\"form-control\" placeholder=\"Your account's email address\" required>\n" +
+    "          </div>\n" +
+    "          <div class=\"form-footer text-center\">\n" +
+    "            <button type=\"submit\" class=\"btn btn-primary btn-icon-right\">Send Confirmation Email <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "          </div>\n" +
+    "        </form>\n" +
     "\n" +
-    "            <div class=\"form-group animation-group\">\n" +
-    "              <label for=\"\">Email</label>\n" +
-    "              <input type=\"email\" name=\"email\" ng-model=\"reset.email\" class=\"form-control\" placeholder=\"Your account's email address\" float-label required>\n" +
-    "            </div>\n" +
-    "\n" +
-    "\n" +
-    "            <div class=\"form-group animation-group\">\n" +
-    "              <button type=\"submit\" class=\"btn btn-default btn-icon-right\">Send Confirmation Email <i class=\"fa fa-arrow-right\"></i></button>\n" +
-    "            </div>\n" +
-    "          </form>\n" +
-    "\n" +
-    "          <!-- Send confirmation -->\n" +
-    "          <div ng-if=\"sendSuccess\">\n" +
-    "            <h1>Confirmation Send</h1>\n" +
+    "        <div ng-show=\"action=='send'&&sendSuccess\">\n" +
+    "          <header>\n" +
+    "            <h2>Confirmation Send</h2>\n" +
+    "          </header>\n" +
+    "          <div class=\"content-body\">\n" +
     "            <p>A confirmation email has been sent to the address you provided. Please click the link in this email to set a new password for your account.</p>\n" +
     "          </div>\n" +
-    "          \n" +
     "        </div>\n" +
-    "        \n" +
-    "\n" +
     "\n" +
     "        <!-- Reset password -->\n" +
-    "        <div ng-show=\"action == 'reset'\">\n" +
-    "          \n" +
-    "          <!-- Reset form -->\n" +
-    "          <form validate=\"true\" ng-submit=\"reset()\" role=\"form\" animated-form ng-if=\"!resetSuccess\">\n" +
-    "            <h1 class=\"text-center animation-group\">Password Reset</h1>\n" +
-    "\n" +
-    "            <div class=\"form-group animation-group\">\n" +
-    "              <label for=\"\">New Password</label>\n" +
-    "              <input type=\"password\" name=\"password\" ng-model=\"reset.password\" class=\"form-control\" placeholder=\"New password for your account\" float-label required data-parsley-minlength=\"6\">\n" +
-    "            </div>\n" +
-    "\n" +
-    "\n" +
-    "            <div class=\"form-group animation-group\">\n" +
-    "              <button type=\"submit\" class=\"btn btn-default btn-icon-right\">Reset Password <i class=\"fa fa-arrow-right\"></i></button>\n" +
-    "            </div>\n" +
-    "          </form>\n" +
-    "\n" +
-    "          <!-- Reset confirmation -->\n" +
-    "          <div ng-show=\"resetSuccess\">\n" +
-    "            <h1>Your password has been reset</h1>\n" +
-    "            <p>Your password has been reset successfully. You may now login using your new password.</p>\n" +
-    "            <a href=\"/login\" class=\"btn btn-default btn-icon-right\">Proceed to login <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "        <header ng-show=\"action=='reset'&&!resetSuccess\">\n" +
+    "          <h2>Reset your Password</h2>\n" +
+    "        </header>\n" +
+    "        <form ng-validated=\"reset()\" role=\"form\" ng-show=\"action=='reset'&&!resetSuccess\">\n" +
+    "          <div class=\"form-group\">\n" +
+    "            <label for=\"password\">New Password</label>\n" +
+    "            <input type=\"password\" name=\"password\" ng-model=\"reset.password\" class=\"form-control\" placeholder=\"New password for your account\" required data-parsley-minlength=\"6\">\n" +
     "          </div>\n" +
     "\n" +
+    "          <div class=\"form-footer text-center\">\n" +
+    "            <button type=\"submit\" class=\"btn btn-primary btn-icon-right\">Reset Password <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "          </div>\n" +
+    "        </form>\n" +
     "\n" +
+    "        <!-- Reset confirmation -->\n" +
+    "        <div ng-show=\"action=='reset'&&resetSuccess\">\n" +
+    "          <header>\n" +
+    "            <h2>Your password has been reset</h2>\n" +
+    "          </header>\n" +
+    "          <div class=\"content-body\">\n" +
+    "            <p>Your password has been reset successfully. You may now login using your new password.</p>\n" +
+    "            <a href=\"/login\" class=\"btn btn-primary btn-icon-right\">Proceed to login <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "          </div>\n" +
     "        </div>\n" +
-    "\n" +
     "      </div>\n" +
-    "\n" +
-    "      \n" +
-    "\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "\n" +
     "</section>");
 }]);
 
 angular.module("login/resend-activation.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("login/resend-activation.tpl.html",
-    "<section class=\"section-green section-resend-activation\" fill-screen>\n" +
+    "<section class=\"section-login\">\n" +
     "  <div class=\"container\">\n" +
     "    <div class=\"row\">\n" +
-    "      <div class=\"col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels text-center\">\n" +
+    "      <div class=\"content-box col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4\">\n" +
+    "        <header ng-if=\"!success\">\n" +
+    "          <h2>Resend Activation Email</h2>\n" +
+    "        </header>\n" +
     "\n" +
     "        <!-- Send form -->\n" +
-    "        <form validate=\"true\" ng-submit=\"send()\" role=\"form\" animated-form ng-if=\"!success\">\n" +
-    "          <h1 class=\"text-center animation-group\">Resend Activation</h1>\n" +
-    "\n" +
-    "          <div form-errors=\"errors\"></div>\n" +
-    "\n" +
-    "          <div class=\"form-group animation-group\">\n" +
-    "            <label for=\"\">Email</label>\n" +
-    "            <input type=\"email\" name=\"email\" ng-model=\"resend.email\" class=\"form-control\" placeholder=\"Your account's email address\" float-label required>\n" +
+    "        <form ng-validated=\"send()\" role=\"form\" ng-show=\"!success\">\n" +
+    "          <div class=\"form-group\">\n" +
+    "            <label for=\"email\">Email</label>\n" +
+    "            <input type=\"email\" name=\"email\" ng-model=\"resend.email\" class=\"form-control\" placeholder=\"Your account's email address\" required>\n" +
     "          </div>\n" +
     "\n" +
-    "          <div class=\"form-group animation-group\">\n" +
-    "            <button type=\"submit\" class=\"btn btn-default btn-icon-right\">Resend Activation Email <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "          <div class=\"form-footer text-center\">\n" +
+    "            <button type=\"submit\" class=\"btn btn-primary btn-icon-right\">Resend Activation Email <i class=\"fa fa-arrow-right\"></i></button>\n" +
     "          </div>\n" +
     "        </form>\n" +
     "\n" +
     "        <!-- Send confirmation -->\n" +
-    "        <div ng-if=\"success\">\n" +
-    "          <h1>Activation Email Send</h1>\n" +
-    "          <p>An activation email has been sent to the address you provided. Please click the link in this email to verify your account.</p>\n" +
+    "        <div ng-show=\"success\">\n" +
+    "          <header>\n" +
+    "            <h2>Resend Activation</h2>\n" +
+    "          </header>\n" +
+    "          <div class=\"content-body\">\n" +
+    "            <p>An activation email has been sent to the address you provided. Please click the link in this email to verify your account.</p>\n" +
+    "          </div>\n" +
     "        </div>\n" +
-    "        \n" +
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -34101,285 +34190,276 @@ angular.module("register/modal-error.tpl.html", []).run(["$templateCache", funct
 
 angular.module("register/register-form.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("register/register-form.tpl.html",
-    "<form validate=\"true\" ng-submit=\"submit()\" role=\"form\" class=\"col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 floating-labels\" animated-form>\n" +
+    "<div class=\"content-box col-sm-offset-2 col-sm-8\">\n" +
+    "  <header>\n" +
+    "    <h2>{{ type() }} Signup</h2>\n" +
+    "  </header>\n" +
     "\n" +
-    "  <div class=\"form-group animation-group\">\n" +
-    "    <h1 class=\"text-center\">{{ type() }} Signup</h1>\n" +
-    "  </div>\n" +
+    "  <form validate=\"true\" ng-submit=\"submit()\" role=\"form\">\n" +
     "\n" +
-    "  <div stepped-form>\n" +
+    "    <div stepped-form>\n" +
+    "      <!-- Account Details -->\n" +
+    "      <fieldset class=\"form-step\">\n" +
     "\n" +
+    "        <div class=\"form-step-title\">\n" +
+    "          <i class=\"number\">1</i>\n" +
+    "          <h3 class=\"title\">My Account</h3>\n" +
+    "          <p class=\"message\">Your account details will be used to login.</p>\n" +
+    "        </div>\n" +
     "\n" +
-    "    <!-- Account Details -->\n" +
-    "    <fieldset class=\"form-step\">\n" +
-    "\n" +
-    "      <div class=\"animation-group form-step-title\">\n" +
-    "        <i class=\"number\">1</i>\n" +
-    "        <h3 class=\"title\">My Account</h3>\n" +
-    "        <p class=\"message\">Your account details will be used to login.</p>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group animation-group\">\n" +
-    "        <div class=\"row-sm\">\n" +
-    "          <div class=\"col-sm-6\">\n" +
-    "            <label>Your Name</label>\n" +
-    "            <input type=\"text\" name=\"user.profile.firstName\" ng-model=\"user.profile.firstName\" class=\"form-control\" placeholder=\"First Name\" float-label required>\n" +
-    "          </div>\n" +
-    "          <div class=\"col-sm-6\">\n" +
-    "            <input type=\"text\" name=\"user.profile.lastName\" ng-model=\"user.profile.lastName\" class=\"form-control\" placeholder=\"Last Name\" float-label required>\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <div class=\"row-sm\">\n" +
+    "            <div class=\"col-sm-6\">\n" +
+    "              <label>First Name</label>\n" +
+    "              <input type=\"text\" name=\"user.profile.firstName\" ng-model=\"user.profile.firstName\" class=\"form-control\" placeholder=\"First Name\" required>\n" +
+    "            </div>\n" +
+    "            <div class=\"col-sm-6\">\n" +
+    "              <label>Last Name</label>\n" +
+    "              <input type=\"text\" name=\"user.profile.lastName\" ng-model=\"user.profile.lastName\" class=\"form-control\" placeholder=\"Last Name\" required>\n" +
+    "            </div>\n" +
     "          </div>\n" +
     "        </div>\n" +
-    "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group animation-group\">\n" +
-    "        <label for=\"\">Email</label>\n" +
-    "        <input type=\"email\" name=\"email\" ng-model=\"user.email\" class=\"form-control\" placeholder=\"Email\" float-label required>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group animation-group\">\n" +
-    "        <label for=\"\">Password</label>\n" +
-    "        <input type=\"password\" name=\"password\" ng-model=\"user.password\" class=\"form-control\" placeholder=\"Password\" float-label required data-parsley-minlength=\"6\">\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group animation-group\">\n" +
-    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
-    "      </div>\n" +
-    "    </fieldset>\n" +
-    "\n" +
-    "\n" +
-    "\n" +
-    "    <!-- My Profile -->\n" +
-    "    <fieldset class=\"form-step\" ng-if=\"user.type == 'student'\">\n" +
-    "\n" +
-    "      <div class=\"form-step-title\">\n" +
-    "        <i class=\"number\">2</i>\n" +
-    "        <h3 class=\"title\">My Profile</h3>\n" +
-    "        <p class=\"message\">Your profile will help us match interships relative to your skills and interests. It will also be made available to employers.</p>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <label>Introduction</label>\n" +
-    "        <textarea name=\"user.profile.introduction\" ng-model=\"user.profile.introduction\" class=\"form-control\" placeholder=\"Introduction\" float-label></textarea>\n" +
-    "        <div class=\"inline-help\">\n" +
-    "          <i class=\"help-icon\" popover=\"Your introduction is a great opportunity to introduce yourself to employers.\" popover-title=\"Introduction\"></i>\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label for=\"\">Email Address</label>\n" +
+    "          <input type=\"email\" name=\"email\" ng-model=\"user.email\" class=\"form-control\" placeholder=\"Email\" required>\n" +
     "        </div>\n" +
-    "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <div class=\"row-sm\">\n" +
-    "          <div class=\"col-sm-6\">\n" +
-    "            <label>Course Name</label>\n" +
-    "            <input type=\"test\" name=\"user.profile.courseName\" ng-model=\"user.profile.courseName\" class=\"form-control\" placeholder=\"Course Name\" float-label>\n" +
-    "          </div>\n" +
-    "\n" +
-    "          <div class=\"col-sm-6\">\n" +
-    "            <label class=\"sr-only\">University</label>\n" +
-    "            <select selecter name=\"user.profile.university\" ng-model=\"user.profile.university\" placeholder=\"University\" float-label>\n" +
-    "              <option value=\"\">Select a University</option>\n" +
-    "              <option>Australian Catholic University</option>\n" +
-    "              <option>Australian National University</option>\n" +
-    "              <option>Bond University</option>\n" +
-    "              <option>Central Queensland University</option>\n" +
-    "              <option>Charles Darwin University</option>\n" +
-    "              <option>Charles Sturt University</option>\n" +
-    "              <option>Curtin University</option>\n" +
-    "              <option>Deakin University</option>\n" +
-    "              <option>Edith Cowan University</option>\n" +
-    "              <option>Federation University</option>\n" +
-    "              <option>Flinders University</option>\n" +
-    "              <option>Griffith University</option>\n" +
-    "              <option>James Cook University</option>\n" +
-    "              <option>La Trobe University</option>\n" +
-    "              <option>Macquarie University</option>\n" +
-    "              <option>Monash University</option>\n" +
-    "              <option>Murdoch University</option>\n" +
-    "              <option>Queensland University of Technology</option>\n" +
-    "              <option>RMIT University</option>\n" +
-    "              <option>Southern Cross University</option>\n" +
-    "              <option>Swinburne University of Technology</option>\n" +
-    "              <option>University of Adelaide</option>\n" +
-    "              <option>University of Canberra</option>\n" +
-    "              <option>University of Melbourne</option>\n" +
-    "              <option>University of New England</option>\n" +
-    "              <option>University of New South Wales</option>\n" +
-    "              <option>University of Newcastle</option>\n" +
-    "              <option>University of Notre Dame</option>\n" +
-    "              <option>University of Queensland</option>\n" +
-    "              <option>University of South Australia</option>\n" +
-    "              <option>University of Southern Queensland</option>\n" +
-    "              <option>University of Sydney</option>\n" +
-    "              <option>University of Tasmania</option>\n" +
-    "              <option>University of Technology Sydney</option>\n" +
-    "              <option>University of the Sunshine Coast</option>\n" +
-    "              <option>University of Western Australia</option>\n" +
-    "              <option>University of Western Sydney</option>\n" +
-    "              <option>University of Wollongong</option>\n" +
-    "              <option>Victoria University</option>\n" +
-    "            </select>\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label for=\"\">Password</label>\n" +
+    "          <div class=\"has-help\">\n" +
+    "            <input type=\"password\" name=\"password\" ng-model=\"user.password\" class=\"form-control\" placeholder=\"Password\" required data-parsley-minlength=\"6\">\n" +
+    "            <div class=\"inline-help\">\n" +
+    "              <i class=\"help-icon\" popover=\"Make sure your password is at least 6 characters long!\" popover-title=\"Account Password\"></i>\n" +
+    "            </div>\n" +
     "          </div>\n" +
     "        </div>\n" +
-    "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <label>LinkedIn Profile</label>\n" +
-    "        <input type=\"test\" name=\"user.profile.linkedIn\" ng-model=\"user.profile.linkedIn\" class=\"form-control\" placeholder=\"LinkedIn Profile URL\" float-label>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <label>Skills</label>\n" +
-    "        <input type=\"test\" name=\"user.profile.skills\" ng-model=\"user.profile.skills\" class=\"form-control\" placeholder=\"Comma seperated list of skills\" float-label>\n" +
-    "        <div class=\"inline-help\">\n" +
-    "          <i class=\"help-icon\" popover=\"Enter a comma seperated list of your key skills. (For example; Graphic Design, Adobe Photoshop, etc.)\" popover-title=\"Key Skills\"></i>\n" +
+    "        <div class=\"form-footer\">\n" +
+    "          <a href=\"#\" class=\"next btn btn-primary pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
     "        </div>\n" +
-    "      </div>\n" +
-    "      \n" +
-    "      <div class=\"form-group \">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-link btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
-    "        <button type=\"submit\" class=\"btn btn-default pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
-    "      </div>\n" +
-    "    </fieldset>\n" +
+    "      </fieldset>\n" +
     "\n" +
+    "      <!-- My Profile -->\n" +
+    "      <fieldset class=\"form-step\" ng-if=\"user.type == 'student'\">\n" +
     "\n" +
-    "    \n" +
-    "    <!-- Company Profile -->\n" +
-    "    <fieldset class=\"form-step\" ng-if=\"user.type == 'employer'\">\n" +
-    "\n" +
-    "      <div class=\"form-step-title\">\n" +
-    "        <i class=\"number\">2</i>\n" +
-    "        <h3 class=\"title\">Company Profile</h3>\n" +
-    "        <p class=\"message\">Your company profile will be displayed to students interested in applying for internships with you.</p>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <label>Company Name</label>\n" +
-    "        <input type=\"test\" name=\"user.company.name\" ng-model=\"user.company.name\" class=\"form-control\" placeholder=\"Company Name\" float-label required>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <label>Company Introduction</label>\n" +
-    "        <textarea name=\"user.company.introduction\" ng-model=\"user.company.introduction\" class=\"form-control\" placeholder=\"Company Introduction\" float-label></textarea>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <label>Website</label>\n" +
-    "        <input type=\"test\" name=\"user.company.website\" ng-model=\"user.company.website\" class=\"form-control\" placeholder=\"Website URL\" float-label>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <label>Skills</label>\n" +
-    "        <input type=\"test\" name=\"user.company.skills\" ng-model=\"user.company.skills\" class=\"form-control\" placeholder=\"Comma seperated list of skills\" float-label>\n" +
-    "        <div class=\"inline-help\">\n" +
-    "          <i class=\"help-icon\" popover=\"Enter a comma seperated list of the skills your company looks for in interns. (For example; Graphic Design, Project Management, etc.)\" popover-title=\"Key Skills\"></i>\n" +
+    "        <div class=\"form-step-title\">\n" +
+    "          <i class=\"number\">2</i>\n" +
+    "          <h3 class=\"title\">My Profile</h3>\n" +
+    "          <p class=\"message\">Your profile will help us match interships relative to your skills and interests. It will also be made available to employers.</p>\n" +
     "        </div>\n" +
-    "      </div>\n" +
-    "      \n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-link btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
-    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
-    "      </div>\n" +
-    "    </fieldset>\n" +
     "\n" +
-    "\n" +
-    "\n" +
-    "    <!-- Company Logo -->\n" +
-    "    <fieldset class=\"form-step\" ng-if=\"user.type == 'employer'\">\n" +
-    "\n" +
-    "      <div class=\"form-step-title\">\n" +
-    "        <i class=\"number\">3</i>\n" +
-    "        <h3 class=\"title\">Company Logo</h3>\n" +
-    "        <p class=\"message\">Upload your company's logo to be displayed in you profile.</p>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group\">\n" +
-    "        <label>Company Logo</label>\n" +
-    "        <input type=\"file\" name=\"logo\" ng-file-select class=\"form-control\">\n" +
-    "      </div>\n" +
-    "      \n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-link btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
-    "        <a href=\"#\" class=\"next btn btn-default pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
-    "      </div>\n" +
-    "    </fieldset>\n" +
-    "\n" +
-    "\n" +
-    "\n" +
-    "    <!-- Company Address -->\n" +
-    "    <fieldset class=\"form-step\" ng-if=\"user.type == 'employer'\">\n" +
-    "\n" +
-    "      <div class=\"form-step-title\">\n" +
-    "        <i class=\"number\">4</i>\n" +
-    "        <h3 class=\"title\">Company Address</h3>\n" +
-    "        <p class=\"message\">Please provide your company's address to help your interns locate you.</p>\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group vertical-input-stack\">\n" +
-    "        <label>Street Address</label>\n" +
-    "        <input type=\"test\" name=\"user.company.address.line1\" ng-model=\"user.company.address.line1\" class=\"form-control\" placeholder=\"Street Address\" float-label required>\n" +
-    "        <input type=\"test\" name=\"user.company.address.line2\" ng-model=\"user.company.address.line2\" class=\"form-control\">\n" +
-    "      </div>\n" +
-    "\n" +
-    "      <div class=\"form-group \">\n" +
-    "        <div class=\"row-sm\">\n" +
-    "          <div class=\"col-sm-5\">\n" +
-    "            <label>City / State / Postcode</label>\n" +
-    "            <input type=\"test\" name=\"user.company.address.city\" ng-model=\"user.company.address.city\" class=\"form-control\" placeholder=\"City\" float-label required>\n" +
-    "          </div>\n" +
-    "\n" +
-    "          <div class=\"col-sm-5\">\n" +
-    "            <label class=\"sr-only\">State</label>\n" +
-    "            <select selecter name=\"user.company.address.state\" ng-model=\"user.company.address.state\" placeholder=\"State\" required>\n" +
-    "              <option value=\"\">Select a State</option>\n" +
-    "              <option>Australian Capital Territory</option>\n" +
-    "              <option>New South Wales</option>\n" +
-    "              <option>Northern Territory</option>\n" +
-    "              <option>Queensland</option>\n" +
-    "              <option>South Australia</option>\n" +
-    "              <option>Tasmania</option>\n" +
-    "              <option>Victoria</option>\n" +
-    "              <option>Western Australia</option>\n" +
-    "            </select>\n" +
-    "          </div>\n" +
-    "\n" +
-    "          <div class=\"col-sm-2\">\n" +
-    "            <label class=\"sr-only\">Postcode</label>\n" +
-    "            <input type=\"test\" name=\"user.company.address.postcode\" ng-model=\"user.company.address.postcode\" class=\"form-control\" placeholder=\"1234\" required data-parsley-type=\"integer\">\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label>Introduction</label>\n" +
+    "          <div class=\"has-help\">\n" +
+    "            <textarea name=\"user.profile.introduction\" ng-model=\"user.profile.introduction\" class=\"form-control\" placeholder=\"Introduction\"></textarea>\n" +
+    "            <div class=\"inline-help\">\n" +
+    "              <i class=\"help-icon\" popover=\"Your introduction is a great opportunity to introduce yourself to employers.\" popover-title=\"Introduction\"></i>\n" +
+    "            </div>\n" +
     "          </div>\n" +
     "        </div>\n" +
-    "      </div>\n" +
     "\n" +
-    "      <div class=\"form-group \">\n" +
-    "        <label>Country</label>\n" +
-    "        <select selecter name=\"user.company.address.country\" ng-model=\"user.company.address.country\" placeholder=\"Country\" float-label required>\n" +
-    "          <option value=\"\">Select a Country</option>\n" +
-    "          <option selected=\"selected\">Australia</option>\n" +
-    "        </select>\n" +
-    "      </div>\n" +
-    "      \n" +
-    "      <div class=\"form-group\">\n" +
-    "        <a href=\"#\" class=\"previous btn btn-link btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
-    "        <button type=\"submit\" ng-disabled=\"loading\" class=\"btn btn-default pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
-    "      </div>\n" +
-    "    </fieldset>\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <div class=\"row-sm\">\n" +
+    "            <div class=\"col-sm-6\">\n" +
+    "              <label>Course Name</label>\n" +
+    "              <input type=\"test\" name=\"user.profile.courseName\" ng-model=\"user.profile.courseName\" class=\"form-control\" placeholder=\"Course Name\">\n" +
+    "            </div>\n" +
     "\n" +
+    "            <div class=\"col-sm-6\">\n" +
+    "              <label>University</label>\n" +
+    "              <select selecter name=\"user.profile.university\" ng-model=\"user.profile.university\">\n" +
+    "                <option value=\"\">Select a University</option>\n" +
+    "                <option ng-repeat=\"o in universityOptions\" value=\"{{ o }}\">{{ o }}</option>\n" +
+    "              </select>\n" +
+    "            </div>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
     "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label>LinkedIn Profile</label>\n" +
+    "          <input type=\"test\" name=\"user.profile.linkedIn\" ng-model=\"user.profile.linkedIn\" class=\"form-control\" placeholder=\"LinkedIn Profile URL\">\n" +
+    "        </div>\n" +
     "\n" +
-    "  </div>\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label>Skills</label>\n" +
+    "          <div class=\"has-help\">\n" +
+    "            <input type=\"test\" name=\"user.profile.skills\" ng-model=\"user.profile.skills\" class=\"form-control\" placeholder=\"Comma seperated list of skills\">\n" +
+    "            <div class=\"inline-help\">\n" +
+    "              <i class=\"help-icon\" popover=\"Enter a comma seperated list of your key skills. (For example; Graphic Design, Adobe Photoshop, etc.)\" popover-title=\"Key Skills\"></i>\n" +
+    "            </div>\n" +
+    "          </div>\n" +
+    "          \n" +
+    "        </div>\n" +
+    "        \n" +
+    "        <div class=\"form-footer\">\n" +
+    "          <a href=\"#\" class=\"previous btn btn-default btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
+    "          <button type=\"submit\" class=\"btn btn-primary pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "        </div>\n" +
+    "      </fieldset>\n" +
     "\n" +
-    "</form>");
+    "      <!-- Company Profile -->\n" +
+    "      <fieldset class=\"form-step\" ng-if=\"user.type == 'employer'\">\n" +
+    "\n" +
+    "        <div class=\"form-step-title\">\n" +
+    "          <i class=\"number\">2</i>\n" +
+    "          <h3 class=\"title\">Company Profile</h3>\n" +
+    "          <p class=\"message\">Your company profile will be displayed to students interested in applying for internships with you.</p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label>Company Name</label>\n" +
+    "          <input type=\"test\" name=\"user.company.name\" ng-model=\"user.company.name\" class=\"form-control\" placeholder=\"Company Name\" required>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label>Company Introduction</label>\n" +
+    "          <textarea name=\"user.company.introduction\" ng-model=\"user.company.introduction\" class=\"form-control\" placeholder=\"Company Introduction\"></textarea>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label>Website</label>\n" +
+    "          <input type=\"test\" name=\"user.company.website\" ng-model=\"user.company.website\" class=\"form-control\" placeholder=\"Website URL\">\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label>Skills</label>\n" +
+    "          <div class=\"has-help\">\n" +
+    "            <input type=\"test\" name=\"user.company.skills\" ng-model=\"user.company.skills\" class=\"form-control\" placeholder=\"Comma seperated list of skills\">\n" +
+    "            <div class=\"inline-help\">\n" +
+    "              <i class=\"help-icon\" popover=\"Enter a comma seperated list of the skills your company looks for in interns. (For example; Graphic Design, Project Management, etc.)\" popover-title=\"Key Skills\"></i>\n" +
+    "            </div>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "        \n" +
+    "        <div class=\"form-footer\">\n" +
+    "          <a href=\"#\" class=\"previous btn btn-default btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
+    "          <a href=\"#\" class=\"next btn btn-primary pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "        </div>\n" +
+    "      </fieldset>\n" +
+    "\n" +
+    "      <!-- Company Logo -->\n" +
+    "      <fieldset class=\"form-step\" ng-if=\"user.type == 'employer'\">\n" +
+    "\n" +
+    "        <div class=\"form-step-title\">\n" +
+    "          <i class=\"number\">3</i>\n" +
+    "          <h3 class=\"title\">Company Logo</h3>\n" +
+    "          <p class=\"message\">Upload your company's logo to be displayed in you profile.</p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label>Company Logo</label>\n" +
+    "          <input type=\"file\" name=\"logo\" ng-file-select class=\"form-control\">\n" +
+    "        </div>\n" +
+    "        \n" +
+    "        <div class=\"form-group\">\n" +
+    "          <a href=\"#\" class=\"previous btn btn-default btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
+    "          <a href=\"#\" class=\"next btn btn-primary pull-right btn-icon-right\">Next <i class=\"fa fa-arrow-right\"></i></a>\n" +
+    "        </div>\n" +
+    "      </fieldset>\n" +
+    "\n" +
+    "      <!-- Company Address -->\n" +
+    "      <fieldset class=\"form-step\" ng-if=\"user.type == 'employer'\">\n" +
+    "\n" +
+    "        <div class=\"form-step-title\">\n" +
+    "          <i class=\"number\">4</i>\n" +
+    "          <h3 class=\"title\">Company Address</h3>\n" +
+    "          <p class=\"message\">Please provide your company's address to help your interns locate you.</p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group vertical-input-stack\">\n" +
+    "          <label>Street Address</label>\n" +
+    "          <input type=\"test\" name=\"user.company.address.line1\" ng-model=\"user.company.address.line1\" class=\"form-control\" placeholder=\"Street Address\" required>\n" +
+    "          <input type=\"test\" name=\"user.company.address.line2\" ng-model=\"user.company.address.line2\" class=\"form-control\">\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <div class=\"row-sm\">\n" +
+    "            <div class=\"col-sm-5\">\n" +
+    "              <label>City / State / Postcode</label>\n" +
+    "              <input type=\"test\" name=\"user.company.address.city\" ng-model=\"user.company.address.city\" class=\"form-control\" placeholder=\"City\" required>\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div class=\"col-sm-5\">\n" +
+    "              <label class=\"sr-only\">State</label>\n" +
+    "              <select selecter name=\"user.company.address.state\" ng-model=\"user.company.address.state\" placeholder=\"State\" required>\n" +
+    "                <option value=\"\">Select a State</option>\n" +
+    "                <option>Australian Capital Territory</option>\n" +
+    "                <option>New South Wales</option>\n" +
+    "                <option>Northern Territory</option>\n" +
+    "                <option>Queensland</option>\n" +
+    "                <option>South Australia</option>\n" +
+    "                <option>Tasmania</option>\n" +
+    "                <option>Victoria</option>\n" +
+    "                <option>Western Australia</option>\n" +
+    "              </select>\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div class=\"col-sm-2\">\n" +
+    "              <label class=\"sr-only\">Postcode</label>\n" +
+    "              <input type=\"test\" name=\"user.company.address.postcode\" ng-model=\"user.company.address.postcode\" class=\"form-control\" placeholder=\"1234\" required data-parsley-type=\"integer\">\n" +
+    "            </div>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <label>Country</label>\n" +
+    "          <select selecter name=\"user.company.address.country\" ng-model=\"user.company.address.country\" placeholder=\"Country\" required>\n" +
+    "            <option value=\"\">Select a Country</option>\n" +
+    "            <option selected=\"selected\">Australia</option>\n" +
+    "          </select>\n" +
+    "        </div>\n" +
+    "        \n" +
+    "        <div class=\"form-footer\">\n" +
+    "          <a href=\"#\" class=\"previous btn btn-default btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
+    "          <button type=\"submit\" ng-disabled=\"loading\" class=\"btn btn-primary pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "        </div>\n" +
+    "      </fieldset>\n" +
+    "\n" +
+    "      <!-- Supervisor profile -->\n" +
+    "      <fieldset class=\"form-step\" ng-if=\"user.type == 'supervisor'\">\n" +
+    "\n" +
+    "        <div class=\"form-step-title\">\n" +
+    "          <i class=\"number\">2</i>\n" +
+    "          <h3 class=\"title\">Educational Institution</h3>\n" +
+    "          <p class=\"message\">If you are an employee of an educational institution, please provide the following information.</p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <div class=\"row-sm\">\n" +
+    "            <div class=\"col-sm-6\">\n" +
+    "              <label>Job Title</label>\n" +
+    "              <input type=\"test\" name=\"user.profile.role\" ng-model=\"user.profile.role\" class=\"form-control\" placeholder=\"Job Title / Role\">\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div class=\"col-sm-6\">\n" +
+    "              <label>University</label>\n" +
+    "              <select selecter name=\"user.profile.university\" ng-model=\"user.profile.university\">\n" +
+    "                <option value=\"\">Select a University</option>\n" +
+    "                <option ng-repeat=\"o in universityOptions\" value=\"{{ o }}\">{{ o }}</option>\n" +
+    "              </select>\n" +
+    "            </div>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "        \n" +
+    "        <div class=\"form-footer\">\n" +
+    "          <a href=\"#\" class=\"previous btn btn-default btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
+    "          <button type=\"submit\" ng-disabled=\"loading\" class=\"btn btn-primary pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "        </div>\n" +
+    "      </fieldset>\n" +
+    "    </div>\n" +
+    "  </form>\n" +
+    "</div>");
 }]);
 
 angular.module("register/register.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("register/register.tpl.html",
-    "<section class=\"section-green section-register\" fill-screen>\n" +
-    "  \n" +
+    "<section class=\"section-register\">\n" +
     "  <div class=\"container\">\n" +
     "    <div class=\"row\">\n" +
-    "\n" +
     "      <div register-form user=\"user\" submit=\"submit\"></div>\n" +
-    "\n" +
     "    </div>\n" +
     "  </div>\n" +
-    "\n" +
     "</section>");
 }]);
 
@@ -34578,8 +34658,6 @@ angular.module('InternLabs', [
       }
     });
 
-
-
     /**
      * Intercept responses and check for messages or errors
      */
@@ -34601,36 +34679,6 @@ angular.module('InternLabs', [
 
   })
 
-  // .animation('.reveal-animation', function() {
-  //   var $body = $('body');
-
-  //   return {
-  //     enter: function(element, done) {
-  //       TweenLite.set(element, {
-  //         autoAlpha: 0
-  //       });
-  //       TweenLite.to(element, 0.2, {
-  //         delay: 0.1,
-  //         autoAlpha: 1,
-  //         onComplete: function() {
-  //           $body.css({ minHeight: 0 });
-  //           done();
-  //         }
-  //       });
-  //     },
-  //     leave: function(element, done) {
-  //       $body.css({ minHeight: $body.height() });
-  //       TweenLite.to(element, 0.1, {
-  //         autoAlpha: 0,
-  //         onComplete: function() {
-  //           $(window).scrollTop(0);
-  //           done();
-  //         }
-  //       });
-  //     }
-  //   }
-  // })
-
   .controller('AppCtrl', function($rootScope, $scope, $location, Auth) {
 
     $scope.appTitle = 'InternLabs';
@@ -34648,8 +34696,6 @@ angular.module('InternLabs', [
 
     $scope.$on('$routeChangeSuccess', function(event, current, previous) {
       $rootScope.loading = false;
-
-      // $('body').removeClass();
       $(window).scrollTop(0);
 
       if ( ! angular.isDefined( current ) ) {
@@ -34658,17 +34704,9 @@ angular.module('InternLabs', [
 
       if ( angular.isDefined( current.$$route.pageTitle ) ) {
         $scope.pageTitle = current.$$route.pageTitle;
-        // $('body').addClass(_.slugify($scope.pageTitle));
       } else {
         $scope.pageTitle = $scope.appTitle;
       }
-
-      if (current.$$route.className) {
-        // $('body').addClass(current.$$route.className);
-      }
-
-      // Remove alt style from nav
-      $rootScope.altNav = false;
     });
     
     $scope.isLoading = function() {
@@ -35160,37 +35198,6 @@ angular.module('InternLabs.common.directives', [])
 
 
   /**
-   * Animated form group
-   */
-  .directive('animatedForm', function () {
-    return {
-      restrict: 'A',
-      link: function(scope, elem, attrs) {
-
-        var $items = $(elem).find('.animation-group');
-
-        new TimelineLite({ onComplete: function() {
-          elem.find('input.form-control').first().focus();
-        }})
-          .pause()
-          .set($items, {
-            autoAlpha: 0,
-            position: 'relative',
-            bottom: -20
-          })
-          .staggerTo($items, 0.2, {
-            autoAlpha: 1,
-            bottom: 0,
-            force3D: true,
-            ease: Quad.easeOut
-          }, 0.1, '+0.1')
-          .resume();
-      }
-    };
-  })
-
-
-  /**
    * Stepped form
    *  - Step through a seriese of fieldsets
    *  - Give each a class of .form-step
@@ -35272,6 +35279,10 @@ angular.module('InternLabs.common.directives', [])
             deferred.resolve();
           }}).pause()
 
+            .set(elem, {
+              overflow: 'hidden'
+            })
+
             // Animation initial state for elems
             .set(currentElem, {
               position: 'absolute',
@@ -35291,6 +35302,10 @@ angular.module('InternLabs.common.directives', [])
               left: 0
             }, '-=0.35')
             
+            .set(elem, {
+              overflow: 'visible'
+            })
+
             // Play!
             .resume();
 
@@ -35310,7 +35325,7 @@ angular.module('InternLabs.common.directives', [])
           // Run validation on each field and return if that field is valid
           var validationResults = _.map($inputs, function($input) {
             var validator = new Parsley($input);
-            if ( _.has(validator, 'validate') ) {
+            if ( _.has(validator.__proto__, 'validate') || _.has(validator, 'validate') ) {
               validator.validate();
               return validator.isValid();
             }
@@ -35369,31 +35384,38 @@ angular.module('InternLabs.common.directives', [])
 
   
   /**
-   * Validated Form
+   * Validation actions
    *  - Adds validation to a form
    */
-  .directive('form', function() {
+  .directive('ngValidated', function() {
     return {
-      restrict: 'E',
-      priority: -100,
+      restrict: 'A',
+      priority: 2,
       link: function(scope, elem, attrs) {
+        var submitAction = attrs.ngValidated;
 
-        // Stepped forms have their own validation
-        if ( elem.find('[stepped-form]').length ) {
-          return;
-        }
+        console.log();
 
         if ( attrs.validate ) {
           var validator = new Parsley(elem);
+        }
 
-          elem.on('submit', function(e) {
-            validator.validate();
+        elem.on('submit', function(e) {
+          if ( ! attrs.validate || elem.find('[stepped-form]').length ) {
+            return scope.$eval(submitAction);
+          }
+  
+          if (submitAction) {
+            e.preventDefault();
+          }
 
-            if ( ! validator.isValid() ) {
-              e.preventDefault();
-            }
-          });
-        }        
+          var validator = new Parsley(elem);
+          validator.validate();
+
+          if ( validator.isValid() ) {
+            scope.$eval(submitAction);
+          }
+        });
       }
     };
   })
@@ -35536,6 +35558,19 @@ angular.module('InternLabs.services', [])
 
     this.dayOptions = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
+    this.universityOptions = [
+      'Australian Catholic University', 'Australian National University', 'Bond University', 'Central Queensland University', 
+      'Charles Darwin University', 'Charles Sturt University', 'Curtin University', 'Deakin University', 'Edith Cowan University', 
+      'Federation University', 'Flinders University', 'Griffith University', 'James Cook University', 'La Trobe University', 'Macquarie University', 
+      'Monash University', 'Murdoch University', 'Queensland University of Technology', 'RMIT University', 'Southern Cross University', 
+      'Swinburne University of Technology', 'University of Adelaide', 'University of Canberra', 'University of Melbourne', 
+      'University of New England', 'University of New South Wales', 'University of Newcastle', 'University of Notre Dame', 'University of Queensland', 
+      'University of South Australia', 'University of Southern Queensland', 'University of Sydney', 'University of Tasmania', 
+      'University of Technology Sydney', 'University of the Sunshine Coast', 'University of Western Australia', 'University of Western Sydney', 
+      'University of Wollongong', 'Victoria University', 
+      'Other'
+    ];
+
   })
 
 
@@ -35578,7 +35613,7 @@ angular.module('InternLabs.services', [])
   ;
 angular.module('InternLabs.services')
 
-  .service('Auth', function($rootScope, $http, $q, $location, Options) {
+  .service('Auth', function($rootScope, $http, $q, $location, Options, Restangular) {
 
     var _user = angular.fromJson(window.internlabs.user);
 
@@ -35595,96 +35630,22 @@ angular.module('InternLabs.services')
     };
 
     /**
-     * login
+     * Register
      */
-    this.login = function(credentials) {
+    this.register = function(user) {
       var deferred = $q.defer();
-      var httpPromise = $http.post(Options.apiUrl('login'), credentials);
+      var httpPromise = $http.post(Options.apiUrl('register'), user);
       
       httpPromise.success(function(data, status) {
-        if ( ! data.success ) {
+        if (!data.success) {
           return deferred.reject(data.error);
-        }
+        };
 
-        // Do a full page reload
-        // Allows us to attached the user to the page
-        window.location.href = "/";
+        deferred.resolve(data.data.user);
       });
 
       return deferred.promise;
     };
-
-
-      /**
-       * Register
-       */
-      this.register = function(user) {
-        var deferred = $q.defer();
-        var httpPromise = $http.post(Options.apiUrl('register'), user);
-        
-        httpPromise.success(function(data, status) {
-          if (!data.success) {
-            return deferred.reject(data.error);
-          };
-
-          deferred.resolve(data.data.user);
-        });
-
-        return deferred.promise;
-      };
-
-
-      /**
-       * Activate
-       */
-      this.activate = function(data) {
-        var deferred = $q.defer();
-
-        $http.put(Options.apiUrl('activate'), data)
-          .success(function(data, status) {
-            deferred.resolve(data);
-          });
-
-        return deferred.promise;
-      };
-
-
-      /**
-       * Activate
-       */
-      this.resendActivation = function(data) {
-        return $http.post(Options.apiUrl('resend-activation'), data);
-      };
-
-
-      /**
-       * Send password reset
-       */
-      this.sendPasswordReset = function(data) {
-        var deferred = $q.defer();
-
-        $http.post(Options.apiUrl('password-reset'), data)
-          .success(function(data, status) {
-            deferred.resolve(data);
-          });
-
-        return deferred.promise;
-      };
-
-
-      /**
-       * Reset password
-       */
-      this.passwordReset = function(data) {
-        var deferred = $q.defer();
-
-        $http.put(Options.apiUrl('password-reset'), data)
-          .success(function(data, status) {
-            deferred.resolve(data);
-          });
-
-        return deferred.promise;
-      };
 
   })
 
@@ -35956,9 +35917,7 @@ angular.module('InternLabs.dashboard', [])
           status: status
         });
       } else if (internlabs.isSupervisor) {
-        return Restangular.one('suporvisors', internlabs.user._id).getList('internships', {
-          status: status
-        });
+        return Restangular.one('supervisors', internlabs.user._id).getList('internships');
       }
     };
 
@@ -35966,9 +35925,15 @@ angular.module('InternLabs.dashboard', [])
     $routeProvider
 
       .when('/dashboard', {
-        templateUrl: 'dashboard/layout.tpl.html',
+        template: '',
         controller: 'DashboardCtrl',
-        pageTitle: 'Dashboard',
+        auth: true
+      })
+
+      .when('/dashboard/recommendations', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'RecommendationsCtrl',
+        pageTitle: 'Internship Recommendations',
         auth: true,
         state: {
           main: 'dashboard/dashboard.tpl.html'
@@ -35978,7 +35943,7 @@ angular.module('InternLabs.dashboard', [])
       .when('/dashboard/internships', {
         templateUrl: 'dashboard/layout.tpl.html',
         controller: 'InternshipsCtrl',
-        pageTitle: 'Active Internships',
+        pageTitle: 'Internships',
         auth: true,
         state: {
           main: 'dashboard/internships.tpl.html'
@@ -36065,14 +36030,43 @@ angular.module('InternLabs.dashboard', [])
         }
       })
 
+      .when('/dashboard/profile', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'ProfileCtrl',
+        pageTitle: 'Edit Profile',
+        auth: true,
+        state: {
+          main: 'dashboard/profile.tpl.html'
+        },
+        resolve: {
+          profile: function(Restangular) {
+            return Restangular.one('me').customGET('profile');
+          }
+        }
+      })
+
       ;
 
   })
 
 
-  .controller('DashboardCtrl', function($route, $scope, $http, Options, Restangular) {
+  .controller('DashboardCtrl', function($location) {
+    if (internlabs.isStudent) {
+      return $location.path('/dashboard/recommendations');
+    }
+
+    if (internlabs.isEmployer) {
+      return $location.path('/dashboard/applications');
+    }
+
+    if (internlabs.isSupervisor) {
+      return $location.path('/dashboard/internships');
+    }
+  })
+
+  .controller('RecommendationsCtrl', function($route, $scope, $http, Options, Restangular) {
     $scope.state = $route.current.$$route.state;
-    $scope.active = 'dashboard';
+    $scope.active = 'recommendations';
     $scope.searching = true;
 
     if (internlabs.isStudent) {
@@ -36101,7 +36095,7 @@ angular.module('InternLabs.dashboard', [])
   .controller('InternshipsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'internships';
-    $scope.title = "Active Internships";
+    $scope.title = "Internships";
     $scope.internships = internships;
   })
 
@@ -36261,6 +36255,40 @@ angular.module('InternLabs.dashboard', [])
   })
 
 
+  .controller('ProfileCtrl', function($route, $scope, profile) {
+    $scope.state = $route.current.$$route.state;
+    $scope.active = 'profile';
+    $scope.profile = profile;
+  })
+
+
+  .directive('editProfileWidget', function(Options, Restangular) {
+    return {
+      templateUrl: 'dashboard/widgets/edit-profile.tpl.html',
+      replace: true,
+      scope: {
+        profile: '='
+      },
+      link: function(scope, elem, attrs) {
+        scope.universityOptions = Options.universityOptions;
+        scope.isStudent = internlabs.isStudent;
+        scope.isSupervisor = internlabs.isSupervisor;
+
+        scope.save = function() {
+          Restangular.all('profiles').customPUT(_.extend({}, scope.profile, {
+            skills: scope.profile._skills
+          }), scope.profile._id).then(function(repsonse) {
+            scope.profile = repsonse;
+          });
+        };
+
+        scope.$watch('profile.skills', function() {
+          scope.profile._skills = scope.profile.skills.join(',');
+        });
+      }
+    };
+  })
+
   ;
 angular.module('InternLabs.internships', [])
 
@@ -36348,7 +36376,9 @@ angular.module('InternLabs.internships', [])
         scope.company = scope.internship.company;
         scope.student = scope.internship.student;
         scope.profile = scope.internship.student.profile;
-        scope.isCompany = Auth.hasAccess('employer');
+        scope.isCompany = internlabs.isEmployer;
+        scope.isStudent = internlabs.isStudent;
+        scope.isSupervisor = internlabs.isSupervisor;
       }
     }
   })
@@ -36815,87 +36845,78 @@ angular.module('InternLabs.login', [])
   })
 
 
-  .controller('LoginCtrl', function($rootScope, $scope, $location, Auth) {
+  .controller('LoginCtrl', function($rootScope, $scope, $location, Restangular) {
     $scope.credentials = {};
-    $rootScope.altNav = true;
 
     $scope.submit = function() {
-      Auth.login($scope.credentials).then(function(data) {
-        $location.url('/');
-      }, function(error) {
-        $scope.errors = error;
+      Restangular.one('login').customPOST($scope.credentials).then(function(response) {
+        if (response.$$success) {
+          window.location.href = '/';
+        }
       });
     };
   })
 
 
-  .controller('ActivateCtrl', function($rootScope, $scope, $location, Auth) {
+  .controller('ActivateCtrl', function($rootScope, $scope, $location, Restangular) {
     $scope.activated = false;
     var params = $location.search();
-    $rootScope.altNav = true;
 
-    Auth.activate({
+    Restangular.one('activate').customPUT({
       activationToken: params.token,
       userId: params.user
     }).then(function(response) {
-      $scope.activated = true;
+      if (response.$$success) {
+        $scope.activated = true;
+      }
     });
   })
 
 
-  .controller('PasswordResetCtrl', function($rootScope, $scope, $location, Auth) {
+  .controller('PasswordResetCtrl', function($rootScope, $scope, $location, Restangular) {
     
     var params = $location.search();
     $scope.action = (_.isEmpty(params)) ? 'send' : 'reset';
-    $rootScope.altNav = true;
     
     $scope.reset = {};
     $scope.sendSuccess = false;
     $scope.resetSuccess = false;
 
-    /**
-     * Send password reset email
-     */
     $scope.send = function() {
-      Auth.sendPasswordReset({
+      Restangular.one('password-reset').customPOST({
         email: $scope.reset.email
       }).then(function(response) {
-        $scope.sendSuccess = true;
+        if (response.$$success) {
+          $scope.sendSuccess = true;
+        }
       });
     };
 
-    /**
-     * Reset the user's password using the provided token and credentials
-     */
     $scope.reset = function() {
-      Auth.passwordReset({
+      Restangular.one('password-reset').customPUT({
         userId: params.user,
         password: $scope.reset.password,
         resetToken: params.token
       }).then(function(response) {
-        $scope.resetSuccess = true;
+        if (response.$$success) {
+          $scope.resetSuccess = true;
+        }
       });
     };
   })
 
 
-  .controller('ResendActivationCtrl', function($rootScope, $scope, Auth) {
+  .controller('ResendActivationCtrl', function($rootScope, $scope, Restangular) {
     $scope.resend = {};
     $scope.success = false;
-    $rootScope.altNav = true;
 
-    /**
-     * Send password reset email
-     */
     $scope.send = function() {
-      Auth.resendActivation({
+      Restangular.one('resend-activation').customPOST({
         email: $scope.resend.email
       }).then(function(response) {
-        if ( ! response.data.success ) {
-          return $scope.errors = response.data.error;
+        if (response.$$success) {
+          $scope.success = true;
         }
-        
-        $scope.success = true;
       });
     };
   })
@@ -36927,8 +36948,7 @@ angular.module('InternLabs.register', [])
       .when('/signup/:type', {
         templateUrl: 'register/register.tpl.html',
         controller: 'RegisterCtrl',
-        pageTitle: 'Signup',
-        className: 'background-primary'
+        pageTitle: 'Signup'
       })
 
       ;
@@ -36936,26 +36956,28 @@ angular.module('InternLabs.register', [])
   })
 
 
-  .controller('RegisterCtrl', function($scope, $rootScope, $routeParams, $location, $fileUploader, Auth, Options, ModalFactory) {
+  .controller('RegisterCtrl', function($scope, $rootScope, $routeParams, $location, $fileUploader, Restangular, Options, ModalFactory) {
 
     if ( _.indexOf(['employer', 'student', 'supervisor'], $routeParams.type) === -1 ) {
       $location.path('/signup/student');
     }
 
-    $rootScope.altNav = true;
-
-    $scope.user = {
+    $scope.user = _.extend({}, $location.search(), {
       type: $routeParams.type
-    };
+    });
 
     var uploader = $scope.uploader = $fileUploader.create({
       scope: $scope
     });
 
     $scope.submit = function() {
-      $rootScope.loading = true;
+      $scope.loading = true;
 
-      Auth.register($scope.user).then(function(user) {
+      Restangular.one('register').customPOST($scope.user).then(function(user) {
+        if (!user.$$success) {
+          $scope.loading = false;
+          return;
+        }
 
         if ( ! user.company ) {
           return $location.url('/login');
@@ -36970,20 +36992,10 @@ angular.module('InternLabs.register', [])
 
         uploader.uploadAll();
 
-        $rootScope.loading = false;
+        $scope.loading = false;
 
         $location.url('/login');
 
-      }, function(errors) {
-        $rootScope.loading = false;
-        ModalFactory.create({
-          scope: {
-            title: "An error occured",
-            errors: errors
-          },
-          templateUrl: "register/modal-error.tpl.html",
-          className: "modal-register-error"
-        });
       });
     };
 
@@ -36993,7 +37005,7 @@ angular.module('InternLabs.register', [])
   /**
    * Register form
    */
-  .directive('registerForm', function () {
+  .directive('registerForm', function(Options) {
     return {
       restrict: 'A',
       templateUrl: 'register/register-form.tpl.html',
@@ -37002,11 +37014,11 @@ angular.module('InternLabs.register', [])
         submit: '=?'
       },
       link: function(scope, elem, attrs) {
+        scope.universityOptions = Options.universityOptions;
 
         scope.type = function() {
           return _(scope.user.type).capitalize();
         };
-
       }
     };
   })
