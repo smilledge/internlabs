@@ -22,9 +22,9 @@ angular.module('InternLabs.register', [])
       $location.path('/signup/student');
     }
 
-    $scope.user = {
+    $scope.user = _.extend({}, $location.search(), {
       type: $routeParams.type
-    };
+    });
 
     var uploader = $scope.uploader = $fileUploader.create({
       scope: $scope

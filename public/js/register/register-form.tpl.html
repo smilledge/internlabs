@@ -223,6 +223,38 @@
           <button type="submit" ng-disabled="loading" class="btn btn-primary pull-right btn-icon-right">Signup <i class="fa fa-arrow-right"></i></button>
         </div>
       </fieldset>
+
+      <!-- Supervisor profile -->
+      <fieldset class="form-step" ng-if="user.type == 'supervisor'">
+
+        <div class="form-step-title">
+          <i class="number">2</i>
+          <h3 class="title">Educational Institution</h3>
+          <p class="message">If you are an employee of an educational institution, please provide the following information.</p>
+        </div>
+
+        <div class="form-group">
+          <div class="row-sm">
+            <div class="col-sm-6">
+              <label>Job Title</label>
+              <input type="test" name="user.profile.role" ng-model="user.profile.role" class="form-control" placeholder="Job Title / Role">
+            </div>
+
+            <div class="col-sm-6">
+              <label>University</label>
+              <select selecter name="user.profile.university" ng-model="user.profile.university">
+                <option value="">Select a University</option>
+                <option ng-repeat="o in universityOptions" value="{{ o }}">{{ o }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-footer">
+          <a href="#" class="previous btn btn-default btn-icon-left"><i class="fa fa-arrow-left"></i> Previous</a>
+          <button type="submit" ng-disabled="loading" class="btn btn-primary pull-right btn-icon-right">Signup <i class="fa fa-arrow-right"></i></button>
+        </div>
+      </fieldset>
     </div>
   </form>
 </div>

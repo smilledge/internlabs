@@ -34387,6 +34387,38 @@ angular.module("register/register-form.tpl.html", []).run(["$templateCache", fun
     "          <button type=\"submit\" ng-disabled=\"loading\" class=\"btn btn-primary pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
     "        </div>\n" +
     "      </fieldset>\n" +
+    "\n" +
+    "      <!-- Supervisor profile -->\n" +
+    "      <fieldset class=\"form-step\" ng-if=\"user.type == 'supervisor'\">\n" +
+    "\n" +
+    "        <div class=\"form-step-title\">\n" +
+    "          <i class=\"number\">2</i>\n" +
+    "          <h3 class=\"title\">Educational Institution</h3>\n" +
+    "          <p class=\"message\">If you are an employee of an educational institution, please provide the following information.</p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class=\"form-group\">\n" +
+    "          <div class=\"row-sm\">\n" +
+    "            <div class=\"col-sm-6\">\n" +
+    "              <label>Job Title</label>\n" +
+    "              <input type=\"test\" name=\"user.profile.role\" ng-model=\"user.profile.role\" class=\"form-control\" placeholder=\"Job Title / Role\">\n" +
+    "            </div>\n" +
+    "\n" +
+    "            <div class=\"col-sm-6\">\n" +
+    "              <label>University</label>\n" +
+    "              <select selecter name=\"user.profile.university\" ng-model=\"user.profile.university\">\n" +
+    "                <option value=\"\">Select a University</option>\n" +
+    "                <option ng-repeat=\"o in universityOptions\" value=\"{{ o }}\">{{ o }}</option>\n" +
+    "              </select>\n" +
+    "            </div>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "        \n" +
+    "        <div class=\"form-footer\">\n" +
+    "          <a href=\"#\" class=\"previous btn btn-default btn-icon-left\"><i class=\"fa fa-arrow-left\"></i> Previous</a>\n" +
+    "          <button type=\"submit\" ng-disabled=\"loading\" class=\"btn btn-primary pull-right btn-icon-right\">Signup <i class=\"fa fa-arrow-right\"></i></button>\n" +
+    "        </div>\n" +
+    "      </fieldset>\n" +
     "    </div>\n" +
     "  </form>\n" +
     "</div>");
@@ -36880,9 +36912,9 @@ angular.module('InternLabs.register', [])
       $location.path('/signup/student');
     }
 
-    $scope.user = {
+    $scope.user = _.extend({}, $location.search(), {
       type: $routeParams.type
-    };
+    });
 
     var uploader = $scope.uploader = $fileUploader.create({
       scope: $scope

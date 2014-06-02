@@ -27,6 +27,7 @@ module.exports = function(app) {
     });
 
     // Auth
+    app.get('/signup', mainApp);
     app.get('/signup/:type?', mainApp);
     app.get('/login', mainApp);
     app.get('/activate', mainApp);
