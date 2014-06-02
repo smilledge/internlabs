@@ -32879,7 +32879,7 @@ angular.module("company/details.tpl.html", []).run(["$templateCache", function($
     "    <div class=\"container clearfix\">\n" +
     "      <h1 class=\"page-title pull-left\">{{ company.name }}</h1>\n" +
     "\n" +
-    "      <div class=\"actions pull-right\">\n" +
+    "      <div class=\"actions\">\n" +
     "        <button type=\"button\" auth-group=\"student\" ng-click=\"apply()\" class=\"btn btn-primary btn-icon-right\">Apply for Internship <i class=\"fa fa-envelope\"></i></button>\n" +
     "      </div>\n" +
     "    </div>\n" +
@@ -33122,7 +33122,7 @@ angular.module("dashboard/internships.tpl.html", []).run(["$templateCache", func
     "\n" +
     "  <div ng-show=\"internships.length\" class=\"list-group list-internships\">\n" +
     "    <a ng-repeat=\"internship in internships\" href=\"{{ internship.url }}\" class=\"list-group-item clearfix\">\n" +
-    "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
+    "      <div internship-title internship=\"internship\"></div>\n" +
     "    </a>\n" +
     "  </div>\n" +
     "  <div auth-group=\"student\" ng-show=\"!internships.length\" class=\"no-results\">\n" +
@@ -33321,9 +33321,9 @@ angular.module("internships/details.tpl.html", []).run(["$templateCache", functi
     "\n" +
     "  <section class=\"sub-header\">\n" +
     "    <div class=\"container clearfix\">\n" +
-    "      <div class=\"pull-left\" internship-title internship=\"internship\"></div>\n" +
+    "      <div internship-title internship=\"internship\"></div>\n" +
     "\n" +
-    "      <div class=\"pull-right\">\n" +
+    "      <div class=\"internship-options\">\n" +
     "        <div auth-group=\"employer\" status-widget internship=\"internship\"></div>\n" +
     "      </div>\n" +
     "    </div>\n" +
@@ -33903,7 +33903,7 @@ angular.module("internships/widgets/status.tpl.html", []).run(["$templateCache",
   $templateCache.put("internships/widgets/status.tpl.html",
     "<div class=\"widget-status\">\n" +
     "  <div dropdown-menu class=\"dropdown-lg\">\n" +
-    "    <a ng-click=\"toggle()\"><span>{{ internship.status | titlecase }}</span> <i class=\"fa fa-bars\"></i></a>\n" +
+    "    <a ng-click=\"toggle()\"><span>Internship Options</span> <i class=\"fa fa-bars\"></i></a>\n" +
     "    <ul>\n" +
     "      <li ng-show=\"internship.status == 'pending'\"><a ng-click=\"change('active')\">Approve Internship</a></li>\n" +
     "      <li ng-show=\"internship.status == 'pending'\"><a ng-click=\"change('rejected')\">Reject Internship</a></li>\n" +
@@ -33951,7 +33951,7 @@ angular.module("internships/widgets/title.tpl.html", []).run(["$templateCache", 
     "    <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"title-body pull-left\">\n" +
+    "  <div class=\"title-body\">\n" +
     "    <h2 ng-show=\"!isCompany\">{{ internship.role.title || \"Internship\" }} <span class=\"text-muted\">at</span> <a href=\"{{ company.url }}\">{{ company.name }}</a></h2>\n" +
     "    <h2 ng-show=\"isCompany\">{{ profile.name }} <span class=\"text-muted\">({{ internship.role.title || \"Internship\" }})</h2>\n" +
     "    <div class=\"meta\">\n" +
@@ -36767,7 +36767,6 @@ angular.module('InternLabs.login', [])
     $scope.credentials = {};
 
     $scope.submit = function() {
-      console.log($scope);
       Restangular.one('login').customPOST($scope.credentials).then(function(response) {
         if (response.$$success) {
           window.location.href = '/';
@@ -36781,7 +36780,7 @@ angular.module('InternLabs.login', [])
     $scope.activated = false;
     var params = $location.search();
 
-    Restangular.one('password-reset').customPUT({
+    Restangular.one('activate').customPUT({
       activationToken: params.token,
       userId: params.user
     }).then(function(response) {

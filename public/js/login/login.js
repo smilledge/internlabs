@@ -42,7 +42,6 @@ angular.module('InternLabs.login', [])
     $scope.credentials = {};
 
     $scope.submit = function() {
-      console.log($scope);
       Restangular.one('login').customPOST($scope.credentials).then(function(response) {
         if (response.$$success) {
           window.location.href = '/';
@@ -56,7 +55,7 @@ angular.module('InternLabs.login', [])
     $scope.activated = false;
     var params = $location.search();
 
-    Restangular.one('password-reset').customPUT({
+    Restangular.one('activate').customPUT({
       activationToken: params.token,
       userId: params.user
     }).then(function(response) {

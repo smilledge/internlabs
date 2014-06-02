@@ -1,14 +1,28 @@
 .internship-title {
+  text-align: center;
+
+  @media (min-width: @screen-sm-min) {
+    float: left;
+    text-align: left;
+  }
   
   .company-logo {
-    float: left;
-    margin-right: 15px;
-    padding-right: 15px;
-    border-right: 1px solid #e6e6e6;
+    margin: 0 auto 15px;
+
+    @media (min-width: @screen-sm-min) {
+      float: left;
+      margin: 0 15px 0 0;
+      padding-right: 15px;
+      border-right: 1px solid #e6e6e6;
+    }
     
     img {
       margin-top: 5px;
-      max-height: 50px;
+      max-height: 80px;
+
+      @media (min-width: @screen-sm-min) {
+        max-height: 50px;
+      }
     }
   }
 
@@ -19,8 +33,21 @@
       margin-right: 10px;
     }
   }
+
+  .title-body {
+    @media (min-width: @screen-sm-min) {
+      float: left;
+    }
+  }
 }
 
+.internship-options {
+  margin: 20px auto;
+  @media (min-width: @screen-sm-min) {
+    margin: 0;
+    float: right;
+  }
+}
 
 .list-files {
   .list-form {

@@ -5,7 +5,7 @@
 
   <div ng-show="internships.length" class="list-group list-internships">
     <a ng-repeat="internship in internships" href="{{ internship.url }}" class="list-group-item clearfix">
-      <div class="pull-left" internship-title internship="internship"></div>
+      <div internship-title internship="internship"></div>
     </a>
   </div>
   <div auth-group="student" ng-show="!internships.length" class="no-results">
