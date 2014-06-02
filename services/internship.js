@@ -7,7 +7,9 @@ var Internship = require('../models/internship'),
     Helpers = require('../helpers'),
     moment = require('moment'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    nconf = require('nconf'),
+    mailer = require('../lib/mailer');
 
 
 /**
@@ -123,6 +125,47 @@ module.exports.findByCompany = function(company, query, done) {
 
 
 /**
+ * Get all internships by a supervisor
+ * 
+ * @param  {string}   supervisor _id 
+ * @param  {function} done
+ * @return {void}
+ */
+module.exports.findBySupervisor = function(supervisor, query, done) {
+  async.waterfall([
+
+    /**
+     * Get the internships
+     */
+    function(callback) {
+
+      var find = _.pick(query, 'status');
+      
+      Internship.find(_.extend(find, {
+        supervisors: supervisor._id || supervisor
+      })).populate('company student').exec(function(err, internships) {
+        if ( err || ! internships ) {
+          return callback(new Error("Could not find any matching internships."));
+        }
+
+        callback(null, internships);
+      });
+    },
+
+    /**
+     * Populate the students profile
+     */
+    function(internships, callback) {
+      Profile.populate(internships, {
+        path: 'student.profile'
+      }, callback);
+    }
+
+  ], done);
+};
+
+
+/**
  * Git an internship by id
  * 
  * @param  {string}   internshipId 
@@ -152,6 +195,21 @@ module.exports.findById = function(internshipId, done) {
     function(internship, callback) {
       Profile.populate(internship, {
         path: 'student.profile'
+      }, callback);
+    },
+
+    /**
+     * Populate the supervisors profile
+     */
+    function(internship, callback) {
+      Profile.populate(internship, {
+        path: 'supervisors.profile',
+        select: {
+          firstName: 1,
+          lastName: 1,
+          name: 1,
+          email: 1
+        }
       }, callback);
     },
 
@@ -824,7 +882,7 @@ module.exports.createSupervisor = function(internship, user, email, done) {
       if ( ! _.isObject(supervisor) ) {
         return callback(null, supervisor, internship, user);
       }
-      supervisor.setAccess(internship, ['read', 'write', 'delete']);
+      supervisor.setAccess(internship, ['read', 'write']);
       internship.save(function(err, internship) {
         callback(null, supervisor, internship, user);
       });
@@ -833,6 +891,24 @@ module.exports.createSupervisor = function(internship, user, email, done) {
     /**
      * Send an invite email if the supervisor is not a user
      */
+    function(supervisor, internship, user, callback) {
+      if ( _.isObject(supervisor) ) {
+        return callback(null, supervisor, internship, user);
+      }
+
+      mailer.send({
+        to: email,
+        subject: user.profile.name + " has invited you to supervise an internship on InternLabs",
+        template: "invite-supervisor.ejs",
+        model: {
+          inviteUrl: nconf.get("url") + 'signup/supervisor?email=' + email,
+          user: user,
+          internship: internship
+        }
+      }, function(err) {
+        callback(null, supervisor, internship, user);
+      });
+    },
 
     /**
      * Add to the activity feed

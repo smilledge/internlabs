@@ -14,9 +14,7 @@ angular.module('InternLabs.dashboard', [])
           status: status
         });
       } else if (internlabs.isSupervisor) {
-        return Restangular.one('suporvisors', internlabs.user._id).getList('internships', {
-          status: status
-        });
+        return Restangular.one('supervisors', internlabs.user._id).getList('internships');
       }
     };
 
@@ -36,7 +34,7 @@ angular.module('InternLabs.dashboard', [])
       .when('/dashboard/internships', {
         templateUrl: 'dashboard/layout.tpl.html',
         controller: 'InternshipsCtrl',
-        pageTitle: 'Active Internships',
+        pageTitle: 'Internships',
         auth: true,
         state: {
           main: 'dashboard/internships.tpl.html'
@@ -174,7 +172,7 @@ angular.module('InternLabs.dashboard', [])
   .controller('InternshipsCtrl', function($route, $scope, internships) {
     $scope.state = $route.current.$$route.state;
     $scope.active = 'internships';
-    $scope.title = "Active Internships";
+    $scope.title = "Internships";
     $scope.internships = internships;
   })
 
@@ -350,6 +348,8 @@ angular.module('InternLabs.dashboard', [])
       },
       link: function(scope, elem, attrs) {
         scope.universityOptions = Options.universityOptions;
+        scope.isStudent = internlabs.isStudent;
+        scope.isSupervisor = internlabs.isSupervisor;
 
         scope.save = function() {
           Restangular.all('profiles').customPUT(_.extend({}, scope.profile, {
