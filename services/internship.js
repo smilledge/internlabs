@@ -7,7 +7,9 @@ var Internship = require('../models/internship'),
     Helpers = require('../helpers'),
     moment = require('moment'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    nconf = require('nconf'),
+    mailer = require('../lib/mailer');
 
 
 /**
@@ -833,6 +835,24 @@ module.exports.createSupervisor = function(internship, user, email, done) {
     /**
      * Send an invite email if the supervisor is not a user
      */
+    function(supervisor, internship, user, callback) {
+      if ( _.isObject(supervisor) ) {
+        return callback(null, supervisor, internship, user);
+      }
+
+      mailer.send({
+        to: email,
+        subject: user.profile.name + " has invited you to supervise an internship on InternLabs",
+        template: "invite-supervisor.ejs",
+        model: {
+          inviteUrl: nconf.get("url") + 'signup/supervisor?email=' + email,
+          user: user,
+          internship: internship
+        }
+      }, function(err) {
+        callback(null, supervisor, internship, user);
+      });
+    },
 
     /**
      * Add to the activity feed
