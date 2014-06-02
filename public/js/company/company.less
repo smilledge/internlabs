@@ -14,17 +14,30 @@
   }
 
   .overview {
-    margin-right: 200px;
+    @media (min-width: @screen-xs-min) {
+      margin-right: 200px;
+    }
   }
 
   .company-logo {
-    float: right;
-    margin-left: 15px;
+
+    @media (min-width: @screen-xs-min) {
+      float: right;
+      margin: 0 0 0 15px;
+    }
     
     img {
-      float: left;
-      max-height: 50px;
-      max-width: 160px;
+      display: block;
+      margin: 0 auto 15px;
+      max-height: 100px;
+      max-width: 320px;
+
+      @media (min-width: @screen-xs-min) {
+        margin: 0;
+        float: left;
+        max-height: 50px;
+        max-width: 160px;
+      }
     }
   }
 
