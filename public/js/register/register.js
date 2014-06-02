@@ -8,8 +8,7 @@ angular.module('InternLabs.register', [])
       .when('/signup/:type', {
         templateUrl: 'register/register.tpl.html',
         controller: 'RegisterCtrl',
-        pageTitle: 'Signup',
-        className: 'background-primary'
+        pageTitle: 'Signup'
       })
 
       ;
@@ -17,13 +16,11 @@ angular.module('InternLabs.register', [])
   })
 
 
-  .controller('RegisterCtrl', function($scope, $rootScope, $routeParams, $location, $fileUploader, Auth, Options, ModalFactory) {
+  .controller('RegisterCtrl', function($scope, $rootScope, $routeParams, $location, $fileUploader, Restangular, Options, ModalFactory) {
 
     if ( _.indexOf(['employer', 'student', 'supervisor'], $routeParams.type) === -1 ) {
       $location.path('/signup/student');
     }
-
-    $rootScope.altNav = true;
 
     $scope.user = {
       type: $routeParams.type
@@ -34,9 +31,13 @@ angular.module('InternLabs.register', [])
     });
 
     $scope.submit = function() {
-      $rootScope.loading = true;
+      $scope.loading = true;
 
-      Auth.register($scope.user).then(function(user) {
+      Restangular.one('register').customPOST($scope.user).then(function(user) {
+        if (!user.$$success) {
+          $scope.loading = false;
+          return;
+        }
 
         if ( ! user.company ) {
           return $location.url('/login');
@@ -51,20 +52,10 @@ angular.module('InternLabs.register', [])
 
         uploader.uploadAll();
 
-        $rootScope.loading = false;
+        $scope.loading = false;
 
         $location.url('/login');
 
-      }, function(errors) {
-        $rootScope.loading = false;
-        ModalFactory.create({
-          scope: {
-            title: "An error occured",
-            errors: errors
-          },
-          templateUrl: "register/modal-error.tpl.html",
-          className: "modal-register-error"
-        });
       });
     };
 

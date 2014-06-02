@@ -38,87 +38,79 @@ angular.module('InternLabs.login', [])
   })
 
 
-  .controller('LoginCtrl', function($rootScope, $scope, $location, Auth) {
+  .controller('LoginCtrl', function($rootScope, $scope, $location, Restangular) {
     $scope.credentials = {};
-    $rootScope.altNav = true;
 
     $scope.submit = function() {
-      Auth.login($scope.credentials).then(function(data) {
-        $location.url('/');
-      }, function(error) {
-        $scope.errors = error;
+      console.log($scope);
+      Restangular.one('login').customPOST($scope.credentials).then(function(response) {
+        if (response.$$success) {
+          window.location.href = '/';
+        }
       });
     };
   })
 
 
-  .controller('ActivateCtrl', function($rootScope, $scope, $location, Auth) {
+  .controller('ActivateCtrl', function($rootScope, $scope, $location, Restangular) {
     $scope.activated = false;
     var params = $location.search();
-    $rootScope.altNav = true;
 
-    Auth.activate({
+    Restangular.one('password-reset').customPUT({
       activationToken: params.token,
       userId: params.user
     }).then(function(response) {
-      $scope.activated = true;
+      if (response.$$success) {
+        $scope.activated = true;
+      }
     });
   })
 
 
-  .controller('PasswordResetCtrl', function($rootScope, $scope, $location, Auth) {
+  .controller('PasswordResetCtrl', function($rootScope, $scope, $location, Restangular) {
     
     var params = $location.search();
     $scope.action = (_.isEmpty(params)) ? 'send' : 'reset';
-    $rootScope.altNav = true;
     
     $scope.reset = {};
     $scope.sendSuccess = false;
     $scope.resetSuccess = false;
 
-    /**
-     * Send password reset email
-     */
     $scope.send = function() {
-      Auth.sendPasswordReset({
+      Restangular.one('password-reset').customPOST({
         email: $scope.reset.email
       }).then(function(response) {
-        $scope.sendSuccess = true;
+        if (response.$$success) {
+          $scope.sendSuccess = true;
+        }
       });
     };
 
-    /**
-     * Reset the user's password using the provided token and credentials
-     */
     $scope.reset = function() {
-      Auth.passwordReset({
+      Restangular.one('password-reset').customPUT({
         userId: params.user,
         password: $scope.reset.password,
         resetToken: params.token
       }).then(function(response) {
-        $scope.resetSuccess = true;
+        if (response.$$success) {
+          $scope.resetSuccess = true;
+        }
       });
     };
   })
 
 
-  .controller('ResendActivationCtrl', function($rootScope, $scope, Auth) {
+  .controller('ResendActivationCtrl', function($rootScope, $scope, Restangular) {
     $scope.resend = {};
     $scope.success = false;
-    $rootScope.altNav = true;
 
-    /**
-     * Send password reset email
-     */
     $scope.send = function() {
-      Auth.resendActivation({
+      Restangular.one('resend-activation').customPOST({
         email: $scope.resend.email
       }).then(function(response) {
-        if ( ! response.data.success ) {
-          return $scope.errors = response.data.error;
+        if (response.$$success) {
+          $scope.success = true;
         }
-        
-        $scope.success = true;
       });
     };
   })
