@@ -47,6 +47,7 @@ module.exports = function(app) {
 
     // Dashboard 
     app.get('/dashboard', mainApp);
+    app.get('/dashboard/recommendations', mainApp);
     app.get('/dashboard/internships', mainApp);
     app.get('/dashboard/internships/archived', mainApp);
     app.get('/dashboard/applications', mainApp);

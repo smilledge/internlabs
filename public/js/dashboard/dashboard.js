@@ -22,9 +22,15 @@ angular.module('InternLabs.dashboard', [])
     $routeProvider
 
       .when('/dashboard', {
-        templateUrl: 'dashboard/layout.tpl.html',
+        template: '',
         controller: 'DashboardCtrl',
-        pageTitle: 'Dashboard',
+        auth: true
+      })
+
+      .when('/dashboard/recommendations', {
+        templateUrl: 'dashboard/layout.tpl.html',
+        controller: 'RecommendationsCtrl',
+        pageTitle: 'Internship Recommendations',
         auth: true,
         state: {
           main: 'dashboard/dashboard.tpl.html'
@@ -141,9 +147,23 @@ angular.module('InternLabs.dashboard', [])
   })
 
 
-  .controller('DashboardCtrl', function($route, $scope, $http, Options, Restangular) {
+  .controller('DashboardCtrl', function($location) {
+    if (internlabs.isStudent) {
+      return $location.path('/dashboard/recommendations');
+    }
+
+    if (internlabs.isEmployer) {
+      return $location.path('/dashboard/applications');
+    }
+
+    if (internlabs.isSupervisor) {
+      return $location.path('/dashboard/internships');
+    }
+  })
+
+  .controller('RecommendationsCtrl', function($route, $scope, $http, Options, Restangular) {
     $scope.state = $route.current.$$route.state;
-    $scope.active = 'dashboard';
+    $scope.active = 'recommendations';
     $scope.searching = true;
 
     if (internlabs.isStudent) {
