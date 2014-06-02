@@ -28,15 +28,15 @@ select {
 }
 
 .selecter .selecter-selected {
-  .form-control;
-    background: #fff url('../images/jquery.fs.selecter-arrow.png') no-repeat right center;
+    .form-control;
+    background: #F2F2F2 url('../images/jquery.fs.selecter-arrow.png') no-repeat right center;
     cursor: pointer;
     display: block;
     overflow: hidden;
     position: relative;
     text-overflow: clip;
     z-index: 49;
-    
+
     .transition(background-color .3s ease);
 }
 
@@ -107,15 +107,15 @@ select {
     }
 
     .selecter .selecter-item.disabled:hover {
-        background-color: #fff;
+        background-color: #F2F2F2;
     }
 
     .selecter:hover .selecter-selected {
-        background-color: #fff;
+        background-color: #F2F2F2;
     }
 
     .selecter.disabled .selecter-item:hover {
-        background: #fff;
+        background: #F2F2F2;
     }
 }
 
@@ -196,7 +196,7 @@ select {
 
   /* 'Disabled' State */
 .selecter.disabled .selecter-selected {
-    background: #fff;
+    background: #F2F2F2;
     border-color: #eee;
     color: #FAFAFA;
     cursor: default;
@@ -208,7 +208,7 @@ select {
 }
 
 .selecter.disabled .selecter-options {
-    background: #fff;
+    background: #F2F2F2;
     border-color: #eee;
 }
 
@@ -233,13 +233,7 @@ select {
     padding: 0;
 }
 
-  /* Media Queries */
-@media screen and (max-width: 740px) {
-    .selecter {
-        max-width: 40%;
-    }
-}
-
+/* Media Queries */
 @media screen and (max-width: 500px) {
     .selecter {
         max-width: 100%;

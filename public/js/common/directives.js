@@ -480,37 +480,6 @@ angular.module('InternLabs.common.directives', [])
 
 
   /**
-   * Animated form group
-   */
-  .directive('animatedForm', function () {
-    return {
-      restrict: 'A',
-      link: function(scope, elem, attrs) {
-
-        var $items = $(elem).find('.animation-group');
-
-        new TimelineLite({ onComplete: function() {
-          elem.find('input.form-control').first().focus();
-        }})
-          .pause()
-          .set($items, {
-            autoAlpha: 0,
-            position: 'relative',
-            bottom: -20
-          })
-          .staggerTo($items, 0.2, {
-            autoAlpha: 1,
-            bottom: 0,
-            force3D: true,
-            ease: Quad.easeOut
-          }, 0.1, '+0.1')
-          .resume();
-      }
-    };
-  })
-
-
-  /**
    * Stepped form
    *  - Step through a seriese of fieldsets
    *  - Give each a class of .form-step
@@ -592,6 +561,10 @@ angular.module('InternLabs.common.directives', [])
             deferred.resolve();
           }}).pause()
 
+            .set(elem, {
+              overflow: 'hidden'
+            })
+
             // Animation initial state for elems
             .set(currentElem, {
               position: 'absolute',
@@ -611,6 +584,10 @@ angular.module('InternLabs.common.directives', [])
               left: 0
             }, '-=0.35')
             
+            .set(elem, {
+              overflow: 'visible'
+            })
+
             // Play!
             .resume();
 
@@ -630,7 +607,7 @@ angular.module('InternLabs.common.directives', [])
           // Run validation on each field and return if that field is valid
           var validationResults = _.map($inputs, function($input) {
             var validator = new Parsley($input);
-            if ( _.has(validator, 'validate') ) {
+            if ( _.has(validator.__proto__, 'validate') || _.has(validator, 'validate') ) {
               validator.validate();
               return validator.isValid();
             }
@@ -689,31 +666,38 @@ angular.module('InternLabs.common.directives', [])
 
   
   /**
-   * Validated Form
+   * Validation actions
    *  - Adds validation to a form
    */
-  .directive('form', function() {
+  .directive('ngValidated', function() {
     return {
-      restrict: 'E',
-      priority: -100,
+      restrict: 'A',
+      priority: 2,
       link: function(scope, elem, attrs) {
+        var submitAction = attrs.ngValidated;
 
-        // Stepped forms have their own validation
-        if ( elem.find('[stepped-form]').length ) {
-          return;
-        }
+        console.log();
 
         if ( attrs.validate ) {
           var validator = new Parsley(elem);
+        }
 
-          elem.on('submit', function(e) {
-            validator.validate();
+        elem.on('submit', function(e) {
+          if ( ! attrs.validate || elem.find('[stepped-form]').length ) {
+            return scope.$eval(submitAction);
+          }
+  
+          if (submitAction) {
+            e.preventDefault();
+          }
 
-            if ( ! validator.isValid() ) {
-              e.preventDefault();
-            }
-          });
-        }        
+          var validator = new Parsley(elem);
+          validator.validate();
+
+          if ( validator.isValid() ) {
+            scope.$eval(submitAction);
+          }
+        });
       }
     };
   })

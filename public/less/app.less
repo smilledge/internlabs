@@ -58,9 +58,11 @@ a {
   font-size: 26px;
   .transition(0.2s);
   cursor: help;
+  .opacity(0.75);
 
   &:hover {
     .scale(1.1);
+    .opacity(1);
   }
 
   &:before {
@@ -68,15 +70,23 @@ a {
   }
 }
 
-.form-group .inline-help {
+.has-help {
+  position: relative;
+}
+
+.has-help .inline-help {
   position: absolute;
-  right: -40px;
+  right: 15px;
   top: 10px;
 
   .popover {
     min-width: 260px;
     margin-bottom: 10px;
   }
+}
+
+fieldset {
+  .translate3d(0,0,0); // Fix for chrome animation bug
 }
 
 .scroll-box {
@@ -353,55 +363,6 @@ body {
   }
 }
 
-// White navbar
-#primary-nav.alt {
-  background: #fff;
-  color: #777;
-  border-bottom: none;
-
-  .navbar-logo {
-    display: block;
-    border-left: 1px solid #f4f4f4;
-
-    &:hover {
-      background: darken(#fff, 0.75%);
-    }
-  }
-
-  .logo-alt {
-    display: none;
-  }
-
-  .navbar-nav {
-    border-left: 1px solid #f4f4f4;
-  }
-
-  .link-icon, .link-label {
-    border-right: 1px solid #f4f4f4;
-
-    a {
-      color: #999;
-    }
-
-    &:hover {
-      background: darken(#fff, 0.75%);
-    }
-  }
-
-  .link-label {
-    color: #999;
-    border-left: 1px solid #fff;
-  }
-
-  .navbar-form {
-    input {
-      color: #333;
-      .placeholder(#777);
-    }
-  }
-}
-
-
 
 .nav-mobile {
   position: fixed;
@@ -444,55 +405,6 @@ body {
 
 /*
 
-  Section styles
-
- */
-
-.section-green {
-  padding: 100px 0;
-  background: @brand-primary url('../images/mark.svg') no-repeat center;
-  -webkit-background-size: cover;
-  background-size: cover;
-  color: #fff;
-
-  a:not(.btn) {
-    color: #fff;
-  }
-
-  a.btn-link {
-    background: rgba(0, 0, 0, 0.07);
-    color: #fff;
-    border-bottom: 4px solid rgba(0, 0, 0, 0.09);
-    &:hover {
-      color: #fff;
-      text-decoration: none;
-      background: rgba(0, 0, 0, 0.09);
-      border-bottom: 4px solid rgba(0, 0, 0, 0.11);
-    }
-  }
-
-  .btn-default {
-    background: #fff;
-    border-bottom-color: #DDD;
-    &:hover {
-      border-bottom-color: #CECECE;
-      background: #F2F2F2;
-    }
-  }
-
-  .popover {
-    color: @text-color;
-  }
-
-  .form-control {
-    background: #fff;
-    border-bottom-color: #ddd;
-  }
-}
-
-
-/*
-
   Regular content page
 
  */
@@ -522,7 +434,11 @@ body {
   }
 
   .main {
-    margin: 40px 0 80px;
+    margin: 40px 0 20px;
+
+    @media (min-width: @screen-sm-min) {
+      margin: 40px 0 80px;
+    }
 
     .section-header {
       .clearfix;
@@ -589,6 +505,11 @@ body {
     }
   }
 
+  .content-body {
+    border-top: 1px solid #e6e6e6;
+    padding: 15px;
+  }
+
   .no-results, .searching {
     border-top: 1px solid #e6e6e6;
   }
@@ -611,6 +532,10 @@ body {
   .form-footer, .content-footer {
     .modal-footer;
     margin: 40px -15px -15px -15px;
+
+    .picker-flag {
+      background: #fff;
+    }
   }
 }
 
@@ -693,23 +618,23 @@ label.floating-label {
 
 .form-step-title {
   position: relative;
-  background: rgba(0,0,0,0.1);
+  // background: #F9F9F9;
   border-radius: @border-radius-base;
-  padding: 20px 20px 20px 65px;
+  padding: 12px 12px 12px 54px;
   margin-bottom: 15px;
 
   .number {
     position: absolute;
-    top: 18px;
-    left: 20px;
+    top: 20px;
+    left: 6px;
     width: 30px;
     height: 30px;
     line-height: 26px;
     border-radius: 50%;
     text-align: center;
-    color: #FFF;
+    color: @text-color;
     background: none;
-    border: 2px solid #fff;
+    border: 2px solid @text-color;
     font-weight: normal;
     font-style: normal;
     font-size: 14px;
@@ -717,7 +642,7 @@ label.floating-label {
 
   .title {
     font-size: 22px;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
   }
 
   .message {
@@ -769,18 +694,26 @@ label.floating-label {
   position: relative;
 
   .map-overlay {
-    position: absolute;
+    
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 100;
+
+    @media (min-width: @screen-sm-min) {
+      position: absolute;
+    }
   }
 
   .map-info {
     .box;
-    max-width: 300px;
-    margin: 50px 0 0;
+    margin-bottom: 20px;
+
+    @media (min-width: @screen-sm-min) {
+      max-width: 300px;
+      margin: 50px 0 0;
+    }
 
     h2 {
       margin: 0 0 15px;

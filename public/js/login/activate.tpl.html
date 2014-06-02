@@ -1,19 +1,25 @@
-<section class="section-green section-activate" fill-screen>
+<section class="section-login">
   <div class="container">
     <div class="row">
-      <div class="col-sm-offset-3 col-sm-6 text-center">
-
+      <div class="content-box col-sm-offset-3 col-sm-6">
         <div ng-show="!activated">
-          <h1>Activating Account</h1>
-          <p>Please wait while your account is being activated...</p>
+          <header>
+            <h2>Activating Account</h2>
+          </header>
+          <div class="content-body">
+            <p>Please wait while your account is being activated...</p>
+          </div>
         </div>
 
         <div ng-show="activated">
-          <h1>Your account as been activated</h1>
-          <p>Your account has been activated successfully. You may now login.</p>
-          <a href="/login" class="btn btn-default btn-icon-right">Proceed to login <i class="fa fa-arrow-right"></i></a>
+          <header>
+            <h2>Your account as been activated</h2>
+          </header>
+          <div class="content-body">
+            <p>Your account has been activated successfully. You may now login.</p>
+            <a href="/login" class="btn btn-primary btn-icon-right">Proceed to login <i class="fa fa-arrow-right"></i></a>
+          </div>
         </div>
-
       </div>
     </div>
   </div>

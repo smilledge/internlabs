@@ -1,45 +1,43 @@
-<section class="section-green section-login" fill-screen>
-  
+<section class="section-login" fill-screen>
   <div class="container">
     <div class="row">
 
-      <form validate="true" ng-submit="submit()" role="form" class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 floating-labels" login-form animated-form>
+      <div class="content-box col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
+        <header>
+          <h2>Login</h2>
+        </header>
 
-        <h1 class="text-center animation-group">Login</h1>
+        <form ng-validated="submit()" role="form" login-form animated-form>
+          <div form-errors="errors"></div>
 
-        <div form-errors="errors"></div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" ng-model="credentials.email" class="form-control" placeholder="Email" required>
+          </div>
 
-        <div class="form-group animation-group">
-          <label for="">Email</label>
-          <input type="email" name="email" ng-model="credentials.email" class="form-control" placeholder="Email" float-label required>
-        </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" ng-model="credentials.password" class="form-control" placeholder="Password" required>
+          </div>
 
-        <div class="form-group animation-group">
-          <label for="">Password</label>
-          <input type="password" name="password" ng-model="credentials.password" class="form-control" placeholder="Password" float-label required>
-        </div>
-
-
-        <div class="form-group animation-group">
-          <div class="row">
-            <div class="col-xs-6">
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" ng-model="credentials.remember" name="credentials.remember" ng-true-value="true" fs-picker> Remember Me
-                </label>
+          <div class="form-footer">
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" ng-model="credentials.remember" name="credentials.remember" ng-true-value="true" fs-picker> Remember Me
+                  </label>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <button type="submit" class="btn btn-primary pull-right btn-icon-right">Login <i class="fa fa-arrow-right"></i></button>
               </div>
             </div>
-            <div class="col-xs-6">
-              <button type="submit" class="btn btn-default pull-right btn-icon-right">Login <i class="fa fa-arrow-right"></i></button>
-            </div>
           </div>
-        </div>
-
-        <p class="animation-group text-center link-lost-password"><a href="/password-reset">Lost your password?</a> | <a href="/resend-activation">Resend Activation Email</a></p>
-
-      </form>
-
+        </form>
+      </div>
+      
     </div>
+    <p class="text-center link-lost-password"><a href="/password-reset">Lost your password?</a> | <a href="/resend-activation">Resend Activation Email</a></p>
   </div>
-
 </section>
