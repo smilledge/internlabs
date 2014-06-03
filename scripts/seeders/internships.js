@@ -74,8 +74,6 @@ var seed = function(callback) {
           console.log("      | ---> Applying for role: " + role.title);
         }
 
-        console.log(role);
-
         var data = _.extend({}, _.sample(internshipData), {
           student: pair.student._id,
           company: pair.company._id,
