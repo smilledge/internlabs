@@ -18,7 +18,7 @@ module.exports = function(app) {
   app.put('/api/profiles/:profileId', auth.check(), function(req, res) {
     ProfileService.updateProfile(req.params.profileId, req.user._id, req.body, function(err, profile) {
       if (err || ! profile) {
-        return res.apiError("An error occurred while saving profile. Please try again later.");
+        return res.apiError("An error occurred while saving profile. Please try again later.", req.body);
       }
 
       res.apiSuccess("Profile has been updated successfully.", profile);

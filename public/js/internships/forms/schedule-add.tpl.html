@@ -1,17 +1,23 @@
-<form ng-submit="save()" role="form" class="schedule-add">
+<form ng-validated="save()" novalidate role="form" class="schedule-add">
   <div class="form-group">
       <div class="row-sm">
         <div class="col-sm-4">
           <label>Date</label>
-          <input date-picker="newSchedule.date" type="text" class="form-control">
+          <input date-picker="newSchedule.date" type="text" class="form-control" required>
         </div>
         <div class="col-sm-4">
           <label>Start Time</label>
-          <select selecter ng-model="newSchedule.startTime" ng-options="o as o for o in timeOptions" class="form-control"></select>
+          <select selecter="timeOptions" ng-model="newSchedule.startTime" required>
+            <option value="">-- --</option>
+            <option ng-repeat="o in timeOptions" ng-selected="{{ o === newSchedule.startTime }}" value="{{ o }}">{{ o }}</option>
+          </select>
         </div>
         <div class="col-sm-4">
           <label>End Time</label>
-          <select selecter ng-model="newSchedule.endTime" ng-options="o as o for o in timeOptions" class="form-control"></select>
+          <select selecter="timeOptions" ng-model="newSchedule.endTime" required>
+            <option value="">-- --</option>
+            <option ng-repeat="o in timeOptions" ng-selected="{{ o === newSchedule.endTime }}" value="{{ o }}">{{ o }}</option>
+          </select>
         </div>
       </div>
     </div>

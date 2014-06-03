@@ -23,6 +23,7 @@
   <div ng-hide="hideButtons" class="text-center">
       <button type="button" class="btn btn-success btn-icon-left" ng-click="_uploader.uploadAll()" ng-show="_uploader.getNotUploadedItems().length"><i class="fa fa-arrow-up"></i> Start Upload</button>
       <button type="button" class="btn btn-danger btn-icon-left" ng-click="_uploader.cancelAll()" ng-show="_uploader.isUploading"><i class="fa fa-times"></i> Cancel Upload</button>
-      <button type="button" class="btn btn-default btn-icon-left" ng-click="_uploader.clearQueue()" ng-show="_uploader.queue.length"><i class="fa fa-trash-o"></i> Clear Queue</button>
+      <button type="button" class="btn btn-primary btn-icon-left" ng-click="done()" ng-hide="_uploader.getNotUploadedItems().length"><i class="fa fa-check"></i> Done</button>
+      <!-- <button type="button" class="btn btn-default btn-icon-left" ng-click="_uploader.clearQueue()" ng-show="_uploader.queue.length"><i class="fa fa-trash-o"></i> Clear Queue</button> -->
   </div>
 </div>

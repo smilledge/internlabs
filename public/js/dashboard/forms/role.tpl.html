@@ -1,8 +1,8 @@
-<form validate="true" role="form" ng-submit="save()">
+<form ng-validated="save()" novalidate>
   
   <div class="form-group">
     <label>Role Title</label>
-    <input ng-model="role.title" type="text" class="form-control">
+    <input ng-model="role.title" type="text" class="form-control" required>
   </div>
 
   <div class="form-group">

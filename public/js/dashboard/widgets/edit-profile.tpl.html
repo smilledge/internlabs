@@ -3,16 +3,16 @@
     <h3>Edit Profile</h3>
   </header>
 
-  <form role="form" ng-submit="save()">
+  <form role="form" ng-validated="save()" novalidate>
     <div class="form-group">
       <div class="row-sm">
         <div class="col-sm-6">
           <label>First Name</label>
-          <input type="text" ng-model="profile.firstName" class="form-control">
+          <input type="text" ng-model="profile.firstName" class="form-control" required>
         </div>
         <div class="col-sm-6">
           <label>Last Name</label>
-          <input type="text" ng-model="profile.lastName" class="form-control">
+          <input type="text" ng-model="profile.lastName" class="form-control" required>
         </div>
       </div>
     </div>

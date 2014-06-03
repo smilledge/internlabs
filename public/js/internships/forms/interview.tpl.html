@@ -1,18 +1,18 @@
-<form role="form" ng-submit="save()">
+<form role="form" ng-validated="save()" novalidate>
   
   <div class="form-group">
     <div class="row-sm">
       <div class="col-sm-4">
         <label>Date</label>
-        <input date-picker="_interview.date" type="text" class="form-control">
+        <input date-picker="_interview.date" type="text" class="form-control" required>
       </div>
       <div class="col-sm-4">
         <label>Start Time</label>
-        <select selecter ng-model="_interview.startTime" ng-options="o as o for o in timeOptions" class="form-control"></select>
+        <select selecter ng-model="_interview.startTime" ng-options="o as o for o in timeOptions" class="form-control" required></select>
       </div>
       <div class="col-sm-4">
         <label>End Time</label>
-        <select selecter ng-model="_interview.endTime" ng-options="o as o for o in timeOptions" class="form-control"></select>
+        <select selecter ng-model="_interview.endTime" ng-options="o as o for o in timeOptions" class="form-control" required></select>
       </div>
     </div>
   </div>
