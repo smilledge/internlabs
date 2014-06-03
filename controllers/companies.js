@@ -47,43 +47,13 @@ module.exports = function(app) {
    * Add a role to a company
    */
   app.post('/api/companies/:companyId/roles', auth.check(), function(req, res) {
-
-    async.waterfall([
-
-      // Find the company
-      function(callback) {
-        Company.findOne({ _id: req.params.companyId }, function(err, company) {
-          if ( err || ! company ) {
-            return callback(new Error("Sorry, the selected company could not be found."));
-          }
-          
-          callback(null, company);
-        });
-      },
-
-      // Create the role
-      function(company, callback) {
-        var role = new Role(req.body).save(function(err, role) {
-          callback(err, company, role);
-        });
-      },
-
-      // Add the role to the company
-      function(company, role, callback) {
-        company.roles.push(role._id);
-        company.save(function(err, company) {
-          callback(null, role)
-        });
-      }
-
-    ], function(err, role) {
+    CompanyService.addRole(req.params.companyId, req.body, function(err, role) {
       if ( err ) {
         return res.apiError(err.message);
       }
 
       return res.apiSuccess("Role has been added successfully.", role);
     });
-
   });
 
 

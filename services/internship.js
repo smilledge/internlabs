@@ -44,7 +44,7 @@ module.exports.findByUser = function(user, query, done) {
      * Get the student
      */
     function(callback) {
-      User.findById(user).populate('profile').exec(function(err, student) {
+      User.findById(user).populate('profile company').exec(function(err, student) {
         if ( err || ! student ) {
           return callback(new Error("Student not found."));
         }
@@ -290,7 +290,7 @@ module.exports.create = function(data, done) {
       }
 
 
-      User.findById(data.student).populate('profile').exec(function(err, student) {
+      User.findById(data.student).populate('profile company').exec(function(err, student) {
         if ( err || ! student ) {
           return callback(new Error("Student not found."));
         }
@@ -432,7 +432,7 @@ module.exports.createSchedule = function(internship, user, data, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while updating your schedule. Please try again later."));
         }
@@ -483,7 +483,8 @@ module.exports.createSchedule = function(internship, user, data, done) {
      * Add an activity to the internships feed
      */
     function(internship, user, callback) {
-      var msg = user.profile.name + ' updated the internship\'s schedule.';
+      var name = (user.company) ? user.company.name : user.profile.name;
+      var msg = name + ' updated the internship\'s schedule.';
 
       internship.addActivity({
         description: msg
@@ -528,7 +529,7 @@ module.exports.deleteSchedule = function(internship, user, scheduleId, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while updating your schedule. Please try again later."));
         }
@@ -568,7 +569,8 @@ module.exports.deleteSchedule = function(internship, user, scheduleId, done) {
      * Add an activity to the internships feed
      */
     function(internship, user, callback) {
-      var msg = user.profile.name + ' updated the internship\'s schedule.';
+      var name = (user.company) ? user.company.name : user.profile.name;
+      var msg = name + ' updated the internship\'s schedule.';
 
       internship.addActivity({
         description: msg
@@ -692,7 +694,7 @@ module.exports.createMessage = function(internship, user, message, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while saving your message. Please try again later."));
         }
@@ -760,7 +762,7 @@ module.exports.deleteActivity = function(internship, user, activityId, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while deleteing. Please try again later."));
         }
@@ -824,7 +826,7 @@ module.exports.createSupervisor = function(internship, user, email, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while adding a supervisor. Please try again later."));
         }
@@ -914,8 +916,9 @@ module.exports.createSupervisor = function(internship, user, email, done) {
      * Add to the activity feed
      */
     function(supervisor, internship, user, callback) {
-      var display = ( _.isObject(supervisor) ) ? supervisor.email : supervisor;
-      var msg = user.profile.name + ' added ' + display + ' as a supervisor of this internship.';
+      var display = ( _.isObject(supervisor) ) ? supervisor.email : supervisor,
+          name = (user.company) ? user.company.name : user.profile.name,
+          msg = name + ' added ' + display + ' as a supervisor of this internship.';
 
       internship.addActivity({
         description: msg,
@@ -961,7 +964,7 @@ module.exports.deleteSupervisor = function(internship, user, email, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while removeing the supervisor. Please try again later."));
         }
@@ -1048,7 +1051,8 @@ module.exports.deleteSupervisor = function(internship, user, email, done) {
      */
     function(supervisor, internship, user, callback) {
       var display = ( _.isObject(supervisor) ) ? supervisor.email : supervisor;
-      var msg = user.profile.name + ' removed ' + display + ' as a supervisor of this internship.';
+      var name = (user.company) ? user.company.name : user.profile.name;
+      var msg = name + ' removed ' + display + ' as a supervisor of this internship.';
 
       internship.addActivity({
         description: msg,
@@ -1097,7 +1101,7 @@ module.exports.createInterview = function(internship, user, data, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while saving the interview. Please try again later."));
         }
@@ -1136,7 +1140,8 @@ module.exports.createInterview = function(internship, user, data, done) {
           from = internship.interview.startTime,
           to = internship.interview.endTime;
 
-      var msg = user.profile.name + ' scheduled an interview on ' + date + ' from ' + from + ' to ' + to;
+      var name = (user.company) ? user.company.name : user.profile.name;
+      var msg = name + ' scheduled an interview on ' + date + ' from ' + from + ' to ' + to;
 
       internship.addActivity({
         description: msg,
@@ -1198,7 +1203,7 @@ module.exports.deleteInterview = function(internship, user, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while canceling the interview. Please try again later."));
         }
@@ -1230,7 +1235,8 @@ module.exports.deleteInterview = function(internship, user, done) {
      * Add comments to the activty feed
      */
     function(internship, user, callback) {
-      var msg = user.profile.name + " canceled the scheduled interview.";
+      var name = (user.company) ? user.company.name : user.profile.name;
+      var msg = name + " canceled the scheduled interview.";
 
       internship.addActivity({
         description: msg,
@@ -1275,7 +1281,7 @@ module.exports.uploadDocument = function(internship, user, file, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while uploading the file. Please try again later."));
         }
@@ -1330,7 +1336,8 @@ module.exports.uploadDocument = function(internship, user, file, done) {
      * Add to the activty feed
      */
     function(internship, user, callback) {
-      var msg = user.profile.name + " uploaded a file.";
+      var name = (user.company) ? user.company.name : user.profile.name;
+      var msg = name + " uploaded a file.";
 
       internship.addActivity({
         description: msg,
@@ -1377,7 +1384,7 @@ module.exports.editDocument = function(internship, user, data, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while saving the document. Please try again later."));
         }
@@ -1446,7 +1453,7 @@ module.exports.deleteDocument = function(internship, user, documentId, done) {
      * Get the user
      */
     function(internship, callback) {
-      User.findById(user._id || user).populate('profile').exec(function(err, user) {
+      User.findById(user._id || user).populate('profile company').exec(function(err, user) {
         if ( err || ! user ) {
           return callback(new Error("An error occured while deleting the attachement. Please try again later."));
         }
@@ -1492,7 +1499,8 @@ module.exports.deleteDocument = function(internship, user, documentId, done) {
      * Add an activity to the internships feed
      */
     function(internship, user, callback) {
-      var msg = user.profile.name + ' removed a document from the internship.';
+      var name = (user.company) ? user.company.name : user.profile.name;
+      var msg = name + ' removed a document from the internship.';
 
       internship.addActivity({
         description: msg,

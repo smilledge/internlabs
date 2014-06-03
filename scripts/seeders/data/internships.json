@@ -1,0 +1,84 @@
+[
+
+  {
+    "status": "pending",
+    "startDate": "2014-06-01",
+    "endDate": "2014-10-30",
+    "totalHours": 100,
+    "availability": ["Monday", "Thursday"],
+    "comment": "Lorem ipsum dolar sit amet."
+  },
+
+  {
+    "status": "pending",
+    "startDate": "2014-10-01",
+    "endDate": "2015-04-30",
+    "totalHours": 120,
+    "availability": ["Tuesday", "Wednesday", "Thursday"]
+  },
+
+  {
+    "status": "active",
+    "startDate": "2014-06-20",
+    "endDate": "2014-12-01",
+    "totalHours": 150,
+    "availability": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+  },
+
+  {
+    "status": "pending",
+    "startDate": "2014-06-01",
+    "endDate": "2014-10-30",
+    "totalHours": 120,
+    "availability": ["Monday", "Thursday"]
+  },
+
+  {
+    "status": "active",
+    "startDate": "2014-06-01",
+    "endDate": "2014-10-30",
+    "totalHours": 100,
+    "availability": ["Tuesday", "Wednesday", "Thursday", "Friday"]
+  },
+
+  {
+    "status": "active",
+    "startDate": "2014-06-01",
+    "endDate": "2014-10-30",
+    "totalHours": 200,
+    "availability": ["Monday", "Thursday"]
+  },
+
+  {
+    "status": "completed",
+    "startDate": "2014-06-01",
+    "endDate": "2014-10-30",
+    "totalHours": 250,
+    "availability": ["Tuesday", "Thursday", "Friday"]
+  },
+
+  {
+    "status": "rejected",
+    "startDate": "2014-06-01",
+    "endDate": "2014-10-30",
+    "totalHours": 100,
+    "availability": ["Monday"]
+  },
+
+  {
+    "status": "rejected",
+    "startDate": "2014-06-01",
+    "endDate": "2014-10-30",
+    "totalHours": 120,
+    "availability": ["Tuesday", "Wednesday", "Thursday", "Friday"]
+  },
+
+  {
+    "status": "completed",
+    "startDate": "2014-06-01",
+    "endDate": "2014-10-30",
+    "totalHours": 100,
+    "availability": ["Wednesday", "Thursday", "Friday"]
+  }
+
+]

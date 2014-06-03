@@ -1,0 +1,78 @@
+{
+  "Google": [
+    {
+      "title": "Software Engineer",
+      "description": "Software Engineers at Google are researchers and developers who yearn to create and implement complex computer science solutions. Our engineers develop massively scalable, distributed software systems and also collaborate on multitudes of smaller projects that have universal appeal - which requires research, awareness, interactivity, and asking questions. You build strong competencies in data structures and algorithms, along with a technical fascination for how stuff fits together. You need to have a solid foundation in computer science in order to consistently come up with new ideas as well as strive for a deep understanding of our products and services in order to continually improve upon them. We focus on being a collaborative, global organization consisting of engineers with the highest levels of technical depth, programming skills and a keen eye for quality."
+    },
+
+    {
+      "title": "User Experience Designer",
+      "description": "Design and user experience (UX) are at the forefront of everything we do. The job of an Interaction Designer is to envision how people experience our products and bring that vision to life in a way that feels inspired, refined and even magical. In an Interaction Designer role, you’ll tackle complex tasks and transform them into intuitive, accessible and easy-to-use designs for billions of people around the world—from the first-time user to the sophisticated expert. Achieving this goal requires collaboration with teams of Designers, Researchers, Engineers and Product Managers throughout the design process—from creating user flows and wireframes to building user interface mockups and prototypes. At each stage, you will anticipate what our users need, advocate for them and ensure that the final product surprises and delights them."
+    },
+
+    {
+      "title": "Designer Intern",
+      "description": "Google is known for its speed and clean design, and our websites must also be fast and clean. Our Brand Studio team creates and maintain Google's web sites. You will collaborate with Marketing and Engineering teams to create compelling, efficient and accessible web pages. You work independently on many projects, but also take directions from team members across the organization. The impact of your work is huge as millions of users traffic our websites every day."
+    },
+
+    {
+      "title": "Product Quality Analyst",
+      "description": "Google's brand is only as strong as our users' trust--and their steadfast belief that our guiding principles are what's best for them. Our Product Quality Operations team has the critical responsibility of protecting Google's users by ensuring online safety by fighting web abuse and fraud across Google products like Search, Maps, AdWords and AdSense. On this team, you're a big-picture thinker and strategic leader. You understand the user's point of view and are passionate about using your combined technical, sales and customer service acumen to protect our users. You work globally and cross-functionally with Google developers and Product Managers to navigate challenging online safety situations and handle abuse and fraud cases at Google speed (read: fast!). Help us prove that quality on the Internet trumps all."
+    }
+  ],
+
+  "Queensland University of Technology": [
+    {
+      "title": "Graduate Capabilities Mobile Application",
+      "description": "Aim: To develop a mobile software application that provides students with a dashboard to record, track and analyse their performance and progression toward QUT Graduate capability outcomes. Project Context: Many students complete their degree with a strong focus on the content they have covered during their degree. However the research suggests that employers are particularly interested in elements reflected in the QUT graduate capabilities framework such as teamwork, critical thinking and effective use of technology. Despite significant investment into the development of the graduate capability framework and the alignment of curriculum to the framework, its salience amongst students remains low."
+    },
+    {
+      "title": "CIF Space Allocation Web Application",
+      "description": "The Creative Industries Faculty (CIF) has identified the requirement of a web-based system that allows CIF professional staff to manage space. This tool would ideally allow us to allocate staff to seats; to allocate assets and phone extensions to seats; and to generate reports on room and desk availability. Initially the student involved in the project will be involved in identifying user requirements, developing user stories and establishing the required features to meet these needs. "
+    }
+  ],
+
+  "Red Hat": [
+    {
+      "title": "Mobile Applications Intern",
+      "description": "At Red Hat, we connect an innovative community of customers, partners, and contributors to deliver an open source stack of trusted, high-performing technologies that solve business problems. We’re a billion dollar S+P 500 company offering solutions from Linux to middleware, storage to cloud, together with award-winning global customer support, consulting, and implementation services. Project name: Develop a mobile application for an existing alert service Summary: Development and design of an android and iphone application to provide messaging and response for an existing nagios monitoring and alerting service. Message and response can be of both plain text message or enabling and disabling monitoring on a service. Project scope is also open to messaging or performing tasks for alternative services. As part of the development lifecycle, review current processes for monitoring and messaging and propose future improvements. Responsibilities: *Collect requirements *Design and development of smart phone application *Stress testing *Suggest improvements to current processes "
+    },
+    {
+      "title": "Security Engineering Intern",
+      "description": "At Red Hat, we connect an innovative community of customers, partners, and contributors to deliver an open source stack of trusted, high-performing technologies that solve business problems. We’re a billion dollar S+P 500 company offering solutions from Linux to middleware, storage to cloud, together with award-winning global customer support, consulting, and implementation services. Summary: Most widely-used approaches for handling java dependencies lead to applications which pull a large set of dependencies from third-party sources. There is no well-established mechanism for determining the complete set of dependencies used by a java software project, and no way of automatically determining whether any of these dependencies have known security vulnerabilities. The victims project aims to address this. It provides a public database of known-vulnerable JAR fingerprints, and tools for matching these fingerprints to an application's dependency tree at build time, via integration with tools like ant, maven and jenkins. We would like to extend this functionality to detect known vulnerable dependencies at runtime. This would be in the form of an RHQ plugin to scan deployed applications on application servers managed by RHQ. All the components being used are open source, and the RHQ plugin should be released as open source, with the intern credited as its primary author. Project name: Detecting vulnerable dependencies at runtime Responsibilities: *Develop an RHQ plugin for the victims project *Debug, test and document this plugin "
+    },
+    {
+      "title": "Security Internship - Continuous Integration",
+      "description": "Company description: At Red Hat, we connect an innovative community of customers, partners, and contributors to deliver an open source stack of trusted, high-performing technologies that solve business problems. We’re a billion dollar S+P 500 company offering solutions from Linux to middleware, storage to cloud, together with award-winning global customer support, consulting, and implementation services. Summary: There's no such thing as an ordinary day at Red Hat. We offer intern projects to creative, passionate students who would like to find out what it's like to be part of an innovative and dynamic company. We have an open and collaborative culture that's based on meritocracy--letting the best ideas win. Red Hat Hosted and Shared Services group is responsible for the internal tools develop and testing. The team is seeking highly motivated undergraduate students, who are interested in low-level programming, quality assurance and agile, to run a continuous integration trial. Forget about mindless tasks or filling coffee cups. This is a fast-paced, high energy project. You will be immediately integrated as a full member of your team, and will be challenged, from the first day you walk through the door. Responsibilities: *Research agile project model and continues integration for website – cucumber *Setting up a Jenkins-CI test environment for website testing *Investigate support for multiple browsers *Investigate support for frequent website feature changes *Investigate support for integrating any basic QE testing *Document process to setup Jenkins for website testing *Document how to write and execute cucumber feature file *Good solution to solve automation problem when feature changes in website *Automation testing report on some basic features using Jenkins Apply by email to andrewm@redhat.com Please include a cover note explaining why you are interested in this project. Thanks for reading!"
+    }
+  ],
+
+  "Suncorp Group": [
+    {
+      "title": "Marketing Internship",
+      "description": " In this role you will become familiar with the insights of our customers.  What is Customer Insight? ‘Customer Insight’ is to understand the connection between the interests of the consumer and the features of the brand.  "
+    },
+    {
+      "title": "Data Analyst (Campaigns)",
+      "description": "Our Data Driven Marketing community provides direct marketing services and advice across all brands and product lines in the Suncorp Group. We harness the value of customer data to assist our stakeholders in optimising customer value and improving campaign efficiency.  A holistic view of the group’s marketing activity puts our team in a prime position to envision and drive the strategic direction of below the line marketing."
+    }
+  ],
+
+  "Atlassian": [
+    {
+      "title": "Software Developer",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non mattis diam. Nullam congue non dui varius volutpat. Phasellus a mauris at lorem dapibus laoreet nec sed justo."
+    },
+    {
+      "title": "Web Development Internship 2014",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non mattis diam. Nullam congue non dui varius volutpat. Phasellus a mauris at lorem dapibus laoreet nec sed justo."
+    }
+  ],
+
+  "Microsoft": [
+    {
+      "title": "Software Developer",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non mattis diam. Nullam congue non dui varius volutpat. Phasellus a mauris at lorem dapibus laoreet nec sed justo."
+    }
+  ]
+}

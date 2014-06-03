@@ -32,7 +32,8 @@ async.series([
     });
   },
 
-  require('./seeders/users')
+  require('./seeders/users'),
+  require('./seeders/internships')
 
 ], function(err) {
   console.log("Seeding done!");
