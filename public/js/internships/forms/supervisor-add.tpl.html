@@ -1,11 +1,11 @@
-<form  ng-submit="save()" role="form">
+<form ng-validated="save()" novalidate role="form">
   <div class="form-group">
     <label>Supervisor Email</label>
-    <input ng-model="newSupervisor" type="text" class="form-control">
+    <input ng-model="newSupervisor" type="email" class="form-control" required>
   </div>
   
   <div class="modal-footer text-center">
-    <button ng-click="save()" type="button" class="btn btn-primary btn-icon-left"><i class="fa fa-plus"></i> Add Supervisor</button>
+    <button type="submit" class="btn btn-primary btn-icon-left"><i class="fa fa-plus"></i> Add Supervisor</button>
     <button ng-click="close()" type="button" class="btn btn-default btn-icon-left"><i class="fa fa-times"></i> Cancel</button>
   </div>
 </form>

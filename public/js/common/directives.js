@@ -220,7 +220,8 @@ angular.module('InternLabs.common.directives', [])
       scope: {
         uploader: '=?',
         allow: '@?',
-        url: '@'
+        url: '@',
+        onComplete: '&'
       },
       templateUrl: 'common/forms/file-upload.tpl.html',
       link: function(scope, elem, attrs) {
@@ -254,8 +255,14 @@ angular.module('InternLabs.common.directives', [])
           elem.find('.input-file').trigger('click');
         };
 
+        scope.done = function() {
+          return scope.$parent && scope.$parent.close();
+        };
+
         uploader.bind('completeall', function (event, items) {
-          // console.info('Complete all', items);
+          if (scope.onComplete) {
+            scope.$eval(scope.onComplete);
+          }
         });
       }
     }
@@ -459,21 +466,32 @@ angular.module('InternLabs.common.directives', [])
       restrict: 'A',
       replace: false,
       link: function(scope, elem, attrs) {
+        var init = function() {
+          var $errors = elem.next('.field-errors');
 
-        elem.selecter({
-          label: elem.attr('placeholder')
-        });
+          if ($errors) {
+            $errors = $errors.detach();
+          }
+
+          elem.selecter({
+            label: elem.attr('placeholder')
+          });
+
+          if ($errors) {
+            elem.next('.selecter').after($errors);
+          }
+        };
 
         scope.$watch(function() {
           return scope.$eval(elem.attr('selecter'));
-        }, function(newVal){
+        }, function(newVal) {
           _.defer(function() {
             elem.selecter("destroy");
-            elem.selecter({
-              label: elem.attr('placeholder')
-            });
+            init();
           });
         }, true);
+
+        _.defer(init);
       }
     };
   })
@@ -673,6 +691,7 @@ angular.module('InternLabs.common.directives', [])
     return {
       restrict: 'A',
       priority: 2,
+      scope: false,
       link: function(scope, elem, attrs) {
         var submitAction = attrs.ngValidated,
             validator = new Parsley(elem);

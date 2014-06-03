@@ -32866,7 +32866,8 @@ angular.module("common/forms/file-upload.tpl.html", []).run(["$templateCache", f
     "  <div ng-hide=\"hideButtons\" class=\"text-center\">\n" +
     "      <button type=\"button\" class=\"btn btn-success btn-icon-left\" ng-click=\"_uploader.uploadAll()\" ng-show=\"_uploader.getNotUploadedItems().length\"><i class=\"fa fa-arrow-up\"></i> Start Upload</button>\n" +
     "      <button type=\"button\" class=\"btn btn-danger btn-icon-left\" ng-click=\"_uploader.cancelAll()\" ng-show=\"_uploader.isUploading\"><i class=\"fa fa-times\"></i> Cancel Upload</button>\n" +
-    "      <button type=\"button\" class=\"btn btn-default btn-icon-left\" ng-click=\"_uploader.clearQueue()\" ng-show=\"_uploader.queue.length\"><i class=\"fa fa-trash-o\"></i> Clear Queue</button>\n" +
+    "      <button type=\"button\" class=\"btn btn-primary btn-icon-left\" ng-click=\"done()\" ng-hide=\"_uploader.getNotUploadedItems().length\"><i class=\"fa fa-check\"></i> Done</button>\n" +
+    "      <!-- <button type=\"button\" class=\"btn btn-default btn-icon-left\" ng-click=\"_uploader.clearQueue()\" ng-show=\"_uploader.queue.length\"><i class=\"fa fa-trash-o\"></i> Clear Queue</button> -->\n" +
     "  </div>\n" +
     "</div>");
 }]);
@@ -33064,7 +33065,7 @@ angular.module("dashboard/forms/logo-delete.tpl.html", []).run(["$templateCache"
 
 angular.module("dashboard/forms/logo-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/forms/logo-upload.tpl.html",
-    "<form validate=\"true\" role=\"form\" ng-submit=\"upload()\" ng-init=\"initialize()\">\n" +
+    "<form role=\"form\" ng-submit=\"upload()\" ng-init=\"initialize()\">\n" +
     "\n" +
     "  <div class=\"form-group\">\n" +
     "    <label for=\"input-logo\" class=\"sr-only\">Select Logo</label>\n" +
@@ -33094,11 +33095,11 @@ angular.module("dashboard/forms/role-delete.tpl.html", []).run(["$templateCache"
 
 angular.module("dashboard/forms/role.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/forms/role.tpl.html",
-    "<form validate=\"true\" role=\"form\" ng-submit=\"save()\">\n" +
+    "<form ng-validated=\"save()\" novalidate>\n" +
     "  \n" +
     "  <div class=\"form-group\">\n" +
     "    <label>Role Title</label>\n" +
-    "    <input ng-model=\"role.title\" type=\"text\" class=\"form-control\">\n" +
+    "    <input ng-model=\"role.title\" type=\"text\" class=\"form-control\" required>\n" +
     "  </div>\n" +
     "\n" +
     "  <div class=\"form-group\">\n" +
@@ -33260,16 +33261,16 @@ angular.module("dashboard/widgets/edit-profile.tpl.html", []).run(["$templateCac
     "    <h3>Edit Profile</h3>\n" +
     "  </header>\n" +
     "\n" +
-    "  <form role=\"form\" ng-submit=\"save()\">\n" +
+    "  <form role=\"form\" ng-validated=\"save()\" novalidate>\n" +
     "    <div class=\"form-group\">\n" +
     "      <div class=\"row-sm\">\n" +
     "        <div class=\"col-sm-6\">\n" +
     "          <label>First Name</label>\n" +
-    "          <input type=\"text\" ng-model=\"profile.firstName\" class=\"form-control\">\n" +
+    "          <input type=\"text\" ng-model=\"profile.firstName\" class=\"form-control\" required>\n" +
     "        </div>\n" +
     "        <div class=\"col-sm-6\">\n" +
     "          <label>Last Name</label>\n" +
-    "          <input type=\"text\" ng-model=\"profile.lastName\" class=\"form-control\">\n" +
+    "          <input type=\"text\" ng-model=\"profile.lastName\" class=\"form-control\" required>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
@@ -33555,11 +33556,11 @@ angular.module("internships/forms/documents-edit.tpl.html", []).run(["$templateC
     "\n" +
     "\n" +
     "    <div ng-repeat-end ng-show=\"item.$edit\" class=\"list-group-item list-form item-muted\">\n" +
-    "      <form ng-submit=\"save(item)\" class=\"form-horizontal\">\n" +
+    "      <form ng-validated=\"save(item)\" novalidate class=\"form-horizontal\">\n" +
     "        <div class=\"form-group\">\n" +
     "          <label class=\"col-sm-2 control-label\">Name</label>\n" +
     "          <div class=\"col-sm-9\">\n" +
-    "            <input type=\"text\" class=\"form-control\" ng-model=\"$newDocument.name\" placeholder=\"Name\">\n" +
+    "            <input type=\"text\" class=\"form-control\" ng-model=\"$newDocument.name\" placeholder=\"Name\" required>\n" +
     "          </div>\n" +
     "        </div>\n" +
     "\n" +
@@ -33587,7 +33588,7 @@ angular.module("internships/forms/documents-edit.tpl.html", []).run(["$templateC
 
 angular.module("internships/forms/documents-upload.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/forms/documents-upload.tpl.html",
-    "<div upload-form allow=\"all\" url=\"{{ url }}\"></div>");
+    "<div upload-form allow=\"all\" url=\"{{ url }}\" on-complete=\"refresh()\"></div>");
 }]);
 
 angular.module("internships/forms/internship-status.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -33614,21 +33615,21 @@ angular.module("internships/forms/interview-delete.tpl.html", []).run(["$templat
 
 angular.module("internships/forms/interview.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/forms/interview.tpl.html",
-    "<form role=\"form\" ng-submit=\"save()\">\n" +
+    "<form role=\"form\" ng-validated=\"save()\" novalidate>\n" +
     "  \n" +
     "  <div class=\"form-group\">\n" +
     "    <div class=\"row-sm\">\n" +
     "      <div class=\"col-sm-4\">\n" +
     "        <label>Date</label>\n" +
-    "        <input date-picker=\"_interview.date\" type=\"text\" class=\"form-control\">\n" +
+    "        <input date-picker=\"_interview.date\" type=\"text\" class=\"form-control\" required>\n" +
     "      </div>\n" +
     "      <div class=\"col-sm-4\">\n" +
     "        <label>Start Time</label>\n" +
-    "        <select selecter ng-model=\"_interview.startTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
+    "        <select selecter ng-model=\"_interview.startTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\" required></select>\n" +
     "      </div>\n" +
     "      <div class=\"col-sm-4\">\n" +
     "        <label>End Time</label>\n" +
-    "        <select selecter ng-model=\"_interview.endTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
+    "        <select selecter ng-model=\"_interview.endTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\" required></select>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "  </div>\n" +
@@ -33647,20 +33648,26 @@ angular.module("internships/forms/interview.tpl.html", []).run(["$templateCache"
 
 angular.module("internships/forms/schedule-add.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/forms/schedule-add.tpl.html",
-    "<form ng-submit=\"save()\" role=\"form\" class=\"schedule-add\">\n" +
+    "<form ng-validated=\"save()\" novalidate role=\"form\" class=\"schedule-add\">\n" +
     "  <div class=\"form-group\">\n" +
     "      <div class=\"row-sm\">\n" +
     "        <div class=\"col-sm-4\">\n" +
     "          <label>Date</label>\n" +
-    "          <input date-picker=\"newSchedule.date\" type=\"text\" class=\"form-control\">\n" +
+    "          <input date-picker=\"newSchedule.date\" type=\"text\" class=\"form-control\" required>\n" +
     "        </div>\n" +
     "        <div class=\"col-sm-4\">\n" +
     "          <label>Start Time</label>\n" +
-    "          <select selecter ng-model=\"newSchedule.startTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
+    "          <select selecter=\"timeOptions\" ng-model=\"newSchedule.startTime\" required>\n" +
+    "            <option value=\"\">-- --</option>\n" +
+    "            <option ng-repeat=\"o in timeOptions\" ng-selected=\"{{ o === newSchedule.startTime }}\" value=\"{{ o }}\">{{ o }}</option>\n" +
+    "          </select>\n" +
     "        </div>\n" +
     "        <div class=\"col-sm-4\">\n" +
     "          <label>End Time</label>\n" +
-    "          <select selecter ng-model=\"newSchedule.endTime\" ng-options=\"o as o for o in timeOptions\" class=\"form-control\"></select>\n" +
+    "          <select selecter=\"timeOptions\" ng-model=\"newSchedule.endTime\" required>\n" +
+    "            <option value=\"\">-- --</option>\n" +
+    "            <option ng-repeat=\"o in timeOptions\" ng-selected=\"{{ o === newSchedule.endTime }}\" value=\"{{ o }}\">{{ o }}</option>\n" +
+    "          </select>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </div>\n" +
@@ -33695,14 +33702,14 @@ angular.module("internships/forms/schedule.tpl.html", []).run(["$templateCache",
 
 angular.module("internships/forms/supervisor-add.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/forms/supervisor-add.tpl.html",
-    "<form  ng-submit=\"save()\" role=\"form\">\n" +
+    "<form ng-validated=\"save()\" novalidate role=\"form\">\n" +
     "  <div class=\"form-group\">\n" +
     "    <label>Supervisor Email</label>\n" +
-    "    <input ng-model=\"newSupervisor\" type=\"text\" class=\"form-control\">\n" +
+    "    <input ng-model=\"newSupervisor\" type=\"email\" class=\"form-control\" required>\n" +
     "  </div>\n" +
     "  \n" +
     "  <div class=\"modal-footer text-center\">\n" +
-    "    <button ng-click=\"save()\" type=\"button\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-plus\"></i> Add Supervisor</button>\n" +
+    "    <button type=\"submit\" class=\"btn btn-primary btn-icon-left\"><i class=\"fa fa-plus\"></i> Add Supervisor</button>\n" +
     "    <button ng-click=\"close()\" type=\"button\" class=\"btn btn-default btn-icon-left\"><i class=\"fa fa-times\"></i> Cancel</button>\n" +
     "  </div>\n" +
     "</form>");
@@ -33841,9 +33848,9 @@ angular.module("internships/widgets/message.tpl.html", []).run(["$templateCache"
     "    <h3>Post a message</h3>\n" +
     "  </header>\n" +
     "\n" +
-    "  <form ng-submit=\"save()\">\n" +
+    "  <form ng-validated=\"save()\" novalidate>\n" +
     "    <div class=\"form-group\">\n" +
-    "      <textarea ng-model=\"message\" rows=\"3\" class=\"form-control\"></textarea>\n" +
+    "      <textarea ng-model=\"message\" rows=\"3\" class=\"form-control\" required></textarea>\n" +
     "    </div>\n" +
     "\n" +
     "    <div class=\"form-group text-right\">\n" +
@@ -33922,7 +33929,7 @@ angular.module("internships/widgets/schedule.tpl.html", []).run(["$templateCache
     "\n" +
     "  <div ng-show=\"!internship.schedule.length\" class=\"no-results\">\n" +
     "    <p class=\"lead\">Looks like you have not created a schedule yet!</p>\n" +
-    "    <a ng-click=\"edit()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-plus\"></i> Create one now</a>\n" +
+    "    <a ng-click=\"add()\" class=\"btn btn-link btn-sm\"><i class=\"fa fa-plus\"></i> Create one now</a>\n" +
     "  </div>\n" +
     "</div>");
 }]);
@@ -34040,7 +34047,7 @@ angular.module("login/login.tpl.html", []).run(["$templateCache", function($temp
     "          <h2>Login</h2>\n" +
     "        </header>\n" +
     "\n" +
-    "        <form validate=\"true\" ng-validated=\"submit()\" role=\"form\" autocomplete=\"off\" login-form novalidate>\n" +
+    "        <form ng-validated=\"submit()\" role=\"form\" autocomplete=\"off\" login-form novalidate>\n" +
     "          <div form-errors=\"errors\"></div>\n" +
     "\n" +
     "          <div class=\"form-group\">\n" +
@@ -34938,7 +34945,8 @@ angular.module('InternLabs.common.directives', [])
       scope: {
         uploader: '=?',
         allow: '@?',
-        url: '@'
+        url: '@',
+        onComplete: '&'
       },
       templateUrl: 'common/forms/file-upload.tpl.html',
       link: function(scope, elem, attrs) {
@@ -34972,8 +34980,14 @@ angular.module('InternLabs.common.directives', [])
           elem.find('.input-file').trigger('click');
         };
 
+        scope.done = function() {
+          return scope.$parent && scope.$parent.close();
+        };
+
         uploader.bind('completeall', function (event, items) {
-          // console.info('Complete all', items);
+          if (scope.onComplete) {
+            scope.$eval(scope.onComplete);
+          }
         });
       }
     }
@@ -35177,21 +35191,32 @@ angular.module('InternLabs.common.directives', [])
       restrict: 'A',
       replace: false,
       link: function(scope, elem, attrs) {
+        var init = function() {
+          var $errors = elem.next('.field-errors');
 
-        elem.selecter({
-          label: elem.attr('placeholder')
-        });
+          if ($errors) {
+            $errors = $errors.detach();
+          }
+
+          elem.selecter({
+            label: elem.attr('placeholder')
+          });
+
+          if ($errors) {
+            elem.next('.selecter').after($errors);
+          }
+        };
 
         scope.$watch(function() {
           return scope.$eval(elem.attr('selecter'));
-        }, function(newVal){
+        }, function(newVal) {
           _.defer(function() {
             elem.selecter("destroy");
-            elem.selecter({
-              label: elem.attr('placeholder')
-            });
+            init();
           });
         }, true);
+
+        _.defer(init);
       }
     };
   })
@@ -35391,6 +35416,7 @@ angular.module('InternLabs.common.directives', [])
     return {
       restrict: 'A',
       priority: 2,
+      scope: false,
       link: function(scope, elem, attrs) {
         var submitAction = attrs.ngValidated,
             validator = new Parsley(elem);
@@ -36729,7 +36755,7 @@ angular.module('InternLabs.internships', [])
   /**
    * Internship documents
    */
-  .directive('documentsWidget', function(ModalFactory, Options) {
+  .directive('documentsWidget', function(ModalFactory, Options, Restangular) {
     return {
       replace: true,
       templateUrl: 'internships/widgets/documents.tpl.html',
@@ -36742,7 +36768,13 @@ angular.module('InternLabs.internships', [])
             scope: {
               title: "Upload Documents",
               internship: scope.internship,
-              url: Options.apiUrl('internships/' + scope.internship._id + '/documents')
+              url: Options.apiUrl('internships/' + scope.internship._id + '/documents'),
+              refresh: function() {
+                scope.internship.get().then(function(response) {
+                  scope.internship.documents = response.documents;
+                  scope.internship.activity = response.activity;
+                });
+              }.bind(this)
             },
             className: 'modal-lg',
             templateUrl: "internships/forms/documents-upload.tpl.html"

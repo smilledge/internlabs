@@ -444,7 +444,7 @@ angular.module('InternLabs.internships', [])
   /**
    * Internship documents
    */
-  .directive('documentsWidget', function(ModalFactory, Options) {
+  .directive('documentsWidget', function(ModalFactory, Options, Restangular) {
     return {
       replace: true,
       templateUrl: 'internships/widgets/documents.tpl.html',
@@ -457,7 +457,13 @@ angular.module('InternLabs.internships', [])
             scope: {
               title: "Upload Documents",
               internship: scope.internship,
-              url: Options.apiUrl('internships/' + scope.internship._id + '/documents')
+              url: Options.apiUrl('internships/' + scope.internship._id + '/documents'),
+              refresh: function() {
+                scope.internship.get().then(function(response) {
+                  scope.internship.documents = response.documents;
+                  scope.internship.activity = response.activity;
+                });
+              }.bind(this)
             },
             className: 'modal-lg',
             templateUrl: "internships/forms/documents-upload.tpl.html"
