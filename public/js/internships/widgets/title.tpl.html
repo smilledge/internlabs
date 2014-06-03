@@ -1,4 +1,4 @@
-<div class="internship-title">
+<div class="internship-title" ng-class="{'hide-logo':isCompany || !company.logoUrl}">
   <div ng-show="!isCompany && company.logoUrl" class="company-logo">
     <img ng-src="{{ company.logoUrl }}" alt="{{ company.name }}">
   </div>

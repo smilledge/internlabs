@@ -1,4 +1,5 @@
 var Company = require('../models/company'),
+    Role = require('../models/role'),
     async = require('async'),
     fs = require('fs'),
     path = require('path'),
@@ -25,6 +26,51 @@ module.exports.findById = function(companyId, done) {
     }
     done(null, company);
   });
+};
+
+
+/**
+ * Add a role to a company
+ * @param  {string}  Company ID
+ * @param  {object}  role data
+ * @param  {func}    callback
+ * @return {void}
+ */
+module.exports.addRole = function(company, data, done) {
+  
+  async.waterfall([
+
+      // Find the company
+      function(callback) {
+        Company.findOne(company._id || company, function(err, company) {
+          if ( err || ! company ) {
+            return callback(new Error("Sorry, the selected company could not be found."));
+          }
+          
+          callback(null, company);
+        });
+      },
+
+      // Create the role
+      function(company, callback) {
+        new Role(data).save(function(err, role) {
+          if ( err || ! role ) {
+            return callback(new Error("An error occured while saving the role. Please try again later."));
+          }
+
+          callback(err, company, role);
+        });
+      },
+
+      // Add the role to the company
+      function(company, role, callback) {
+        company.roles.push(role._id);
+        company.save(function(err, company) {
+          callback(null, role)
+        });
+      }
+
+    ], done);
 };
 
 

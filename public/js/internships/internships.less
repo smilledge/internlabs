@@ -11,13 +11,15 @@
 
     @media (min-width: @screen-sm-min) {
       float: left;
+      width: 135px;
       margin: 0 15px 0 0;
       padding-right: 15px;
       border-right: 1px solid #e6e6e6;
     }
     
     img {
-      margin-top: 5px;
+      display: block;
+      margin: 5px auto 0;
       max-height: 80px;
 
       @media (min-width: @screen-sm-min) {
@@ -36,8 +38,13 @@
 
   .title-body {
     @media (min-width: @screen-sm-min) {
-      float: left;
+      margin-left: 160px;
+      overflow: hidden;
     }
+  }
+
+  &.hide-logo .title-body {
+    margin-left: 0;
   }
 }
 

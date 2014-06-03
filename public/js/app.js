@@ -117,7 +117,7 @@ angular.module('InternLabs', [
     $scope.$on('$routeChangeStart', function(event, next, current) {
       $rootScope.loading = true;
 
-      if( next.auth && ! Auth.check() ) {
+      if( ( next.auth || _.isUndefined(next.auth) ) && ! Auth.check() ) {
         $location.path('/login');
       }
     });

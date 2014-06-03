@@ -2,21 +2,114 @@
 
   {
     "activationToken": null,
+    "email": "supervisor-1@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "supervisor",
+    "profile": {
+      "firstName": "Chloe",
+      "lastName": "Gibson",
+      "university": "Queensland University of Technology",
+      "role": "KKB123 Lecturer"
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "supervisor-2@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "supervisor",
+    "profile": {
+      "firstName": "Lauren",
+      "lastName": "Stewart",
+      "university": "Queensland University of Technology",
+      "role": "KKB123 Lecturer"
+    }
+  },
+
+  {
+    "activationToken": null,
     "email": "student-1@internlabs.com.au",
     "password": "testing",
     "activated": true,
     "type": "student",
     "profile": {
-      "firstName": "Walter",
-      "lastName": "White",
+      "firstName": "John",
+      "lastName": "Cameron",
       "skills": ["PHP", "Javascript", "HTML", "CSS", "Bootstrap", "Angular.js", "Backbone.js", "Laravel", "MongoDB", "Express.js", "Redis", "Nginx"],
-      "address": {
-        "line1": "11 Queen Street",
-        "city": "Brisbane",
-        "state": "Queensland",
-        "postcode": 4000,
-        "country": "Australia"
-      }
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non mattis diam. Nullam congue non dui varius volutpat. Phasellus a mauris at lorem dapibus laoreet nec sed justo.",
+      "university": "Queensland University of Technology",
+      "courseName": "Information Technology",
+      "linkedIn": "https://www.linkedin.com/in/tlytle"
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "student-2@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "student",
+    "profile": {
+      "firstName": "Thomas",
+      "lastName": "Dickens",
+      "skills": ["Information Management", "Information Technology", "Network Systems"],
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non mattis diam. Nullam congue non dui varius volutpat. Phasellus a mauris at lorem dapibus laoreet nec sed justo.",
+      "university": "Bond University",
+      "courseName": "Information Technology",
+      "linkedIn": "https://www.linkedin.com/in/tlytle"
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "student-3@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "student",
+    "profile": {
+      "firstName": "Caroline",
+      "lastName": "Baker",
+      "skills": ["Information Management", "Information Technology"],
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non mattis diam. Nullam congue non dui varius volutpat. Phasellus a mauris at lorem dapibus laoreet nec sed justo.",
+      "university": "Queensland University of Technology",
+      "courseName": "Information Technology",
+      "linkedIn": "https://www.linkedin.com/in/tlytle"
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "student-4@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "student",
+    "profile": {
+      "firstName": "Oliver",
+      "lastName": "Black",
+      "skills": ["UI Design", "Graphic Design", "Web Design"],
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non mattis diam. Nullam congue non dui varius volutpat. Phasellus a mauris at lorem dapibus laoreet nec sed justo.",
+      "university": "Queensland University of Technology",
+      "courseName": "Information Technology",
+      "linkedIn": "https://www.linkedin.com/in/tlytle"
+    }
+  },
+
+  {
+    "activationToken": null,
+    "email": "student-5@internlabs.com.au",
+    "password": "testing",
+    "activated": true,
+    "type": "student",
+    "profile": {
+      "firstName": "Ryan",
+      "lastName": "Kelly",
+      "skills": ["Electrical Engineering", "Information Technology", "Software Engineering", "Software Development"],
+      "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent non mattis diam. Nullam congue non dui varius volutpat. Phasellus a mauris at lorem dapibus laoreet nec sed justo.",
+      "university": "Queensland University of Technology",
+      "courseName": "Information Technology",
+      "linkedIn": "https://www.linkedin.com/in/tlytle"
     }
   },
 
@@ -105,8 +198,8 @@
     "activated": true,
     "type": "employer",
     "profile": {
-      "firstName": "Ron",
-      "lastName": "Swanson"
+      "firstName": "Paul",
+      "lastName": "Harris"
     },
     "company": {
       "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
@@ -131,8 +224,8 @@
     "activated": true,
     "type": "employer",
     "profile": {
-      "firstName": "Ron",
-      "lastName": "Swanson"
+      "firstName": "Amy",
+      "lastName": "Glover"
     },
     "company": {
       "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
@@ -157,8 +250,8 @@
     "activated": true,
     "type": "employer",
     "profile": {
-      "firstName": "Ron",
-      "lastName": "Swanson"
+      "firstName": "Harry",
+      "lastName": "Gill"
     },
     "company": {
       "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
@@ -184,8 +277,8 @@
     "activated": true,
     "type": "employer",
     "profile": {
-      "firstName": "Ron",
-      "lastName": "Swanson"
+      "firstName": "Bella",
+      "lastName": "Fraser"
     },
     "company": {
       "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
@@ -210,8 +303,8 @@
     "activated": true,
     "type": "employer",
     "profile": {
-      "firstName": "Ron",
-      "lastName": "Swanson"
+      "firstName": "Connor",
+      "lastName": "Howard"
     },
     "company": {
       "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",
@@ -236,8 +329,8 @@
     "activated": true,
     "type": "employer",
     "profile": {
-      "firstName": "Ron",
-      "lastName": "Swanson"
+      "firstName": "Maria",
+      "lastName": "Fisher"
     },
     "company": {
       "introduction": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, odit, voluptates, vitae, quos quas ad at pariatur perspiciatis nam accusantium delectus tenetur doloribus praesentium aperiam error dolores culpa repellendus autem.",

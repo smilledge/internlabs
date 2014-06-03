@@ -14,7 +14,8 @@ var _ = require('lodash'),
 
 
 // Raw user data
-var data = require('./data/users.json');
+var data = require('./data/users.json'),
+    roleData = require('./data/roles.json');
 
 var tasks = [];
 
@@ -64,21 +65,52 @@ var seed = function(callback) {
 
           // Upload logo if company
           if ( _.isObject(user.company) ) {
+
+            console.log("  | ---> Imported user: " + user.email);
+
             Company.findOne(user.company, function(err, company) {
-              if (company) {
-                CompanyService.setLogo(user, company, __dirname + '/images/' + company.logo, function(err, company) {
-                  if (err) {
-                    console.log("  | ---> Imported user: " + user.email);
-                    console.log("    | ---> ERROR uploading logo: " + err.message);
-                    return done();
+
+              async.parallel([
+                function(callback) {
+                  CompanyService.setLogo(user, company, __dirname + '/images/' + company.logo, function(err, company) {
+                    if (err) {
+                      console.log("    | ---> ERROR uploading logo: " + err.message);
+                      return done();
+                    }
+                    
+                    console.log("    | ---> Uploaded logo: " + company.logo);
+                    callback();
+                  });
+                },
+
+                function(callback) {
+                  // Get the role data by company name
+                  var roles = roleData[company.name];
+
+                  if (roles) {
+                    console.log("    | ---> Adding roles: " + _.pluck(roles, 'title'));
+
+                    async.each(roles, function(role, done) {
+                      CompanyService.addRole(company, role, function(err, role) {
+                        if (err) {
+                          console.log("      | ---> ERROR adding role to company: " + err.message);
+                          return done();
+                        }
+                        
+                        console.log("      | ---> Added role to company: " + role.title);
+                        done();
+                      });
+                    }, callback);
+                  } else {
+                    callback();
                   }
-                  
-                  console.log("  | ---> Imported user: " + user.email);
-                  console.log("    | ---> Uploaded logo: " + company.logo);
-                  done();
-                });
-              }
-            })
+                }
+
+              ], done);
+
+            });
+
+
           } else {
             console.log("  | ---> Imported user: " + user.email);
             done();

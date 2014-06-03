@@ -33981,7 +33981,7 @@ angular.module("internships/widgets/supervisors.tpl.html", []).run(["$templateCa
 
 angular.module("internships/widgets/title.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("internships/widgets/title.tpl.html",
-    "<div class=\"internship-title\">\n" +
+    "<div class=\"internship-title\" ng-class=\"{'hide-logo':isCompany || !company.logoUrl}\">\n" +
     "  <div ng-show=\"!isCompany && company.logoUrl\" class=\"company-logo\">\n" +
     "    <img ng-src=\"{{ company.logoUrl }}\" alt=\"{{ company.name }}\">\n" +
     "  </div>\n" +
@@ -34695,7 +34695,7 @@ angular.module('InternLabs', [
     $scope.$on('$routeChangeStart', function(event, next, current) {
       $rootScope.loading = true;
 
-      if( next.auth && ! Auth.check() ) {
+      if( ( next.auth || _.isUndefined(next.auth) ) && ! Auth.check() ) {
         $location.path('/login');
       }
     });
