@@ -34040,17 +34040,17 @@ angular.module("login/login.tpl.html", []).run(["$templateCache", function($temp
     "          <h2>Login</h2>\n" +
     "        </header>\n" +
     "\n" +
-    "        <form ng-validated=\"submit()\" role=\"form\" login-form novalidate>\n" +
+    "        <form validate=\"true\" ng-validated=\"submit()\" role=\"form\" autocomplete=\"off\" login-form novalidate>\n" +
     "          <div form-errors=\"errors\"></div>\n" +
     "\n" +
     "          <div class=\"form-group\">\n" +
     "            <label for=\"email\">Email</label>\n" +
-    "            <input type=\"email\" name=\"credentials.email\" ng-model=\"credentials.email\" class=\"form-control\" placeholder=\"Email\" required>\n" +
+    "            <input type=\"email\" name=\"credentials.email\" ng-model=\"credentials.email\" class=\"form-control\" placeholder=\"Email\" autocomplete=\"off\" required>\n" +
     "          </div>\n" +
     "\n" +
     "          <div class=\"form-group\">\n" +
     "            <label for=\"password\">Password</label>\n" +
-    "            <input type=\"password\" name=\"credentials.password\" ng-model=\"credentials.password\" class=\"form-control\" placeholder=\"Password\" required>\n" +
+    "            <input type=\"password\" name=\"credentials.password\" ng-model=\"credentials.password\" class=\"form-control\" placeholder=\"Password\" autocomplete=\"off\" required>\n" +
     "          </div>\n" +
     "\n" +
     "          <div class=\"form-footer\">\n" +
@@ -35392,16 +35392,11 @@ angular.module('InternLabs.common.directives', [])
       restrict: 'A',
       priority: 2,
       link: function(scope, elem, attrs) {
-        var submitAction = attrs.ngValidated;
-
-        console.log();
-
-        if ( attrs.validate ) {
-          var validator = new Parsley(elem);
-        }
+        var submitAction = attrs.ngValidated,
+            validator = new Parsley(elem);
 
         elem.on('submit', function(e) {
-          if ( ! attrs.validate || elem.find('[stepped-form]').length ) {
+          if ( elem.find('[stepped-form]').length ) {
             return scope.$eval(submitAction);
           }
   
@@ -35409,9 +35404,7 @@ angular.module('InternLabs.common.directives', [])
             e.preventDefault();
           }
 
-          var validator = new Parsley(elem);
           validator.validate();
-
           if ( validator.isValid() ) {
             scope.$eval(submitAction);
           }
@@ -36932,7 +36925,8 @@ angular.module('InternLabs.login', [])
         credentials: '=',
         submit: '&?'
       },
-      link: function(scope, elem, attrs) {}
+      link: function(scope, elem, attrs) {
+      }
     };
   })
 

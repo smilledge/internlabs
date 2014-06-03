@@ -125,7 +125,8 @@ angular.module('InternLabs.login', [])
         credentials: '=',
         submit: '&?'
       },
-      link: function(scope, elem, attrs) {}
+      link: function(scope, elem, attrs) {
+      }
     };
   })
 
