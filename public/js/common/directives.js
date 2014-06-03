@@ -674,16 +674,11 @@ angular.module('InternLabs.common.directives', [])
       restrict: 'A',
       priority: 2,
       link: function(scope, elem, attrs) {
-        var submitAction = attrs.ngValidated;
-
-        console.log();
-
-        if ( attrs.validate ) {
-          var validator = new Parsley(elem);
-        }
+        var submitAction = attrs.ngValidated,
+            validator = new Parsley(elem);
 
         elem.on('submit', function(e) {
-          if ( ! attrs.validate || elem.find('[stepped-form]').length ) {
+          if ( elem.find('[stepped-form]').length ) {
             return scope.$eval(submitAction);
           }
   
@@ -691,9 +686,7 @@ angular.module('InternLabs.common.directives', [])
             e.preventDefault();
           }
 
-          var validator = new Parsley(elem);
           validator.validate();
-
           if ( validator.isValid() ) {
             scope.$eval(submitAction);
           }
